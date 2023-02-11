@@ -1,18 +1,16 @@
-<?php
-try {
-  $bdd = new PDO('mysql:host=mysql:3306;dbname=teamease', 'root', 'Respons11');
-  $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  echo 'Connexion réussie !';
-  echo '<br>';
-  echo 'Liste des tables :';
-  echo '<br>';
+<?php session_start(); ?>
 
-  $sql = 'SHOW TABLES';
-  $result = $bdd->query($sql);
-  while ($row = $result->fetch(PDO::FETCH_NUM)) {
-    echo $row[0] . '<br>';
-  }
-} catch (PDOException $e) {
-  echo 'Erreur : ' . $e->getMessage();
-}
-?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php include "includes/head.php" ?>
+  <title>Accueil</title>
+</head>
+
+<body>
+  <?php include "includes/header.php"; ?>
+  <main>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>

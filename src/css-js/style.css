@@ -1,0 +1,14 @@
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.headerBar {
+  padding-top: 50px;
+  padding-bottom: 30px;
+  background-color: #f0ead3;
+}
