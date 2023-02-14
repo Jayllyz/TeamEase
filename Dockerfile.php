@@ -1,9 +1,9 @@
-FROM php:8.0-apache
+FROM php:8.0.0-alpine
 
-COPY ./src /var/www/html
+RUN apk add --update linux-headers
 
-RUN docker-php-ext-install pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+RUN apk add --no-cache $PHPIZE_DEPS
 
-RUN a2enmod rewrite
+RUN docker-php-ext-install pdo pdo_mysql
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug

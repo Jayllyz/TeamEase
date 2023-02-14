@@ -2,16 +2,21 @@ version: '3.8'
 
 services:
   php:
-    container_name: php
-    image: php
-    restart: always
-    working_dir: /var/www/
     build:
       context: .
       dockerfile: Dockerfile.php
+    container_name: php
+    image: php
+    tty: true
+    working_dir: /home/php/src
+    entrypoint: php
+    volumes:
+      - .:/home/php
     ports:
-      - '${PHP_PORT}:80'
+      - '${PHP_PORT}:${PHP_PORT}'
     env_file: .env
+    command: -S 0.0.0.0:${PHP_PORT}
+
   mysql:
     container_name: mysql
     image: mysql
@@ -25,7 +30,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       env_file: .env
     volumes:
-      - ./data:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
       - ./logs:/var/log/mysql
     ports:
       - ${MYSQL_PORT}:${MYSQL_PORT}
