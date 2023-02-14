@@ -4,6 +4,10 @@ CREATE TABLE ACTIVITE
 (
   id INT NOT NULL,
   maxParticipant INT NOT NULL,
+  date DATE NOT NULL,
+  duree INT NOT NULL,
+  prixPersonne INT NOT NULL,
+  nom VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -39,6 +43,7 @@ CREATE TABLE SALLE
 (
   id INT NOT NULL,
   numero INT NOT NULL,
+  addresse DATE NOT NULL,
   id_activite INT NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (id_activite) REFERENCES ACTIVITE(id)
@@ -69,6 +74,7 @@ CREATE TABLE CATALOGUE
 CREATE TABLE PRESTATION
 (
   id INT NOT NULL,
+  date DATE NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -77,6 +83,7 @@ CREATE TABLE ENTREPRISE
   siret INT NOT NULL,
   nomEntreprise VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
+  addresse VARCHAR(255) NOT NULL,
   id_devis INT NOT NULL,
   id_facture INT NOT NULL,
   id_reservation INT NOT NULL,
