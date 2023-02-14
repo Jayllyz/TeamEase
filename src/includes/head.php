@@ -1,12 +1,4 @@
 <?php
-
-try {
-  $bdd = new PDO('mysql:host=mysql:3306;dbname=teamease', 'root', 'Respons11');
-  $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-  echo 'Erreur : ' . $e->getMessage();
-}
-
 /*
 ini_set("display_errors", 1);
 ini_set("display_startup_errors", 1);
