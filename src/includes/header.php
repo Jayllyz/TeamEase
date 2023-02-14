@@ -17,22 +17,22 @@
 
             <div class="col-md-1"></div>
             <div class="row">
-                <a href="button" class="btn btn-secondary col mx-3 mt-3" <?php if(isset($_SESSION['compte'])){
-                    echo 'href="#">Mes reservations</a>';
+                <a href="button" class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['compte'])) {
+                  echo 'href="#">Mes reservations</a>';
                 } else {
-                    echo 'href="connexion.php">Se connecter</a>';
+                  echo 'href="connexion.php">Se connecter</a>';
                 } ?>
-                <a href="button" class="btn btn-secondary col mx-3 mt-3" <?php if(isset($_SESSION['compte'])){
-                    echo 'href="deconnexion.php">Se deconnecter</a>';
+                <a href="test.php" class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['compte'])) {
+                  echo 'href="deconnexion.php">Se deconnecter</a>';
                 } else {
-                    echo 'href="inscription.php">S\'inscrire</a>';
+                  echo 'href="inscription.php">S\'inscrire</a>';
                 } ?>
             </div>
         </div>
     </div>
 </div>
 
-<nav id="navbar" class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #f0ead3">
+<nav id="navbar" class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #f0ead3; box-shadow: 0px 5px 5px -5px rgba(0, 0, 0, 0.75);">
     <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
