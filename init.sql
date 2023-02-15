@@ -1,50 +1,56 @@
 CREATE DATABASE IF NOT EXISTS teamease;
 
-CREATE TABLE ACTIVITE
+CREATE TABLE ACTIVITY
 (
   id INT NOT NULL,
-  maxParticipant INT NOT NULL,
+  maxAttendee INT NOT NULL,
+  date DATE NOT NULL,
+  duration INT NOT NULL,
+  priceAttendee INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE RESERVATION
 (
   id INT NOT NULL,
-  nom VARCHAR(50) NOT NULL,
-  prenom VARCHAR(50) NOT NULL,
-  mdp VARCHAR(255) NOT NULL,
-  participants INT NOT NULL,
-  id_activite INT NOT NULL,
+  lastName VARCHAR(50) NOT NULL,
+  firstName VARCHAR(50) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  attendee INT NOT NULL,
+  id_activity INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_activite) REFERENCES ACTIVITE(id)
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id)
 );
 
-CREATE TABLE DEVIS
+CREATE TABLE ESTIMATE
 (
   id INT NOT NULL,
-  montant INT NOT NULL,
-  dateCreation DATE NOT NULL,
+  amount INT NOT NULL,
+  creationDate DATE NOT NULL,
   PRIMARY KEY (id)
 );
 
-CREATE TABLE FACTURE
+CREATE TABLE INVOICE
 (
   id INT NOT NULL,
-  montant INT NOT NULL,
-  datePaiement DATE NOT NULL,
+  amount INT NOT NULL,
+  paymentDay DATE NOT NULL,
   PRIMARY KEY (id)
 );
 
-CREATE TABLE SALLE
+CREATE TABLE ROOM
 (
   id INT NOT NULL,
-  numero INT NOT NULL,
-  id_activite INT NOT NULL,
+  number INT NOT NULL,
+  address DATE NOT NULL,
+  id_activity INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_activite) REFERENCES ACTIVITE(id)
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id)
 );
 
-CREATE TABLE MATERIEL
+CREATE TABLE MATERIAL
 (
   id INT NOT NULL,
   type VARCHAR(255) NOT NULL,
@@ -54,70 +60,72 @@ CREATE TABLE MATERIEL
 CREATE TABLE MATERIEL_ACTIVITE
 (
   quantite INT NOT NULL,
-  id_activite INT NOT NULL,
-  id_materiel INT NOT NULL,
-  FOREIGN KEY (id_activite) REFERENCES ACTIVITE(id),
-  FOREIGN KEY (id_materiel) REFERENCES MATERIEL(id)
+  id_activity INT NOT NULL,
+  id_material INT NOT NULL,
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
+  FOREIGN KEY (id_material) REFERENCES MATERIAL(id)
 );
 
-CREATE TABLE CATALOGUE
+CREATE TABLE CATALOG
 (
   id INT NOT NULL,
   PRIMARY KEY (id)
 );
 
-CREATE TABLE PRESTATION
+CREATE TABLE SERVICE
 (
   id INT NOT NULL,
+  date DATE NOT NULL,
   PRIMARY KEY (id)
 );
 
-CREATE TABLE ENTREPRISE
+CREATE TABLE COMPANY
 (
   siret INT NOT NULL,
-  nomEntreprise VARCHAR(255) NOT NULL,
+  companyName VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  id_devis INT NOT NULL,
-  id_facture INT NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  id_estimate INT NOT NULL,
+  id_invoice INT NOT NULL,
   id_reservation INT NOT NULL,
-  id_prestation INT NOT NULL,
+  id_service INT NOT NULL,
   PRIMARY KEY (siret),
-  FOREIGN KEY (id_devis) REFERENCES DEVIS(id),
-  FOREIGN KEY (id_facture) REFERENCES FACTURE(id),
+  FOREIGN KEY (id_estimate) REFERENCES ESTIMATE(id),
+  FOREIGN KEY (id_invoice) REFERENCES INVOICE(id),
   FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id),
-  FOREIGN KEY (id_prestation) REFERENCES PRESTATION(id)
+  FOREIGN KEY (id_service) REFERENCES SERVICE(id)
 );
 
-CREATE TABLE MATERIEL_SALLE
+CREATE TABLE MATERIAL_ROOM
 (
-  quantite INT NOT NULL,
-  id_salle INT NOT NULL,
-  id_materiel INT NOT NULL,
-  FOREIGN KEY (id_salle) REFERENCES SALLE(id),
-  FOREIGN KEY (id_materiel) REFERENCES MATERIEL(id)
+  quantity INT NOT NULL,
+  id_room INT NOT NULL,
+  id_material INT NOT NULL,
+  FOREIGN KEY (id_room) REFERENCES ROOM(id),
+  FOREIGN KEY (id_material) REFERENCES MATERIAL(id)
 );
 
-CREATE TABLE CATEGORIE
+CREATE TABLE CATEGORY
 (
   id INT NOT NULL,
-  nom VARCHAR(255) NOT NULL,
-  id_catalogue INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  id_catalog INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_catalogue) REFERENCES CATALOGUE(id)
+  FOREIGN KEY (id_catalog) REFERENCES CATALOG(id)
 );
 
-CREATE TABLE APPARTIENT
+CREATE TABLE BELONG
 (
-  id_activite INT NOT NULL,
-  id_categorie INT NOT NULL,
-  FOREIGN KEY (id_activite) REFERENCES ACTIVITE(id),
-  FOREIGN KEY (id_categorie) REFERENCES CATEGORIE(id)
+  id_activity INT NOT NULL,
+  id_category INT NOT NULL,
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
+  FOREIGN KEY (id_category) REFERENCES CATEGORY(id)
 );
 
 CREATE TABLE PRESENT
 (
-  id_prestation INT NOT NULL,
-  id_catalogue INT NOT NULL,
-  FOREIGN KEY (id_prestation) REFERENCES PRESTATION(id),
-  FOREIGN KEY (id_catalogue) REFERENCES CATALOGUE(id)
+  id_service INT NOT NULL,
+  id_catalog INT NOT NULL,
+  FOREIGN KEY (id_service) REFERENCES SERVICE(id),
+  FOREIGN KEY (id_catalog) REFERENCES CATALOG(id)
 );
