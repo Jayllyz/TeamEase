@@ -2,4 +2,4 @@
 .env
 data
 logs
-images/activities
+src/images/activities

@@ -17,9 +17,9 @@ include 'includes/head.php';
                 <h1 class="text-center">Ajouter une activité</h1>
             </div>
         </div>
-        <form action="verificationActivity.php" method="post" enctype="multipart/form-data">
+        <form action="verifications/verificationActivity.php" method="post" enctype="multipart/form-data">
             <?php
-            $query = $bdd->query('SELECT nom FROM CATEGORIE');
+            $query = $db->query('SELECT name FROM CATEGORY');
             $fetch = $query->fetchAll(PDO::FETCH_COLUMN);
             $count = count($fetch);
             echo '<label for="genre" class="form-label"><h4>Catégorie de l\'activité</h4></label>
@@ -31,7 +31,7 @@ include 'includes/head.php';
                                 <div class="row mb-3">
                                 <input type="checkbox" class="btn btn-check" id="' .
                   $fetch[$i] .
-                  '" name="genre[]" value="' .
+                  '" name="category[]" value="' .
                   $fetch[$i] .
                   '" autocomplete="off">
                                 <label class="btn btn-outline-primary col me-2 mb-3" for="' .
@@ -43,7 +43,7 @@ include 'includes/head.php';
               } else {
                 echo '<input type="checkbox" class="btn btn-check" id="' .
                   $fetch[$i] .
-                  '" name="genre[]" value="' .
+                  '" name="category[]" value="' .
                   $fetch[$i] .
                   '" autocomplete="off">
                                 <label class="btn btn-outline-primary col me-2 mb-3" for="' .
@@ -59,8 +59,8 @@ include 'includes/head.php';
             ?>
 
             <div class="my-3">
-                <label for="nom" class="form-label"><h4>Nom de l'activité</h4></label>
-                <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom de l'activité" required>
+                <label for="name" class="form-label"><h4>Nom de l'activité</h4></label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Nom de l'activité" required>
             </div>
             <div class="form-group mb-4">
                 <label for="description"><h4>Description de l'activité</h4></label>
@@ -71,27 +71,30 @@ include 'includes/head.php';
                 <input type="date" name="date" class="form-control" required>
             </div>
             <div class="mb-4">
-                <label for="duree"><h4>Durée de l'activité (en heure)</h4></label>
-                <input type="number" name="duree" class="form-control" required>
+                <label for="duration"><h4>Durée de l'activité (en heure)</h4></label>
+                <input type="number" name="duration" class="form-control" required>
             </div>
             <div class="mb-4">
-                <label for="prix"><h4>Prix par personne (en €)</h4></label>
-                <input type="number" name="prix" class="form-control" required>
+                <label for="price"><h4>Prix par personne (en €)</h4></label>
+                <input type="number" name="price" class="form-control" required>
             </div>
             <div>
-                <label for="maxParticipant"><h4>Nombre maximum de participants</h4></label>
-                <input type="number" name="maxParticipant" class="form-control" required>
+                <label for="maxAttendee"><h4>Nombre maximum de participants</h4></label>
+                <input type="number" name="maxAttendee" class="form-control" required>
             </div>
             <div class="row">
-                <label for="carousel" class="form-label"><h4>Images de présentation</h4></label>
-                <div class="col-4">
-                    <input class="form-control" name="carousel1" type="file" accept="image/jpeg" required>
+                <label for="mainImage" class="form-label"><h4>Images de présentation</h4></label>
+                <div class="col-3 mb-3">
+                    <input class="form-control" name="mainImage" type="file" accept="image/jpeg, image/png" required>
                 </div>
-                <div class="col-4">
-                    <input class="form-control" name="carousel2" type="file" accept="image/jpeg">
+                <div class="col-3 mb-3">
+                    <input class="form-control" name="secondImage" type="file" accept="image/jpeg, image/png">
                 </div>
-                <div class="col-4 mb-4">
-                    <input class="form-control" name="carousel3" type="file" accept="image/jpeg">
+                <div class="col-3 mb-3">
+                    <input class="form-control" name="thirdImage" type="file" accept="image/jpeg, image/png">
+                </div>
+                <div class="col-3 mb-3">
+                    <input class="form-control" name="fourthImage" type="file" accept="image/jpeg, image/png">
                 </div>
                 <button type="submit" class="btn btn-success btn-lg">Valider</button>
             </div>

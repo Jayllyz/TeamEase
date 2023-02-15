@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+
 <?php include 'includes/db.php'; ?>
 
 <!DOCTYPE html>
@@ -60,7 +61,7 @@
             echo '
           <div class="col-md col-sm-6 mb-3">
             <div class="card">
-              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activites/placeholder.jpg" alt="placeholder"></a>
+              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activities/placeholder.jpg" alt="placeholder"></a>
             </div>
           </div>';
           } ?>
@@ -86,7 +87,7 @@
             echo '
           <div class="col-md col-sm-6 mb-3">
             <div class="card">
-              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activites/placeholder.jpg" alt="placeholder"></a>
+              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activities/placeholder.jpg" alt="placeholder"></a>
             </div>
           </div>';
           } ?>
