@@ -37,3 +37,12 @@ services:
       - ${MYSQL_PORT}:${MYSQL_PORT}
     expose:
       - '${MYSQL_PORT}'
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+      ADMINER_DESIGN: arcs-material
+    ports:
+      - '8080:8080'
