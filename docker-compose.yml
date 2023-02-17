@@ -45,4 +45,4 @@ services:
       ADMINER_DEFAULT_SERVER: mysql
       ADMINER_DESIGN: arcs-material
     ports:
-      - '8080:8080'
+      - '${ADMINER_PORT}:${ADMINER_PORT}'
