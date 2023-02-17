@@ -15,9 +15,6 @@ CREATE TABLE ACTIVITY
 CREATE TABLE RESERVATION
 (
   id INT NOT NULL,
-  lastName VARCHAR(50) NOT NULL,
-  firstName VARCHAR(50) NOT NULL,
-  password VARCHAR(255) NOT NULL,
   attendee INT NOT NULL,
   id_activity INT NOT NULL,
   PRIMARY KEY (id),
@@ -66,10 +63,19 @@ CREATE TABLE MATERIEL_ACTIVITE
   FOREIGN KEY (id_material) REFERENCES MATERIAL(id)
 );
 
-CREATE TABLE CATALOG
+CREATE TABLE CATEGORY
 (
   id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)
+);
+
+CREATE TABLE BELONG
+(
+  id_activity INT NOT NULL,
+  id_category INT NOT NULL,
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
+  FOREIGN KEY (id_category) REFERENCES CATEGORY(id)
 );
 
 CREATE TABLE SERVICE
@@ -85,6 +91,8 @@ CREATE TABLE COMPANY
   companyName VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   address VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  rights INT NOT NULL,
   id_estimate INT NOT NULL,
   id_invoice INT NOT NULL,
   id_reservation INT NOT NULL,
@@ -105,27 +113,10 @@ CREATE TABLE MATERIAL_ROOM
   FOREIGN KEY (id_material) REFERENCES MATERIAL(id)
 );
 
-CREATE TABLE CATEGORY
-(
-  id INT NOT NULL,
-  name VARCHAR(255) NOT NULL,
-  id_catalog INT NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (id_catalog) REFERENCES CATALOG(id)
-);
-
-CREATE TABLE BELONG
-(
-  id_activity INT NOT NULL,
-  id_category INT NOT NULL,
-  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
-  FOREIGN KEY (id_category) REFERENCES CATEGORY(id)
-);
-
-CREATE TABLE PRESENT
-(
-  id_service INT NOT NULL,
-  id_catalog INT NOT NULL,
-  FOREIGN KEY (id_service) REFERENCES SERVICE(id),
-  FOREIGN KEY (id_catalog) REFERENCES CATALOG(id)
-);
+INSERT INTO CATEGORY (id, name) VALUES (0, 'En ligne');
+INSERT INTO CATEGORY (id, name) VALUES (1, 'En personne');
+INSERT INTO CATEGORY (id, name) VALUES (2, 'Sportive');
+INSERT INTO CATEGORY (id, name) VALUES (3, 'Reflexion');
+INSERT INTO CATEGORY (id, name) VALUES (4, 'Culturelle');
+INSERT INTO CATEGORY (id, name) VALUES (5, 'Musique');
+INSERT INTO CATEGORY (id, name) VALUES (6, 'Jeu''équipe');

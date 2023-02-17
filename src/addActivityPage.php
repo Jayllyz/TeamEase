@@ -34,7 +34,7 @@ include 'includes/head.php';
                   '" name="category[]" value="' .
                   $fetch[$i] .
                   '" autocomplete="off">
-                                <label class="btn btn-outline-primary col me-2 mb-3" for="' .
+                                <label class="btn btn-outline-success col me-2 mb-3" for="' .
                   $fetch[$i] .
                   '">' .
                   $fetch[$i] .
@@ -46,7 +46,7 @@ include 'includes/head.php';
                   '" name="category[]" value="' .
                   $fetch[$i] .
                   '" autocomplete="off">
-                                <label class="btn btn-outline-primary col me-2 mb-3" for="' .
+                                <label class="btn btn-outline-success col me-2 mb-3" for="' .
                   $fetch[$i] .
                   '">' .
                   $fetch[$i] .
@@ -82,6 +82,7 @@ include 'includes/head.php';
                 <label for="maxAttendee"><h4>Nombre maximum de participants</h4></label>
                 <input type="number" name="maxAttendee" class="form-control" required>
             </div>
+            <br>
             <div class="row">
                 <label for="mainImage" class="form-label"><h4>Images de présentation</h4></label>
                 <div class="col-3 mb-3">
