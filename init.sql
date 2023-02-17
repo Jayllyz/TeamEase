@@ -81,8 +81,9 @@ CREATE TABLE BELONG
 CREATE TABLE SERVICE
 (
   id INT NOT NULL,
-  date DATE NOT NULL,
-  PRIMARY KEY (id)
+  id_activity INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id)
 );
 
 CREATE TABLE COMPANY
@@ -119,4 +120,5 @@ INSERT INTO CATEGORY (id, name) VALUES (2, 'Sportive');
 INSERT INTO CATEGORY (id, name) VALUES (3, 'Reflexion');
 INSERT INTO CATEGORY (id, name) VALUES (4, 'Culturelle');
 INSERT INTO CATEGORY (id, name) VALUES (5, 'Musique');
-INSERT INTO CATEGORY (id, name) VALUES (6, 'Jeu''équipe');
+INSERT INTO CATEGORY (id, name) VALUES (6, 'Coopératif');
+INSERT INTO CATEGORY (id, name) VALUES (7, 'Compétitif');

@@ -43,7 +43,7 @@
                     <a class="nav-link active" aria-current="page" href="index.php">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="activites.php">Catalogue d'activités</a>
+                    <a class="nav-link" href="catalog.php">Catalogue d'activités</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -51,7 +51,18 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <!-- Prendre dans la db les categorie et les afficher ici -->
-                        <li><a class="dropdown-item" href="genre.php?genre=Test">Test</a></li>
+                        <?php
+                        $query = $db->query('SELECT name FROM CATEGORY');
+                        $fetch = $query->fetchAll(PDO::FETCH_COLUMN);
+                        foreach ($fetch as $category) {
+                          echo '<li><a class="dropdown-item" href="catalog.php?genre=' .
+                            $category .
+                            '">' .
+                            $category .
+                            '</a></li>';
+                        }
+                        ?>
+                        <li><a class="dropdown-item" href="addCategory.php">Ajouter une catégorie</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
