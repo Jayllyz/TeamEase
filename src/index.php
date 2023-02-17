@@ -1,14 +1,13 @@
 <?php session_start(); ?>
+
 <?php include 'includes/db.php'; ?>
 
 <!DOCTYPE html>
 <html>
-
-<head>
-  <meta charset="utf-8">
-  <?php include 'includes/head.php'; ?>
-  <title>Accueil</title>
-</head>
+  <?php
+  $title = 'Accueil';
+  include 'includes/head.php';
+  ?>
 
 <body>
   <?php include 'includes/header.php'; ?>
@@ -62,7 +61,7 @@
             echo '
           <div class="col-md col-sm-6 mb-3">
             <div class="card">
-              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activites/placeholder.jpg" alt="placeholder"></a>
+              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activities/placeholder.jpg" alt="placeholder"></a>
             </div>
           </div>';
           } ?>
@@ -77,7 +76,7 @@
             <h5>Activités</h5>
           </div>
           <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
-            <a class="btn btn-outline-light" type="submit" href="catalogue_activite.php">Voir plus</a>
+            <a class="btn btn-outline-light" type="submit" href="catalog.php">Voir plus</a>
           </div>
         </div>
       </div>
@@ -88,7 +87,7 @@
             echo '
           <div class="col-md col-sm-6 mb-3">
             <div class="card">
-              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activites/placeholder.jpg" alt="placeholder"></a>
+              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activities/placeholder.jpg" alt="placeholder"></a>
             </div>
           </div>';
           } ?>
@@ -97,6 +96,7 @@
 
     </div>
   </main>
-  <?php include "includes/footer.php"; ?>
+  <?php include 'includes/footer.php'; ?>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+</html>
