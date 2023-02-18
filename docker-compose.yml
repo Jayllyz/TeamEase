@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile.php
     container_name: php
     image: php
+    restart: always
     tty: true
     working_dir: /home/php/src
     entrypoint: php
