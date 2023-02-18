@@ -11,6 +11,7 @@ include "includes/head.php";
         <h1 style="margin-top: 1rem; margin-bottom: 1rem;">Inscription</h1>
         <div class="formulaire">
             <form name="signin" onsubmit="return validateForm(this.name)" id="form" class="container col-md-4" action="verifications/verifSignin.php" method="post" enctype="multipart/form-data">
+                <?php include "includes/msg.php"; ?>
                 <div class="mb-3">
                     <label class="form-label"><strong>Nom d'entreprise</strong></label>
                     <input type="text" name="name" class="form-control is-<?= isset(
@@ -20,7 +21,11 @@ include "includes/head.php";
                                                                                 : "" ?>" value="<?= isset($_COOKIE["name"])
                                                                                                     ? $_COOKIE["name"]
                                                                                                     : "" ?>" required>
-
+                    <?php if (isset($_GET["valid"])) { ?>
+                        <div class="<?= $_GET["valid"] ?>-feedback">
+                            <?= $_GET["message"] ?>
+                        </div>
+                    <?php } ?>
                 </div>
 
                 <div class="mb-3">
@@ -32,7 +37,11 @@ include "includes/head.php";
                                                                                     : "" ?>" value="<?= isset($_COOKIE["siret"])
                                                                                                         ? $_COOKIE["siret"]
                                                                                                         : "" ?>" required>
-
+                    <?php if (isset($_GET["valid"])) { ?>
+                        <div class="<?= $_GET["valid"] ?>-feedback">
+                            <?= $_GET["message"] ?>
+                        </div>
+                    <?php } ?>
                 </div>
 
                 <div class="mb-3">
@@ -45,6 +54,11 @@ include "includes/head.php";
                                                                                                         ? $_COOKIE["address"]
                                                                                                         : "" ?>" required>
 
+                    <?php if (isset($_GET["valid"])) { ?>
+                        <div class="<?= $_GET["valid"] ?>-feedback">
+                            <?= $_GET["message"] ?>
+                        </div>
+                    <?php } ?>
                 </div>
 
                 <div class="mb-3">
@@ -56,6 +70,11 @@ include "includes/head.php";
                                                                                 : "" ?>" value="<?= isset($_COOKIE["email"])
                                                                                                     ? $_COOKIE["email"]
                                                                                                     : "" ?>" required>
+                    <?php if (isset($_GET["valid"])) { ?>
+                        <div class="<?= $_GET["valid"] ?>-feedback">
+                            <?= $_GET["message"] ?>
+                        </div>
+                    <?php } ?>
                 </div>
                 <div class="mb-3">
                     <label class="form-label"><strong>Mot de passe</strong></label>

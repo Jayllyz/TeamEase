@@ -12,6 +12,9 @@
 
 <body>
   <?php include 'includes/header.php'; ?>
+  <div class="container col-md-6">
+    <?php include "includes/msg.php"; ?>
+  </div>
   <main>
     <div class="container rounded main-text">
 

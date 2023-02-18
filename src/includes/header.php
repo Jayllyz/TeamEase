@@ -17,10 +17,10 @@
 
             <div class="col-md-1"></div>
             <div class="row">
-                <a href="button" class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['compte'])) {
+                <a href="login.php" class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['compte'])) {
                                                                                 echo 'href="#">Mes reservations</a>';
                                                                             } else {
-                                                                                echo 'href="connexion.php">Se connecter</a>';
+                                                                                echo 'href="login.php">Se connecter</a>';
                                                                             } ?> <a href="signin.php" class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['compte'])) {
                                                                                                                                                     echo 'href="deconnexion.php">Se deconnecter</a>';
                                                                                                                                                 } else {

@@ -14,7 +14,7 @@ if (isset($_POST["submit"])) {
         setcookie("email", $_POST["email"], time() + 3600, "/");
     }
 
-    if (strlen($_POST["siret"])  > 14) {
+    if (strlen($_POST["siret"])  != 14) {
         header(
             "location: ../signin.php?message=Le siret doit contenir 14 chiffres !&valid=invalid&input=siret"
         );
@@ -30,14 +30,22 @@ if (isset($_POST["submit"])) {
 
     if ($reponse) {
         header(
-            "location: ../signin.php?message=Ce nom d'entreprise est déja utilisé !&valid=invalid&input=pseudo"
+            "location: ../signin.php?message=Ce SIRET d'entreprise est déja utilisé !&valid=invalid&input=pseudo"
         );
         exit();
     } else {
-        setcookie("name", $_POST["name"], time() + 3600, "/");
+        setcookie("siret", $_POST["siret"], time() + 3600, "/");
+    }
+
+    if (strlen($_POST["name"]) == 0) {
+        header(
+            "location: ../signin.php?message=Nom d'entreprise invalide !&valid=invalid&input=name"
+        );
+        exit();
     }
 
 
+    //TODO : check with API
     $address = $_POST["address"];
 
     if (strlen($address) < 5 || strlen($address) > 50) {
@@ -45,10 +53,7 @@ if (isset($_POST["submit"])) {
             "location: ../signin.php?message=Adresse invalide !&valid=invalid&input=address"
         );
         exit();
-    } else {
-        setcookie("address", $_POST["address"], time() + 3600, "/");
     }
-
 
 
     if (strlen($_POST["password"]) < 6 || strlen($_POST["password"]) > 15) {
@@ -83,34 +88,37 @@ if (isset($_POST["submit"])) {
     ) {
         if ($_POST["password"] == $_POST["conf_password"]) {
             $req = $db->prepare(
-                "INSERT INTO COMPANY (name,email,password,siret,address) VALUES (:pseudo,:email,:password,:siret,:address)"
+                "INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (:siret, :companyName, :email, :address, :password, :rights)"
             );
-            $name = $_POST["name"];
+            $companyName = $_POST["name"];
             $email = $_POST["email"];
             $password = $_POST["password"];
-            $conf_password = $_POST["conf_password"];
             $address = $_POST["address"];
             $siret = $_POST["siret"];
+            $rights = 0;
 
             $req->execute([
-                "name" => $name,
-                "email" => $email,
-                "password" => hash("sha512", $password),
-                "address" => $address,
                 "siret" => $siret,
+                "companyName" => $companyName,
+                "email" => $email,
+                "address" => $address,
+                "password" => hash("sha512", $password),
+                "rights" => $rights,
             ]);
 
-            echo "T INSCRIT CONNARD";
+            header(
+                "location: ../login.php?message=Votre compte a bien été créé !&type=success&valid=valid"
+            );
         } else {
             header(
-                "location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger"
+                "location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp"
             );
             exit();
         }
     }
 } else {
     header(
-        "location: ../signin.php?message=Les champs ne sont pas tous remplis !&type=danger"
+        "location: ../signin.php?message=Les champs ne sont pas tous remplis !&type=danger&valid=invalid"
     );
     exit();
 }
