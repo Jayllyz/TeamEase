@@ -17,15 +17,15 @@
 
             <div class="col-md-1"></div>
             <div class="row">
-                <a href="login.php" class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['compte'])) {
-                                                                                echo 'href="#">Mes reservations</a>';
-                                                                            } else {
-                                                                                echo 'href="login.php">Se connecter</a>';
-                                                                            } ?> <a href="signin.php" class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['compte'])) {
-                                                                                                                                                    echo 'href="deconnexion.php">Se deconnecter</a>';
-                                                                                                                                                } else {
-                                                                                                                                                    echo 'href="signin.php">S\'inscrire</a>';
-                                                                                                                                                } ?> </div>
+                <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
+                                                                echo 'href="#">Mes reservations</a>';
+                                                            } else {
+                                                                echo 'href="login.php">Se connecter</a>';
+                                                            } ?> <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
+                                                                                                                echo 'href="logout.php">Se deconnecter</a>';
+                                                                                                            } else {
+                                                                                                                echo 'href="signin.php">S\'inscrire</a>';
+                                                                                                            } ?> </div>
             </div>
         </div>
     </div>
