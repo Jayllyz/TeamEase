@@ -56,7 +56,7 @@ if (isset($_POST["submit"])) {
     }
 
 
-    if (strlen($_POST["password"]) < 6 || strlen($_POST["password"]) > 15) {
+    if (strlen($_POST["password"]) < 6) {
         header(
             "location: ../signin.php?message=Mot de passe invalide. Il doit etre compris entre 6 et 15 caractères !&valid=invalid&input=mdp"
         );
