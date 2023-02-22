@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../../includes/db.php";
+include "../includes/db.php";
 $date = date("d/m/Y H:i:s");
 $siret = htmlspecialchars($_GET["siret"]);
 $name = $_POST["name"];
@@ -19,7 +19,7 @@ if ($name == $companyName) {
     );
     exit();
   } else {
-    $del = $db->prepare("UPDATE COMPANY SET rights = 1 WHERE siret = :siret");
+    $del = $db->prepare("UPDATE COMPANY SET rights = 0 WHERE siret = :siret");
     $del->execute([
       "siret" => $siret,
     ]);
