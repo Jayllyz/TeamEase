@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <?php
+$linkCss = "css-js/style.css";
+$linkLogo = "images/logo.png";
 $title = "Connexion";
 include "includes/head.php";
 ?>

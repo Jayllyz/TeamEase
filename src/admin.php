@@ -69,7 +69,6 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                                         <button type="button" class="btn-ban btn ms-2 me-2" data-bs-toggle="modal" data-bs-target="#pop-up-del-<?= $select["siret"] ?>"><?= $select["rights"] != -1
                                                                                                                                                                             ? "Bannir"
                                                                                                                                                                             : "Débannir" ?></button>
-                                        </button>
                                         <div class="modal fade" id="pop-up-del-<?= $select["siret"] ?>">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -81,7 +80,7 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                                                     </div>
                                                     <div class="modal-body">
                                                         Saisir le nom de l'entreprise pour confirmation
-                                                        <form action="users/ban.php?id=<?= $select["siret"] ?>&name=<?= $select["companyName"] ?>&rights=<?= $select["rights"] ?>" method="post">
+                                                        <form action="clients/ban.php?siret=<?= $select["siret"] ?>&name=<?= $select["companyName"] ?>&rights=<?= $select["rights"] ?>" method="post">
                                                             <div class="container col-md-8">
                                                                 <input type="text" class="form-control" name="name" placeholder="<?= $select["companyName"] ?>" required>
                                                             </div>
