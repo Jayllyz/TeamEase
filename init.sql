@@ -1,5 +1,16 @@
 CREATE DATABASE IF NOT EXISTS teamease;
 
+CREATE TABLE ACTIVITY
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  maxAttendee INT NOT NULL,
+  duration INT NOT NULL,
+  priceAttendee INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  PRIMARY KEY (id)
+);
+
 CREATE TABLE COMPANY
 (
   siret CHAR(14) NOT NULL,
@@ -21,21 +32,20 @@ CREATE TABLE ESTIMATE
   FOREIGN KEY (siret) REFERENCES COMPANY(siret)
 );
 
-CREATE TABLE INVOICE
-(
-  id INT NOT NULL,
-  amount INT NOT NULL,
-  paymentDay DATE NOT NULL,
-  siret CHAR(14) NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (siret) REFERENCES COMPANY(siret)
-);
-
 CREATE TABLE MATERIAL
 (
   id INT NOT NULL,
   type VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)
+);
+
+CREATE TABLE MATERIAL_ACTIVITY
+(
+  quantity INT NOT NULL,
+  id_activity INT NOT NULL,
+  id_material INT NOT NULL,
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
+  FOREIGN KEY (id_material) REFERENCES MATERIAL(id)
 );
 
 CREATE TABLE CATEGORY
@@ -45,26 +55,50 @@ CREATE TABLE CATEGORY
   PRIMARY KEY (id)
 );
 
-CREATE TABLE SERVICE
+CREATE TABLE BELONG
 (
-  id INT NOT NULL,
-  siret CHAR(14) NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (siret) REFERENCES COMPANY(siret)
+  id_activity INT NOT NULL,
+  id_category INT NOT NULL,
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
+  FOREIGN KEY (id_category) REFERENCES CATEGORY(id)
 );
 
-CREATE TABLE ACTIVITY
+CREATE TABLE LOCATION
 (
   id INT NOT NULL,
-  maxAttendee INT NOT NULL,
-  date DATE NOT NULL,
-  duration INT NOT NULL,
-  priceAttendee INT NOT NULL,
+  address VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
-  description TEXT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE ATTENDEE
+(
+  id INT NOT NULL,
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE PROVIDER
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  occupation VARCHAR(255) NOT NULL,
+  salary INT NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  rights INT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE ANIMATE
+(
   id_activity INT NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (id_activity) REFERENCES SERVICE(id)
+  id_provider INT NOT NULL AUTO_INCREMENT,
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
+  FOREIGN KEY (id_provider) REFERENCES PROVIDER(id)
 );
 
 CREATE TABLE RESERVATION
@@ -73,43 +107,55 @@ CREATE TABLE RESERVATION
   attendee INT NOT NULL,
   id_activity INT NOT NULL,
   siret CHAR(14) NOT NULL,
+  id_location INT NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
-  FOREIGN KEY (siret) REFERENCES COMPANY(siret)
+  FOREIGN KEY (siret) REFERENCES COMPANY(siret),
+  FOREIGN KEY (id_location) REFERENCES LOCATION(id)
+);
+
+CREATE TABLE INVOICE
+(
+  id INT NOT NULL,
+  amount INT NOT NULL,
+  paymentDay DATE NOT NULL,
+  details TEXT NOT NULL,
+  id_reservation INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
 );
 
 CREATE TABLE ROOM
 (
   id INT NOT NULL,
   number INT NOT NULL,
-  address DATE NOT NULL,
-  id_activity INT NOT NULL,
+  id_location INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id)
+  FOREIGN KEY (id_location) REFERENCES LOCATION(id)
+);
+
+CREATE TABLE COMMENT
+(
+  id INT NOT NULL,
+  content TEXT NOT NULL,
+  notation INT NOT NULL,
+  id_reservation INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
+);
+
+CREATE TABLE RESERVED
+(
+  id_attendee INT NOT NULL,
+  id_reservation INT NOT NULL,
+  FOREIGN KEY (id_attendee) REFERENCES ATTENDEE(id),
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
 );
 
 CREATE TABLE MATERIAL_ROOM
 (
-  quantity INT NOT NULL,
+  id_material INT NOT NULL,
   id_room INT NOT NULL,
-  id_material INT NOT NULL,
-  FOREIGN KEY (id_room) REFERENCES ROOM(id),
-  FOREIGN KEY (id_material) REFERENCES MATERIAL(id)
-);
-
-CREATE TABLE MATERIEL_ACTIVITE
-(
-  quantite INT NOT NULL,
-  id_activity INT NOT NULL,
-  id_material INT NOT NULL,
-  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
-  FOREIGN KEY (id_material) REFERENCES MATERIAL(id)
-);
-
-CREATE TABLE BELONG
-(
-  id_activity INT NOT NULL,
-  id_category INT NOT NULL,
-  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
-  FOREIGN KEY (id_category) REFERENCES CATEGORY(id)
+  FOREIGN KEY (id_material) REFERENCES MATERIAL(id),
+  FOREIGN KEY (id_room) REFERENCES ROOM(id)
 );

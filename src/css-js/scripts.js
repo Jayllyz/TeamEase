@@ -98,3 +98,15 @@ function validateForm(nameForm) {
     }
   }
 }
+
+function changeSignForm() {
+  let check = document.getElementById('provider-check').checked;
+  console.log(check);
+  if (check == true) {
+    document.getElementById('forms-company').style.display = 'none';
+    document.getElementById('forms-provider').style.display = 'block';
+  } else {
+    document.getElementById('forms-company').style.display = 'block';
+    document.getElementById('forms-provider').style.display = 'none';
+  }
+}
