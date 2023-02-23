@@ -17,11 +17,11 @@
 
             <div class="col-md-1"></div>
             <div class="row">
-                <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
+                <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret']) || isset($_SESSION['id'])) {
                                                                 echo 'href="#">Mes reservations</a>';
                                                             } else {
                                                                 echo 'href="login.php">Se connecter</a>';
-                                                            } ?> <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
+                                                            } ?> <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret']) || isset($_SESSION['id'])) {
                                                                                                                 echo 'href="logout.php">Se deconnecter</a>';
                                                                                                             } else {
                                                                                                                 echo 'href="signin.php">S\'inscrire</a>';
