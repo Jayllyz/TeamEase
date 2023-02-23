@@ -83,7 +83,7 @@ if (
 ) {
     if ($_POST["password"] == $_POST["conf_password"]) {
         $req = $db->prepare(
-            "INSERT INTO PROVIDER (lastName, firstName, occupation, email, rights, password, salary) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights)"
+            "INSERT INTO PROVIDER (lastName, firstName, occupation, email, salary, password, rights) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights)"
         );
         $name = $_POST["name"];
         $email = $_POST["email"];
