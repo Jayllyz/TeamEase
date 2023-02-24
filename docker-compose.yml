@@ -3,11 +3,10 @@ version: '3.8'
 services:
   php:
     build:
-      context: .
-      dockerfile: Dockerfile.php
+      context: docker/php
+      dockerfile: Dockerfile
     container_name: php
     image: php
-    restart: always
     tty: true
     working_dir: /home/php/src
     entrypoint: php
@@ -23,9 +22,7 @@ services:
     image: mysql
     restart: always
     build:
-      context: .
-      dockerfile: Dockerfile.sql
-      target: sql
+      context: docker/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -39,6 +36,7 @@ services:
       - '${MYSQL_PORT}'
 
   adminer:
+    container_name: adminer
     image: adminer:latest
     restart: always
     environment:
