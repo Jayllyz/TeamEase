@@ -1,3 +1,4 @@
+<?php include 'includes/db.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
 <?php
@@ -36,9 +37,9 @@ include 'includes/head.php';
 
                     <label class="form-label"><strong>Nom d'entreprise</strong></label>
                     <input type="text" name="nameCompany" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'nameCompany'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['nameCompany']) ? $_COOKIE['nameCompany'] : '' ?>" required>
+                                                                                        $_GET['input'] == 'nameCompany'
+                                                                                        ? $_GET['valid']
+                                                                                        : '' ?>" value="<?= isset($_COOKIE['nameCompany']) ? $_COOKIE['nameCompany'] : '' ?>" required>
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -49,9 +50,9 @@ include 'includes/head.php';
                 <div class="mb-3">
                     <label class="form-label"><strong>n° de SIRET</strong></label>
                     <input type="number" name="siret" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'siret'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['siret']) ? $_COOKIE['siret'] : '' ?>" required>
+                                                                                    $_GET['input'] == 'siret'
+                                                                                    ? $_GET['valid']
+                                                                                    : '' ?>" value="<?= isset($_COOKIE['siret']) ? $_COOKIE['siret'] : '' ?>" required>
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -62,9 +63,9 @@ include 'includes/head.php';
                 <div class="mb-3">
                     <label class="form-label"><strong>Adresse de l'entreprise</strong></label>
                     <input type="text" name="address" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'address'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['address']) ? $_COOKIE['address'] : '' ?>" required>
+                                                                                    $_GET['input'] == 'address'
+                                                                                    ? $_GET['valid']
+                                                                                    : '' ?>" value="<?= isset($_COOKIE['address']) ? $_COOKIE['address'] : '' ?>" required>
 
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
@@ -76,9 +77,9 @@ include 'includes/head.php';
                 <div class="mb-3">
                     <label class="form-label"><strong>Adresse mail</strong></label>
                     <input type="email" name="emailCompany" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'emailCompany'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['emailCompany']) ? $_COOKIE['emailCompany'] : '' ?>" required>
+                                                                                        $_GET['input'] == 'emailCompany'
+                                                                                        ? $_GET['valid']
+                                                                                        : '' ?>" value="<?= isset($_COOKIE['emailCompany']) ? $_COOKIE['emailCompany'] : '' ?>" required>
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -88,9 +89,9 @@ include 'includes/head.php';
                 <div class="mb-3">
                     <label class="form-label"><strong>Mot de passe</strong></label>
                     <input type="password" name="passwordCompany" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'passwordCompany'
-                      ? $_GET['valid']
-                      : '' ?>" id="password" oninput="strengthChecker()" required>
+                                                                                                $_GET['input'] == 'passwordCompany'
+                                                                                                ? $_GET['valid']
+                                                                                                : '' ?>" id="password" oninput="strengthChecker()" required>
                     <div id="strength-bar"></div>
                     <p id="msg"></p>
                     <label class="form-label">Voir mon mot de passe</label>
@@ -118,9 +119,9 @@ include 'includes/head.php';
 
                     <label class="form-label"><strong>Nom </strong></label>
                     <input type="text" name="name" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'name'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['name']) ? $_COOKIE['name'] : '' ?>" required>
+                                                                                $_GET['input'] == 'name'
+                                                                                ? $_GET['valid']
+                                                                                : '' ?>" value="<?= isset($_COOKIE['name']) ? $_COOKIE['name'] : '' ?>" required>
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -133,9 +134,9 @@ include 'includes/head.php';
 
                     <label class="form-label"><strong>Prénom </strong></label>
                     <input type="text" name="firstname" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'firstname'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['firstname']) ? $_COOKIE['firstname'] : '' ?>" required>
+                                                                                    $_GET['input'] == 'firstname'
+                                                                                    ? $_GET['valid']
+                                                                                    : '' ?>" value="<?= isset($_COOKIE['firstname']) ? $_COOKIE['firstname'] : '' ?>" required>
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -146,9 +147,9 @@ include 'includes/head.php';
                 <div class="mb-3">
                     <label class="form-label"><strong>Adresse mail</strong></label>
                     <input type="email" name="email" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'email'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['email']) ? $_COOKIE['email'] : '' ?>" required>
+                                                                                $_GET['input'] == 'email'
+                                                                                ? $_GET['valid']
+                                                                                : '' ?>" value="<?= isset($_COOKIE['email']) ? $_COOKIE['email'] : '' ?>" required>
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -159,9 +160,9 @@ include 'includes/head.php';
                 <div class="mb-3">
                     <label class="form-label"><strong>Métier </strong></label>
                     <input type="text" name="job" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'job'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['job']) ? $_COOKIE['job'] : '' ?>" required>
+                                                                                $_GET['input'] == 'job'
+                                                                                ? $_GET['valid']
+                                                                                : '' ?>" value="<?= isset($_COOKIE['job']) ? $_COOKIE['job'] : '' ?>" required>
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -172,9 +173,9 @@ include 'includes/head.php';
                 <div class="mb-3">
                     <label class="form-label"><strong>Salaire par heure </strong></label>
                     <input type="number" name="salary" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'salary'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['salary']) ? $_COOKIE['salary'] : '' ?>" required>
+                                                                                    $_GET['input'] == 'salary'
+                                                                                    ? $_GET['valid']
+                                                                                    : '' ?>" value="<?= isset($_COOKIE['salary']) ? $_COOKIE['salary'] : '' ?>" required>
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -184,9 +185,9 @@ include 'includes/head.php';
                 <div class="mb-3">
                     <label class="form-label"><strong>Mot de passe</strong></label>
                     <input type="password" name="password" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'mdp'
-                      ? $_GET['valid']
-                      : '' ?>" id="password" oninput="strengthChecker()" required>
+                                                                                        $_GET['input'] == 'mdp'
+                                                                                        ? $_GET['valid']
+                                                                                        : '' ?>" id="password" oninput="strengthChecker()" required>
                     <div id="strength-bar"></div>
                     <p id="msg"></p>
                     <label class="form-label">Voir mon mot de passe</label>

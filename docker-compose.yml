@@ -1,41 +1,21 @@
 version: '3.8'
 
 services:
-  nginx:
-    container_name: nginx
-    depends_on:
-      - php
-    build:
-      context: docker/nginx
-      args:
-        SERVER_VERSION: $SERVER_VERSION
-    tty: true
-    stdin_open: true
-    env_file: .env
-    working_dir: /etc/nginx
-    volumes:
-      - ./src:$PHP_USER_HOME_DIRECTORY
-    ports:
-      - $SERVER_PORT:80
-
   php:
-    container_name: php
-    depends_on:
-      - mysql
     build:
       context: docker/php
-      args:
-        PHP_VERSION: $PHP_VERSION
-        PHP_USER_NAME: $PHP_USER_NAME
-        PHP_USER_IDENTIFIER: $PHP_USER_IDENTIFIER
-        PHP_USER_SHELL: $PHP_USER_SHELL
-        PHP_USER_HOME_DIRECTORY: $PHP_USER_HOME_DIRECTORY
+      dockerfile: Dockerfile
+    container_name: php
+    image: php
     tty: true
-    stdin_open: true
-    env_file: .env
-    working_dir: /home/php
+    working_dir: /home/php/src
+    entrypoint: php
     volumes:
-      - ./src:$PHP_USER_HOME_DIRECTORY
+      - .:/home/php
+    ports:
+      - '${PHP_PORT}:${PHP_PORT}'
+    env_file: .env
+    command: -S 0.0.0.0:${PHP_PORT}
 
   mysql:
     container_name: mysql
