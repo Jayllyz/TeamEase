@@ -22,9 +22,12 @@ include 'includes/head.php';
         </div>
         <br>
         <div class="row">
+          <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
+            echo '
             <div class="text-center">
             <a href="addActivityPage.php" class="btn btn-secondary">Ajouter une activité</a>
-            </div>
+            </div>';
+          } ?>
         </div>
         <hr size="5">
 
@@ -93,7 +96,15 @@ include 'includes/head.php';
               $activity[0] .
               '</a></h4>
             </div>';
-            $altId = str_replace(' ', '-', $activity[0]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
+            $altId = str_replace(' ', '-', $id[0]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
+            if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
+              echo '
+              <div class="col-1 d-flex justify-content-end pe-3">
+              <button type="button" class="btn-close btn-danger btn-sm" aria-label="Close" data-bs-toggle="modal" data-bs-target="#suppression' .
+                $altId .
+                '"></button>
+              </div>';
+            }
             echo '
               <div class="modal fade popup" id="suppression' .
               $altId .
@@ -101,15 +112,15 @@ include 'includes/head.php';
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="suppressionLabel">Suppression</h5>
+                    <h5 class="modal-title text-dark" id="suppressionLabel">Suppression</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <div class="modal-body">
+                      <div class="modal-body text-dark">
                         Etes-vous sûr de supprimer cette activité de la base de donnée? Cet action est irréversible !
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <a type="button" class="btn btn-danger" href="verification_jeu.php?delete=' .
+                        <a type="button" class="btn btn-danger" href="verifications/verificationActivity.php?delete=' .
               $altId .
               '">Supprimer</a>
                       </div>

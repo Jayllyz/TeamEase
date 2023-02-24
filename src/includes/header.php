@@ -17,15 +17,21 @@
 
             <div class="col-md-1"></div>
             <div class="row">
-                <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret']) || isset($_SESSION['id'])) {
-                                                                echo 'href="#">Mes reservations</a>';
-                                                            } else {
-                                                                echo 'href="login.php">Se connecter</a>';
-                                                            } ?> <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret']) || isset($_SESSION['id'])) {
-                                                                                                                echo 'href="logout.php">Se deconnecter</a>';
-                                                                                                            } else {
-                                                                                                                echo 'href="signin.php">S\'inscrire</a>';
-                                                                                                            } ?> </div>
+                <a class="btn btn-secondary col mx-3 mt-3" <?php if (
+                  isset($_SESSION['siret']) ||
+                  isset($_SESSION['id'])
+                ) {
+                  echo 'href="#">Mes reservations</a>';
+                } else {
+                  echo 'href="login.php">Se connecter</a>';
+                } ?> <a class="btn btn-secondary col mx-3 mt-3" <?php if (
+   isset($_SESSION['siret']) ||
+   isset($_SESSION['id'])
+ ) {
+   echo 'href="logout.php">Se deconnecter</a>';
+ } else {
+   echo 'href="signin.php">S\'inscrire</a>';
+ } ?> </div>
             </div>
         </div>
     </div>
@@ -48,8 +54,16 @@
                             Categorie d'activités
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <!-- Prendre dans la db les categorie et les afficher ici -->
-                            <li><a class="dropdown-item" href="genre.php?genre=Test">Test</a></li>
+                            <?php
+                            $query = $db->query('SELECT name FROM CATEGORY');
+                            while ($category = $query->fetch()) {
+                              echo '<li><a class="dropdown-item" href="catalog.php?category=' .
+                                $category['name'] .
+                                '">' .
+                                $category['name'] .
+                                '</a></li>';
+                            }
+                            ?>
                         </ul>
                     </li>
                     <li class="nav-item">

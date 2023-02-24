@@ -1,10 +1,16 @@
 <?php session_start(); ?>
 <?php include 'includes/db.php'; ?>
+<?php if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
+  header('location: index.php');
+  exit();
+} ?>
 
 <!DOCTYPE html>
 <html>
 <?php
-$title = 'Ajouter une activité';
+$linkCss = 'css-js/style.css';
+$linkLogo = 'images/logo.png';
+$title = 'Ajouter une activités';
 include 'includes/head.php';
 ?>
 
