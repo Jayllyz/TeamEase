@@ -1,6 +1,27 @@
 <?php
 include '../includes/db.php';
 
+if (isset($_GET['delete'])) {
+  $request = $db->prepare('DELETE FROM BELONG WHERE id_activity = :id_activity');
+  $result = $request->execute([
+    ':id_activity' => $_GET['delete'],
+  ]);
+  $request = $db->prepare('DELETE FROM ACTIVITY WHERE id = :id');
+  $result = $request->execute([
+    ':id' => $_GET['delete'],
+  ]);
+
+  if ($result) {
+    $message = 'L\'activité a bien été supprimée';
+    header('location:../catalog.php?message=' . $message);
+    exit();
+  } else {
+    $message = 'Une erreur est survenue';
+    header('location:../catalog.php?message=' . $message);
+    exit();
+  }
+}
+
 $getId = $db->prepare('SELECT id FROM ACTIVITY ORDER BY id DESC LIMIT 1');
 $getId->execute();
 
