@@ -10,7 +10,7 @@
 <?php
 $linkCss = 'css-js/style.css';
 $linkLogo = 'images/logo.png';
-$title = 'Ajouter une activités';
+$title = 'Ajouter une activité';
 include 'includes/head.php';
 ?>
 
@@ -85,6 +85,24 @@ include 'includes/head.php';
                     <label for="maxAttendee"><h4>Nombre maximum de participants</h4></label>
                     <input type="number" name="maxAttendee" class="form-control" required>
                 </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    Main Dropdown
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li class="dropdown">
+                    <a class="dropdown-item dropdown-toggle" href="#" id="nestedDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Nested Dropdown
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="nestedDropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Nested Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another nested action</a></li>
+                    </ul>
+                    </li>
+                </ul>
             </div>
             <br>
             <div class="row">
