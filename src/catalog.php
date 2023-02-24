@@ -7,7 +7,7 @@
 <?php
 $linkCss = 'css-js/style.css';
 $linkLogo = 'images/logo.png';
-$title = 'Accueil';
+$title = 'Catalogue des activités';
 include 'includes/head.php';
 ?>
 
