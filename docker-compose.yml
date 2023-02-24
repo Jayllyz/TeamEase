@@ -1,31 +1,48 @@
 version: '3.8'
 
 services:
-  php:
+  nginx:
+    container_name: nginx
+    depends_on:
+      - php
     build:
-      context: .
-      dockerfile: Dockerfile.php
-    container_name: php
-    image: php
-    restart: always
+      context: docker/nginx
+      args:
+        SERVER_VERSION: $SERVER_VERSION
     tty: true
-    working_dir: /home/php/src
-    entrypoint: php
-    volumes:
-      - .:/home/php
-    ports:
-      - '${PHP_PORT}:${PHP_PORT}'
+    stdin_open: true
     env_file: .env
-    command: -S 0.0.0.0:${PHP_PORT}
+    working_dir: /etc/nginx
+    volumes:
+      - ./src:$PHP_USER_HOME_DIRECTORY
+    ports:
+      - $SERVER_PORT:80
+
+  php:
+    container_name: php
+    depends_on:
+      - mysql
+    build:
+      context: docker/php
+      args:
+        PHP_VERSION: $PHP_VERSION
+        PHP_USER_NAME: $PHP_USER_NAME
+        PHP_USER_IDENTIFIER: $PHP_USER_IDENTIFIER
+        PHP_USER_SHELL: $PHP_USER_SHELL
+        PHP_USER_HOME_DIRECTORY: $PHP_USER_HOME_DIRECTORY
+    tty: true
+    stdin_open: true
+    env_file: .env
+    working_dir: /home/php
+    volumes:
+      - ./src:$PHP_USER_HOME_DIRECTORY
 
   mysql:
     container_name: mysql
     image: mysql
     restart: always
     build:
-      context: .
-      dockerfile: Dockerfile.sql
-      target: sql
+      context: docker/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -39,6 +56,7 @@ services:
       - '${MYSQL_PORT}'
 
   adminer:
+    container_name: adminer
     image: adminer:latest
     restart: always
     environment:
