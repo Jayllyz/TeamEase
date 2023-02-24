@@ -5,7 +5,9 @@
 <html>
 
 <?php
-$title = 'Catalogue des activités';
+$linkCss = 'css-js/style.css';
+$linkLogo = 'images/logo.png';
+$title = 'Accueil';
 include 'includes/head.php';
 ?>
 
