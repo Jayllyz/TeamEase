@@ -66,21 +66,19 @@ include 'includes/head.php';
                 <label for="description"><h4>Description de l'activité</h4></label>
                 <textarea class="form-control" id="description" name="description" rows="10" required></textarea>
             </div>
-            <div class="mb-4">
-                <label for="date"><h4>Date de l'activité</h4></label>
-                <input type="date" name="date" class="form-control" required>
-            </div>
-            <div class="mb-4">
-                <label for="duration"><h4>Durée de l'activité (en heure)</h4></label>
-                <input type="number" name="duration" class="form-control" required>
-            </div>
-            <div class="mb-4">
-                <label for="price"><h4>Prix par personne (en €)</h4></label>
-                <input type="number" name="price" class="form-control" required>
-            </div>
-            <div>
-                <label for="maxAttendee"><h4>Nombre maximum de participants</h4></label>
-                <input type="number" name="maxAttendee" class="form-control" required>
+            <div class="row">
+                <div class="col">
+                    <label for="duration"><h4>Durée de l'activité (en heure)</h4></label>
+                    <input type="number" name="duration" class="form-control" required>
+                </div>
+                <div class="col">
+                    <label for="price"><h4>Prix par personne (en €)</h4></label>
+                    <input type="number" name="price" class="form-control" required>
+                </div>
+                <div class="col">
+                    <label for="maxAttendee"><h4>Nombre maximum de participants</h4></label>
+                    <input type="number" name="maxAttendee" class="form-control" required>
+                </div>
             </div>
             <br>
             <div class="row">

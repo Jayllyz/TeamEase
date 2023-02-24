@@ -19,8 +19,8 @@ for ($i = 0; $i < 4; $i++) {
   }
 
   //source et destination
-  $source = '../images/activities/' . $id . $_POST['name'] . $i . '.' . $ext;
-  $dest = '../images/activities/' . $id . $_POST['name'] . $i . '.' . $ext;
+  $source = '../images/activities/' . $id[0] . $_POST['name'] . $i . '.' . $ext;
+  $dest = '../images/activities/' . $id[0] . $_POST['name'] . $i . '.' . $ext;
 
   //resolution de l'image
   $size = getimagesize($source);
