@@ -13,11 +13,11 @@ if (isset($_GET['delete'])) {
 
   if ($result) {
     $message = 'L\'activité a bien été supprimée';
-    header('location:../catalog.php?message=' . $message);
+    header('location:../catalog.php?message=' . $message . '&type=success');
     exit();
   } else {
     $message = 'Une erreur est survenue';
-    header('location:../catalog.php?message=' . $message);
+    header('location:../catalog.php?message=' . $message . '&type=danger');
     exit();
   }
 }
@@ -27,23 +27,23 @@ $getId->execute();
 
 if (!isset($_POST['category'])) {
   $message = "Aucune catégorie n'a été selectionnée";
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
 }
 
 if ($_POST['duration'] <= 0) {
   $message = "La durée de l'activité doit être supérieure à 0";
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
 }
 if ($_POST['price'] < 0) {
   $message = "Le prix de l'activité ne peut être négatif";
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
 }
 if ($_POST['maxAttendee'] <= 0) {
   $message = 'Le nombre de participants maximum doit être supérieur à 0';
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
 }
 
@@ -119,10 +119,10 @@ do {
 
 if ($result && $result2) {
   $message = 'L\'activité a bien été ajoutée';
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=success');
 } else {
   $message = 'Une erreur est survenue';
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
 }
 
 ?>

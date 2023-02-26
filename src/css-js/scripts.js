@@ -110,3 +110,41 @@ function changeSignForm() {
     document.getElementById('forms-provider').style.display = 'none';
   }
 }
+
+function deleteProvider(id) {
+  let providerContainer = id.parentElement;
+  providerContainer.remove();
+}
+
+function addProvider() {
+  let providerContainer = document.getElementById('provider-container');
+  let newProvider = document.createElement('div');
+  newProvider.classList.add('mb-4');
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      newProvider.innerHTML = xhr.responseText;
+      providerContainer.appendChild(newProvider);
+    }
+  };
+  xhr.open('GET', 'ajaxReq/occupationDropdown.php');
+  xhr.send();
+}
+
+function selectOccupation(id) {
+  const selected = id.innerHTML;
+  const providerContainer = id.parentElement.parentElement.parentElement;
+  const occupation = providerContainer.querySelector('.btn.btn-secondary.dropdown-toggle');
+  occupation.innerHTML = selected;
+
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', 'ajaxReq/providerDropdown.php?occupation=' + selected, true);
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      providerContainer.innerHTML += xhr.responseText;
+    }
+  };
+  xhr.send();
+}
