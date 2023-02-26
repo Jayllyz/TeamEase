@@ -7,11 +7,15 @@ if (isset($_GET['delete'])) {
     ':id_activity' => $_GET['delete'],
   ]);
   $request = $db->prepare('DELETE FROM ACTIVITY WHERE id = :id');
-  $result = $request->execute([
+  $result2 = $request->execute([
     ':id' => $_GET['delete'],
   ]);
+  $request = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
+  $result3 = $request->execute([
+    ':id_activity' => $_GET['delete'],
+  ]);
 
-  if ($result) {
+  if ($result && $result2 && $result3) {
     $message = 'L\'activité a bien été supprimée';
     header('location:../catalog.php?message=' . $message . '&type=success');
     exit();
@@ -117,10 +121,43 @@ do {
   $i++;
 } while ($i < count($belong));
 
-if ($result && $result2) {
+$providers = [];
+$providersCount = 0;
+
+foreach ($_POST as $key => $value) {
+  if (preg_match('/^provider(\d+)$/', $key, $matches)) {
+    $provider_id = $matches[1];
+    $providers[] = $provider_id;
+    $providersCount++;
+  }
+}
+
+$i = 0;
+do {
+  $insert = $db->prepare('INSERT INTO ANIMATE (id_activity, id_provider) VALUES (:id_activity, :id_provider)');
+  $result3 = $insert->execute([
+    'id_activity' => $id[0],
+    'id_provider' => $providers[$i],
+  ]);
+  $i++;
+} while ($i < $providersCount);
+
+if ($result && $result2 && $result3) {
   $message = 'L\'activité a bien été ajoutée';
   header('location:../addActivityPage.php?message=' . $message . '&type=success');
 } else {
+  $db->prepare('DELETE FROM BELONG WHERE id_activity = :id_activity');
+  $result = $request->execute([
+    ':id_activity' => $id[0],
+  ]);
+  $request = $db->prepare('DELETE FROM ACTIVITY WHERE id = :id');
+  $request->execute([
+    ':id' => $id[0],
+  ]);
+  $request = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
+  $request->execute([
+    ':id_activity' => $id[0],
+  ]);
   $message = 'Une erreur est survenue';
   header('location:../addActivityPage.php?message=' . $message . '&type=danger');
 }

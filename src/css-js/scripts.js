@@ -113,6 +113,10 @@ function changeSignForm() {
 
 function deleteProvider(id) {
   let providerContainer = id.parentElement;
+  if (providerContainer.querySelector('.selected') != null) {
+    const providerId = providerContainer.querySelector('.selected').getAttribute('id');
+    providerList(providerId, 'delete');
+  }
   providerContainer.remove();
 }
 
@@ -135,9 +139,14 @@ function addProvider() {
 function selectOccupation(id) {
   const selected = id.innerHTML;
   const providerContainer = id.parentElement.parentElement.parentElement;
+  const provider = providerContainer.querySelector('.btn.btn-secondary.dropdown-toggle.mx-2');
   const occupation = providerContainer.querySelector('.btn.btn-secondary.dropdown-toggle');
   occupation.innerHTML = selected;
-
+  if (provider != null) {
+    const providerId = provider.getAttribute('id');
+    providerList(providerId, 'delete');
+    provider.remove();
+  }
   let xhr = new XMLHttpRequest();
   xhr.open('GET', 'ajaxReq/providerDropdown.php?occupation=' + selected, true);
 
@@ -147,4 +156,33 @@ function selectOccupation(id) {
     }
   };
   xhr.send();
+}
+
+function selectProvider(id) {
+  const selected = id.innerHTML;
+  const providerId = id.getAttribute('id');
+  const providerContainer = id.parentElement.parentElement.parentElement;
+  const occupation = providerContainer.querySelector('.btn.btn-secondary.dropdown-toggle.mx-2');
+  if (providerContainer.querySelector('.selected') == null) {
+    occupation.classList.add('selected');
+    providerList(providerId, 'add');
+  }
+  occupation.innerHTML = selected;
+  occupation.id = providerId;
+}
+
+function providerList(id, type) {
+  const form = document.getElementById('activity-form');
+  if (type == 'delete') {
+    const providerInput = document.getElementById('provider' + id);
+    console.log(providerInput);
+    providerInput.remove();
+  } else if (type == 'add') {
+    const providerInput = document.createElement('input');
+    providerInput.type = 'hidden';
+    providerInput.name = 'provider' + id;
+    providerInput.id = 'provider' + id;
+    providerInput.value = id;
+    form.appendChild(providerInput);
+  }
 }
