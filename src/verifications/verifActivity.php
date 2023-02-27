@@ -52,8 +52,8 @@ if ($_POST['maxAttendee'] <= 0) {
 }
 
 $request = $db->prepare(
-  'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee) 
-  VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee)'
+  'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee, status) 
+  VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee, status)'
 );
 
 $result = $request->execute([
@@ -62,6 +62,7 @@ $result = $request->execute([
   'duration' => $_POST['duration'],
   'priceAttendee' => $_POST['price'],
   'maxAttendee' => $_POST['maxAttendee'],
+  'status' => 1,
 ]);
 
 $getId = $db->prepare('SELECT id FROM ACTIVITY ORDER BY id DESC LIMIT 1');

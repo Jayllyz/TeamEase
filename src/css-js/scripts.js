@@ -186,3 +186,62 @@ function providerList(id, type) {
     form.appendChild(providerInput);
   }
 }
+
+function addMaterial() {
+  const materialContainer = document.getElementById('material-container');
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      materialContainer.innerHTML += xhr.responseText;
+    }
+  };
+  xhr.open('GET', 'ajaxReq/materialInput.php');
+  xhr.send();
+}
+
+function updateMaterial(id) {
+  const container = id.parentElement.parentElement;
+  const material = container.querySelector('#material').value;
+  const quantity = container.querySelector('#quantity').value;
+  const used = container.querySelector('#used').value;
+
+  if (quantity < used) {
+    alert('La quantité disponible ne peut pas être inférieure à la quantité utilisée');
+    container.querySelector('#quantity').value = parseInt(container.querySelector('#available').value) + parseInt(used);
+    return;
+  }
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      console.log(xhr.responseText);
+      if (xhr.responseText == 'success') {
+        container.querySelector('#available').value = quantity - used;
+        alert('Le matériel a bien été modifié');
+      } else {
+        alert("Le matériel n'a pas pu être modifié");
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifMaterial.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('material=' + material + '&quantity=' + quantity + '&delete=false');
+}
+
+function deleteMaterial(id) {
+  const container = id.parentElement.parentElement;
+  const material = container.querySelector('#material').value;
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText != 'success') {
+        alert("Le matériel n'a pas pu être supprimé");
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifMaterial.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('material=' + material + '&quantity=0&delete=true');
+
+  container.remove();
+}

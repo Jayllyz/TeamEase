@@ -106,7 +106,7 @@ include 'includes/head.php';
                 </div>
 
                 <div class="mb-4">
-                    <label for="provider[]" class="form-label"><h4>Prestataires</h4></label>
+                    <label for="provider" class="form-label"><h4>Prestataires</h4></label>
                     <div>
                         <button type="button" class="btn btn-primary" onclick="addProvider()">Ajouter un prestataire</button>
                     </div>
