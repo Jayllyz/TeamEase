@@ -157,12 +157,25 @@ include 'includes/head.php';
                     <?php } ?>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label"><strong>Métier </strong></label>
-                    <input type="text" name="job" class="form-control is-<?= isset($_GET['valid']) &&
-                                                                                $_GET['input'] == 'job'
-                                                                                ? $_GET['valid']
-                                                                                : '' ?>" value="<?= isset($_COOKIE['job']) ? $_COOKIE['job'] : '' ?>" required>
+
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01"><strong>Métier</strong></label>
+                    <select class="form-select is-<?= isset($_GET['valid']) &&
+                                                        $_GET['input'] == 'job'
+                                                        ? $_GET['valid']
+                                                        : '' ?>" value="<?= isset($_COOKIE['job']) ? $_COOKIE['job'] : '' ?>" required>
+
+                        <?php
+                        $req = $db->query("SELECT id, name FROM OCCUPATION");
+                        $req = $req->fetchAll(PDO::FETCH_ASSOC);
+
+                        foreach ($req as $value) {
+                            echo '<option value="' . $value['id'] . '">' . $value['name'] . '</option>';
+                        }
+
+                        ?>
+                    </select>
+
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
