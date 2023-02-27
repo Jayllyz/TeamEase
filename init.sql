@@ -8,6 +8,7 @@ CREATE TABLE ACTIVITY
   priceAttendee INT NOT NULL,
   name VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
+  status INT NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -36,6 +37,7 @@ CREATE TABLE MATERIAL
 (
   id INT NOT NULL,
   type VARCHAR(255) NOT NULL,
+  quantity INT NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -84,6 +86,14 @@ CREATE TABLE OCCUPATION
 (
   id INT NOT NULL,
   name VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE SERVICE
+(
+  id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  price INT NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -166,6 +176,14 @@ CREATE TABLE MATERIAL_ROOM
   id_room INT NOT NULL,
   FOREIGN KEY (id_material) REFERENCES MATERIAL(id),
   FOREIGN KEY (id_room) REFERENCES ROOM(id)
+);
+
+CREATE TABLE RESERVATION_SERVICE
+(
+  id_service INT NOT NULL,
+  id_reservation INT NOT NULL,
+  FOREIGN KEY (id_service) REFERENCES SERVICE(id),
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
 );
 
 INSERT INTO CATEGORY (id, name) VALUES (0, 'En ligne');
