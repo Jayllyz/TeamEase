@@ -8,6 +8,7 @@ CREATE TABLE ACTIVITY
   priceAttendee INT NOT NULL,
   name VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
+  status INT NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -34,8 +35,9 @@ CREATE TABLE ESTIMATE
 
 CREATE TABLE MATERIAL
 (
-  id INT NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
   type VARCHAR(255) NOT NULL,
+  quantity INT NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -80,25 +82,19 @@ CREATE TABLE ATTENDEE
   PRIMARY KEY (id)
 );
 
-CREATE TABLE PROVIDER
+CREATE TABLE OCCUPATION
 (
-  id INT NOT NULL AUTO_INCREMENT,
-  firstName VARCHAR(255) NOT NULL,
-  lastName VARCHAR(255) NOT NULL,
-  occupation VARCHAR(255) NOT NULL,
-  salary INT NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  rights INT NOT NULL,
+  id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)
 );
 
-CREATE TABLE ANIMATE
+CREATE TABLE SERVICE
 (
-  id_activity INT NOT NULL,
-  id_provider INT NOT NULL AUTO_INCREMENT,
-  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
-  FOREIGN KEY (id_provider) REFERENCES PROVIDER(id)
+  id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  price INT NOT NULL,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE RESERVATION
@@ -152,12 +148,42 @@ CREATE TABLE RESERVED
   FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
 );
 
+CREATE TABLE PROVIDER
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  salary INT NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  rights INT NOT NULL,
+  emails VARCHAR(255) NOT NULL,
+  id_occupation INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_occupation) REFERENCES OCCUPATION(id)
+);
+
+CREATE TABLE ANIMATE
+(
+  id_activity INT NOT NULL,
+  id_provider INT NOT NULL AUTO_INCREMENT,
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
+  FOREIGN KEY (id_provider) REFERENCES PROVIDER(id)
+);
+
 CREATE TABLE MATERIAL_ROOM
 (
   id_material INT NOT NULL,
   id_room INT NOT NULL,
   FOREIGN KEY (id_material) REFERENCES MATERIAL(id),
   FOREIGN KEY (id_room) REFERENCES ROOM(id)
+);
+
+CREATE TABLE RESERVATION_SERVICE
+(
+  id_service INT NOT NULL,
+  id_reservation INT NOT NULL,
+  FOREIGN KEY (id_service) REFERENCES SERVICE(id),
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
 );
 
 INSERT INTO CATEGORY (id, name) VALUES (0, 'En ligne');
@@ -168,3 +194,5 @@ INSERT INTO CATEGORY (id, name) VALUES (4, 'Culturelle');
 INSERT INTO CATEGORY (id, name) VALUES (5, 'Musique');
 INSERT INTO CATEGORY (id, name) VALUES (6, "Coopératif");
 INSERT INTO CATEGORY (id, name) VALUES (7, "Compétitif");
+
+INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901234, 'TeamEase', 'teamease@gmail.com', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 2);

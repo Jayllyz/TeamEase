@@ -10,7 +10,7 @@
 <?php
 $linkCss = 'css-js/style.css';
 $linkLogo = 'images/logo.png';
-$title = 'Ajouter une activités';
+$title = 'Ajouter une activité';
 include 'includes/head.php';
 ?>
 
@@ -23,36 +23,39 @@ include 'includes/head.php';
                 <h1 class="text-center">Ajouter une activité</h1>
             </div>
         </div>
-        <form action="verifications/verificationActivity.php" method="post" enctype="multipart/form-data">
+        <div class="text-center">
+            <?php include 'includes/msg.php'; ?>
+        </div>
+        <form action="verifications/verifActivity.php" method="post" id="activity-form" enctype="multipart/form-data">
             <?php
             $query = $db->query('SELECT name FROM CATEGORY');
             $fetch = $query->fetchAll(PDO::FETCH_COLUMN);
             $count = count($fetch);
             echo '<label for="genre" class="form-label"><h4>Catégorie de l\'activité</h4></label>
-                            <div class="row mb-3">';
+                 <div class="row mb-3">';
             for ($i = 0; $i < $count; $i++) {
               if ($i % 6 == 0 and $i != 0) {
                 echo '
-                                </div>
-                                <div class="row mb-3">
-                                <input type="checkbox" class="btn btn-check" id="' .
+                    </div>
+                    <div class="row mb-3">
+                    <input type="checkbox" class="btn btn-check" id="' .
                   $fetch[$i] .
                   '" name="category[]" value="' .
                   $fetch[$i] .
                   '" autocomplete="off">
-                                <label class="btn btn-outline-success col me-2 mb-3" for="' .
+                    <label class="btn btn-outline-success col me-2 mb-3" for="' .
                   $fetch[$i] .
                   '">' .
                   $fetch[$i] .
                   '</label>
-                                ';
+                    ';
               } else {
                 echo '<input type="checkbox" class="btn btn-check" id="' .
                   $fetch[$i] .
                   '" name="category[]" value="' .
                   $fetch[$i] .
                   '" autocomplete="off">
-                                <label class="btn btn-outline-success col me-2 mb-3" for="' .
+                    <label class="btn btn-outline-success col me-2 mb-3" for="' .
                   $fetch[$i] .
                   '">' .
                   $fetch[$i] .
@@ -101,13 +104,31 @@ include 'includes/head.php';
                 <div class="col-3 mb-3">
                     <input class="form-control" name="fourthImage" type="file" accept="image/jpeg, image/png">
                 </div>
-                <button type="submit" class="btn btn-success btn-lg">Valider</button>
             </div>
+            <div class="row">
+                <div class="mb-4">
+                    <label for="provider" class="form-label"><h4>Prestataires</h4></label>
+                    <div id="provider-container"></div>
+                    <div>
+                        <button type="button" class="btn btn-primary" onclick="assignProvider()">Ajouter un prestataire</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-4">
+                    <label for="material" class="form-label"><h4>Matériels</h4></label>
+                    <div id="material-container"></div>
+                    <div>
+                        <button type="button" class="btn btn-primary" onclick="assignMaterial()">Ajouter du matériel</button>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success btn-lg" id="submit">Valider</button>
         </form>
-        <?php include 'includes/errorMessage.php'; ?>
     </div>
   </main>
   <?php include 'includes/footer.php'; ?>
+  <script src="css-js/scripts.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

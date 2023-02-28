@@ -7,17 +7,21 @@ if (isset($_GET['delete'])) {
     ':id_activity' => $_GET['delete'],
   ]);
   $request = $db->prepare('DELETE FROM ACTIVITY WHERE id = :id');
-  $result = $request->execute([
+  $result2 = $request->execute([
     ':id' => $_GET['delete'],
   ]);
+  $request = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
+  $result3 = $request->execute([
+    ':id_activity' => $_GET['delete'],
+  ]);
 
-  if ($result) {
+  if ($result && $result2 && $result3) {
     $message = 'L\'activité a bien été supprimée';
-    header('location:../catalog.php?message=' . $message);
+    header('location:../catalog.php?message=' . $message . '&type=success');
     exit();
   } else {
     $message = 'Une erreur est survenue';
-    header('location:../catalog.php?message=' . $message);
+    header('location:../catalog.php?message=' . $message . '&type=danger');
     exit();
   }
 }
@@ -25,31 +29,35 @@ if (isset($_GET['delete'])) {
 $getId = $db->prepare('SELECT id FROM ACTIVITY ORDER BY id DESC LIMIT 1');
 $getId->execute();
 
+// je set result3 et 4 sinon je peux pas faire la verif a la fin
+$result3 = true;
+$result4 = true;
+
 if (!isset($_POST['category'])) {
   $message = "Aucune catégorie n'a été selectionnée";
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
 }
 
 if ($_POST['duration'] <= 0) {
   $message = "La durée de l'activité doit être supérieure à 0";
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
 }
 if ($_POST['price'] < 0) {
   $message = "Le prix de l'activité ne peut être négatif";
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
 }
 if ($_POST['maxAttendee'] <= 0) {
   $message = 'Le nombre de participants maximum doit être supérieur à 0';
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
 }
 
 $request = $db->prepare(
-  'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee) 
-  VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee)'
+  'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee, status) 
+  VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee, :status)'
 );
 
 $result = $request->execute([
@@ -58,6 +66,7 @@ $result = $request->execute([
   'duration' => $_POST['duration'],
   'priceAttendee' => $_POST['price'],
   'maxAttendee' => $_POST['maxAttendee'],
+  'status' => 1,
 ]);
 
 $getId = $db->prepare('SELECT id FROM ACTIVITY ORDER BY id DESC LIMIT 1');
@@ -117,12 +126,87 @@ do {
   $i++;
 } while ($i < count($belong));
 
-if ($result && $result2) {
+$providers = [];
+$providersCount = 0;
+
+foreach ($_POST as $key => $value) {
+  if (preg_match('/^provider(\d+)$/', $key, $matches)) {
+    $provider_id = $matches[1];
+    $providers[] = $provider_id;
+    $providersCount++;
+  }
+}
+if ($providersCount != 0) {
+  $i = 0;
+  do {
+    $insert = $db->prepare('INSERT INTO ANIMATE (id_activity, id_provider) VALUES (:id_activity, :id_provider)');
+    $result3 = $insert->execute([
+      'id_activity' => $id[0],
+      'id_provider' => $providers[$i],
+    ]);
+    $i++;
+  } while ($i < $providersCount);
+}
+
+$materials = [];
+$materialCount = 0;
+
+foreach ($_POST as $key => $value) {
+  if (preg_match('/^material(\d+)$/', $key, $matches)) {
+    $material_id = $matches[1];
+    $materials[] = $material_id;
+    $materialCount++;
+  }
+}
+
+$quantity = [];
+
+foreach ($_POST as $key => $value) {
+  if (preg_match('/^quantity(\d+)$/', $key, $matches)) {
+    $quantity_id = $matches[1];
+    $quantity[] = $quantity_id;
+  }
+}
+
+if ($materialCount != 0) {
+  $i = 0;
+  do {
+    if ($quantity[$i] == $materials[$i]) {
+      $insert = $db->prepare(
+        'INSERT INTO MATERIAL_ACTIVITY (id_activity, id_material, quantity) VALUES (:id_activity, :id_material, :quantity)'
+      );
+      $result4 = $insert->execute([
+        'id_activity' => $id[0],
+        'id_material' => $materials[$i],
+        'quantity' => $_POST['quantity' . $quantity[$i]],
+      ]);
+    }
+    $i++;
+  } while ($i < $materialCount);
+}
+
+if ($result && $result2 && $result3 && $result4) {
   $message = 'L\'activité a bien été ajoutée';
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=success');
 } else {
+  $request = $db->prepare('DELETE FROM BELONG WHERE id_activity = :id');
+  $request->execute([
+    'id' => $id[0],
+  ]);
+  $request = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id');
+  $request->execute([
+    'id' => $id[0],
+  ]);
+  $request = $db->prepare('DELETE FROM MATERIAL_ACTIVITY WHERE id_activity = :id');
+  $request->execute([
+    'id' => $id[0],
+  ]);
+  $request = $db->prepare('DELETE FROM ACTIVITY WHERE id = :id');
+  $request->execute([
+    'id' => $id[0],
+  ]);
   $message = 'Une erreur est survenue';
-  header('location:../addActivityPage.php?message=' . $message);
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
 }
 
 ?>
