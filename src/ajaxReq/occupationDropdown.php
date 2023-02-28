@@ -15,4 +15,4 @@ $fetch = $query->fetchAll(PDO::FETCH_ASSOC);
         } ?>
     </ul>
 </div>
-<button type="button" class="btn btn-danger" onclick="deleteProvider(this)">Supprimer</button>
+<button type="button" class="btn btn-danger" onclick="unassignProvider(this)">Supprimer</button>

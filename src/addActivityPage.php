@@ -32,13 +32,13 @@ include 'includes/head.php';
             $fetch = $query->fetchAll(PDO::FETCH_COLUMN);
             $count = count($fetch);
             echo '<label for="genre" class="form-label"><h4>Catégorie de l\'activité</h4></label>
-                <div class="row mb-3">';
+                 <div class="row mb-3">';
             for ($i = 0; $i < $count; $i++) {
               if ($i % 6 == 0 and $i != 0) {
                 echo '
-                </div>
-                <div class="row mb-3">
-                <input type="checkbox" class="btn btn-check" id="' .
+                    </div>
+                    <div class="row mb-3">
+                    <input type="checkbox" class="btn btn-check" id="' .
                   $fetch[$i] .
                   '" name="category[]" value="' .
                   $fetch[$i] .
@@ -48,7 +48,7 @@ include 'includes/head.php';
                   '">' .
                   $fetch[$i] .
                   '</label>
-                ';
+                    ';
               } else {
                 echo '<input type="checkbox" class="btn btn-check" id="' .
                   $fetch[$i] .
@@ -104,21 +104,26 @@ include 'includes/head.php';
                 <div class="col-3 mb-3">
                     <input class="form-control" name="fourthImage" type="file" accept="image/jpeg, image/png">
                 </div>
-
+            </div>
+            <div class="row">
                 <div class="mb-4">
                     <label for="provider" class="form-label"><h4>Prestataires</h4></label>
+                    <div id="provider-container"></div>
                     <div>
-                        <button type="button" class="btn btn-primary" onclick="addProvider()">Ajouter un prestataire</button>
+                        <button type="button" class="btn btn-primary" onclick="assignProvider()">Ajouter un prestataire</button>
                     </div>
                 </div>
-
-                <?php
-                $query = $db->query('SELECT name FROM OCCUPATION');
-                $fetch = $query->fetchAll(PDO::FETCH_ASSOC);
-                ?>
-                <div id="provider-container"></div>
-                <button type="submit" class="btn btn-success btn-lg" id="submit">Valider</button>
             </div>
+            <div class="row">
+                <div class="mb-4">
+                    <label for="material" class="form-label"><h4>Matériels</h4></label>
+                    <div id="material-container"></div>
+                    <div>
+                        <button type="button" class="btn btn-primary" onclick="assignMaterial()">Ajouter du matériel</button>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success btn-lg" id="submit">Valider</button>
         </form>
     </div>
   </main>

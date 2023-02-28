@@ -111,7 +111,7 @@ function changeSignForm() {
   }
 }
 
-function deleteProvider(id) {
+function unassignProvider(id) {
   let providerContainer = id.parentElement;
   if (providerContainer.querySelector('.selected') != null) {
     const providerId = providerContainer.querySelector('.selected').getAttribute('id');
@@ -120,9 +120,9 @@ function deleteProvider(id) {
   providerContainer.remove();
 }
 
-function addProvider() {
-  let providerContainer = document.getElementById('provider-container');
-  let newProvider = document.createElement('div');
+function assignProvider() {
+  const providerContainer = document.getElementById('provider-container');
+  const newProvider = document.createElement('div');
   newProvider.classList.add('mb-4');
 
   let xhr = new XMLHttpRequest();
@@ -244,4 +244,114 @@ function deleteMaterial(id) {
   xhr.send('material=' + material + '&quantity=0&delete=true');
 
   container.remove();
+}
+
+function assignMaterial() {
+  const materialContainer = document.getElementById('material-container');
+  const newMaterial = document.createElement('div');
+  newMaterial.classList.add('mb-4');
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      const newMaterial = document.createElement('div');
+      newMaterial.classList.add('mb-4');
+      newMaterial.innerHTML = xhr.responseText;
+      materialContainer.appendChild(newMaterial);
+    }
+  };
+  xhr.open('GET', 'ajaxReq/materialDropdown.php');
+  xhr.send();
+}
+
+function selectMaterial(id) {
+  const selected = id.innerHTML;
+  const materialId = id.getAttribute('id');
+  const materialContainer = id.parentElement.parentElement.parentElement;
+  const material = materialContainer.querySelector('.btn.btn-secondary.dropdown-toggle');
+  material.innerHTML = selected;
+
+  if (materialContainer.querySelector('.selected') == null) {
+    material.classList.add('selected');
+    const materialInput = document.createElement('input');
+    materialInput.type = 'number';
+    materialInput.id = materialId;
+    material.id = materialId;
+    materialInput.setAttribute('onchange', 'quantityChange(this.value, this.id);');
+    materialInput.classList.add('form-control');
+    const input = materialContainer.querySelector('.inputNumber');
+    input.appendChild(materialInput);
+    materialList(materialId, 'add', 'material');
+  } else {
+    const oldId = materialContainer.querySelector('.selected').getAttribute('id');
+    materialList(oldId, 'delete', 'material');
+    materialList(materialId, 'add', 'material');
+    material.id = materialId;
+  }
+}
+
+function quantityChange(value, id) {
+  if (value < 0) {
+    alert('La quantité ne peut pas être négative');
+    document.getElementById(id).parentElement.querySelector('.form-control').value = '';
+    return;
+  }
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText < value) {
+        alert('La quantité de matériel disponible est insuffisante, la quantité disponible:' + xhr.responseText);
+        document.getElementById(id).parentElement.querySelector('.form-control').value = '';
+        return;
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifMaterialStock.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id);
+  if (document.getElementById('quantity' + id)) {
+    materialList(id, 'delete', 'quantity');
+  }
+  materialList(id, 'add', 'quantity', value);
+}
+
+function unassignMaterial(id) {
+  const materialContainer = id.parentElement;
+  if (materialContainer.querySelector('.selected') != null) {
+    const materialId = materialContainer.querySelector('.selected').getAttribute('id');
+    materialList(materialId, 'delete', 'material');
+    if (document.getElementById('quantity' + materialId)) {
+      materialList(materialId, 'delete', 'quantity');
+    }
+  }
+  materialContainer.remove();
+}
+
+function materialList(id, type, element, quantity) {
+  const form = document.getElementById('activity-form');
+  if (type == 'add') {
+    if (element == 'material') {
+      const materialInput = document.createElement('input');
+      materialInput.type = 'hidden';
+      materialInput.name = 'material' + id;
+      materialInput.id = 'material' + id;
+      materialInput.value = id;
+      form.appendChild(materialInput);
+    } else if (element == 'quantity') {
+      const materialInput = document.createElement('input');
+      materialInput.type = 'hidden';
+      materialInput.name = 'quantity' + id;
+      materialInput.id = 'quantity' + id;
+      materialInput.value = quantity;
+      form.appendChild(materialInput);
+    }
+  } else if (type == 'delete') {
+    if (element == 'material') {
+      const materialInput = document.getElementById('material' + id);
+      materialInput.remove();
+    } else if (element == 'quantity') {
+      const materialInput = document.getElementById('quantity' + id);
+      materialInput.remove();
+    }
+  }
 }
