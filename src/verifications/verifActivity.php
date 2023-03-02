@@ -1,18 +1,47 @@
 <?php
+session_start();
+if (!isset($_SESSION['rights']) == 2) {
+  header('Location: ../index.php');
+}
 include '../includes/db.php';
 
 if (isset($_GET['delete'])) {
+  $id = $_GET['delete'];
+  $request = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
+  $request->execute([
+    ':id' => $id,
+  ]);
+  $activity = $request->fetch(PDO::FETCH_ASSOC);
+  $path = '../images/activities/';
+  include '../includes/image.php';
+  if ($image0 != '../images/activities/placeholder.jpg') {
+    unlink($image0);
+  }
+  if ($image1 != '../images/activities/placeholder.jpg') {
+    unlink($image1);
+  }
+  if ($image2 != '../images/activities/placeholder.jpg') {
+    unlink($image2);
+  }
+  if ($image3 != '../images/activities/placeholder.jpg') {
+    unlink($image3);
+  }
+
   $request = $db->prepare('DELETE FROM BELONG WHERE id_activity = :id_activity');
   $result = $request->execute([
-    ':id_activity' => $_GET['delete'],
+    ':id_activity' => $id,
   ]);
-  $request = $db->prepare('DELETE FROM ACTIVITY WHERE id = :id');
-  $result2 = $request->execute([
-    ':id' => $_GET['delete'],
+  $request = $db->prepare('DELETE FROM MATERIAL_ACTIVITY WHERE id_activity = :id');
+  $request->execute([
+    'id' => $id,
   ]);
   $request = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
   $result3 = $request->execute([
-    ':id_activity' => $_GET['delete'],
+    ':id_activity' => $id,
+  ]);
+  $request = $db->prepare('DELETE FROM ACTIVITY WHERE id = :id');
+  $result2 = $request->execute([
+    ':id' => $id,
   ]);
 
   if ($result && $result2 && $result3) {
@@ -189,6 +218,27 @@ if ($result && $result2 && $result3 && $result4) {
   $message = 'L\'activité a bien été ajoutée';
   header('location:../addActivityPage.php?message=' . $message . '&type=success');
 } else {
+  $id = $id[0];
+  $request = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
+  $request->execute([
+    ':id' => $id,
+  ]);
+  $activity = $request->fetch(PDO::FETCH_ASSOC);
+  $path = '../images/activities/';
+  include '../includes/image.php';
+  if ($image0 != '../images/activities/placeholder.jpg') {
+    unlink($image0);
+  }
+  if ($image1 != '../images/activities/placeholder.jpg') {
+    unlink($image1);
+  }
+  if ($image2 != '../images/activities/placeholder.jpg') {
+    unlink($image2);
+  }
+  if ($image3 != '../images/activities/placeholder.jpg') {
+    unlink($image3);
+  }
+
   $request = $db->prepare('DELETE FROM BELONG WHERE id_activity = :id');
   $request->execute([
     'id' => $id[0],

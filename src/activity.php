@@ -26,7 +26,10 @@ include 'includes/head.php';
 <body>
   <?php include 'includes/header.php'; ?>
   <div class="container col-md-6">
-    <?php include 'includes/image.php'; ?>
+    <?php
+    $path = 'images/activities/';
+    include 'includes/image.php';
+    ?>
   </div>
   <main>
     <div class="container mb-5 text-center">
