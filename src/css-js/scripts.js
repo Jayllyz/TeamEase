@@ -17,8 +17,8 @@ function viewPassword() {
   }
 }
 
-function viewPasswordInscription() {
-  var passInscription = document.getElementById('password');
+function viewPasswordInscription(id) {
+  var passInscription = id.parentElement.querySelector('#password');
   if (passInscription.type === 'password') {
     passInscription.type = 'text';
   } else {
@@ -26,8 +26,8 @@ function viewPasswordInscription() {
   }
 }
 
-function viewConfPasswordInscription() {
-  var confPassInscription = document.getElementById('conf_Password_inscription');
+function viewConfPasswordInscription(id) {
+  var confPassInscription = id.parentElement.querySelector('#conf_Password_inscription');
   if (confPassInscription.type === 'password') {
     confPassInscription.type = 'text';
   } else {
