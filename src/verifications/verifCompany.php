@@ -45,7 +45,7 @@ if (strlen($address) < 5) {
 
 if (strlen($password) < 6) {
   header(
-    'location: ../signin.php?message=Mot de passe invalide. Il doit etre compris entre 6 et 15 caractères !&valid=invalid&input=passwordCompany'
+    'location: ../signin.php?message=Mot de passe invalide. Il doit avoir 6 caracteres minimum !&valid=invalid&input=passwordCompany'
   );
   exit();
 }

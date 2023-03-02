@@ -89,8 +89,8 @@ if (
     $rights = 0;
 
     $req->execute([
-      'firstName' => $firstName,
-      'lastName' => $lastName,
+      'firstName' => $lastName,
+      'lastName' => $firstName,
       'occupation' => $job,
       'email' => $email,
       'salary' => $salary,
