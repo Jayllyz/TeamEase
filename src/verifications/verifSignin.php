@@ -4,6 +4,7 @@ date_default_timezone_set("Europe/Paris");
 
 include "../includes/db.php";
 
+
 if (isset($_POST["submit"])) {
     if (!isset($_POST["job"])) {
         include "verifCompany.php";

@@ -162,7 +162,7 @@ include 'includes/head.php';
                     <select class="form-select is-<?= isset($_GET['valid']) &&
                                                         $_GET['input'] == 'job'
                                                         ? $_GET['valid']
-                                                        : '' ?>" value="<?= isset($_COOKIE['job']) ? $_COOKIE['job'] : '' ?>" id="selectjob" required>
+                                                        : '' ?>" value="<?= isset($_COOKIE['job']) ? $_COOKIE['job'] : '' ?>" id="selectjob" name="job" required>
 
                         <?php
                         $req = $db->query("SELECT id, name FROM OCCUPATION");

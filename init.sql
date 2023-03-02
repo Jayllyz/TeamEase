@@ -156,8 +156,8 @@ CREATE TABLE PROVIDER
   salary INT NOT NULL,
   password VARCHAR(255) NOT NULL,
   rights INT NOT NULL,
-  emails VARCHAR(255) NOT NULL,
-  id_occupation INT NOT NULL AUTO_INCREMENT,
+  email VARCHAR(255) NOT NULL,
+  id_occupation INT NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (id_occupation) REFERENCES OCCUPATION(id)
 );
@@ -186,14 +186,14 @@ CREATE TABLE RESERVATION_SERVICE
   FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
 );
 
-INSERT INTO CATEGORY (id, name) VALUES (0, 'En ligne');
-INSERT INTO CATEGORY (id, name) VALUES (1, 'En personne');
-INSERT INTO CATEGORY (id, name) VALUES (2, 'Sportive');
-INSERT INTO CATEGORY (id, name) VALUES (3, 'Reflexion');
-INSERT INTO CATEGORY (id, name) VALUES (4, 'Culturelle');
-INSERT INTO CATEGORY (id, name) VALUES (5, 'Musique');
-INSERT INTO CATEGORY (id, name) VALUES (6, "Coopératif");
-INSERT INTO CATEGORY (id, name) VALUES (7, "Compétitif");
+INSERT INTO CATEGORY (id, name) VALUES (1, 'En ligne');
+INSERT INTO CATEGORY (id, name) VALUES (2, 'En personne');
+INSERT INTO CATEGORY (id, name) VALUES (3, 'Sportive');
+INSERT INTO CATEGORY (id, name) VALUES (4, 'Reflexion');
+INSERT INTO CATEGORY (id, name) VALUES (5, 'Culturelle');
+INSERT INTO CATEGORY (id, name) VALUES (6, 'Musique');
+INSERT INTO CATEGORY (id, name) VALUES (7, "Coopératif");
+INSERT INTO CATEGORY (id, name) VALUES (8, "Compétitif");
 
 INSERT INTO OCCUPATION (id, name) VALUES (1, 'Animateur');
 INSERT INTO OCCUPATION (id, name) VALUES (2, 'Game Master');

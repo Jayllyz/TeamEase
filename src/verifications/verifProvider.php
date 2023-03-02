@@ -24,10 +24,18 @@ if (isset($firstName) && !strlen($firstName) > 0) {
   exit();
 }
 
-if (isset($job) && !strlen($job) > 0) {
+$req = $db->prepare('SELECT name FROM OCCUPATION WHERE id = :id');
+$req->execute([
+  'id' => $_POST['job'],
+]);
+
+$reponse = $req->fetch();
+
+if (!$reponse) {
   header('location: ../signin.php?message=Le métier est invalide !&valid=invalid&input=job');
   exit();
 }
+
 
 if (isset($salary) && !is_numeric($salary)) {
   header('location: ../signin.php?message=Le salaire est invalide !&valid=invalid&input=salary');
@@ -76,7 +84,7 @@ if (
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO PROVIDER (lastName, firstName, occupation, email, salary, password, rights) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights)'
+      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights)'
     );
     $rights = 0;
 
