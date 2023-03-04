@@ -156,7 +156,7 @@ CREATE TABLE PROVIDER
   salary INT NOT NULL,
   password VARCHAR(255) NOT NULL,
   rights INT NOT NULL,
-  emails VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
   id_occupation INT NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (id_occupation) REFERENCES OCCUPATION(id)

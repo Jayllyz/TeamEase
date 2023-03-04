@@ -93,3 +93,7 @@ footer {
     display: none;
   }
 }
+
+.no-dot {
+  list-style-type: none;
+}
