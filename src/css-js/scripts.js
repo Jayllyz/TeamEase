@@ -318,6 +318,7 @@ function quantityChange(value, id) {
 function unassignMaterial(id) {
   const materialContainer = id.parentElement;
   if (materialContainer.querySelector('.selected') != null) {
+    console.log(materialContainer.querySelector('.selected'));
     const materialId = materialContainer.querySelector('.selected').getAttribute('id');
     materialList(materialId, 'delete', 'material');
     if (document.getElementById('quantity' + materialId)) {
@@ -328,6 +329,7 @@ function unassignMaterial(id) {
 }
 
 function materialList(id, type, element, quantity) {
+  console.log(id);
   const form = document.getElementById('activity-form');
   if (type == 'add') {
     if (element == 'material') {

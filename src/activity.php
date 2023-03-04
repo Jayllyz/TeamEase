@@ -222,7 +222,7 @@ include 'includes/head.php';
                 <ul class="text-center no-dot" style="padding:0">
                     <?php
                     $query = $db->prepare(
-                      'SELECT MATERIAL_ACTIVITY.quantity, type FROM MATERIAL, MATERIAL_ACTIVITY WHERE id IN (SELECT id_activity FROM MATERIAL_ACTIVITY WHERE id = :id)'
+                      'SELECT id, type FROM MATERIAL WHERE id IN (SELECT id_material FROM MATERIAL_ACTIVITY WHERE id_activity = :id)'
                     );
                     $query->execute([
                       ':id' => $id,
@@ -232,6 +232,11 @@ include 'includes/head.php';
                       echo '<p class="text-center fs-3">Aucun matériel fourni</p>';
                     } else {
                       foreach ($materials as $material) {
+                        $query = $db->prepare(
+                          'SELECT quantity FROM MATERIAL_ACTIVITY WHERE id_material = :id_material AND id_activity = :id_activity'
+                        );
+                        $query->execute([':id_material' => $material['id'], ':id_activity' => $id]);
+                        $material['quantity'] = $query->fetch(PDO::FETCH_ASSOC)['quantity'];
                         echo '<li class="fs-3">' . $material['quantity'] . ' ' . $material['type'] . '</li>';
                       }
                     }
@@ -279,15 +284,15 @@ include 'includes/head.php';
                     <form action="verifications/verifActivity.php?update=details&id=<?php echo $id; ?>" method="post" id="activity-form" enctype="multipart/form-data">
                         <div class="form-group mb-3">
                             <label for="duration">Durée de l'activité</label>
-                            <input type="number" name="duration" class="form-control" value=<?php $activity[
+                            <input type="number" name="duration" class="form-control" value=<?php echo $activity[
                               'duration'
                             ]; ?>>
                             <label for="priceAttendee">Prix par participants</label>
-                            <input type="number" name="priceAttendee" class="form-control" value=<?php $activity[
+                            <input type="number" name="priceAttendee" class="form-control" value=<?php echo $activity[
                               'priceAttendee'
                             ]; ?>>
                             <label for="maxAttendee">Nombre maximum de participants</label>
-                            <input type="number" name="maxAttendee" class="form-control" value=<?php $activity[
+                            <input type="number" name="maxAttendee" class="form-control" value=<?php echo $activity[
                               'maxAttendee'
                             ]; ?>>
                             <div class="mb-4">
@@ -303,6 +308,13 @@ include 'includes/head.php';
                                       ':id' => $id,
                                     ]);
                                     $providers = $query->fetchAll(PDO::FETCH_ASSOC);
+                                    $query = $db->prepare(
+                                      'SELECT id_material, quantity FROM MATERIAL_ACTIVITY WHERE id_activity = :id'
+                                    );
+                                    $query->execute([
+                                      ':id' => $id,
+                                    ]);
+                                    $materials = $query->fetchAll(PDO::FETCH_ASSOC);
                                     $i = 0;
                                     foreach ($providers as $provider) {
                                       $query = $db->query(
@@ -358,13 +370,64 @@ include 'includes/head.php';
                             </div>
                             <div class="mb-4">
                                 <label for="material" class="form-label"><h4>Matériels</h4></label>
-                                <div id="material-container"></div>
+                                <div id="material-container" class="mb-4">
+                                    <?php
+                                    $query = $db->query(
+                                      'SELECT id, type FROM MATERIAL WHERE id IN (SELECT id_material FROM MATERIAL_ACTIVITY WHERE id_activity = ' .
+                                        $id .
+                                        ')'
+                                    );
+                                    $materials = $query->fetchAll(PDO::FETCH_ASSOC);
+                                    $query = $db->query('SELECT id,type FROM MATERIAL');
+                                    $dropdownMaterial = $query->fetchAll(PDO::FETCH_ASSOC);
+                                    $i = 0;
+                                    foreach ($materials as $material) {
+                                      $query = $db->query(
+                                        'SELECT quantity FROM MATERIAL_ACTIVITY WHERE id_material = ' .
+                                          $material['id'] .
+                                          ' AND id_activity = ' .
+                                          $id .
+                                          ''
+                                      );
+                                      $quantity = $query->fetch(PDO::FETCH_ASSOC);
+                                      echo '
+                                      <div class="mb-4">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-secondary dropdown-toggle selected" style="padding-left:50px; padding-right:50px" data-bs-toggle="dropdown" aria-expanded="false" id="';
+                                      echo $material['id'];
+                                      echo '">
+                                                ';
+                                      echo $material['type'];
+                                      echo '
+                                            </button>
+                                            <ul class="dropdown-menu">';
+                                      foreach ($dropdownMaterial as $material2) {
+                                        echo '<li><a class="dropdown-item" onclick="selectMaterial(this);" id="' .
+                                          $material2['id'] .
+                                          '" style="padding-left:50px; padding-right:50px">' .
+                                          $material2['type'] .
+                                          '</a></li>';
+                                      }
+                                      $i++;
+                                      echo '
+                                            </ul>
+                                            <div class="inputNumber mx-2">
+                                                <input type="number" id="';
+                                      echo $material['id'];
+                                      echo '" onchange="quantityChange(this.value, this.id)" class="form-control" value="';
+                                      echo $quantity['quantity'];
+                                      echo '">
+                                            </div>
+                                            <button type="button" class="btn btn-danger" onclick="unassignMaterial(this)">Supprimer</button>
+                                        </div>
+                                    </div>
+                                    ';
+                                    }
+                                    ?>
+                                </div>
                                 <div>
                                     <button type="button" class="btn btn-primary" onclick="assignMaterial()">Ajouter du matériel</button>
                                 </div>
-                            </div>
-                            <div class="mb-4">
-                                
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -397,14 +460,18 @@ include 'includes/head.php';
                         $materials = $query->fetchAll(PDO::FETCH_ASSOC);
                         if (!empty($materials)) {
                           foreach ($materials as $material) {
-                            echo '<input type="hidden" name="material"' .
+                            echo '<input type="hidden" name="material' .
                               $material['id_material'] .
-                              ' value="' .
+                              '" id="material' .
+                              $material['id_material'] .
+                              '" value="' .
                               $material['id_material'] .
                               '">';
-                            echo '<input type="hidden" name="quantity"' .
+                            echo '<input type="hidden" name="quantity' .
                               $material['id_material'] .
-                              ' value="' .
+                              '" id="quantity' .
+                              $material['id_material'] .
+                              '" value="' .
                               $material['quantity'] .
                               '">';
                           }

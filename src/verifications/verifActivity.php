@@ -75,6 +75,15 @@ if (isset($_GET['update'])) {
       exit();
     }
   } elseif ($_GET['update'] == 'details') {
+    $delete = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
+    $delete->execute([
+      ':id_activity' => $_GET['id'],
+    ]);
+    $delete = $db->prepare('DELETE FROM MATERIAL_ACTIVITY WHERE id_activity = :id_activity');
+    $delete->execute([
+      ':id_activity' => $_GET['id'],
+    ]);
+
     $providers = [];
     $providersCount = 0;
 
@@ -85,16 +94,61 @@ if (isset($_GET['update'])) {
         $providersCount++;
       }
     }
+    if ($providersCount != 0) {
+      $i = 0;
+      do {
+        $insert = $db->prepare('INSERT INTO ANIMATE (id_activity, id_provider) VALUES (:id_activity, :id_provider)');
+        $result2 = $insert->execute([
+          'id_activity' => $_GET['id'],
+          'id_provider' => $providers[$i],
+        ]);
+        $i++;
+      } while ($i < $providersCount);
+    }
 
-    var_dump($providers);
-    exit();
+    $materials = [];
+    $materialCount = 0;
+
+    foreach ($_POST as $key => $value) {
+      if (preg_match('/^material(\d+)$/', $key, $matches)) {
+        $material_id = $matches[1];
+        $materials[] = $material_id;
+        $materialCount++;
+      }
+    }
+
+    $quantity = [];
+
+    foreach ($_POST as $key => $value) {
+      if (preg_match('/^quantity(\d+)$/', $key, $matches)) {
+        $quantity_id = $matches[1];
+        $quantity[] = $quantity_id;
+      }
+    }
+
+    if ($materialCount != 0) {
+      $i = 0;
+      do {
+        if ($quantity[$i] == $materials[$i]) {
+          $insert = $db->prepare(
+            'INSERT INTO MATERIAL_ACTIVITY (id_activity, id_material, quantity) VALUES (:id_activity, :id_material, :quantity)'
+          );
+          $result3 = $insert->execute([
+            'id_activity' => $_GET['id'],
+            'id_material' => $materials[$i],
+            'quantity' => $_POST['quantity' . $quantity[$i]],
+          ]);
+        }
+        $i++;
+      } while ($i < $materialCount);
+    }
 
     if ($_POST['duration'] <= 0) {
       $message = "La durée de l'activité doit être supérieure à 0";
       header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
       exit();
     }
-    if ($_POST['price'] < 0) {
+    if ($_POST['priceAttendee'] < 0) {
       $message = "Le prix de l'activité ne peut être négatif";
       header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
       exit();
@@ -109,11 +163,11 @@ if (isset($_GET['update'])) {
     );
     $result = $request->execute([
       ':duration' => $_POST['duration'],
-      ':priceAttendee' => $_POST['price'],
+      ':priceAttendee' => $_POST['priceAttendee'],
       ':maxAttendee' => $_POST['maxAttendee'],
       ':id' => $_GET['id'],
     ]);
-    if ($result) {
+    if ($result && $result2 && $result3) {
       $message = 'Les détails ont bien été modifiés';
       header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=success');
       exit();
