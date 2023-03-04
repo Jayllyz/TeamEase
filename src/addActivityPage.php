@@ -105,22 +105,18 @@ include 'includes/head.php';
                     <input class="form-control" name="fourthImage" type="file" accept="image/jpeg, image/png">
                 </div>
             </div>
-            <div class="row">
-                <div class="mb-4">
-                    <label for="provider" class="form-label"><h4>Prestataires</h4></label>
-                    <div id="provider-container"></div>
-                    <div>
-                        <button type="button" class="btn btn-primary" onclick="assignProvider()">Ajouter un prestataire</button>
-                    </div>
+            <div class="mb-4">
+                <label for="provider" class="form-label"><h4>Prestataires</h4></label>
+                <div id="provider-container"></div>
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="assignProvider()">Ajouter un prestataire</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="mb-4">
-                    <label for="material" class="form-label"><h4>Matériels</h4></label>
-                    <div id="material-container"></div>
-                    <div>
-                        <button type="button" class="btn btn-primary" onclick="assignMaterial()">Ajouter du matériel</button>
-                    </div>
+            <div class="mb-4">
+                <label for="material" class="form-label"><h4>Matériels</h4></label>
+                <div id="material-container"></div>
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="assignMaterial()">Ajouter du matériel</button>
                 </div>
             </div>
             <button type="submit" class="btn btn-success btn-lg" id="submit">Valider</button>

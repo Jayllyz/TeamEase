@@ -33,6 +33,7 @@ include 'includes/head.php';
   </div>
   <main>
     <div class="container mb-5 text-center">
+        <?php include 'includes/msg.php'; ?>
         <h1><b><?php echo $activity['name']; ?></b></h1>
         <div class="row mt-5 text-white">
             <div class="col-8" style="border-right:solid #59A859">
@@ -99,8 +100,6 @@ include 'includes/head.php';
             </div>
         </div>
 
-        <?php include 'includes/msg.php'; ?>
-
         <hr class="mb-3">
         <h2>Catégories</h2>
         <div class="d-flex justify-content-center">
@@ -153,12 +152,20 @@ include 'includes/head.php';
     </div>
 
     <div class="container">
-        <h1 class="mb-5">Description de l'activité</h1>
+        <h1 class="mb-5">Description de l'activité
+            <?php if ($_SESSION['rights'] == 2) {
+              echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-description">Modifier</button>';
+            } ?>
+        </h1>
         <p class="fs-5" style="margin-left: 30px; margin-right: 30px"><?php echo $activity['description']; ?></p>
 
         <hr class="my-5" size="5">
 
-        <h2 class="text-center">Details de l'activité</h2>
+        <h2 class="text-center">Details de l'activité
+        <?php if ($_SESSION['rights'] == 2) {
+          echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-details">Modifier</button>';
+        } ?>
+        </h2>
         <hr style="margin-bottom:0" size="5">
         <div class="row">
             <div class="col-4 text-center" style="border-right:solid #C0C1B0">
@@ -176,7 +183,14 @@ include 'includes/head.php';
             <div class="col-4 text-center">
                 <h4>Nombre maximum de participants</h4>
                 <div class="text-center">
-                    <p class="fs-5"><?php echo $activity['maxAttendee']; ?> personnes</p>
+                    <p class="fs-5"><?php
+                    echo $activity['maxAttendee'];
+                    if ($activity['maxAttendee'] == 1) {
+                      echo ' personne';
+                    } else {
+                      echo ' personnes';
+                    }
+                    ?></p>
                 </div>
             </div>
         </div>
@@ -226,8 +240,184 @@ include 'includes/head.php';
             </div>
         </div>
     </div>
+
+    <!-- Modal edition description -->
+    <div class="modal fade popup" id="edition-description" tabindex="-1" aria-labelledby="editionLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editionLabel">Edition de la description</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="verifications/verifActivity.php?update=description&id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
+                        <div class="form-group mb-3">
+                            <label for="description">Description</label>
+                            <textarea name="description" class="form-control" rows="10"><?php echo $activity[
+                              'description'
+                            ]; ?></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal edition details -->
+    <div class="modal fade popup" id="edition-details" tabindex="-1" aria-labelledby="editionLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editionLabel">Edition des détails</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="verifications/verifActivity.php?update=details&id=<?php echo $id; ?>" method="post" id="activity-form" enctype="multipart/form-data">
+                        <div class="form-group mb-3">
+                            <label for="duration">Durée de l'activité</label>
+                            <input type="number" name="duration" class="form-control" value=<?php $activity[
+                              'duration'
+                            ]; ?>>
+                            <label for="priceAttendee">Prix par participants</label>
+                            <input type="number" name="priceAttendee" class="form-control" value=<?php $activity[
+                              'priceAttendee'
+                            ]; ?>>
+                            <label for="maxAttendee">Nombre maximum de participants</label>
+                            <input type="number" name="maxAttendee" class="form-control" value=<?php $activity[
+                              'maxAttendee'
+                            ]; ?>>
+                            <div class="mb-4">
+                                <label for="provider" class="form-label"><h4>Prestataires</h4></label>
+                                <div id="provider-container">
+                                    <?php
+                                    $query = $db->query('SELECT name FROM OCCUPATION');
+                                    $occupations = $query->fetchAll(PDO::FETCH_ASSOC);
+                                    $query = $db->prepare(
+                                      'SELECT p.id, p.firstName, UPPER(p.lastName), o.name FROM PROVIDER p JOIN OCCUPATION o ON p.id_occupation = o.id WHERE p.id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)'
+                                    );
+                                    $query->execute([
+                                      ':id' => $id,
+                                    ]);
+                                    $providers = $query->fetchAll(PDO::FETCH_ASSOC);
+                                    $i = 0;
+                                    foreach ($providers as $provider) {
+                                      $query = $db->query(
+                                        'SELECT id, firstName, UPPER(lastName) FROM PROVIDER WHERE id_occupation IN (SELECT id FROM OCCUPATION WHERE name = "' .
+                                          $providers[$i]['name'] .
+                                          '")'
+                                      );
+                                      $dropdownProvider = $query->fetchAll(PDO::FETCH_ASSOC);
+                                      echo '
+                                      <div class="mb-4">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-secondary dropdown-toggle" style="padding-left:50px; padding-right:50px" data-bs-toggle="dropdown" aria-expanded="false">
+                                                ';
+                                      echo $providers[$i]['name'];
+                                      echo '
+                                            </button>
+                                            <ul class="dropdown-menu">';
+                                      foreach ($occupations as $occupation) {
+                                        echo '<li><a class="dropdown-item" onclick="selectOccupation(this)" style="padding-left:50px; padding-right:50px">' .
+                                          $occupation['name'] .
+                                          '</a></li>';
+                                      }
+                                      echo '
+                                            </ul>
+                                        </div>
+                                    <button type="button" class="btn btn-secondary dropdown-toggle mx-2 selected" id="';
+                                      echo $providers[$i]['id'];
+                                      echo '" data-bs-toggle="dropdown" aria-expanded="false">
+                                    ';
+                                      echo $providers[$i]['firstName'] . ' ' . $providers[$i]['UPPER(p.lastName)'];
+                                      echo '
+                                    </button>
+                                    <button type="button" class="btn btn-danger" onclick="unassignProvider(this)">Supprimer</button>
+                                    <ul class="dropdown-menu">';
+                                      foreach ($dropdownProvider as $provider2) {
+                                        echo '<li><a class="dropdown-item" onclick="selectProvider(this)" id="' .
+                                          $provider2['id'] .
+                                          '">' .
+                                          $provider2['firstName'] .
+                                          ' ' .
+                                          $provider2['UPPER(lastName)'] .
+                                          '</a></li>';
+                                      }
+                                      echo '</ul>
+                                    </div>';
+                                      $i++;
+                                    }
+                                    ?>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-primary" onclick="assignProvider()">Ajouter un prestataire</button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="material" class="form-label"><h4>Matériels</h4></label>
+                                <div id="material-container"></div>
+                                <div>
+                                    <button type="button" class="btn btn-primary" onclick="assignMaterial()">Ajouter du matériel</button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        </div>
+                        <?php
+                        $query = $db->prepare('SELECT id_provider FROM ANIMATE WHERE id_activity = :id');
+                        $query->execute([
+                          ':id' => $id,
+                        ]);
+                        $providers = $query->fetchAll(PDO::FETCH_ASSOC);
+                        if (!empty($providers)) {
+                          foreach ($providers as $provider) {
+                            echo '<input type="hidden" name="provider' .
+                              $provider['id_provider'] .
+                              '" id="provider' .
+                              $provider['id_provider'] .
+                              '" value="' .
+                              $provider['id_provider'] .
+                              '">';
+                          }
+                        }
+                        $query = $db->prepare(
+                          'SELECT id_material, quantity FROM MATERIAL_ACTIVITY WHERE id_activity = :id'
+                        );
+                        $query->execute([
+                          ':id' => $id,
+                        ]);
+                        $materials = $query->fetchAll(PDO::FETCH_ASSOC);
+                        if (!empty($materials)) {
+                          foreach ($materials as $material) {
+                            echo '<input type="hidden" name="material"' .
+                              $material['id_material'] .
+                              ' value="' .
+                              $material['id_material'] .
+                              '">';
+                            echo '<input type="hidden" name="quantity"' .
+                              $material['id_material'] .
+                              ' value="' .
+                              $material['quantity'] .
+                              '">';
+                          }
+                        }
+                        ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
   </main>
   <?php include 'includes/footer.php'; ?>
+  <script src="css-js/scripts.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 

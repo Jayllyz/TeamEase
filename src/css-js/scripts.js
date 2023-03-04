@@ -173,9 +173,9 @@ function selectProvider(id) {
 
 function providerList(id, type) {
   const form = document.getElementById('activity-form');
+  console.log('ok');
   if (type == 'delete') {
     const providerInput = document.getElementById('provider' + id);
-    console.log(providerInput);
     providerInput.remove();
   } else if (type == 'add') {
     const providerInput = document.createElement('input');

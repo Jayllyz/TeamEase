@@ -1,4 +1,5 @@
 <?php
+//Suppression d'une activité------------------------------------------------------------------------
 session_start();
 if (!isset($_SESSION['rights']) == 2) {
   header('Location: ../index.php');
@@ -54,6 +55,77 @@ if (isset($_GET['delete'])) {
     exit();
   }
 }
+
+//Modification d'une activité-----------------------------------------------------------------
+
+if (isset($_GET['update'])) {
+  if ($_GET['update'] == 'description') {
+    $request = $db->prepare('UPDATE ACTIVITY SET description = :description WHERE id = :id');
+    $result = $request->execute([
+      ':description' => $_POST['description'],
+      ':id' => $_GET['id'],
+    ]);
+    if ($result) {
+      $message = 'La description a bien été modifiée';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=success');
+      exit();
+    } else {
+      $message = 'Une erreur est survenue';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+  } elseif ($_GET['update'] == 'details') {
+    $providers = [];
+    $providersCount = 0;
+
+    foreach ($_POST as $key => $value) {
+      if (preg_match('/^provider(\d+)$/', $key, $matches)) {
+        $provider_id = $matches[1];
+        $providers[] = $provider_id;
+        $providersCount++;
+      }
+    }
+
+    var_dump($providers);
+    exit();
+
+    if ($_POST['duration'] <= 0) {
+      $message = "La durée de l'activité doit être supérieure à 0";
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+    if ($_POST['price'] < 0) {
+      $message = "Le prix de l'activité ne peut être négatif";
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+    if ($_POST['maxAttendee'] <= 0) {
+      $message = 'Le nombre de participants maximum doit être supérieur à 0';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+    $request = $db->prepare(
+      'UPDATE ACTIVITY SET duration = :duration, priceAttendee = :priceAttendee, maxAttendee = :maxAttendee WHERE id = :id'
+    );
+    $result = $request->execute([
+      ':duration' => $_POST['duration'],
+      ':priceAttendee' => $_POST['price'],
+      ':maxAttendee' => $_POST['maxAttendee'],
+      ':id' => $_GET['id'],
+    ]);
+    if ($result) {
+      $message = 'Les détails ont bien été modifiés';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=success');
+      exit();
+    } else {
+      $message = 'Une erreur est survenue';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+  }
+}
+
+//Ajout d'une activité------------------------------------------------------------------------
 
 $getId = $db->prepare('SELECT id FROM ACTIVITY ORDER BY id DESC LIMIT 1');
 $getId->execute();
