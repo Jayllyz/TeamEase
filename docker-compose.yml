@@ -6,6 +6,7 @@ services:
       context: docker/php
       dockerfile: Dockerfile
     container_name: php
+    restart: always
     image: php
     tty: true
     working_dir: /home/php/src

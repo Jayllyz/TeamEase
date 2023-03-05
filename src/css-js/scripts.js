@@ -4,8 +4,6 @@ let parameters = {
   numbers: false,
   special: false,
 };
-let strengthBar = document.getElementById('strength-bar');
-let msg = document.getElementById('msg');
 
 function viewPassword() {
   var passConnexion = document.getElementById('password');
@@ -35,9 +33,19 @@ function viewConfPasswordInscription(id) {
   }
 }
 
-function strengthChecker() {
-  let password = document.getElementById('password').value;
-
+function strengthChecker(id) {
+  let password;
+  let strengthBar;
+  let msg;
+  if (id.id == 'password') {
+    password = id.parentElement.querySelector('#password').value;
+    strengthBar = document.getElementById('strength-bar');
+    msg = document.getElementById('msg');
+  } else {
+    password = id.parentElement.querySelector('#passwordProvider').value;
+    strengthBar = document.getElementById('strength-bar-provider');
+    msg = document.getElementById('msg-provider');
+  }
   parameters.letters = /[A-Za-z]+/.test(password) ? true : false;
   parameters.numbers = /[0-9]+/.test(password) ? true : false;
   parameters.special = /[!\"$%&/()=?@~`\\.\';:+=^*_-]+/.test(password) ? true : false;
