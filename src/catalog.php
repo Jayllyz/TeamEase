@@ -31,7 +31,7 @@ include 'includes/head.php';
         </div>
         <hr size="5">
 
-        <?php include 'includes/errorMessage.php'; ?>
+        <?php include 'includes/msg.php'; ?>
 
         <?php
         $query = $db->query('SELECT id FROM ACTIVITY');
@@ -120,7 +120,7 @@ include 'includes/head.php';
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <a type="button" class="btn btn-danger" href="verifications/verificationActivity.php?delete=' .
+                        <a type="button" class="btn btn-danger" href="verifications/verifActivity.php?delete=' .
               $altId .
               '">Supprimer</a>
                       </div>

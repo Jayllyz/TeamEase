@@ -69,6 +69,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="partenaire.php">Entreprises partenaires</a>
                     </li>
+                    <?php if (isset($_SESSION['rights'])) {
+                      if ($_SESSION['rights'] == 2) {
+                        echo '
+                              <li class="nav-item">
+                                  <a class="nav-link" href="material.php">Gestion du matériel</a>
+                              </li>
+                              ';
+                      }
+                    } ?>
                     <li class="nav-item">
                         <a class="nav-link" href="aPropos.php">A propos de nous</a>
                     </li>

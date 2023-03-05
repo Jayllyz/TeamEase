@@ -186,16 +186,17 @@ CREATE TABLE RESERVATION_SERVICE
   FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
 );
 
-INSERT INTO CATEGORY (id, name) VALUES (1, 'En ligne');
-INSERT INTO CATEGORY (id, name) VALUES (2, 'En personne');
-INSERT INTO CATEGORY (id, name) VALUES (3, 'Sportive');
-INSERT INTO CATEGORY (id, name) VALUES (4, 'Reflexion');
-INSERT INTO CATEGORY (id, name) VALUES (5, 'Culturelle');
-INSERT INTO CATEGORY (id, name) VALUES (6, 'Musique');
-INSERT INTO CATEGORY (id, name) VALUES (7, "Coopératif");
-INSERT INTO CATEGORY (id, name) VALUES (8, "Compétitif");
+INSERT INTO CATEGORY (id, name) VALUES (0, 'En ligne');
+INSERT INTO CATEGORY (id, name) VALUES (1, 'En personne');
+INSERT INTO CATEGORY (id, name) VALUES (2, 'Sportive');
+INSERT INTO CATEGORY (id, name) VALUES (3, 'Reflexion');
+INSERT INTO CATEGORY (id, name) VALUES (4, 'Culturelle');
+INSERT INTO CATEGORY (id, name) VALUES (5, 'Musique');
+INSERT INTO CATEGORY (id, name) VALUES (6, "Coopératif");
+INSERT INTO CATEGORY (id, name) VALUES (7, "Compétitif");
+
+INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901234, 'TeamEase', 'teamease@gmail.com', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 2);
 
 INSERT INTO OCCUPATION (id, name) VALUES (1, 'Animateur');
 INSERT INTO OCCUPATION (id, name) VALUES (2, 'Game Master');
 INSERT INTO OCCUPATION (id, name) VALUES (3, 'Coach sportif');
-
