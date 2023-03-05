@@ -92,17 +92,17 @@ include 'includes/db.php';
                     <input type="password" name="passwordCompany" class="form-control is-<?= isset($_GET['valid']) &&
                                                                                                 $_GET['input'] == 'passwordCompany'
                                                                                                 ? $_GET['valid']
-                                                                                                : '' ?>" id="password" oninput="strengthChecker()" required>
+                                                                                                : '' ?>" id="password" oninput="strengthChecker(this)" required>
                     <div id="strength-bar"></div>
                     <p id="msg"></p>
                     <label class="form-label">Voir mon mot de passe</label>
-                    <input type="checkbox" class="form-check-input" onClick="viewPasswordInscription()">
+                    <input type="checkbox" class="form-check-input" onClick="viewPasswordInscription(this)">
                 </div>
                 <div class="mb-3">
                     <label class="form-label"><strong>Confirmation du mot de passe</strong></label>
                     <input type="password" name="conf_password" class="form-control" id="conf_Password_inscription" required>
                     <label class="form-label">Voir mon mot de passe</label>
-                    <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription()">
+                    <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription(this)">
                 </div>
                 <div class="text-center">
                     <button type="submit" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
@@ -159,11 +159,23 @@ include 'includes/db.php';
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label"><strong>Métier </strong></label>
-                    <input type="text" name="job" class="form-control is-<?= isset($_GET['valid']) &&
-                                                                                $_GET['input'] == 'job'
-                                                                                ? $_GET['valid']
-                                                                                : '' ?>" value="<?= isset($_COOKIE['job']) ? $_COOKIE['job'] : '' ?>" required>
+                    <label class="custom-select" for="selectjob"><strong>Métier</strong></label>
+                    <select class="form-select is-<?= isset($_GET['valid']) && $_GET['input'] == 'job'
+                                                        ? $_GET['valid']
+                                                        : '' ?>" value="<?= isset($_COOKIE['job'])
+                                                                            ? $_COOKIE['job']
+                                                                            : '' ?>" id="selectjob" name="job" required>
+
+                        <?php
+                        $req = $db->query('SELECT id, name FROM OCCUPATION');
+                        $req = $req->fetchAll(PDO::FETCH_ASSOC);
+
+                        foreach ($req as $value) {
+                            echo '<option value="' . $value['id'] . '">' . $value['name'] . '</option>';
+                        }
+                        ?>
+                    </select>
+
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -188,17 +200,17 @@ include 'includes/db.php';
                     <input type="password" name="password" class="form-control is-<?= isset($_GET['valid']) &&
                                                                                         $_GET['input'] == 'mdp'
                                                                                         ? $_GET['valid']
-                                                                                        : '' ?>" id="password" oninput="strengthChecker()" required>
-                    <div id="strength-bar"></div>
-                    <p id="msg"></p>
+                                                                                        : '' ?>" id="passwordProvider" oninput="strengthChecker(this)" required>
+                    <div id="strength-bar-provider"></div>
+                    <p id="msg-provider"></p>
                     <label class="form-label">Voir mon mot de passe</label>
-                    <input type="checkbox" class="form-check-input" onClick="viewPasswordInscription()">
+                    <input type="checkbox" class="form-check-input" onClick="viewPasswordInscription(this)">
                 </div>
                 <div class="mb-3">
                     <label class="form-label"><strong>Confirmation du mot de passe</strong></label>
                     <input type="password" name="conf_password" class="form-control" id="conf_Password_inscription" required>
                     <label class="form-label">Voir mon mot de passe</label>
-                    <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription()">
+                    <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription(this)">
                 </div>
                 <div class="text-center">
                     <button type="submit" name="submit" class="btn btn-lg btn-submit">Envoyer</button>

@@ -6,6 +6,7 @@ services:
       context: docker/php
       dockerfile: Dockerfile
     container_name: php
+    restart: always
     image: php
     tty: true
     working_dir: /home/php/src
@@ -28,8 +29,9 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       env_file: .env
     volumes:
-      - ./init.sql:/data/application/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./logs:/var/log/mysql
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
     ports:
       - ${MYSQL_PORT}:${MYSQL_PORT}
     expose:

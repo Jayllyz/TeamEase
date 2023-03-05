@@ -4,8 +4,6 @@ let parameters = {
   numbers: false,
   special: false,
 };
-let strengthBar = document.getElementById('strength-bar');
-let msg = document.getElementById('msg');
 
 function viewPassword() {
   var passConnexion = document.getElementById('password');
@@ -17,8 +15,8 @@ function viewPassword() {
   }
 }
 
-function viewPasswordInscription() {
-  var passInscription = document.getElementById('password');
+function viewPasswordInscription(id) {
+  var passInscription = id.parentElement.querySelector('#password');
   if (passInscription.type === 'password') {
     passInscription.type = 'text';
   } else {
@@ -26,8 +24,8 @@ function viewPasswordInscription() {
   }
 }
 
-function viewConfPasswordInscription() {
-  var confPassInscription = document.getElementById('conf_Password_inscription');
+function viewConfPasswordInscription(id) {
+  var confPassInscription = id.parentElement.querySelector('#conf_Password_inscription');
   if (confPassInscription.type === 'password') {
     confPassInscription.type = 'text';
   } else {
@@ -35,9 +33,19 @@ function viewConfPasswordInscription() {
   }
 }
 
-function strengthChecker() {
-  let password = document.getElementById('password').value;
-
+function strengthChecker(id) {
+  let password;
+  let strengthBar;
+  let msg;
+  if (id.id == 'password') {
+    password = id.parentElement.querySelector('#password').value;
+    strengthBar = document.getElementById('strength-bar');
+    msg = document.getElementById('msg');
+  } else {
+    password = id.parentElement.querySelector('#passwordProvider').value;
+    strengthBar = document.getElementById('strength-bar-provider');
+    msg = document.getElementById('msg-provider');
+  }
   parameters.letters = /[A-Za-z]+/.test(password) ? true : false;
   parameters.numbers = /[0-9]+/.test(password) ? true : false;
   parameters.special = /[!\"$%&/()=?@~`\\.\';:+=^*_-]+/.test(password) ? true : false;
@@ -86,13 +94,10 @@ function validateForm(nameForm) {
   let i;
   let x;
   let y = document.forms[nameForm].elements;
-  console.log(y);
   for (i = 0; i < y.length; i++) {
     x = document.forms[nameForm].elements[i];
     console.log(x.nodeName);
     if (x.value === '' && x.nodeName === 'INPUT') {
-      console.log('empty');
-      console.log(x.nodeName);
       alert('Veuillez remplir tous les champs');
       return false;
     }
@@ -101,7 +106,6 @@ function validateForm(nameForm) {
 
 function changeSignForm() {
   let check = document.getElementById('provider-check').checked;
-  console.log(check);
   if (check == true) {
     document.getElementById('forms-company').style.display = 'none';
     document.getElementById('forms-provider').style.display = 'block';
