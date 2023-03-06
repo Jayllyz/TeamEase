@@ -205,11 +205,12 @@ function addMaterial() {
 
 function updateMaterial(id) {
   const container = id.parentElement.parentElement;
-  const material = container.querySelector('#material').value;
+  const idMaterial = container.querySelector('.material-input').getAttribute('id');
+  const material = container.querySelector('.material-input').value;
   const quantity = container.querySelector('#quantity').value;
   const used = container.querySelector('#used').value;
 
-  if (quantity < used) {
+  if (parseInt(quantity) < parseInt(used)) {
     alert('La quantité disponible ne peut pas être inférieure à la quantité utilisée');
     container.querySelector('#quantity').value = parseInt(container.querySelector('#available').value) + parseInt(used);
     return;
@@ -229,12 +230,12 @@ function updateMaterial(id) {
   };
   xhr.open('POST', 'verifications/verifMaterial.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('material=' + material + '&quantity=' + quantity + '&delete=false');
+  xhr.send('id=' + idMaterial + '&material=' + material + '&quantity=' + quantity + '&delete=false');
 }
 
 function deleteMaterial(id) {
   const container = id.parentElement.parentElement;
-  const material = container.querySelector('#material').value;
+  const idMaterial = container.querySelector('.material-input').getAttribute('id');
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
@@ -245,7 +246,7 @@ function deleteMaterial(id) {
   };
   xhr.open('POST', 'verifications/verifMaterial.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('material=' + material + '&quantity=0&delete=true');
+  xhr.send('id=' + idMaterial + '&material=0&quantity=0&delete=true');
 
   container.remove();
 }

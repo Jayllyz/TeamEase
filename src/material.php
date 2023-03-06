@@ -66,7 +66,9 @@
               echo '
                 <div class="row mb-4">
                     <div class="col-4">
-                        <input type="text" class="form-control" id="material" value="' .
+                        <input type="text" class="form-control material-input" id="';
+              echo $result[$i]['id'];
+              echo '" value="' .
                 $type .
                 '" name="name" placeholder="Matériel">
                     </div>
