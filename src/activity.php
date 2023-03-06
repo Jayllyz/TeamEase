@@ -101,7 +101,11 @@ include 'includes/head.php';
         </div>
 
         <hr class="mb-3">
-        <h2>Catégories</h2>
+        <h2>Catégories
+        <?php if ($_SESSION['rights'] == 2) {
+          echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-category">Modifier</button>';
+        } ?>
+        </h2>
         <div class="d-flex justify-content-center">
             <?php
             $query = $db->prepare(
@@ -477,6 +481,86 @@ include 'includes/head.php';
                           }
                         }
                         ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal edition categorie -->
+    <div class="modal fade popup" id="edition-category" tabindex="-1" aria-labelledby="editionLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editionLabel">Edition des catégories</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="verifications/verifActivity.php?update=category&id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
+                        <div class="form-group mb-3">
+                            <?php
+                            $query = $db->query('SELECT name FROM CATEGORY');
+                            $fetch = $query->fetchAll(PDO::FETCH_COLUMN);
+                            $count = count($fetch);
+                            $query = $db->prepare(
+                              'SELECT name FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id)'
+                            );
+                            $query->execute([
+                              ':id' => $id,
+                            ]);
+                            $categories = $query->fetchAll(PDO::FETCH_ASSOC);
+                            echo '<label for="genre" class="form-label"><h4>Catégories de l\'activité</h4></label>
+                                 <div class="row mb-3">';
+                            for ($i = 0; $i < $count; $i++) {
+                              if ($i % 3 == 0 && $i != 0) {
+                                echo '
+                                        </div>
+                                        <div class="row mb-3">
+                                        <input type="checkbox" class="btn btn-check" id="' .
+                                  $fetch[$i] .
+                                  '" name="category[]" value="' .
+                                  $fetch[$i] .
+                                  '" autocomplete="off"';
+                                foreach ($categories as $category) {
+                                  if ($category['name'] == $fetch[$i]) {
+                                    echo 'checked';
+                                  }
+                                }
+                                echo '>
+                                        <label class="btn btn-outline-success col me-2 mb-3" for="' .
+                                  $fetch[$i] .
+                                  '">' .
+                                  $fetch[$i] .
+                                  '</label>
+                                        ';
+                              } else {
+                                echo '<input type="checkbox" class="btn btn-check" id="' .
+                                  $fetch[$i] .
+                                  '" name="category[]" value="' .
+                                  $fetch[$i] .
+                                  '" autocomplete="off"';
+                                foreach ($categories as $category) {
+                                  if ($category['name'] == $fetch[$i]) {
+                                    echo 'checked';
+                                  }
+                                }
+                                echo '>
+                                        <label class="btn btn-outline-success col me-2 mb-3" for="' .
+                                  $fetch[$i] .
+                                  '">' .
+                                  $fetch[$i] .
+                                  '</label>';
+                              }
+                            }
+                            if (($count + 1) % 3 != 0) {
+                              echo '</div>';
+                            }
+                            ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        </div>
                     </form>
                 </div>
             </div>

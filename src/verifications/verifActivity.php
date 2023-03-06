@@ -74,6 +74,41 @@ if (isset($_GET['update'])) {
       header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
       exit();
     }
+  } elseif ($_GET['update'] == 'category') {
+    if (!isset($_POST['category'])) {
+      $message = 'Veuillez selectionner au moins une catégorie';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+
+    $delete = $db->prepare('DELETE FROM BELONG WHERE id_activity = :id_activity');
+    $delete->execute([
+      ':id_activity' => $_GET['id'],
+    ]);
+
+    $i = 0;
+    do {
+      $query = $db->prepare('SELECT id FROM CATEGORY WHERE name = :name');
+      $query->execute([
+        ':name' => $_POST['category'][$i],
+      ]);
+      $category = $query->fetch(PDO::FETCH_ASSOC);
+      $insert = $db->prepare('INSERT INTO BELONG (id_activity, id_category) VALUES (:id_activity, :id_category)');
+      $result = $insert->execute([
+        'id_activity' => $_GET['id'],
+        'id_category' => $category['id'],
+      ]);
+      if (!$result) {
+        $message = 'Une erreur est survenue';
+        header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+        exit();
+      }
+      $i++;
+    } while ($i < count($_POST['category']));
+
+    $message = 'La catégorie a bien été modifiée';
+    header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=success');
+    exit();
   } elseif ($_GET['update'] == 'details') {
     $delete = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
     $delete->execute([
