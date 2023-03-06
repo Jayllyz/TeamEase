@@ -79,7 +79,7 @@ include 'includes/head.php';
 
           <div class="row">
           <div class="col-4">
-          <a href="activity.php?jeu=' .
+          <a href="activity.php?id=' .
               $id[$i] .
               '"><img src="images/activities/' .
               $id[$i] .
@@ -90,7 +90,7 @@ include 'includes/head.php';
           </div>
           <div class="card-body col-8 row">
             <div class="col-11 card-title">
-            <h4><a href="activity.php?jeu=' .
+            <h4><a href="activity.php?id=' .
               $id[$i] .
               '" class="text-light">' .
               $activity[0] .

@@ -177,9 +177,9 @@ function selectProvider(id) {
 
 function providerList(id, type) {
   const form = document.getElementById('activity-form');
+  console.log('ok');
   if (type == 'delete') {
     const providerInput = document.getElementById('provider' + id);
-    console.log(providerInput);
     providerInput.remove();
   } else if (type == 'add') {
     const providerInput = document.createElement('input');
@@ -322,6 +322,7 @@ function quantityChange(value, id) {
 function unassignMaterial(id) {
   const materialContainer = id.parentElement;
   if (materialContainer.querySelector('.selected') != null) {
+    console.log(materialContainer.querySelector('.selected'));
     const materialId = materialContainer.querySelector('.selected').getAttribute('id');
     materialList(materialId, 'delete', 'material');
     if (document.getElementById('quantity' + materialId)) {
@@ -332,6 +333,7 @@ function unassignMaterial(id) {
 }
 
 function materialList(id, type, element, quantity) {
+  console.log(id);
   const form = document.getElementById('activity-form');
   if (type == 'add') {
     if (element == 'material') {
