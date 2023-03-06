@@ -1,6 +1,9 @@
 <?php
 include '../includes/db.php';
 
+if (!isset($_POST['id'])) {
+  exit();
+}
 if (!isset($_POST['material'])) {
   exit();
 }
@@ -15,11 +18,15 @@ if ($_POST['material'] == '') {
 }
 
 if ($_POST['delete'] == 'true') {
-  $delete = $db->prepare('DELETE FROM MATERIAL WHERE type=:type');
+  $delete = $db->prepare('DELETE FROM MATERIAL WHERE id=:id');
   $result = $delete->execute([
-    'type' => $_POST['material'],
+    'id' => $_POST['id'],
   ]);
-  if ($result) {
+  $delete = $db->prepare('DELETE FROM MATERIAL_ACTIVITY WHERE id_material=:id');
+  $result2 = $delete->execute([
+    'id' => $_POST['id'],
+  ]);
+  if ($result && $result2) {
     echo 'success';
   } else {
     echo 'error';
@@ -27,21 +34,22 @@ if ($_POST['delete'] == 'true') {
   exit();
 }
 
-$seek = $db->prepare('SELECT id FROM MATERIAL WHERE type=:type');
+$seek = $db->prepare('SELECT type FROM MATERIAL WHERE id=:id');
 $seek->execute([
-  'type' => $_POST['material'],
+  'id' => $_POST['id'],
 ]);
 
 if ($seek->rowCount() > 0) {
-  $id = $seek->fetch();
-  $update = $db->prepare('UPDATE MATERIAL SET quantity = :quantity WHERE id = :id');
+  $update = $db->prepare('UPDATE MATERIAL SET quantity = :quantity, type=:type WHERE id = :id');
   $result = $update->execute([
+    'type' => $_POST['material'],
     'quantity' => $_POST['quantity'],
-    'id' => $id[0],
+    'id' => $_POST['id'],
   ]);
 } else {
-  $insert = $db->prepare('INSERT INTO MATERIAL (type, quantity) VALUES (:type, :quantity)');
-  $result = $insert->execute([
+  $insert = $db->prepare('INSERT INTO MATERIAL (id, type, quantity) VALUES (:id, :type, :quantity)');
+  $result2 = $insert->execute([
+    'id' => $_POST['id'],
     'type' => $_POST['material'],
     'quantity' => $_POST['quantity'],
   ]);
