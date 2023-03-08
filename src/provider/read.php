@@ -23,20 +23,17 @@ if ($_SESSION["rights"] == 2) { ?>
         ]);
         $result = $req->fetchAll(PDO::FETCH_ASSOC);
 
-        var_dump($result);
-
-        $id_occupation = $result["id_occupation"];
-
+        $id_occupation = $result[0]["id_occupation"];
 
         $req = $db->prepare(
-            "SELECT name FROM OCCUPATION WHERE id = :id"
+            "SELECT name FROM OCCUPATION WHERE id = :id_occupation"
         );
         $req->execute([
-            "id" => $id_occupation,
+            "id_occupation" => $id_occupation,
         ]);
-        $test = $req->fetchAll(PDO::FETCH_ASSOC);
+        $occupation = $req->fetchAll(PDO::FETCH_ASSOC);
 
-        var_dump($test);
+        $result[0]["id_occupation"] = $occupation[0]["name"];
 
         foreach ($result as $select) { ?>
 
@@ -46,7 +43,7 @@ if ($_SESSION["rights"] == 2) { ?>
                     <tr>
                         <th>Nom</th>
                         <th>Prénom</th>
-                        <th>Occupation</th>
+                        <th>Métier</th>
                         <th>Salaire</th>
                         <th>Email</th>
                         <th>Droits</th>

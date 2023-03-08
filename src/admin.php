@@ -128,6 +128,7 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Email</th>
+                                <th>Métier</th>
                                 <th>Salaire</th>
                                 <th>Droits</th>
                                 <th>Actions</th>
@@ -135,9 +136,23 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                         </thead>
                         <?php
                         $query = $db->query(
-                            "SELECT id, lastName, firstName, email, rights, salary FROM PROVIDER"
+                            "SELECT id, lastName, firstName, email, rights, salary, id_occupation FROM PROVIDER"
                         );
                         $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                        $id_occupation = $result[0]["id_occupation"];
+
+                        $req = $db->prepare(
+                            "SELECT name FROM OCCUPATION WHERE id = :id_occupation"
+                        );
+                        $req->execute([
+                            "id_occupation" => $id_occupation,
+                        ]);
+                        $occupation = $req->fetchAll(PDO::FETCH_ASSOC);
+
+                        $result[0]["id_occupation"] = $occupation[0]["name"];
+
+
                         foreach ($result as $select) { ?>
                             <tbody id="<?= $select["id"] ?>">
                                 <tr>
@@ -145,6 +160,7 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                                     <td><?= $select["lastName"] ?></td>
                                     <td><?= $select["firstName"] ?></td>
                                     <td><?= $select["email"] ?></td>
+                                    <td><?= $select["id_occupation"] ?></td>
                                     <td><?= $select["salary"] ?></td>
                                     <td><?php
                                         echo $select["rights"];
