@@ -3,11 +3,11 @@ version: '3.8'
 services:
   php:
     build:
-      context: .
-      dockerfile: Dockerfile.php
+      context: docker/php
+      dockerfile: Dockerfile
     container_name: php
-    image: php
     restart: always
+    image: php
     tty: true
     working_dir: /home/php/src
     entrypoint: php
@@ -23,22 +23,22 @@ services:
     image: mysql
     restart: always
     build:
-      context: .
-      dockerfile: Dockerfile.sql
-      target: sql
+      context: docker/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       env_file: .env
     volumes:
-      - ./init.sql:/data/application/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./logs:/var/log/mysql
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
     ports:
       - ${MYSQL_PORT}:${MYSQL_PORT}
     expose:
       - '${MYSQL_PORT}'
 
   adminer:
+    container_name: adminer
     image: adminer:latest
     restart: always
     environment:

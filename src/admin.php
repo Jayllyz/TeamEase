@@ -31,13 +31,14 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                             <th>SIRET</th>
                             <th>Nom de l'entreprise</th>
                             <th>Email</th>
+                            <th>Adresse</th>
                             <th>Droits</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <?php
                     $query = $db->query(
-                        "SELECT siret, companyName, email, rights FROM COMPANY WHERE rights != 2"
+                        "SELECT siret, companyName, email, rights, address FROM COMPANY WHERE rights != 2"
                     );
                     $result = $query->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($result as $select) { ?>
@@ -46,17 +47,18 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                                 <td><?= $select["siret"] ?></td>
                                 <td><?= $select["companyName"] ?></td>
                                 <td><?= $select["email"] ?></td>
+                                <td><?= $select["address"] ?></td>
                                 <td><?php
                                     echo $select["rights"];
                                     echo "<br>";
                                     if ($select["rights"] == 0) {
-                                        echo "Client";
+                                        echo "Client/Entreprise";
                                     } elseif ($select["rights"] == 1) {
-                                        echo "Partenaire";
+                                        echo "Prestataire";
                                     } elseif ($select["rights"] == -1) {
                                         echo "Banni";
                                     } elseif ($select["rights"] == 2) {
-                                        echo "Admin";
+                                        echo "Admin/Together&Stronger";
                                     }
                                     ?></td>
                                 <td>
