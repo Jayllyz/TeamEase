@@ -26,6 +26,7 @@ if (isset($_POST["submit"])) {
         exit();
     }
 
+
     $req = $db->prepare(
         "SELECT siret, rights,email FROM COMPANY WHERE email = :email AND password = :password"
     );
@@ -52,9 +53,36 @@ if (isset($_POST["submit"])) {
             }
         }
     } else {
-        header(
-            "location: ../login.php?message=Erreur dans le mots de passe ou le mail !&type=danger"
+        $req = $db->prepare(
+            "SELECT id, rights,email FROM PROVIDER WHERE email = :email AND password = :password"
         );
-        exit();
+        $req->execute([
+            "email" => $_POST["login"],
+            "password" => hash("sha512", $_POST["password"]),
+        ]);
+
+        $reponse = $req->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($reponse) {
+            foreach ($reponse as $select) {
+
+                if ($select["rights"] != -1) {
+                    $_SESSION["id"] = $select["id"];
+                    $_SESSION["rights"] = $select["rights"];
+                    $_SESSION["email"] = $select["email"];
+                    setcookie("email", $_POST["login"], time() + 3600);
+                    $login = $_POST["login"];
+                    header(
+                        "location: ../index.php?message=Vous êtes connecté&type=success"
+                    );
+                    exit();
+                }
+            }
+        } else {
+            header(
+                "location: ../login.php?message=Email ou mot de passe incorrect !&type=danger"
+            );
+            exit();
+        }
     }
 }

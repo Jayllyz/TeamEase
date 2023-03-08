@@ -17,15 +17,21 @@
 
             <div class="col-md-1"></div>
             <div class="row">
-                <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
-                                                                echo 'href="#">Mes reservations</a>';
-                                                            } else {
-                                                                echo 'href="login.php">Se connecter</a>';
-                                                            } ?> <a class="btn btn-secondary col mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
-                                                                                                                echo 'href="logout.php">Se deconnecter</a>';
-                                                                                                            } else {
-                                                                                                                echo 'href="signin.php">S\'inscrire</a>';
-                                                                                                            } ?> </div>
+                <a class="btn btn-secondary col mx-3 mt-3" <?php if (
+                  isset($_SESSION['siret']) ||
+                  isset($_SESSION['id'])
+                ) {
+                  echo 'href="#">Mes reservations</a>';
+                } else {
+                  echo 'href="login.php">Se connecter</a>';
+                } ?> <a class="btn btn-secondary col mx-3 mt-3" <?php if (
+   isset($_SESSION['siret']) ||
+   isset($_SESSION['id'])
+ ) {
+   echo 'href="logout.php">Se deconnecter</a>';
+ } else {
+   echo 'href="signin.php">S\'inscrire</a>';
+ } ?> </div>
             </div>
         </div>
     </div>
@@ -41,20 +47,37 @@
                         <a class="nav-link active" aria-current="page" href="index.php">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="activites.php">Catalogue d'activités</a>
+                        <a class="nav-link" href="catalog.php">Catalogue d'activités</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Categorie d'activités
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <!-- Prendre dans la db les categorie et les afficher ici -->
-                            <li><a class="dropdown-item" href="genre.php?genre=Test">Test</a></li>
+                            <?php
+                            $query = $db->query('SELECT name FROM CATEGORY');
+                            while ($category = $query->fetch()) {
+                              echo '<li><a class="dropdown-item" href="catalog.php?category=' .
+                                $category['name'] .
+                                '">' .
+                                $category['name'] .
+                                '</a></li>';
+                            }
+                            ?>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="partenaire.php">Entreprises partenaires</a>
                     </li>
+                    <?php if (isset($_SESSION['rights'])) {
+                      if ($_SESSION['rights'] == 2) {
+                        echo '
+                              <li class="nav-item">
+                                  <a class="nav-link" href="material.php">Gestion du matériel</a>
+                              </li>
+                              ';
+                      }
+                    } ?>
                     <li class="nav-item">
                         <a class="nav-link" href="aPropos.php">A propos de nous</a>
                     </li>

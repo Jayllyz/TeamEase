@@ -64,7 +64,8 @@ footer {
   bottom: 7px;
 }
 
-#strength-bar {
+#strength-bar,
+#strength-bar-provider {
   background-color: #dcdcdc;
   height: 10px;
   position: relative;
@@ -125,7 +126,8 @@ footer {
   transition: 0.5s !important;
 }
 
-#msg {
+#msg,
+#msg-provider {
   width: 100%;
   text-align: left;
 }
@@ -158,4 +160,8 @@ footer {
   #svg-footer {
     display: none;
   }
+}
+
+.no-dot {
+  list-style-type: none;
 }
