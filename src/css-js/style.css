@@ -75,10 +75,76 @@ footer {
   background-color: rgb(251, 157, 98) !important;
 }
 
+.button_profil {
+  display: flex;
+  flex-direction: column;
+}
+.button_profil a {
+  text-decoration: none;
+  color: white;
+}
+.button_profil a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+#exportData {
+  background-color: #255c15 !important;
+}
+
+.btn-read {
+  background-color: #089f58 !important;
+}
+
+.btn-update {
+  background-color: #011170 !important;
+}
+
+.btn-ban {
+  background-color: #9f0f08 !important;
+  color: white !important;
+}
+
+.btn-read,
+.btn-update,
+.btn-ban {
+  transition: 0.5s !important;
+}
+.btn-read:hover {
+  background-color: #014927 !important;
+  transform: scale(1.1);
+  transition: 0.5s !important;
+}
+.btn-ban:hover {
+  background-color: #620803 !important;
+  transform: scale(1.1);
+  transition: 0.5s !important;
+}
+.btn-update:hover {
+  background-color: #00093f !important;
+  transform: scale(1.1);
+  transition: 0.5s !important;
+}
+
 #msg,
 #msg-provider {
   width: 100%;
   text-align: left;
+}
+
+.logs {
+  background-color: #068e0c !important;
+  color: white !important;
+}
+
+.exportData {
+  background-color: #011170 !important;
+  color: white !important;
+}
+
+#logs {
+  display: flex;
+  justify-content: center;
 }
 
 #footer {
