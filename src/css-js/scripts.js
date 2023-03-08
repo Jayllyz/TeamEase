@@ -115,6 +115,17 @@ function changeSignForm() {
   }
 }
 
+function changeTable() {
+  let check = document.getElementById('provider-check').checked;
+  if (check == true) {
+    document.getElementById('table-company').style.display = 'none';
+    document.getElementById('table-provider').style.display = 'block';
+  } else {
+    document.getElementById('table-company').style.display = 'block';
+    document.getElementById('table-provider').style.display = 'none';
+  }
+}
+
 function unassignProvider(id) {
   let providerContainer = id.parentElement;
   if (providerContainer.querySelector('.selected') != null) {

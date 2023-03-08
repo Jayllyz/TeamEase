@@ -16,7 +16,7 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
 
         <main>
             <div class="container col-md-6">
-                <?php include "includes/errorMessage.php"; ?>
+                <?php include "includes/msg.php"; ?>
             </div>
 
             <h1>Liste des Clients</h1>
@@ -25,83 +25,182 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                     <a href="#" class="btn mb-4 logs">Consulter les logs</a>
                     <a href="#" class="btn ms-4 mb-4 exportData">Exporter les données</a>
                 </div>
-                <table class="table text-center table-bordered table-hover" id="active">
-                    <thead>
-                        <tr>
-                            <th>SIRET</th>
-                            <th>Nom de l'entreprise</th>
-                            <th>Email</th>
-                            <th>Adresse</th>
-                            <th>Droits</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <?php
-                    $query = $db->query(
-                        "SELECT siret, companyName, email, rights, address FROM COMPANY WHERE rights != 2"
-                    );
-                    $result = $query->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($result as $select) { ?>
-                        <tbody id="<?= $select["companyName"] ?>">
-                            <tr>
-                                <td><?= $select["siret"] ?></td>
-                                <td><?= $select["companyName"] ?></td>
-                                <td><?= $select["email"] ?></td>
-                                <td><?= $select["address"] ?></td>
-                                <td><?php
-                                    echo $select["rights"];
-                                    echo "<br>";
-                                    if ($select["rights"] == 0) {
-                                        echo "Client/Entreprise";
-                                    } elseif ($select["rights"] == 1) {
-                                        echo "Prestataire";
-                                    } elseif ($select["rights"] == -1) {
-                                        echo "Banni";
-                                    } elseif ($select["rights"] == 2) {
-                                        echo "Admin/Together&Stronger";
-                                    }
-                                    ?></td>
-                                <td>
-                                    <div class="button_profil">
-                                        <a href="clients/read.php?siret=<?= $select["siret"] ?>" class="btn-read btn ms-2 me-2">Consulter</a>
-                                        <br>
-                                        <a href="clients/update.php?siret=<?= $select["siret"] ?>&name=<?= $select["companyName"] ?>&email=<?= $select["email"] ?>&rights=<?= $select["rights"] ?>" class=" btn-update btn ms-2 me-2">Modifier</a>
-                                        <br>
+                <div class="d-flex justify-content-center container ">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onchange="changeTable()" checked>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Entreprise
+                        </label>
+                    </div>
 
-                                        <button type="button" class="btn-ban btn ms-2 me-2" data-bs-toggle="modal" data-bs-target="#pop-up-del-<?= $select["siret"] ?>"><?= $select["rights"] != -1
-                                                                                                                                                                            ? "Bannir"
-                                                                                                                                                                            : "Débannir" ?></button>
-                                        <div class="modal fade" id="pop-up-del-<?= $select["siret"] ?>">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Confirmation du <?= $select["rights"] != -1
-                                                                                                    ? "bannissement"
-                                                                                                    : "débannissement" ?> de <span class="text-uppercase"><?= $select["companyName"] ?></span></h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="form-check mx-3">
+                        <input class=" form-check-input" type="radio" name="flexRadioDefault" onchange="changeTable()" id="provider-check">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Prestataire
+                        </label>
+                    </div>
+                </div>
+                <div id="table-company">
+                    <table class="table text-center table-bordered table-hover" id="table-company">
+                        <thead>
+                            <tr>
+                                <th>SIRET</th>
+                                <th>Nom de l'entreprise</th>
+                                <th>Email</th>
+                                <th>Adresse</th>
+                                <th>Droits</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <?php
+                        $query = $db->query(
+                            "SELECT siret, companyName, email, rights, address FROM COMPANY WHERE rights != 2"
+                        );
+                        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($result as $select) { ?>
+                            <tbody id="<?= $select["companyName"] ?>">
+                                <tr>
+                                    <td><?= $select["siret"] ?></td>
+                                    <td><?= $select["companyName"] ?></td>
+                                    <td><?= $select["email"] ?></td>
+                                    <td><?= $select["address"] ?></td>
+                                    <td><?php
+                                        echo $select["rights"];
+                                        echo "<br>";
+                                        if ($select["rights"] == 0) {
+                                            echo "Client/Entreprise";
+                                        } elseif ($select["rights"] == 1) {
+                                            echo "Prestataire";
+                                        } elseif ($select["rights"] == -1) {
+                                            echo "Banni";
+                                        } elseif ($select["rights"] == 2) {
+                                            echo "Admin/Together&Stronger";
+                                        }
+                                        ?></td>
+                                    <td>
+                                        <div class="button_profil">
+                                            <a href="clients/read.php?siret=<?= $select["siret"] ?>" class="btn-read btn ms-2 me-2">Consulter</a>
+                                            <br>
+                                            <a href="clients/update.php?siret=<?= $select["siret"] ?>&name=<?= $select["companyName"] ?>&email=<?= $select["email"] ?>&rights=<?= $select["rights"] ?>" class=" btn-update btn ms-2 me-2">Modifier</a>
+                                            <br>
+
+                                            <button type="button" class="btn-ban btn ms-2 me-2" data-bs-toggle="modal" data-bs-target="#pop-up-del-<?= $select["siret"] ?>"><?= $select["rights"] != -1
+                                                                                                                                                                                ? "Bannir"
+                                                                                                                                                                                : "Débannir" ?></button>
+                                            <div class="modal fade" id="pop-up-del-<?= $select["siret"] ?>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Confirmation du <?= $select["rights"] != -1
+                                                                                                        ? "bannissement"
+                                                                                                        : "débannissement" ?> de <span class="text-uppercase"><?= $select["companyName"] ?></span></h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Saisir le nom de l'entreprise pour confirmation
+                                                            <form action="clients/ban.php?siret=<?= $select["siret"] ?>&name=<?= $select["companyName"] ?>&rights=<?= $select["rights"] ?>" method="post">
+                                                                <div class="container col-md-8">
+                                                                    <input type="text" class="form-control" name="name" placeholder="<?= $select["companyName"] ?>" required>
+                                                                </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" name="submit" value="Valider" class="btn btn-success">
+                                                        </div>
+                                                        </form>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        Saisir le nom de l'entreprise pour confirmation
-                                                        <form action="clients/ban.php?siret=<?= $select["siret"] ?>&name=<?= $select["companyName"] ?>&rights=<?= $select["rights"] ?>" method="post">
-                                                            <div class="container col-md-8">
-                                                                <input type="text" class="form-control" name="name" placeholder="<?= $select["companyName"] ?>" required>
-                                                            </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <input type="submit" name="submit" value="Valider" class="btn btn-success">
-                                                    </div>
-                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                </td>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        <?php }
+                        ?>
+                    </table>
+                </div>
+
+                <div id="table-provider" style="display: none;">
+                    <table class="table text-center table-bordered table-hover" id="active">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Email</th>
+                                <th>Salaire</th>
+                                <th>Droits</th>
+                                <th>Actions</th>
                             </tr>
-                        </tbody>
-                    <?php }
-                    ?>
-                </table>
+                        </thead>
+                        <?php
+                        $query = $db->query(
+                            "SELECT id, lastName, firstName, email, rights, salary FROM PROVIDER"
+                        );
+                        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($result as $select) { ?>
+                            <tbody id="<?= $select["id"] ?>">
+                                <tr>
+                                    <td><?= $select["id"] ?></td>
+                                    <td><?= $select["lastName"] ?></td>
+                                    <td><?= $select["firstName"] ?></td>
+                                    <td><?= $select["email"] ?></td>
+                                    <td><?= $select["salary"] ?></td>
+                                    <td><?php
+                                        echo $select["rights"];
+                                        echo "<br>";
+                                        if ($select["rights"] == 0) {
+                                            echo "Client/Entreprise";
+                                        } elseif ($select["rights"] == 1) {
+                                            echo "Prestataire";
+                                        } elseif ($select["rights"] == -1) {
+                                            echo "Banni";
+                                        } elseif ($select["rights"] == 2) {
+                                            echo "Admin/Together&Stronger";
+                                        }
+                                        ?></td>
+                                    <td>
+                                        <div class="button_profil">
+                                            <a href="provider/read.php?id=<?= $select["id"] ?>" class="btn-read btn ms-2 me-2">Consulter</a>
+                                            <br>
+                                            <a href="provider/update.php?id=<?= $select["id"] ?>" class=" btn-update btn ms-2 me-2">Modifier</a>
+                                            <br>
+
+                                            <button type="button" class="btn-ban btn ms-2 me-2" data-bs-toggle="modal" data-bs-target="#pop-up-del-<?= $select["id"] ?>"><?= $select["rights"] != -1
+                                                                                                                                                                                ? "Bannir"
+                                                                                                                                                                                : "Débannir" ?></button>
+                                            <div class="modal fade" id="pop-up-del-<?= $select["id"] ?>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Confirmation du <?= $select["rights"] != -1
+                                                                                                        ? "bannissement"
+                                                                                                        : "débannissement" ?> de <span class="text-uppercase"><?= $select["lastName"] ?></span></h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Saisir le nom du prestataire pour confirmation
+                                                            <form action="provider/ban.php?id=<?= $select["id"] ?>&name=<?= $select["lastName"] ?>&rights=<?= $select["rights"] ?>" method="post">
+                                                                <div class="container col-md-8">
+                                                                    <input type="text" class="form-control" name="name" placeholder="<?= $select["lastName"] ?>" required>
+                                                                </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" name="submit" value="Valider" class="btn btn-success">
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        <?php }
+                        ?>
+                    </table>
+                </div>
             </div>
 
         </main>
