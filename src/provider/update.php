@@ -1,43 +1,65 @@
 <?php session_start();
-include "../includes/db.php";
-$siret = htmlspecialchars($_GET['siret']);
-$name = htmlspecialchars($_GET["name"]);
-$email = htmlspecialchars($_GET["email"]);
-$rights = htmlspecialchars($_GET["rights"]);
+include '../includes/db.php';
+$id = htmlspecialchars($_GET['id']);
 
-$req = $db->prepare("SELECT address FROM COMPANY WHERE siret = :siret");
-$req->execute(array(
-    "siret" => $siret
-));
-$address = $req->fetch(PDO::FETCH_ASSOC);
+$req = $db->prepare('SELECT lastName, firstName, email, id_occupation, salary, rights FROM PROVIDER WHERE id = :id');
+$req->execute([
+  'id' => $id,
+]);
+$result = $req->fetch(PDO::FETCH_ASSOC);
 
-if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
+$lastName = $result['lastName'];
+$firstName = $result['firstName'];
+$email = $result['email'];
+$job = $result['id_occupation'];
+$salary = $result['salary'];
+$rights = $result['rights'];
+
+if ($_SESSION['rights'] == 2) { ?>
 
     <!DOCTYPE html>
     <html lang="fr">
     <?php
-    $linkLogo = "../images/logo.png";
-    $linkCss = "../css-js/style.css";
-    $title = "Modification de $name";
-    include "../includes/head.php";
+    $linkLogo = '../images/logo.png';
+    $linkCss = '../css-js/style.css';
+    $title = "Modification de $lastName" . ' ' . "$firstName";
+    include '../includes/head.php';
     ?>
 
     <body>
 
-        <?php include "../includes/header.php"; ?>
+        <?php include '../includes/header.php'; ?>
         <main>
-            <form action="verifUpdateCompany.php?siret=<?= $siret ?>" method="post">
+            <form action="verifUpdateProvider.php?id=<?= $id ?>" method="post">
                 <div class="container col-md-6">
-                    <?php include "../includes/errorMessage.php"; ?>
+                    <?php include '../includes/msg.php'; ?>
                 </div>
                 <div class="container col-md-4" id="form">
                     <div class="mb-3">
                         <label class="form-label"><strong>Email</strong></label>
                         <input type="email" class="form-control" name="email" value="<?= $email ?>">
-                        <label class="form-label mt-3"><strong>Nom de l'entreprise</strong></label>
-                        <input type="text" class="form-control" name="companyName" value="<?= $name ?>">
-                        <label class="form-label mt-3"><strong>Adresse</strong></label>
-                        <input type="text" class="form-control" name="address" value="<?= $address["address"] ?>">
+                        <label class="form-label mt-3"><strong>Nom</strong></label>
+                        <input type="text" class="form-control" name="lastName" value="<?= $lastName ?>">
+                        <label class="form-label mt-3"><strong>Prénom</strong></label>
+                        <input type="text" class="form-control" name="firstName" value="<?= $firstName ?>">
+                        <label class="form-label mt-3"><strong>Métier</strong></label>
+                        <select class="form-select" name="job" required>
+
+                        <?php
+                        $req = $db->query('SELECT id, name FROM OCCUPATION');
+                        $req = $req->fetchAll(PDO::FETCH_ASSOC);
+
+                        foreach ($req as $value) {
+                          if ($value['id'] == $job) {
+                            echo '<option value="' . $value['id'] . '" selected>' . $value['name'] . '</option>';
+                          } else {
+                            echo '<option value="' . $value['id'] . '">' . $value['name'] . '</option>';
+                          }
+                        }
+                        ?>
+                    </select>
+                        <label class="form-label mt-3"><strong>Salaire</strong></label>
+                        <input type="number" class="form-control" name="salary" value="<?= $salary ?>">
                         <label class="form-label mt-3"><strong>Droits</strong></label>
                         <input type="number" class="form-control" name="rights" value="<?= $rights ?>">
                         <button type="submit" name="submit" class="btn mt-3 btn-submit">Confirmer</button>
@@ -45,7 +67,7 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                 </div>
             </form>
         </main>
-        <?php include "../includes/footer.php"; ?>
+        <?php include '../includes/footer.php'; ?>
 
         <script src="css-js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -53,7 +75,5 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
     </body>
 
     </html>
-<?php } else {
-    header("location: ../index.php");
-    exit();
-} ?>
+<?php } else {header('location: ../index.php');
+  exit();} ?>

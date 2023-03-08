@@ -17,6 +17,10 @@ function viewPassword() {
 
 function viewPasswordInscription(id) {
   var passInscription = id.parentElement.querySelector('#password');
+  if (passInscription == null) {
+    passInscription = id.parentElement.querySelector('#passwordProvider');
+  }
+
   if (passInscription.type === 'password') {
     passInscription.type = 'text';
   } else {
