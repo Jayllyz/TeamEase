@@ -362,3 +362,30 @@ function materialList(id, type, element, quantity) {
     }
   }
 }
+
+function populateActivity(page) {
+  let search = localStorage.getItem('search');
+  if (search == null) {
+    search = 'none';
+  }
+  console.log(search);
+  const activities = document.getElementById('activities');
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      activities.innerHTML = xhr.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/populateActivities.php?page=' + page);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('search=' + search);
+
+  window.addEventListener('beforeunload', function () {
+    localStorage.removeItem('search');
+  });
+}
+
+function filterMaxAttendee(page) {
+  localStorage.setItem('search', 'maxAttendeeDesc');
+  populateActivity(page);
+}
