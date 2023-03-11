@@ -7,6 +7,14 @@ $name = $_POST['nameCompany'];
 $siret = $_POST['siret'];
 $address = $_POST['address'];
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
   header('location: ../signin.php?message=Email invalide !&valid=invalid&input=emailCompany');
   exit();
@@ -84,9 +92,10 @@ if (
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (:siret, :companyName, :email, :address, :password, :rights)'
+      'INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token) VALUES (:siret, :companyName, :email, :address, :password, :rights, :token)'
     );
     $rights = 0;
+    $token = uniqid();
 
     $req->execute([
       'siret' => $siret,
@@ -95,7 +104,23 @@ if (
       'address' => $address,
       'password' => hash('sha512', $password),
       'rights' => $rights,
+      'token' => $token,
     ]);
+
+    $subject = 'Confirmation de votre inscription';
+    $mailMsg = 'Validé votre inscription!';
+    $msgHTML =
+      '<img src="../images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
+                <p class="display-2">Bienvenue sur TopCook. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
+      <a href="../includes/confRegistration.php?' .
+      'token=' .
+      $token .
+      '&email=' .
+      $email .
+      '&type=' .
+      'company">Confirmation !</a>';
+    $destination = 'localhost';
+    include '../includes/mailer.php';
 
     header('location: ../login.php?message=Votre compte a bien été créé !&type=success&valid=valid');
   } else {

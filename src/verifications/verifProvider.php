@@ -7,6 +7,14 @@ $salary = $_POST['salary'];
 $password = $_POST['password'];
 $conf_password = $_POST['conf_password'];
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
   header('location: ../signin.php?message=Email invalide !&valid=invalid&input=email');
   exit();
@@ -35,7 +43,6 @@ if (!$reponse) {
   header('location: ../signin.php?message=Le métier est invalide !&valid=invalid&input=job');
   exit();
 }
-
 
 if (isset($salary) && !is_numeric($salary)) {
   header('location: ../signin.php?message=Le salaire est invalide !&valid=invalid&input=salary');
@@ -84,9 +91,10 @@ if (
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights)'
+      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights, token) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights, :token)'
     );
     $rights = 0;
+    $token = uniqid();
 
     $req->execute([
       'firstName' => $lastName,
@@ -95,8 +103,23 @@ if (
       'email' => $email,
       'salary' => $salary,
       'rights' => $rights,
+      'token' => $token,
       'password' => hash('sha512', $password),
     ]);
+
+    $subject = 'Confirmation de votre inscription';
+    $mailMsg = 'Validé votre inscription!';
+    $msgHTML =
+      '<img src="../images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
+                <p class="display-2">Bienvenue sur TopCook. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
+      <a href="../includes/confRegistration.php?' .
+      'token=' .
+      $token .
+      '&email=' .
+      $email .
+      '&type=' .
+      'provider">Confirmation !</a>';
+    $destination = 'localhost';
 
     header('location: ../login.php?message=Votre compte a bien été créé !&type=success&valid=valid');
   } else {
