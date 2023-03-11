@@ -1,4 +1,5 @@
 <?php
+$emailEnv = $_ENV['EMAIL'];
 
 $mail = new PHPMailer\PHPMailer\PHPMailer();
 $mail->isSMTP();
@@ -6,9 +7,9 @@ $mail->Host = 'smtp.gmail.com';
 $mail->Port = 587;
 $mail->SMTPSecure = 'tls';
 $mail->SMTPAuth = true;
-$mail->Username = 'teameasepa@gmail.com';
-$mail->Password = 'q7D9cg#)Gsm@8U"2';
-$mail->setFrom('teameasepa@gmail.com'); // Adresse mail du site
+$mail->Username = $emailEnv;
+$mail->Password = $_ENV['MYSQL_ROOT_PASSWORD'];
+$mail->setFrom($emailEnv); // Adresse mail du site
 $mail->addAddress($email);
 $mail->Subject = $subject;
 $mail->Message = $mailMsg;
