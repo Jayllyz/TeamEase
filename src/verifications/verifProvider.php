@@ -7,14 +7,6 @@ $salary = $_POST['salary'];
 $password = $_POST['password'];
 $conf_password = $_POST['conf_password'];
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
-
-require '../PHPMailer/src/Exception.php';
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
-
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
   header('location: ../signin.php?message=Email invalide !&valid=invalid&input=email');
   exit();
@@ -108,7 +100,6 @@ if (
     ]);
 
     $subject = 'Confirmation de votre inscription';
-    $mailMsg = 'Validé votre inscription!';
     $msgHTML =
       '<img src="../images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
                 <p class="display-2">Bienvenue sur TopCook. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>

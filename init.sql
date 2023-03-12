@@ -20,6 +20,8 @@ CREATE TABLE COMPANY
   address VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   rights INT NOT NULL,
+  token VARCHAR(255),
+  confirm_signup INT NOT NULL DEFAULT 0,
   PRIMARY KEY (siret)
 );
 
@@ -158,6 +160,8 @@ CREATE TABLE PROVIDER
   rights INT NOT NULL,
   email VARCHAR(255) NOT NULL,
   id_occupation INT NOT NULL,
+  token VARCHAR(255),
+  confirm_signup INT NOT NULL DEFAULT 0,
   PRIMARY KEY (id),
   FOREIGN KEY (id_occupation) REFERENCES OCCUPATION(id)
 );

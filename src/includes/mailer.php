@@ -1,18 +1,23 @@
 <?php
-$emailEnv = $_ENV['EMAIL'];
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
-$mail = new PHPMailer\PHPMailer\PHPMailer();
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+
+$mail = new PHPMailer(true);
 $mail->isSMTP();
 $mail->Host = 'smtp.gmail.com';
 $mail->Port = 587;
-$mail->SMTPSecure = 'tls';
 $mail->SMTPAuth = true;
-$mail->Username = $emailEnv;
+$mail->Username = 'teameasepa@gmail.com';
 $mail->Password = $_ENV['MYSQL_ROOT_PASSWORD'];
-$mail->setFrom($emailEnv); // Adresse mail du site
+$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+$mail->setFrom('teameasepa@gmail.com'); // Adresse mail du site
 $mail->addAddress($email);
 $mail->Subject = $subject;
-$mail->Message = $mailMsg;
 $mail->msgHTML($msgHTML);
 $mail->CharSet = 'UTF-8';
 if (!$mail->send()) {
