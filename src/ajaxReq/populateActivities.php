@@ -45,26 +45,6 @@ if ($countId == 0) {
       ':id' => $id[$i],
     ]);
     $activity = $query->fetchAll(PDO::FETCH_COLUMN);
-    $query = $db->prepare('SELECT SUBSTRING(description, 1, 450) FROM ACTIVITY WHERE id = :id');
-    $query->execute([
-      ':id' => $id[$i],
-    ]);
-    $description = $query->fetchAll(PDO::FETCH_COLUMN);
-    $query = $db->prepare('SELECT duration FROM ACTIVITY WHERE id = :id');
-    $query->execute([
-      ':id' => $id[$i],
-    ]);
-    $duration = $query->fetchAll(PDO::FETCH_COLUMN);
-    $query = $db->prepare('SELECT priceAttendee FROM ACTIVITY WHERE id = :id');
-    $query->execute([
-      ':id' => $id[$i],
-    ]);
-    $priceAttendee = $query->fetchAll(PDO::FETCH_COLUMN);
-    $query = $db->prepare('SELECT maxAttendee FROM ACTIVITY WHERE id = :id');
-    $query->execute([
-      ':id' => $id[$i],
-    ]);
-    $maxAttendee = $query->fetchAll(PDO::FETCH_COLUMN);
     $query = $db->prepare('SELECT id_category FROM BELONG WHERE id_activity = :id');
     $query->execute([
       ':id' => $id[$i],
@@ -80,9 +60,9 @@ if ($countId == 0) {
       $id[$i] .
       '"><img src="images/activities/' .
       $id[$i] .
-      $activity[0] .
+      $activity['name'] .
       '0.jpg" class="card-img-top" alt="' .
-      $activity[0] .
+      $activity['name'] .
       '"></a>
             </div>
             <div class="card-body col-8 row">
@@ -90,10 +70,10 @@ if ($countId == 0) {
               <h4><a href="activity.php?id=' .
       $id[$i] .
       '" class="text-light">' .
-      $activity[0] .
+      $activity['name'] .
       '</a></h4>
               </div>';
-    $altId = str_replace(' ', '-', $id[0]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
+    $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
     if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
       echo '
                 <div class="col-1 d-flex justify-content-end pe-3">
@@ -125,7 +105,7 @@ if ($countId == 0) {
                   </div>
                 </div>
                 <p>' .
-      $description[0] .
+      $activity['SUBSTRING(description, 1, 450)'] .
       '</p>
               <p class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
@@ -138,12 +118,12 @@ if ($countId == 0) {
     }
     echo '<div class="row"></p>
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
-      $duration[0] .
+      $activity['duration'] .
       'h | Prix par participants : ' .
-      $priceAttendee[0] .
+      $activity['priceAttendee'] .
       '<i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
                | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
-      $maxAttendee[0] .
+      $activity['maxAttendee'] .
       '</p></div>';
     echo '
                 </div>
@@ -152,31 +132,13 @@ if ($countId == 0) {
   }
 } else {
   for ($i = ($currentPage - 1) * 10; $i < 10 * $currentPage; $i++) {
-    $query = $db->prepare('SELECT name FROM ACTIVITY WHERE id =:id');
+    $query = $db->prepare(
+      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id = :id'
+    );
     $query->execute([
       ':id' => $id[$i],
     ]);
-    $activity = $query->fetchAll(PDO::FETCH_COLUMN);
-    $query = $db->prepare('SELECT SUBSTRING(description, 1, 450) FROM ACTIVITY WHERE id = :id');
-    $query->execute([
-      ':id' => $id[$i],
-    ]);
-    $description = $query->fetchAll(PDO::FETCH_COLUMN);
-    $query = $db->prepare('SELECT duration FROM ACTIVITY WHERE id = :id');
-    $query->execute([
-      ':id' => $id[$i],
-    ]);
-    $duration = $query->fetchAll(PDO::FETCH_COLUMN);
-    $query = $db->prepare('SELECT priceAttendee FROM ACTIVITY WHERE id = :id');
-    $query->execute([
-      ':id' => $id[$i],
-    ]);
-    $priceAttendee = $query->fetchAll(PDO::FETCH_COLUMN);
-    $query = $db->prepare('SELECT maxAttendee FROM ACTIVITY WHERE id = :id');
-    $query->execute([
-      ':id' => $id[$i],
-    ]);
-    $maxAttendee = $query->fetchAll(PDO::FETCH_COLUMN);
+    $activity = $query->fetch(PDO::FETCH_ASSOC);
     $query = $db->prepare('SELECT id_category FROM BELONG WHERE id_activity = :id');
     $query->execute([
       ':id' => $id[$i],
@@ -192,9 +154,9 @@ if ($countId == 0) {
       $id[$i] .
       '"><img src="images/activities/' .
       $id[$i] .
-      $activity[0] .
+      $activity['name'] .
       '0.jpg" class="card-img-top" alt="' .
-      $activity[0] .
+      $activity['name'] .
       '"></a>
             </div>
             <div class="card-body col-8 row">
@@ -202,10 +164,10 @@ if ($countId == 0) {
               <h4><a href="activity.php?id=' .
       $id[$i] .
       '" class="text-light">' .
-      $activity[0] .
+      $activity['name'] .
       '</a></h4>
               </div>';
-    $altId = str_replace(' ', '-', $id[0]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
+    $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
     if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
       echo '
                 <div class="col-1 d-flex justify-content-end pe-3">
@@ -237,7 +199,7 @@ if ($countId == 0) {
                   </div>
                 </div>
                 <p>' .
-      $description[0] .
+      $activity['SUBSTRING(description, 1, 450)'] .
       '</p>
               <p class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
@@ -250,12 +212,12 @@ if ($countId == 0) {
     }
     echo '<div class="row"></p>
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
-      $duration[0] .
+      $activity['duration'] .
       'h | Prix par participants : ' .
-      $priceAttendee[0] .
+      $activity['priceAttendee'] .
       '<i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
                | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
-      $maxAttendee[0] .
+      $activity['maxAttendee'] .
       '</p></div>';
     echo '
                 </div>
