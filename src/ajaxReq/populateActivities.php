@@ -14,8 +14,24 @@ if ($_POST['search'] == 'none') {
   $search = 'ORDER BY maxAttendee DESC';
 } elseif ($_POST['search'] == 'maxAttendeeAsc') {
   $search = 'ORDER BY maxAttendee ASC';
+} elseif ($_POST['search'] == 'priceDesc') {
+  $search = 'ORDER BY priceAttendee DESC';
+} elseif ($_POST['search'] == 'priceAsc') {
+  $search = 'ORDER BY priceAttendee ASC';
+} elseif ($_POST['search'] == 'durationDesc') {
+  $search = 'ORDER BY duration DESC';
+} elseif ($_POST['search'] == 'durationAsc') {
+  $search = 'ORDER BY duration ASC';
+} elseif ($_POST['search'] == 'nameDesc') {
+  $search = 'ORDER BY name DESC';
+} elseif ($_POST['search'] == 'nameAsc') {
+  $search = 'ORDER BY name ASC';
+} elseif ($_POST['search'] == 'statusDesc') {
+  $search = 'ORDER BY status DESC';
+} elseif ($_POST['search'] == 'statusAsc') {
+  $search = 'ORDER BY status ASC';
 }
-$query = $db->query('SELECT id FROM ACTIVITY ' . $search);
+$query = $db->query('SELECT id FROM ACTIVITY WHERE status = 1 ' . $search);
 $id = $query->fetchAll(PDO::FETCH_COLUMN);
 $countId = count($id);
 if ($countId == 0) {
@@ -134,7 +150,7 @@ if ($countId == 0) {
                 </div>
               </div>';
   }
-} elseif ($countId > 10) {
+} else {
   for ($i = ($currentPage - 1) * 10; $i < 10 * $currentPage; $i++) {
     $query = $db->prepare('SELECT name FROM ACTIVITY WHERE id =:id');
     $query->execute([
@@ -256,13 +272,13 @@ if ($countId == 0) {
     <div class="d-flex justify-content-center">
       <nav>
         <ul class="pagination">
-          <li class="page-item">
+        <?php if ($countId > 10) {
+          echo '<li class="page-item">
             <a class="page-link" href="catalog.php?page=1" aria-label="Start" style="background-color:green; color: white">
               <span aria-hidden="true">&laquo;</span>
             </a>
-          </li>
-          <?php
-          if ($currentPage == $totalPage) {
+          </li>';
+          if ($currentPage == $totalPage && $totalPage > 3) {
             echo '<li class="page-item"><a class="page-link" href="catalog.php?page=';
             echo $currentPage - 2;
             echo '" style="background-color:green; color: white">';
@@ -271,7 +287,7 @@ if ($countId == 0) {
           }
           if ($currentPage > 1) {
             echo '
-          <li class="page-item"><a class="page-link" href="catalog.php?page=';
+            <li class="page-item"><a class="page-link" href="catalog.php?page=';
             echo $currentPage - 1;
             echo '" style="background-color:green; color: white">';
             echo $currentPage - 1;
@@ -297,13 +313,13 @@ if ($countId == 0) {
             echo '</a></li>';
           }
           echo '
-          <li class="page-item">
-            <a class="page-link" href="catalog.php?page=';
+            <li class="page-item">
+              <a class="page-link" href="catalog.php?page=';
           echo $totalPage;
           echo '" aria-label="End" style="background-color:green; color: white">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>';
-          ?>
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>';
+        } ?>
         </ul>
       </nav>

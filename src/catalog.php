@@ -34,8 +34,16 @@ include 'includes/head.php';
         } ?>
       </div>
       <hr size="5">
-      <div>
-        <button class="btn btn-primary" onclick="filterMaxAttendee(<?php echo $page; ?>)">Nombre de participants</button>
+      <div class="row">
+        <button class="btn btn-primary col mx-2" onclick="filterName(<?php echo $page; ?>, this)" id="name">Nom</button>
+        <button class="btn btn-primary col mx-2" onclick="filterDuration(<?php echo $page; ?>, this)" id="duration">Durée</button>
+        <button class="btn btn-primary col mx-2" onclick="filterPrice(<?php echo $page; ?>, this)" id="price">Prix</button>
+        <button class="btn btn-primary col mx-2" onclick="filterMaxAttendee(<?php echo $page; ?>, this)" id="maxAttendee">Nombre de participants</button>
+        <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
+          echo '<button class="btn btn-primary col mx-2" onclick="filterStatus(';
+          echo $page;
+          echo ', this)" id="status">Status</button>';
+        } ?>
       </div>
       <hr size="5">
 
