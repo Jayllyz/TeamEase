@@ -46,6 +46,12 @@ if ($seek->rowCount() > 0) {
     'quantity' => $_POST['quantity'],
     'id' => $_POST['id'],
   ]);
+  if ($result) {
+    echo 'success';
+  } else {
+    echo 'error';
+  }
+  exit();
 } else {
   $insert = $db->prepare('INSERT INTO MATERIAL (id, type, quantity) VALUES (:id, :type, :quantity)');
   $result2 = $insert->execute([
@@ -53,11 +59,12 @@ if ($seek->rowCount() > 0) {
     'type' => $_POST['material'],
     'quantity' => $_POST['quantity'],
   ]);
+  if ($result2) {
+    echo 'success';
+  } else {
+    echo 'error';
+  }
+  exit();
 }
 
-if ($result) {
-  echo 'success';
-} else {
-  echo 'error';
-}
 ?>
