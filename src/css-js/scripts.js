@@ -96,7 +96,6 @@ function validateForm(nameForm) {
   let y = document.forms[nameForm].elements;
   for (i = 0; i < y.length; i++) {
     x = document.forms[nameForm].elements[i];
-    console.log(x.nodeName);
     if (x.value === '' && x.nodeName === 'INPUT') {
       alert('Veuillez remplir tous les champs');
       return false;
@@ -177,7 +176,6 @@ function selectProvider(id) {
 
 function providerList(id, type) {
   const form = document.getElementById('activity-form');
-  console.log('ok');
   if (type == 'delete') {
     const providerInput = document.getElementById('provider' + id);
     providerInput.remove();
@@ -219,7 +217,6 @@ function updateMaterial(id) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      console.log(xhr.responseText);
       if (xhr.responseText == 'success') {
         container.querySelector('#available').value = quantity - used;
         alert('Le matériel a bien été modifié');
@@ -289,9 +286,13 @@ function selectMaterial(id) {
     materialList(materialId, 'add', 'material');
   } else {
     const oldId = materialContainer.querySelector('.selected').getAttribute('id');
+    materialContainer.querySelector('input').value = '';
     materialList(oldId, 'delete', 'material');
     materialList(materialId, 'add', 'material');
+    materialList(oldId, 'delete', 'quantity');
+    materialList(materialId, 'add', 'quantity');
     material.id = materialId;
+    materialContainer.querySelector('input').id = materialId;
   }
 }
 
@@ -323,7 +324,6 @@ function quantityChange(value, id) {
 function unassignMaterial(id) {
   const materialContainer = id.parentElement;
   if (materialContainer.querySelector('.selected') != null) {
-    console.log(materialContainer.querySelector('.selected'));
     const materialId = materialContainer.querySelector('.selected').getAttribute('id');
     materialList(materialId, 'delete', 'material');
     if (document.getElementById('quantity' + materialId)) {
@@ -334,7 +334,6 @@ function unassignMaterial(id) {
 }
 
 function materialList(id, type, element, quantity) {
-  console.log(id);
   const form = document.getElementById('activity-form');
   if (type == 'add') {
     if (element == 'material') {

@@ -110,6 +110,8 @@ if (isset($_GET['update'])) {
     header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=success');
     exit();
   } elseif ($_GET['update'] == 'details') {
+    $result2 = true;
+    $result3 = true;
     $delete = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
     $delete->execute([
       ':id_activity' => $_GET['id'],
