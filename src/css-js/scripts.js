@@ -449,7 +449,7 @@ function filterName(page, element) {
     removeFilter(element);
     element.classList.add('desc');
     element.innerHTML = 'Nom <i class="bi bi-arrow-down-short"></i>';
-    localStorage.setItem('search', 'nameAsc');
+    localStorage.setItem('search', 'nameDesc');
   }
   populateActivity(page);
 }
@@ -469,7 +469,7 @@ function filterDuration(page, element) {
     removeFilter(element);
     element.classList.add('desc');
     element.innerHTML = 'Durée <i class="bi bi-arrow-down-short"></i>';
-    localStorage.setItem('search', 'durationAsc');
+    localStorage.setItem('search', 'durationDesc');
   }
   populateActivity(page);
 }
@@ -489,7 +489,7 @@ function filterPrice(page, element) {
     removeFilter(element);
     element.classList.add('desc');
     element.innerHTML = 'Prix <i class="bi bi-arrow-down-short"></i>';
-    localStorage.setItem('search', 'priceAsc');
+    localStorage.setItem('search', 'priceDesc');
   }
   populateActivity(page);
 }
