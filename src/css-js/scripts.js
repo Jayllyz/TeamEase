@@ -384,7 +384,7 @@ function checkConfirm(text) {
     return false;
   }
 }
-  
+
 function populateActivity(page) {
   let search = localStorage.getItem('search');
   if (search == null) {
@@ -535,4 +535,8 @@ function filterStatus(page, element) {
     localStorage.setItem('search', 'statusAsc');
   }
   populateActivity(page);
+}
+
+function selectedDay(day) {
+  document.getElementById(day + 'Hour').style = 'display: block';
 }
