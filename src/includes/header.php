@@ -7,7 +7,7 @@
 
         <div class="col-12 col-md-9">
             <form class="d-flex" method="GET" action="catalog.php">
-                <div class="col-10">
+                <div class="col-8 me-2">
                     <input id="search" class="form-control form-control-lg me-3" name="search" type="search" oninput="searchBar(this.value)" placeholder="Rechercher une activité" aria-label="Search">
                     <div class="absolute" id="suggestions"></div>
                 </div>

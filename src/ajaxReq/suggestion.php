@@ -22,6 +22,4 @@ if (isset($_POST['search'])) {
   }
 }
 
-//
-
 ?>
