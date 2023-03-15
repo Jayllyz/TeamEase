@@ -17,6 +17,10 @@ function viewPassword() {
 
 function viewPasswordInscription(id) {
   var passInscription = id.parentElement.querySelector('#password');
+  if (passInscription == null) {
+    passInscription = id.parentElement.querySelector('#passwordProvider');
+  }
+
   if (passInscription.type === 'password') {
     passInscription.type = 'text';
   } else {
@@ -111,6 +115,17 @@ function changeSignForm() {
   } else {
     document.getElementById('forms-company').style.display = 'block';
     document.getElementById('forms-provider').style.display = 'none';
+  }
+}
+
+function changeTable() {
+  let check = document.getElementById('provider-check').checked;
+  if (check == true) {
+    document.getElementById('table-company').style.display = 'none';
+    document.getElementById('table-provider').style.display = 'block';
+  } else {
+    document.getElementById('table-company').style.display = 'block';
+    document.getElementById('table-provider').style.display = 'none';
   }
 }
 
@@ -362,6 +377,13 @@ function materialList(id, type, element, quantity) {
   }
 }
 
+function checkConfirm(text) {
+  if (confirm(text) === true) {
+    return true;
+  } else {
+    return false;
+  }
+  
 function populateActivity(page) {
   let search = localStorage.getItem('search');
   if (search == null) {
