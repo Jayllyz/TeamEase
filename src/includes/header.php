@@ -6,9 +6,10 @@
         </div>
 
         <div class="col-12 col-md-9">
-            <form class="d-flex" action="GET" action="#">
-                <div class="col-8 me-2">
-                    <input id="search" class="form-control form-control-lg me-3" name="search" type="search" placeholder="Rechercher une activité" aria-label="Search">
+            <form class="d-flex" method="GET" action="catalog.php">
+                <div class="col-10">
+                    <input id="search" class="form-control form-control-lg me-3" name="search" type="search" oninput="searchBar(this.value)" placeholder="Rechercher une activité" aria-label="Search">
+                    <div class="absolute" id="suggestions"></div>
                 </div>
                 <div class="col-2">
                     <button class="btn btn-outline-secondary btn-lg" type="submit">Rechercher</button>
@@ -94,5 +95,5 @@
             </div>
         </div>
     </nav>
-
+    <script src="css-js/js/searchBar.js"></script>
 </div>
