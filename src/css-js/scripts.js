@@ -377,3 +377,11 @@ function materialList(id, type, element, quantity) {
     }
   }
 }
+
+function checkConfirm(text) {
+  if (confirm(text) === true) {
+    return true;
+  } else {
+    return false;
+  }
+}
