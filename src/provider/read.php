@@ -35,6 +35,14 @@ if ($_SESSION["rights"] == 2) { ?>
 
         $result[0]["id_occupation"] = $occupation[0]["name"];
 
+        $req = $db->prepare(
+            "SELECT name, priceAttendee, duration, maxAttendee FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)"
+        );
+        $req->execute([
+            "id_provider" => $id,
+        ]);
+        $result_activity = $req->fetchAll(PDO::FETCH_ASSOC);
+
         foreach ($result as $select) { ?>
 
             <h1>Informations de <?= $select["lastName"] . " " . $select["firstName"] ?></h1>
@@ -58,20 +66,27 @@ if ($_SESSION["rights"] == 2) { ?>
                     </tr>
                 </table>
             </div>
-            <h1>Participations aux activitées</h1>
+
+            <h1>Activités affectées</h1>
             <div class="container">
                 <table class="table text-center table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Activitées</th>
-                            <th>Date</th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th>Durée</th>
+                            <th>Nombre max de participants</th>
                         </tr>
                     </thead>
 
-                    <tr>
-                        <td><?= "todo" ?></td>
-                        <td><?= "todo" ?></td>
-                    </tr>
+                    <?php foreach ($result_activity as $select_activity) { ?>
+                        <tr>
+                            <td><?= $select_activity["name"] ?></td>
+                            <td><?= $select_activity["priceAttendee"] ?></td>
+                            <td><?= $select_activity["duration"] ?></td>
+                            <td><?= $select_activity["maxAttendee"] ?></td>
+                        </tr>
+                    <?php } ?>
                 </table>
             </div>
 
