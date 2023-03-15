@@ -8,6 +8,13 @@ if (isset($_GET['page'])) {
 } else {
   $currentPage = 1;
 }
+if ($_POST['searchBarInput'] == 'none') {
+  $searchBarInput = '';
+} elseif ($_POST['search'] == 'none') {
+  $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\'';
+} else {
+  $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\' AND ';
+}
 if ($_POST['search'] == 'none') {
   $search = '';
 } elseif ($_POST['search'] == 'maxAttendeeDesc') {
@@ -31,7 +38,7 @@ if ($_POST['search'] == 'none') {
 } elseif ($_POST['search'] == 'statusAsc') {
   $search = 'ORDER BY status ASC';
 }
-$query = $db->query('SELECT id FROM ACTIVITY WHERE status = 1 ' . $search);
+$query = $db->query('SELECT id FROM ACTIVITY WHERE status = 1 ' . $searchBarInput . $search);
 $id = $query->fetchAll(PDO::FETCH_COLUMN);
 $countId = count($id);
 if ($countId == 0) {
@@ -40,11 +47,13 @@ if ($countId == 0) {
           </div>';
 } elseif ($countId - ($currentPage - 1) * 10 < 10) {
   for ($i = ($currentPage - 1) * 10; $i < $countId; $i++) {
-    $query = $db->prepare('SELECT name FROM ACTIVITY WHERE id =:id');
+    $query = $db->prepare(
+      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id =:id'
+    );
     $query->execute([
       ':id' => $id[$i],
     ]);
-    $activity = $query->fetchAll(PDO::FETCH_COLUMN);
+    $activity = $query->fetch(PDO::FETCH_ASSOC);
     $query = $db->prepare('SELECT id_category FROM BELONG WHERE id_activity = :id');
     $query->execute([
       ':id' => $id[$i],
@@ -243,6 +252,9 @@ if ($countId == 0) {
           if ($currentPage == $totalPage && $totalPage > 3) {
             echo '<li class="page-item"><a class="page-link" href="catalog.php?page=';
             echo $currentPage - 2;
+            if ($_POST['searchBarInput'] != 'none') {
+              echo '&search=' . $_POST['searchBarInput'];
+            }
             echo '" style="background-color:green; color: white">';
             echo $currentPage - 2;
             echo '</a></li>';
@@ -251,18 +263,27 @@ if ($countId == 0) {
             echo '
             <li class="page-item"><a class="page-link" href="catalog.php?page=';
             echo $currentPage - 1;
+            if ($_POST['searchBarInput'] != 'none') {
+              echo '&search=' . $_POST['searchBarInput'];
+            }
             echo '" style="background-color:green; color: white">';
             echo $currentPage - 1;
             echo '</a></li>';
           }
           echo '<li class="page-item"><a class="page-link" href="catalog.php?page=';
           echo $currentPage;
+          if ($_POST['searchBarInput'] != 'none') {
+            echo '&search=' . $_POST['searchBarInput'];
+          }
           echo '" style="background-color:darkgreen; color: white">';
           echo $currentPage;
           echo '</a></li>';
           if ($currentPage != $totalPage) {
             echo '<li class="page-item"><a class="page-link" href="catalog.php?page=';
             echo $currentPage + 1;
+            if ($_POST['searchBarInput'] != 'none') {
+              echo '&search=' . $_POST['searchBarInput'];
+            }
             echo '" style="background-color:green; color: white">';
             echo $currentPage + 1;
             echo '</a></li>';
@@ -270,6 +291,9 @@ if ($countId == 0) {
           if ($currentPage == 1 && $totalPage > 2) {
             echo '<li class="page-item"><a class="page-link" href="catalog.php?page=';
             echo $currentPage + 2;
+            if ($_POST['searchBarInput'] != 'none') {
+              echo '&search=' . $_POST['searchBarInput'];
+            }
             echo '" style="background-color:green; color: white">';
             echo $currentPage + 2;
             echo '</a></li>';

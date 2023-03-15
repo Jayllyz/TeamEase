@@ -10,12 +10,21 @@ $linkLogo = 'images/logo.png';
 $title = 'Catalogue des activités';
 include 'includes/head.php';
 ?>
-<?php if (isset($_GET['page'])) {
+<?php
+if (isset($_GET['page'])) {
   $page = $_GET['page'];
 } else {
   $page = 1;
-} ?>
-<body onload="populateActivity(<?php echo $page; ?>)">
+}
+if (isset($_GET['search'])) {
+  $search = $_GET['search'];
+} else {
+  $search = 'none';
+}
+$populate = $page . ',' . '\'' . $search . '\'';
+?>
+
+<body onload="populateActivity(<?php echo $populate; ?>)">
   <?php include 'includes/header.php'; ?>
   <main>
     <div class="container">
