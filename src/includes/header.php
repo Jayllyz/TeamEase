@@ -6,9 +6,10 @@
         </div>
 
         <div class="col-12 col-md-9">
-            <form class="d-flex" action="GET" action="#">
+            <form class="d-flex" method="GET" action="catalog.php">
                 <div class="col-10">
-                    <input id="search" class="form-control form-control-lg me-3" name="search" type="search" placeholder="Rechercher une activité" aria-label="Search">
+                    <input id="search" class="form-control form-control-lg me-3" name="search" type="search" oninput="searchBar(this.value)" placeholder="Rechercher une activité" aria-label="Search">
+                    <div class="absolute" id="suggestions"></div>
                 </div>
                 <div class="col-2">
                     <button class="btn btn-outline-secondary btn-lg" type="submit">Rechercher</button>
@@ -82,7 +83,7 @@
                         <a class="nav-link" href="aPropos.php">A propos de nous</a>
                     </li>
                     <li class="nav-item">
-                        <?php if (isset($_SESSION["siret"]) && $_SESSION["rights"] == 2) { ?>
+                        <?php if (isset($_SESSION['siret']) && $_SESSION['rights'] == 2) { ?>
 
                             <a href="admin.php" class="logo_admin">
                                 <svg viewBox="0 0 24 24" width="24" height="24" fill="black" id="logo_admin">
@@ -98,5 +99,5 @@
             </div>
         </div>
     </nav>
-
+    <script src="css-js/js/searchBar.js"></script>
 </div>

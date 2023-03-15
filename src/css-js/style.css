@@ -165,3 +165,26 @@ footer {
 .no-dot {
   list-style-type: none;
 }
+
+.absolute {
+  position: absolute;
+  width: 61%;
+  z-index: 10000;
+}
+
+.search-suggestion {
+  background-color: white;
+  padding: 5px;
+  padding-left: 20px;
+  color: black;
+}
+
+.search-suggestion:hover {
+  background-color: green;
+  color: white;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}

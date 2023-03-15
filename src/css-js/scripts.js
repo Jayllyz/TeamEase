@@ -362,7 +362,8 @@ function materialList(id, type, element, quantity) {
   }
 }
 
-function populateActivity(page) {
+function populateActivity(page, searchBarInput) {
+  console.log(searchBarInput);
   let search = localStorage.getItem('search');
   if (search == null) {
     search = 'none';
@@ -381,7 +382,7 @@ function populateActivity(page) {
   };
   xhr.open('POST', 'ajaxReq/populateActivities.php?page=' + page);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('search=' + search);
+  xhr.send('search=' + search + '&searchBarInput=' + searchBarInput);
 
   window.addEventListener('beforeunload', function () {
     localStorage.removeItem('search');
