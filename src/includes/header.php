@@ -16,16 +16,15 @@
                 </div>
             </form>
 
-            <div class="col-md-1"></div>
             <div class="row">
-                <a class="btn btn-secondary col mx-3 mt-3" <?php if (
+                <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (
                   isset($_SESSION['siret']) ||
                   isset($_SESSION['id'])
                 ) {
                   echo 'href="#">Mes reservations</a>';
                 } else {
                   echo 'href="login.php">Se connecter</a>';
-                } ?> <a class="btn btn-secondary col mx-3 mt-3" <?php if (
+                } ?> <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (
    isset($_SESSION['siret']) ||
    isset($_SESSION['id'])
  ) {
@@ -66,9 +65,6 @@
                             }
                             ?>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="partenaire.php">Entreprises partenaires</a>
                     </li>
                     <?php if (isset($_SESSION['rights'])) {
                       if ($_SESSION['rights'] == 2) {

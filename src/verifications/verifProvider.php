@@ -86,7 +86,7 @@ if (
     $req = $db->prepare(
       'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights)'
     );
-    $rights = 0;
+    $rights = 1;
 
     $req->execute([
       'firstName' => $lastName,
