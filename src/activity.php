@@ -335,6 +335,13 @@ include 'includes/head.php';
                                       echo $providers[$i]['name'];
                                       echo '
                                             </button>
+                                            <button type="button" class="btn btn-secondary dropdown-toggle mx-2 selected" id="';
+                                      echo $providers[$i]['id'];
+                                      echo '" data-bs-toggle="dropdown" aria-expanded="false">
+                                    ';
+                                      echo $providers[$i]['firstName'] . ' ' . $providers[$i]['UPPER(p.lastName)'];
+                                      echo '
+                                        </button>
                                             <ul class="dropdown-menu">';
                                       foreach ($occupations as $occupation) {
                                         echo '<li><a class="dropdown-item" onclick="selectOccupation(this)" style="padding-left:50px; padding-right:50px">' .
@@ -344,13 +351,7 @@ include 'includes/head.php';
                                       echo '
                                             </ul>
                                         </div>
-                                    <button type="button" class="btn btn-secondary dropdown-toggle mx-2 selected" id="';
-                                      echo $providers[$i]['id'];
-                                      echo '" data-bs-toggle="dropdown" aria-expanded="false">
-                                    ';
-                                      echo $providers[$i]['firstName'] . ' ' . $providers[$i]['UPPER(p.lastName)'];
-                                      echo '
-                                    </button>
+                                    
                                     <button type="button" class="btn btn-danger" onclick="unassignProvider(this)">Supprimer</button>
                                     <ul class="dropdown-menu">';
                                       foreach ($dropdownProvider as $provider2) {

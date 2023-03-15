@@ -100,7 +100,6 @@ function validateForm(nameForm) {
   let y = document.forms[nameForm].elements;
   for (i = 0; i < y.length; i++) {
     x = document.forms[nameForm].elements[i];
-    console.log(x.nodeName);
     if (x.value === '' && x.nodeName === 'INPUT') {
       alert('Veuillez remplir tous les champs');
       return false;
@@ -192,7 +191,6 @@ function selectProvider(id) {
 
 function providerList(id, type) {
   const form = document.getElementById('activity-form');
-  console.log('ok');
   if (type == 'delete') {
     const providerInput = document.getElementById('provider' + id);
     providerInput.remove();
@@ -234,7 +232,6 @@ function updateMaterial(id) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      console.log(xhr.responseText);
       if (xhr.responseText == 'success') {
         container.querySelector('#available').value = quantity - used;
         alert('Le matériel a bien été modifié');
@@ -304,9 +301,13 @@ function selectMaterial(id) {
     materialList(materialId, 'add', 'material');
   } else {
     const oldId = materialContainer.querySelector('.selected').getAttribute('id');
+    materialContainer.querySelector('input').value = '';
     materialList(oldId, 'delete', 'material');
     materialList(materialId, 'add', 'material');
+    materialList(oldId, 'delete', 'quantity');
+    materialList(materialId, 'add', 'quantity');
     material.id = materialId;
+    materialContainer.querySelector('input').id = materialId;
   }
 }
 
@@ -338,7 +339,6 @@ function quantityChange(value, id) {
 function unassignMaterial(id) {
   const materialContainer = id.parentElement;
   if (materialContainer.querySelector('.selected') != null) {
-    console.log(materialContainer.querySelector('.selected'));
     const materialId = materialContainer.querySelector('.selected').getAttribute('id');
     materialList(materialId, 'delete', 'material');
     if (document.getElementById('quantity' + materialId)) {
@@ -349,7 +349,6 @@ function unassignMaterial(id) {
 }
 
 function materialList(id, type, element, quantity) {
-  console.log(id);
   const form = document.getElementById('activity-form');
   if (type == 'add') {
     if (element == 'material') {
@@ -384,4 +383,155 @@ function checkConfirm(text) {
   } else {
     return false;
   }
+  
+function populateActivity(page) {
+  let search = localStorage.getItem('search');
+  if (search == null) {
+    search = 'none';
+  }
+  if (search == 'maxAttendeeDesc') {
+    const element = document.getElementById('maxAttendee');
+    element.classList.add('desc');
+    element.innerHTML = 'Nombre de participants <i class="bi bi-arrow-down-short"></i>';
+  }
+  const activities = document.getElementById('activities');
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      activities.innerHTML = xhr.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/populateActivities.php?page=' + page);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('search=' + search);
+
+  window.addEventListener('beforeunload', function () {
+    localStorage.removeItem('search');
+  });
+}
+
+function removeFilter(element) {
+  if (!element.classList.contains('desc') || !element.classList.contains('asc')) {
+    const nameElement = document.getElementById('name');
+    nameElement.innerHTML = 'Nom';
+    const maxAttendeeElement = document.getElementById('maxAttendee');
+    maxAttendeeElement.innerHTML = 'Nombre de participants';
+    const durationElement = document.getElementById('duration');
+    durationElement.innerHTML = 'Durée';
+    const priceElement = document.getElementById('price');
+    priceElement.innerHTML = 'Prix';
+    const statusElement = document.getElementById('status');
+    if (statusElement != null) {
+      statusElement.innerHTML = 'Statut';
+    }
+  }
+  const filter = element.parentElement;
+  let selectedFilter = filter.querySelector('.asc');
+  if (selectedFilter != null) {
+    selectedFilter.classList.remove('asc');
+  }
+  selectedFilter = filter.querySelector('.desc');
+  if (selectedFilter != null) {
+    selectedFilter.classList.remove('desc');
+  }
+}
+
+function filterMaxAttendee(page, element) {
+  if (element.classList.contains('desc')) {
+    removeFilter(element);
+    element.classList.add('asc');
+    element.innerHTML = 'Nombre de participants <i class="bi bi-arrow-up-short"></i>';
+    localStorage.setItem('search', 'maxAttendeeAsc');
+  } else if (element.classList.contains('asc')) {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Nombre de participants <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'maxAttendeeDesc');
+  } else {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Nombre de participants <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'maxAttendeeDesc');
+  }
+  populateActivity(page);
+}
+
+function filterName(page, element) {
+  if (element.classList.contains('desc')) {
+    removeFilter(element);
+    element.classList.add('asc');
+    element.innerHTML = 'Nom <i class="bi bi-arrow-up-short"></i>';
+    localStorage.setItem('search', 'nameAsc');
+  } else if (element.classList.contains('asc')) {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Nom <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'nameDesc');
+  } else {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Nom <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'nameDesc');
+  }
+  populateActivity(page);
+}
+
+function filterDuration(page, element) {
+  if (element.classList.contains('desc')) {
+    removeFilter(element);
+    element.classList.add('asc');
+    element.innerHTML = 'Durée <i class="bi bi-arrow-up-short"></i>';
+    localStorage.setItem('search', 'durationAsc');
+  } else if (element.classList.contains('asc')) {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Durée <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'durationDesc');
+  } else {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Durée <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'durationDesc');
+  }
+  populateActivity(page);
+}
+
+function filterPrice(page, element) {
+  if (element.classList.contains('desc')) {
+    removeFilter(element);
+    element.classList.add('asc');
+    element.innerHTML = 'Prix <i class="bi bi-arrow-up-short"></i>';
+    localStorage.setItem('search', 'priceAsc');
+  } else if (element.classList.contains('asc')) {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Prix <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'priceDesc');
+  } else {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Prix <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'priceDesc');
+  }
+  populateActivity(page);
+}
+
+function filterStatus(page, element) {
+  if (element.classList.contains('desc')) {
+    removeFilter(element);
+    element.classList.add('asc');
+    element.innerHTML = 'Statut <i class="bi bi-arrow-up-short"></i>';
+    localStorage.setItem('search', 'statusAsc');
+  } else if (element.classList.contains('asc')) {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Statut <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'statusDesc');
+  } else {
+    removeFilter(element);
+    element.classList.add('desc');
+    element.innerHTML = 'Statut <i class="bi bi-arrow-down-short"></i>';
+    localStorage.setItem('search', 'statusAsc');
+  }
+  populateActivity(page);
 }
