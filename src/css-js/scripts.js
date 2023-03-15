@@ -383,6 +383,7 @@ function checkConfirm(text) {
   } else {
     return false;
   }
+}
   
 function populateActivity(page) {
   let search = localStorage.getItem('search');
