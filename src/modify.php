@@ -1,5 +1,5 @@
 <?php session_start();
-include "../includes/db.php";
+include "includes/db.php";
 $siret = htmlspecialchars($_GET['siret']);
 $name = htmlspecialchars($_GET["name"]);
 $email = htmlspecialchars($_GET["email"]);
@@ -11,24 +11,24 @@ $req->execute(array(
 ));
 $address = $req->fetch(PDO::FETCH_ASSOC);
 
-if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
+if (isset($_SESSION["siret"])) { ?>
 
     <!DOCTYPE html>
     <html lang="fr">
     <?php
-    $linkLogo = "../images/logo.png";
-    $linkCss = "../css-js/style.css";
+    $linkLogo = "images/logo.png";
+    $linkCss = "css-js/style.css";
     $title = "Modification de $name";
-    include "../includes/head.php";
+    include "includes/head.php";
     ?>
 
     <body>
 
-        <?php include "../includes/header.php"; ?>
+        <?php include "includes/header.php"; ?>
         <main>
-            <form action="verifUpdateCompany.php?siret=<?= $siret ?>" method="post">
+            <form action="verifications/verifmodifycompany.php?siret=<?= $siret ?>" method="post">
                 <div class="container col-md-6">
-                    <?php include "../includes/msg.php"; ?>
+                    <?php include "includes/msg.php"; ?>
                 </div>
                 <div class="container col-md-4" id="form">
                     <div class="mb-3">
@@ -45,7 +45,7 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                 </div>
             </form>
         </main>
-        <?php include "../includes/footer.php"; ?>
+        <?php include "includes/footer.php"; ?>
 
         <script src="css-js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -54,6 +54,6 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
 
     </html>
 <?php } else {
-    header("location: ../index.php");
+    header("location: profil.php");
     exit();
 } ?>

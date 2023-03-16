@@ -56,6 +56,7 @@ if (isset($_POST["submit"])) {
         $req = $db->prepare(
             "SELECT id, rights,email FROM PROVIDER WHERE email = :email AND password = :password"
         );
+
         $req->execute([
             "email" => $_POST["login"],
             "password" => hash("sha512", $_POST["password"]),
