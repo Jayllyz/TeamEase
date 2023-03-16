@@ -100,19 +100,17 @@ if (
 
     $subject = 'Confirmation de votre inscription';
     $msgHTML =
-      '<img src="../images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
-                <p class="display-2">Bienvenue sur TopCook. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
-      <a href="../includes/confRegistration.php?' .
+      '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
+                <p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
+      <a href="localhost/includes/confRegistration.php?' .
       'token=' .
       $token .
       '&email=' .
       $email .
       '&type=' .
       'company">Confirmation !</a>';
-    $destination = 'localhost';
+    $destination = '../login.php';
     include '../includes/mailer.php';
-
-    header('location: ../login.php?message=Votre compte a bien été créé !&type=success&valid=valid');
   } else {
     header(
       'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp'

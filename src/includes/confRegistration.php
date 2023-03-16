@@ -18,8 +18,9 @@ $result = $req->fetchAll(PDO::FETCH_ASSOC);
 foreach ($result as $existToken) {
   if ($type == 'company') {
     $id = $existToken['siret'];
+  } else {
+    $id = $existToken['id'];
   }
-  $id = $existToken['id'];
   if ($existToken != '') {
     $token = htmlspecialchars($_GET['token']);
     $email = htmlspecialchars($_GET['email']);
@@ -48,18 +49,8 @@ foreach ($result as $existToken) {
 
       $_SESSION['email'] = $email;
       session_destroy();
-      echo "
-  <div class='text-center'>
-  <div class='alert alert-success' role='alert'>
-    <img src='../images/logo.png' class='logo float-left m-2 h-75 me-4' width='95' alt='Logo'>
-    <h4 class='alert-heading'><strong>Congratulations !</strong></h4>
-    <p>Votre compte a été confirmé ! Vous pouvez retourner sur notre site en cliquant sur ce lien :
-    <a href='localhost/login.php' class='text-decoration-none'><em>Home</em></a> pour vous connecter et fermer
-    cette page.
-    Together&Stronger, vous souhaite la bienvenue !</p>
-  </div>
-  </div>
-  ";
+      header('location: ../login.php?message=Votre compte à bien été confirmé !&type=success');
+      exit();
     } else {
       session_destroy();
       echo "Email doesn't confirmed !";
