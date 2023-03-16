@@ -3,9 +3,7 @@
 $email = $_POST['emailCompany'];
 $password = $_POST['passwordCompany'];
 $conf_password = $_POST['conf_password'];
-$name = $_POST['nameCompany'];
 $siret = $_POST['siret'];
-$address = $_POST['address'];
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
   header('location: ../signin.php?message=Email invalide !&valid=invalid&input=emailCompany');
@@ -33,15 +31,35 @@ if ($reponse) {
   setcookie('siret', $siret, time() + 3600, '/');
 }
 
-if (strlen($name) == 0) {
-  header("location: ../signin.php?message=Nom d'entreprise invalide !&valid=invalid&input=nameCompany");
+$url = 'https://api.insee.fr/entreprises/sirene/V3/siret/' . $siret;
+$access_token = $_ENV['TOKEN_INSEE'];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $access_token));
+$output = curl_exec($ch);
+curl_close($ch);
+
+
+$jsonDecode = json_decode($output, true);
+
+if($jsonDecode['header']['statut'] != 200 )  {
+  header("location: ../signin.php?message=Le SIRET n'existe pas ou une erreur est survenue !&valid=invalid&input=siret");
   exit();
 }
 
-if (strlen($address) < 5) {
-  header('location: ../signin.php?message=Adresse invalide !&valid=invalid&input=address');
-  exit();
-}
+
+$jsonDecode = json_decode($output, true);
+$address = $jsonDecode['etablissement']['adresseEtablissement']['numeroVoieEtablissement'] . ' '
+         . $jsonDecode['etablissement']['adresseEtablissement']['typeVoieEtablissement'] . ' ' 
+         . $jsonDecode['etablissement']['adresseEtablissement']['libelleVoieEtablissement'] . ', ' 
+         . $jsonDecode['etablissement']['adresseEtablissement']['codePostalEtablissement'] . ', ' 
+         . $jsonDecode['etablissement']['adresseEtablissement']['libelleCommuneEtablissement'];
+
+$name = $jsonDecode['etablissement']['uniteLegale']['denominationUniteLegale'];
+
+
 
 if (strlen($password) < 6) {
   header(

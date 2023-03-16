@@ -34,23 +34,8 @@ include 'includes/db.php';
             <form name="signin" onsubmit="return validateForm(this.name)" id="form" class="container col-md-4" action="verifications/verifSignin.php" method="post" enctype="multipart/form-data">
                 <?php include 'includes/msg.php'; ?>
                 <div class="mb-3">
-
-
-                    <label class="form-label"><strong>Nom d'entreprise</strong></label>
-                    <input type="text" name="nameCompany" class="form-control is-<?= isset($_GET['valid']) &&
-                                                                                        $_GET['input'] == 'nameCompany'
-                                                                                        ? $_GET['valid']
-                                                                                        : '' ?>" value="<?= isset($_COOKIE['nameCompany']) ? $_COOKIE['nameCompany'] : '' ?>" required>
-                    <?php if (isset($_GET['valid'])) { ?>
-                        <div class="<?= $_GET['valid'] ?>-feedback">
-                            <?= $_GET['message'] ?>
-                        </div>
-                    <?php } ?>
-                </div>
-
-                <div class="mb-3">
                     <label class="form-label"><strong>n° de SIRET</strong></label>
-                    <input type="number" name="siret" class="form-control is-<?= isset($_GET['valid']) &&
+                    <input type="number" name="siret" placeholder="31130000800017" size="14" class="form-control is-<?= isset($_GET['valid']) &&
                                                                                     $_GET['input'] == 'siret'
                                                                                     ? $_GET['valid']
                                                                                     : '' ?>" value="<?= isset($_COOKIE['siret']) ? $_COOKIE['siret'] : '' ?>" required>
@@ -61,19 +46,6 @@ include 'includes/db.php';
                     <?php } ?>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label"><strong>Adresse de l'entreprise</strong></label>
-                    <input type="text" name="address" class="form-control is-<?= isset($_GET['valid']) &&
-                                                                                    $_GET['input'] == 'address'
-                                                                                    ? $_GET['valid']
-                                                                                    : '' ?>" value="<?= isset($_COOKIE['address']) ? $_COOKIE['address'] : '' ?>" required>
-
-                    <?php if (isset($_GET['valid'])) { ?>
-                        <div class="<?= $_GET['valid'] ?>-feedback">
-                            <?= $_GET['message'] ?>
-                        </div>
-                    <?php } ?>
-                </div>
 
                 <div class="mb-3">
                     <label class="form-label"><strong>Adresse mail</strong></label>
