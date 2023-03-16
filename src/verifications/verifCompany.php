@@ -95,9 +95,10 @@ if (
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (:siret, :companyName, :email, :address, :password, :rights)'
+      'INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token) VALUES (:siret, :companyName, :email, :address, :password, :rights, :token)'
     );
     $rights = 0;
+    $token = uniqid();
 
     $req->execute([
       'siret' => $siret,
@@ -106,9 +107,22 @@ if (
       'address' => $address,
       'password' => hash('sha512', $password),
       'rights' => $rights,
+      'token' => $token,
     ]);
 
-    header('location: ../login.php?message=Votre compte a bien été créé !&type=success&valid=valid');
+    $subject = 'Confirmation de votre inscription';
+    $msgHTML =
+      '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
+                <p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
+      <a href="localhost/includes/confRegistration.php?' .
+      'token=' .
+      $token .
+      '&email=' .
+      $email .
+      '&type=' .
+      'company">Confirmation !</a>';
+    $destination = '../login.php';
+    include '../includes/mailer.php';
   } else {
     header(
       'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp'

@@ -36,7 +36,6 @@ if (!$reponse) {
   exit();
 }
 
-
 if (isset($salary) && !is_numeric($salary)) {
   header('location: ../signin.php?message=Le salaire est invalide !&valid=invalid&input=salary');
   exit();
@@ -84,9 +83,10 @@ if (
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights)'
+      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights, token) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights, :token)'
     );
-    $rights = 1;
+    $rights = 0;
+    $token = uniqid();
 
     $req->execute([
       'firstName' => $lastName,
@@ -95,10 +95,23 @@ if (
       'email' => $email,
       'salary' => $salary,
       'rights' => $rights,
+      'token' => $token,
       'password' => hash('sha512', $password),
     ]);
 
-    header('location: ../login.php?message=Votre compte a bien été créé !&type=success&valid=valid');
+    $subject = 'Confirmation de votre inscription';
+    $msgHTML =
+      '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
+                <p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
+      <a href="localhost/includes/confRegistration.php?' .
+      'token=' .
+      $token .
+      '&email=' .
+      $email .
+      '&type=' .
+      'provider">Confirmation !</a>';
+    $destination = '../login.php';
+    include '../includes/mailer.php';
   } else {
     header(
       'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp'

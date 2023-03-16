@@ -21,6 +21,8 @@ CREATE TABLE COMPANY
   address VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   rights INT NOT NULL,
+  token VARCHAR(255),
+  confirm_signup INT NOT NULL DEFAULT 0,
   PRIMARY KEY (siret)
 );
 
@@ -170,6 +172,8 @@ CREATE TABLE PROVIDER
   rights INT NOT NULL,
   email VARCHAR(255) NOT NULL,
   id_occupation INT NOT NULL,
+  token VARCHAR(255),
+  confirm_signup INT NOT NULL DEFAULT 0,
   PRIMARY KEY (id),
   FOREIGN KEY (id_occupation) REFERENCES OCCUPATION(id) ON DELETE CASCADE
 );
@@ -207,8 +211,8 @@ INSERT INTO CATEGORY (id, name) VALUES (5, 'Musique');
 INSERT INTO CATEGORY (id, name) VALUES (6, "Coopératif");
 INSERT INTO CATEGORY (id, name) VALUES (7, "Compétitif");
 
-INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901234, 'TeamEase', 'teamease@gmail.com', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 2);
-INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901235, 'testCompany', 'test@domaine.com','24 rue test', sha2('Respons11', 512), 0);
+INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901234, 'TeamEase', 'teamease@gmail.com', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 2, '', 1);
+INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901235, 'testCompany', 'test@domaine.com','24 rue test', sha2('Respons11', 512), 0, '', 1);
 
 INSERT INTO OCCUPATION (id, name) VALUES (1, 'Animateur');
 INSERT INTO OCCUPATION (id, name) VALUES (2, 'Game Master');
