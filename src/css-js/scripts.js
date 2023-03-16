@@ -118,6 +118,24 @@ function changeSignForm() {
   }
 }
 
+function checkRadio(id) {
+  let checker = document.getElementById(id).innerText;
+  let companyCheck = document.getElementById('radioCompany');
+  let providerCheck = document.getElementById('provider-check');
+  if (checker == 'company') {
+    providerCheck.checked = false;
+    companyCheck.checked = true;
+    document.getElementById('table-company').style.display = 'none';
+    document.getElementById('table-provider').style.display = 'block';
+  }
+  if (checker == 'provider') {
+    companyCheck.checked = false;
+    providerCheck.checked = true;
+    document.getElementById('table-company').style.display = 'none';
+    document.getElementById('table-provider').style.display = 'block';
+  }
+}
+
 function changeTable() {
   let check = document.getElementById('provider-check').checked;
   if (check == true) {

@@ -9,9 +9,14 @@ $linkLogo = 'images/logo.png';
 $linkCss = 'css-js/style.css';
 $title = 'Gestion clients';
 include 'includes/head.php';
+if(isset($_GET['check'])) {
+$check = htmlspecialchars($_GET['check']);
+}else {
+$check = 'company';
+}
 ?>
 
-<body>
+<body onload="checkRadio('jsCheckRadio')">
     <?php include 'includes/header.php'; ?>
 
     <main>
@@ -26,16 +31,17 @@ include 'includes/head.php';
                 <a href="#" class="btn ms-4 mb-4 exportData">Exporter les données</a>
             </div>
             <div class="d-flex justify-content-center container ">
+                <p id="jsCheckRadio" style="display: none;"><?= $check ?></p>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onchange="changeTable()" checked>
-                    <label class="form-check-label" for="flexRadioDefault1">
+                    <input class="form-check-input" type="radio" name="radio" id="radioCompany" onchange="changeTable()" >
+                    <label class="form-check-label" for="radioCompany">
                         Entreprise
                     </label>
                 </div>
 
                 <div class="form-check mx-3">
-                    <input class=" form-check-input" type="radio" name="flexRadioDefault" onchange="changeTable()" id="provider-check">
-                    <label class="form-check-label" for="flexRadioDefault2">
+                    <input class="form-check-input" type="radio" name="radio" onchange="changeTable()" id="provider-check">
+                    <label class="form-check-label" for="radioProvider">
                         Prestataire
                     </label>
                 </div>

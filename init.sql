@@ -208,7 +208,10 @@ INSERT INTO CATEGORY (id, name) VALUES (6, "Coopératif");
 INSERT INTO CATEGORY (id, name) VALUES (7, "Compétitif");
 
 INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901234, 'TeamEase', 'teamease@gmail.com', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 2);
+INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901235, 'testCompany', 'test@domaine.com','24 rue test', sha2('Respons11', 512), 0);
 
 INSERT INTO OCCUPATION (id, name) VALUES (1, 'Animateur');
 INSERT INTO OCCUPATION (id, name) VALUES (2, 'Game Master');
 INSERT INTO OCCUPATION (id, name) VALUES (3, 'Coach sportif');
+
+INSERT INTO PROVIDER (firstName, lastName, salary, password, rights, email, id_occupation) VALUES ('Jean', 'Dupont', 2000, sha2('Respons11', 512), 1, 'test@domaine.com', 1);

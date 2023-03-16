@@ -14,9 +14,10 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
 
     <body>
         <?php include "../includes/header.php"; ?>
+
         <?php
         $req = $db->prepare(
-            "SELECT companyName, email,rights FROM COMPANY WHERE siret = :siret"
+            "SELECT companyName, email, address, rights FROM COMPANY WHERE siret = :siret"
         );
         $req->execute([
             "siret" => $siret,
@@ -28,13 +29,17 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
             <div class="container info_user">
                 <table class="table text-center table-bordered">
                     <tr>
+                        <th>SIRET</th>
                         <th>Nom de l'entreprise</th>
                         <th>Email</th>
+                        <th>Adresse</th>
                         <th>Droits</th>
                     </tr>
                     <tr>
+                        <td><?= $siret ?></td>
                         <td><?= $select["companyName"] ?></td>
                         <td><?= $select["email"] ?></td>
+                        <td><?= $select["address"] ?></td>
                         <td><?= $select["rights"] ?></td>
                     </tr>
                 </table>
@@ -57,6 +62,9 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                         <td><?= "todo" ?></td>
                     </tr>
                 </table>
+                <div class="text-center mt-auto">
+                    <a href="../admin.php" class="btn col-1 btn-dark">Retour</a>
+                </div>
             </div>
 
         <?php }
