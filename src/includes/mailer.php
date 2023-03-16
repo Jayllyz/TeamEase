@@ -11,12 +11,12 @@ $mail = new PHPMailer(true);
 $mail->isSMTP();
 $mail->Host = 'smtp.gmail.com';
 $mail->SMTPAuth = true;
-$mail->Username = 'teameasepa@gmail.com';
+$mail->Username = $_ENV['EMAIL'];
 $mail->Password = $_ENV['EMAIL_PASSWORD'];
 $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;
 
-$mail->setFrom('teameasepa@gmail.com'); // Adresse mail du site
+$mail->setFrom($_ENV['EMAIL']); // Adresse mail du site
 $mail->addAddress($email);
 $mail->isHTML(true);
 $mail->Subject = $subject;
