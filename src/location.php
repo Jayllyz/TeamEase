@@ -8,7 +8,7 @@
   $title = 'Gestion des salles et sites d\'activités';
   include 'includes/head.php';
   ?>
-  <body>
+  <body onload="populateLocation()">
     <?php include 'includes/header.php'; ?>
     <main>
       <div class="container">
@@ -31,13 +31,13 @@
               </div>
               <div class="modal-body">
                 <label>Nom du site</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control name">
                 <label>Adresse du site</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control address">
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Confirmer</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="addLocation(this)">Confirmer</button>
               </div>
             </div>
           </div>

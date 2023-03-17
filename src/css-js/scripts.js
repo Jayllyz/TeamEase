@@ -562,3 +562,74 @@ function selectedDay(day) {
     document.getElementById(day + 'Hour').style = 'display: block';
   }
 }
+
+function addLocation(element) {
+  nameLocation = element.parentElement.parentElement.querySelector('.name').value;
+  addressLocation = element.parentElement.parentElement.querySelector('.address').value;
+
+  if (nameLocation != '' && addressLocation != '') {
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        if (this.responseText == 'Ce nom de site est déjà utilisé') {
+          alert(this.responseText);
+        } else if (this.responseText == 'Cette adresse est déjà utilisée') {
+          alert(this.responseText);
+        } else if (this.responseText == 'Une erreur est survenue') {
+          alert(this.responseText);
+        } else if (this.responseText == 'success') {
+          visuallyAddLocation(nameLocation, addressLocation);
+          alert('Le site a bien été ajouté');
+        }
+      }
+    };
+    xhr.open('POST', 'verifications/verifLocation.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('name=' + nameLocation + '&address=' + addressLocation);
+  } else {
+    alert('Veuillez remplir tous les champs');
+  }
+}
+
+function visuallyAddLocation(name, address) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById('locationContainer').innerHTML += this.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('name=' + name + '&address=' + address);
+}
+
+function deleteLocation(element, id) {
+  const location = element.parentElement.parentElement.parentElement;
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText == 'success') {
+        alert('Le site a bien été supprimé');
+      } else {
+        alert('Une erreur est survenue');
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifLocation.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('delete=' + id);
+  location.remove();
+}
+
+function populateLocation() {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById('locationContainer').innerHTML = this.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('populate=true');
+}
