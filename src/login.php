@@ -44,7 +44,7 @@ include 'includes/head.php';
                 <label class="form-label">Voir mon mot de passe</label>
                 <input type="checkbox" class="form-check-input" onClick="viewPassword()">
                 <div class="mb-3">
-                    <a href="lost_password.php">Mot de passe oublié ?</a>
+                    <a href="lostPassword.php">Mot de passe oublié ?</a>
                 </div>
                 <button type="submit" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
             </div>
