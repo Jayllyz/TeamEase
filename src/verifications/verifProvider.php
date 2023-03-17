@@ -8,19 +8,19 @@ $password = $_POST['password'];
 $conf_password = $_POST['conf_password'];
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-  header('location: ../signin.php?message=Email invalide !&valid=invalid&input=email');
+  header('location: ../signin.php?message=Email invalide !&valid=invalid&input=email&check=provider');
   exit();
 } else {
   setcookie('email', $email, time() + 3600, '/');
 }
 
 if (isset($lastName) && !strlen($lastName) > 0) {
-  header('location: ../signin.php?message=Le nom est invalide !&valid=invalid&input=name');
+  header('location: ../signin.php?message=Le nom est invalide !&valid=invalid&input=name&check=provider');
   exit();
 }
 
 if (isset($firstName) && !strlen($firstName) > 0) {
-  header('location: ../signin.php?message=Le prenom est invalide !&valid=invalid&input=firstname');
+  header('location: ../signin.php?message=Le prenom est invalide !&valid=invalid&input=firstname&check=provider');
   exit();
 }
 
@@ -32,18 +32,18 @@ $req->execute([
 $reponse = $req->fetch();
 
 if (!$reponse) {
-  header('location: ../signin.php?message=Le métier est invalide !&valid=invalid&input=job');
+  header('location: ../signin.php?message=Le métier est invalide !&valid=invalid&input=job&check=provider');
   exit();
 }
 
 if (isset($salary) && !is_numeric($salary)) {
-  header('location: ../signin.php?message=Le salaire est invalide !&valid=invalid&input=salary');
+  header('location: ../signin.php?message=Le salaire est invalide !&valid=invalid&input=salary&check=provider');
   exit();
 }
 
 if (strlen($password) < 6) {
   header(
-    'location: ../signin.php?message=Mot de passe invalide. Il doit avoir 6 caracteres minimum !&valid=invalid&input=mdp'
+    'location: ../signin.php?message=Mot de passe invalide. Il doit avoir 6 caracteres minimum !&valid=invalid&input=mdp&check=provider'
   );
   exit();
 }
@@ -56,7 +56,7 @@ $req->execute([
 $reponse = $req->fetch();
 
 if ($reponse) {
-  header('location: ../signin.php?message=Cet email est déja utilisé !&valid=invalid&input=email');
+  header('location: ../signin.php?message=Cet email est déja utilisé !&valid=invalid&input=email&check=provider');
   exit();
 }
 
@@ -68,7 +68,7 @@ $req->execute([
 $reponse = $req->fetch();
 
 if ($reponse) {
-  header('location: ../signin.php?message=Cet email est déja utilisé !&valid=invalid&input=email');
+  header('location: ../signin.php?message=Cet email est déja utilisé !&valid=invalid&input=email&check=provider');
   exit();
 }
 
@@ -114,7 +114,7 @@ if (
     include '../includes/mailer.php';
   } else {
     header(
-      'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp'
+      'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp&check=provider'
     );
     exit();
   }

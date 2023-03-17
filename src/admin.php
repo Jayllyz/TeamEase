@@ -9,14 +9,14 @@ $linkLogo = 'images/logo.png';
 $linkCss = 'css-js/style.css';
 $title = 'Gestion clients';
 include 'includes/head.php';
-if(isset($_GET['check'])) {
-$check = htmlspecialchars($_GET['check']);
-}else {
-$check = 'company';
+if (isset($_GET['check'])) {
+  $check = htmlspecialchars($_GET['check']);
+} else {
+  $check = 'company';
 }
 ?>
 
-<body onload="checkRadio('jsCheckRadio')">
+<body onload="checkRadio('jsCheckRadio', 'back')">
     <?php include 'includes/header.php'; ?>
 
     <main>

@@ -118,21 +118,31 @@ function changeSignForm() {
   }
 }
 
-function checkRadio(id) {
+function checkRadio(id, page) {
   let checker = document.getElementById(id).innerText;
   let companyCheck = document.getElementById('radioCompany');
   let providerCheck = document.getElementById('provider-check');
   if (checker == 'company') {
     providerCheck.checked = false;
     companyCheck.checked = true;
-    document.getElementById('table-company').style.display = 'none';
-    document.getElementById('table-provider').style.display = 'block';
+    if (page == 'back') {
+      document.getElementById('table-company').style.display = 'block';
+      document.getElementById('table-provider').style.display = 'none';
+    } else {
+      document.getElementById('forms-company').style.display = 'block';
+      document.getElementById('forms-provider').style.display = 'none';
+    }
   }
   if (checker == 'provider') {
     companyCheck.checked = false;
     providerCheck.checked = true;
-    document.getElementById('table-company').style.display = 'none';
-    document.getElementById('table-provider').style.display = 'block';
+    if (page == 'back') {
+      document.getElementById('table-company').style.display = 'none';
+      document.getElementById('table-provider').style.display = 'block';
+    } else {
+      document.getElementById('forms-company').style.display = 'none';
+      document.getElementById('forms-provider').style.display = 'block';
+    }
   }
 }
 

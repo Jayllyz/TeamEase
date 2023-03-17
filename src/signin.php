@@ -3,42 +3,50 @@
 <html lang="fr">
 <?php
 $linkLogo = 'images/logo.png';
+$siteKey = $_ENV['CAPTCHA_SITE'];
+if (isset($_GET['check'])) {
+  $check = htmlspecialchars($_GET['check']);
+} else {
+  $check = 'company';
+}
 $linkCss = 'css-js/style.css';
 $title = 'Inscription';
 include 'includes/head.php';
 include 'includes/db.php';
 ?>
 
-<body>
+<body onload="checkRadio('jsCheckRadio', 'forms')">
     <?php include 'includes/header.php'; ?>
     <main>
         <h1 style="margin-top: 1rem; margin-bottom: 1rem;">Inscription</h1>
 
         <div class="d-flex justify-content-center container ">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onchange="changeSignForm()" checked>
-                <label class="form-check-label" for="flexRadioDefault1">
-                    Entreprise
-                </label>
-            </div>
+                <p id="jsCheckRadio" style="display: none;"><?= $check ?></p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio" id="radioCompany" onchange="changeSignForm()" >
+                    <label class="form-check-label" for="radioCompany">
+                        Entreprise
+                    </label>
+                </div>
 
-            <div class="form-check mx-3">
-                <input class=" form-check-input" type="radio" name="flexRadioDefault" onchange="changeSignForm()" id="provider-check">
-                <label class="form-check-label" for="flexRadioDefault2">
-                    Prestataire
-                </label>
+                <div class="form-check mx-3">
+                    <input class="form-check-input" type="radio" name="radio" onchange="changeSignForm()" id="provider-check">
+                    <label class="form-check-label" for="radioProvider">
+                        Prestataire
+                    </label>
+                </div>
             </div>
-        </div>
 
         <div class="formulaire" id="forms-company">
             <form name="signin" onsubmit="return validateForm(this.name)" id="form" class="container col-md-4" action="verifications/verifSignin.php" method="post" enctype="multipart/form-data">
                 <?php include 'includes/msg.php'; ?>
                 <div class="mb-3">
                     <label class="form-label"><strong>n° de SIRET</strong></label>
-                    <input type="number" name="siret" placeholder="31130000800017" size="14" class="form-control is-<?= isset($_GET['valid']) &&
-                                                                                    $_GET['input'] == 'siret'
-                                                                                    ? $_GET['valid']
-                                                                                    : '' ?>" value="<?= isset($_COOKIE['siret']) ? $_COOKIE['siret'] : '' ?>" required>
+                    <input type="number" name="siret" placeholder="31130000800017" size="14" class="form-control is-<?= isset(
+                      $_GET['valid']
+                    ) && $_GET['input'] == 'siret'
+                      ? $_GET['valid']
+                      : '' ?>" value="<?= isset($_COOKIE['siret']) ? $_COOKIE['siret'] : '' ?>" required>
                     <?php if (isset($_GET['valid'])) { ?>
                         <div class="<?= $_GET['valid'] ?>-feedback">
                             <?= $_GET['message'] ?>
@@ -75,8 +83,11 @@ include 'includes/db.php';
                     <label class="form-label">Voir mon mot de passe</label>
                     <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription(this)">
                 </div>
+
+                <div class="g-recaptcha mb-4" data-sitekey="<?= $siteKey ?>" data-callback="captchaValidation"></div>
+                
                 <div class="text-center">
-                    <button type="submit" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
+                    <button type="submit" style="display: none" id="submit" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
                 </div>
             </form>
         </div>
@@ -183,13 +194,23 @@ include 'includes/db.php';
                     <label class="form-label">Voir mon mot de passe</label>
                     <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription(this)">
                 </div>
+                <div class="g-recaptcha mb-4" data-sitekey="<?= $siteKey ?>" data-callback="captchaValidation" ></div>
                 <div class="text-center">
-                    <button type="submit" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
+                    <button type="submit" id="submit" style="display: none" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
                 </div>
             </form>
         </div>
     </main>
     <script src="css-js/scripts.js"></script>
+    <script>
+        var captchaValidation = function(response) {
+            const state = (grecaptcha.getResponse()) ? true : false;
+
+            if (state) { 
+                document.getElementById("submit").style.display = "block";
+            }
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <?php include 'includes/footer.php'; ?>
 </body>

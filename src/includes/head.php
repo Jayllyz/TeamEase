@@ -5,4 +5,7 @@
     <link rel="stylesheet" href="<?= $linkCss ?>">
     <link rel="shortcut icon" type="image/png" href="<?= $linkLogo ?>" />
   <title><?= $title ?></title>
+  <?php if ($title == 'Inscription') {
+    echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
+  } ?>
 </head>
