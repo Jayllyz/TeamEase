@@ -79,29 +79,46 @@ include 'includes/head.php';
           <h1>Dernières Réservation</h1>
           <?php
             
-            $sql = "SELECT * FROM RESERVATION WHERE siret = :siret";
+            $sql = "SELECT * FROM RESERVATION WHERE siret = :siret ORDER BY id DESC LIMIT 4";
         
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute([
+                      "siret" => $_SESSION["siret"],
+        
+                    ]);
+                    $reservations = $stmt->fetchAll();
 
-            $stmt = $db->prepare($sql);
-            $stmt->execute([
-              "siret" => $_SESSION["siret"],
 
-            ]);
-            $reservations = $stmt->fetchAll();
-            foreach ($reservations as $reservation) {
-              echo $reservation['id']; //Ne pas changer
-              echo '<br>';
-              echo $reservation['attendee']; // Ne pas Changer
-              echo '<br>';
-              echo $reservation['id_activity']; // Changer
-              echo '<br>';
-              echo $reservation['siret']; // Ne pas changer
-              echo '<br>';
-              echo $reservation['id_location']; // Changer
-              echo '<br>';
-              
-            }
-          
+                    
+            // faire une tableau avec les données
+            ?>
+                
+
+<table class="table text-center table-bordered table-hover" id="active">
+                    <thead>
+                        <tr>
+                            <th>Attendee</th>
+                            <th>id_activité</th>
+                            <th>siret</th>
+                            <th>id_location</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    
+                      for($i = 0; $i < count($reservations); $i++) { ?>
+                        <tbody>
+                            <tr>
+                                <td><?= $reservations[$i]['attendee'] ?></td>
+                                <td><?= $reservations[$i]['id_activity'] ?></td>
+                                <td><?= $reservations[$i]['siret'] ?></td>
+                                <td><?= $reservations[$i]['id_location'] ?></td>
+                                
+                            </tr>
+                        </tbody>
+                    <?php }
+                    ?>
+                </table>
+            <?php
 
           
           ?>
