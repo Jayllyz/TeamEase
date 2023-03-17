@@ -572,15 +572,11 @@ function addLocation(element) {
     xhr.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         console.log(this.responseText);
-        if (this.responseText == 'Ce nom de site est déjà utilisé') {
-          alert(this.responseText);
-        } else if (this.responseText == 'Cette adresse est déjà utilisée') {
-          alert(this.responseText);
-        } else if (this.responseText == 'Une erreur est survenue') {
-          alert(this.responseText);
-        } else if (this.responseText == 'success') {
+        if (this.responseText == 'success') {
           visuallyAddLocation(nameLocation, addressLocation);
           alert('Le site a bien été ajouté');
+        } else {
+          alert(this.responseText);
         }
       }
     };
@@ -606,6 +602,9 @@ function visuallyAddLocation(name, address) {
 
 function deleteLocation(element, id) {
   const location = element.parentElement.parentElement.parentElement;
+  if (!confirm('Voulez-vous vraiment supprimer ce site ?')) {
+    return;
+  }
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -632,4 +631,53 @@ function populateLocation() {
   xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('populate=true');
+}
+
+function addRoom(element, id) {
+  console.log(id);
+  const body = element.parentElement.parentElement.querySelector('.accordion-body');
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      body.innerHTML += this.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('room=true&idLocation=' + id);
+}
+
+function updateRoom(element, idLocation) {
+  let name = element.parentElement.parentElement.querySelector('input').value;
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText == 'success') {
+        alert('La salle a bien été modifiée');
+      } else {
+        alert(this.responseText);
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifRoom.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('location=' + idLocation + '&name=' + name);
+}
+
+function deleteRoom(element, idLocation) {
+  let name = element.parentElement.parentElement.querySelector('input').value;
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText == 'success') {
+        alert('La salle a bien été supprimée');
+        element.parentElement.parentElement.remove();
+      } else {
+        alert(this.responseText);
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifRoom.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('location=' + idLocation + '&name=' + name + '&delete=true');
 }
