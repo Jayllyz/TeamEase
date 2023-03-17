@@ -46,12 +46,12 @@ if (isset($_POST['populate']) == 'true') {
                 </div>
                 <div class="col-3 d-flex justify-content-end">
                     <button class="btn btn-success btn-sm me-2" onclick="updateRoom(this, ' .
-          $location['id'] .
+          $room['id'] .
           ')">
                         Modifier la salle
                     </button>
                     <button class="btn btn-danger btn-sm" onclick="deleteRoom(this, ' .
-          $location['id'] .
+          $room['id'] .
           ')">
                         Supprimer la salle
                     </button>
@@ -79,16 +79,16 @@ if (isset($_POST['populate']) == 'true') {
   exit();
 }
 
-if (isset($_POST['room']) && isset($_POST['idLocation'])) { ?>
+if (isset($_POST['room']) && isset($_POST['id'])) { ?>
     <div class="row mt-2">
         <div class="col-9">
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" value="Nouvelle salle">
         </div>
         <div class="col-3 d-flex justify-content-end">
-            <button class="btn btn-success btn-sm me-2" onclick="updateRoom(this, <?php echo $_POST['idLocation']; ?>)">
+            <button class="btn btn-success btn-sm me-2" onclick="updateRoom(this, <?php echo $_POST['id']; ?>)">
                 Modifier la salle
             </button>
-            <button class="btn btn-danger btn-sm" onclick="deleteRoom(this, <?php echo $_POST['idLocation']; ?>)">
+            <button class="btn btn-danger btn-sm" onclick="deleteRoom(this, <?php echo $_POST['id']; ?>)">
                 Supprimer la salle
             </button>
         </div>

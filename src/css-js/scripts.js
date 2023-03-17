@@ -639,16 +639,35 @@ function addRoom(element, id) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText.includes('success')) {
+        let roomId = this.responseText.split('success')[1];
+      } else {
+        alert(this.responseText);
+        return;
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifRoom.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('add=true&location=' + id);
+
+  xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
       body.innerHTML += this.responseText;
     }
   };
   xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('room=true&idLocation=' + id);
+  xhr.send('room=true&id=' + roomId);
 }
 
-function updateRoom(element, idLocation) {
+function updateRoom(element, id) {
   let name = element.parentElement.parentElement.querySelector('input').value;
+  if (name == '') {
+    alert('Veuillez nommer la salle');
+    return;
+  }
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -661,11 +680,13 @@ function updateRoom(element, idLocation) {
   };
   xhr.open('POST', 'verifications/verifRoom.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('location=' + idLocation + '&name=' + name);
+  xhr.send('id=' + id + '&name=' + name);
 }
 
-function deleteRoom(element, idLocation) {
-  let name = element.parentElement.parentElement.querySelector('input').value;
+function deleteRoom(element, id) {
+  if (!confirm('Voulez-vous vraiment supprimer cette salle ?')) {
+    return;
+  }
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -679,5 +700,5 @@ function deleteRoom(element, idLocation) {
   };
   xhr.open('POST', 'verifications/verifRoom.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('location=' + idLocation + '&name=' + name + '&delete=true');
+  xhr.send('id=' + id + '&delete=true');
 }
