@@ -196,6 +196,7 @@ INSERT INTO CATEGORY (id, name) VALUES (6, "Coopératif");
 INSERT INTO CATEGORY (id, name) VALUES (7, "Compétitif");
 
 INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901234, 'TeamEase', 'teamease@gmail.com', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 2);
+INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (53145866900037, 'ESGI', 'qjolli1@myges.fr', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 0);
 
 INSERT INTO OCCUPATION (id, name) VALUES (1, 'Animateur');
 INSERT INTO OCCUPATION (id, name) VALUES (2, 'Game Master');

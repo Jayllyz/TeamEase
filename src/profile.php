@@ -34,22 +34,41 @@ include 'includes/head.php';
 
             ]);
             $company = $stmt->fetch();
+
+            ?>
+            <br>
+            <br>
+            <br>
+
+            <div class="text-center">
+            <?php
+            echo "Siret :   n°";
             echo $company['siret']; //Ne pas changer
             echo '<br>';
+            echo '<br>';
+            echo '<br>';
+            echo "Nom de l'entreprise :   ";
             echo $company['companyName']; // Ne pas Changer
             echo '<br>';
+            echo '<br>';
+            echo '<br>';
+            echo "Email :    ";
             echo $company['email']; // Changer
             echo '<br>';
+            echo '<br>';
+            echo '<br>';
+            echo "Adresse :   ";
             echo $company['address']; // Ne pas changer
             echo '<br>';
             
 
             ?>
+            
             <br>
-              <a href="modify.php?siret=<?= $company["siret"] ?>&name=<?= $company["companyName"] ?>&email=<?= $company["email"] ?>&rights=<?= $company["rights"] ?>" class=" btn-update btn ms-2 me-2">Modifier</a>
-            <br>
-
-          <br>
+              <button class="btn-read">
+              <a href="modify.php?siret=<?= $company["siret"] ?>&name=<?= $company["companyName"] ?>&email=<?= $company["email"] ?>&rights=<?= $company["rights"] ?>" class="btn ms-2 me-2">Modifier</a>
+              </button>
+            </div>
       </div>
     </div>
   </div>
@@ -59,9 +78,9 @@ include 'includes/head.php';
       <div class="row">
           <h1>Dernières Réservation</h1>
           <?php
-            //fait moi un tableau avec les infos de la table reservation grâce à l'email de l'utilisateur
+            
             $sql = "SELECT * FROM RESERVATION WHERE siret = :siret";
-          //fait moi un tableau avec les infos de la table reservation grâce à l'email de l'utilisateur
+        
 
             $stmt = $db->prepare($sql);
             $stmt->execute([
@@ -86,16 +105,6 @@ include 'includes/head.php';
 
           
           ?>
-          <br>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="container section-about-us border border-2 border-secondary rounded">
-    <div>
-      <div class="row">
-          <h1>Dernière Activités</h1>
           <br>
       </div>
 

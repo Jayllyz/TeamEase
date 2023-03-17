@@ -26,7 +26,7 @@ if (isset($_SESSION["siret"])) { ?>
 
         <?php include "includes/header.php"; ?>
         <main>
-            <form action="verifications/verifmodifycompany.php?siret=<?= $siret ?>" method="post">
+            <form action="verifications/verifmodifycompany.php?siret=<?= $siret ?>&rights=<?= $rights ?>" method="post">
                 <div class="container col-md-6">
                     <?php include "includes/msg.php"; ?>
                 </div>
@@ -38,8 +38,6 @@ if (isset($_SESSION["siret"])) { ?>
                         <input type="text" class="form-control" name="companyName" value="<?= $name ?>">
                         <label class="form-label mt-3"><strong>Adresse</strong></label>
                         <input type="text" class="form-control" name="address" value="<?= $address["address"] ?>">
-                        <label class="form-label mt-3"><strong>Droits</strong></label>
-                        <input type="number" class="form-control" name="rights" value="<?= $rights ?>">
                         <button type="submit" name="submit" class="btn mt-3 btn-submit">Confirmer</button>
                     </div>
                 </div>
