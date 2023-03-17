@@ -556,5 +556,9 @@ function filterStatus(page, element) {
 }
 
 function selectedDay(day) {
-  document.getElementById(day + 'Hour').style = 'display: block';
+  if (document.getElementById(day + 'Hour').style.display == 'block') {
+    document.getElementById(day + 'Hour').style = 'display: none';
+  } else {
+    document.getElementById(day + 'Hour').style = 'display: block';
+  }
 }

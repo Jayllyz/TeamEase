@@ -69,10 +69,13 @@
                     <?php if (isset($_SESSION['rights'])) {
                       if ($_SESSION['rights'] == 2) {
                         echo '
-                              <li class="nav-item">
-                                  <a class="nav-link" href="material.php">Gestion du matériel</a>
-                              </li>
-                              ';
+                            <li class="nav-item">
+                                <a class="nav-link" href="location.php">Gestion des locaux</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="material.php">Gestion du matériel</a>
+                            </li>
+                            ';
                       }
                     } ?>
                     <li class="nav-item">
