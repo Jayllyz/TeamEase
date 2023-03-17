@@ -84,10 +84,10 @@ include 'includes/db.php';
                     <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription(this)">
                 </div>
 
-                <div class="g-recaptcha mb-4" data-sitekey="<?= $siteKey ?>" data-callback="captchaValidation"></div>
+                <div class="g-recaptcha mb-4" data-sitekey="<?= $siteKey ?>" data-callback="validCompany"></div>
                 
                 <div class="text-center">
-                    <button type="submit" style="display: none" id="submit" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
+                    <button type="submit" style="display: none" id="submitCompany" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
                 </div>
             </form>
         </div>
@@ -194,20 +194,30 @@ include 'includes/db.php';
                     <label class="form-label">Voir mon mot de passe</label>
                     <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription(this)">
                 </div>
-                <div class="g-recaptcha mb-4" data-sitekey="<?= $siteKey ?>" data-callback="captchaValidation" ></div>
+                
+                <div class="g-recaptcha mb-4" id="provider"data-sitekey="<?= $siteKey ?>" data-callback="validProvider"></div>
+
                 <div class="text-center">
-                    <button type="submit" id="submit" style="display: none" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
+                    <button type="submit" id="submitProvider" style="display: none" name="submit" class="btn btn-lg btn-submit">Envoyer</button>
                 </div>
             </form>
         </div>
     </main>
     <script src="css-js/scripts.js"></script>
     <script>
-        var captchaValidation = function(response) {
+        var validCompany = function(response) {
             const state = (grecaptcha.getResponse()) ? true : false;
 
-            if (state) { 
-                document.getElementById("submit").style.display = "block";
+            if (state === true) { 
+               document.getElementById('submitCompany').style.display = 'block';
+            }
+        };
+
+        var validProvider = function(response) {
+            const state = (grecaptcha.getResponse(1)) ? true : false;
+
+            if (state === true) { 
+               document.getElementById('submitProvider').style.display = 'block';
             }
         };
     </script>
