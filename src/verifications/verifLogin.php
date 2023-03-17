@@ -11,13 +11,34 @@ if (isset($_POST['submit'])) {
   }
 
   if (empty($_POST['login']) || !filter_var($_POST['login'], FILTER_VALIDATE_EMAIL)) {
-    header('location: ../login.php?message=Email invalide !&type=danger');
+    header('location: ../login.php?message=Email invalide !&type=danger&input=email&valid=invalid');
     exit();
   }
 
   if (!isset($_POST['password']) || empty($_POST['password'])) {
-    header('location: ../login.php?message=Mot de passe manquant !&type=danger');
+    header('location: ../login.php?message=Mot de passe manquant !&type=danger&input=password&valid=invalid');
     exit();
+  }
+
+  $req = $db->prepare('SELECT siret FROM COMPANY WHERE email = :email');
+  $req->execute([
+    'email' => $_POST['login'],
+  ]);
+
+  $reponse = $req->fetch();
+
+  if (!$reponse) {
+    $req = $db->prepare('SELECT id FROM PROVIDER WHERE email = :email');
+    $req->execute([
+      'email' => $_POST['login'],
+    ]);
+
+    $reponse = $req->fetch();
+
+    if (!$reponse) {
+      header('location: ../login.php?message=Email incorrect !&type=danger&input=email&valid=invalid');
+      exit();
+    }
   }
 
   $req = $db->prepare(
@@ -74,7 +95,7 @@ if (isset($_POST['submit'])) {
         }
       }
     } else {
-      header('location: ../login.php?message=Email ou mot de passe incorrect !&type=danger');
+      header('location: ../login.php?message=Mot de passe incorrect !&type=danger&input=password&valid=invalid');
       exit();
     }
   }
