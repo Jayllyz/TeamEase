@@ -2,10 +2,7 @@ name: Prettier
 
 # This action works with pull requests and pushes
 on:
-  pull_request:
   push:
-    branches:
-      - main
 
 jobs:
   prettier:
@@ -21,6 +18,6 @@ jobs:
       - name: Prettify code
         uses: creyD/prettier_action@v4.2
         with:
-          prettier_options: --config .prettierrc --write **/*.{html,php,css,js}
+          prettier_options: -write **/*.{html,php,css,js}
           prettier_plugins: "@prettier/plugin-php"
           only_changed: True
