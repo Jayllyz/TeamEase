@@ -87,7 +87,7 @@ CREATE TABLE ATTENDEE
 
 CREATE TABLE OCCUPATION
 (
-  id INT NOT NULL AUTO_INCREMENT,
+  id INT NOT NULL,
   name VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)
 );
@@ -170,7 +170,7 @@ CREATE TABLE PROVIDER
   salary INT NOT NULL,
   password VARCHAR(255) NOT NULL,
   rights INT NOT NULL,
-  email VARCHAR(255) NOT NULL,
+  emails VARCHAR(255) NOT NULL,
   id_occupation INT NOT NULL,
   token VARCHAR(255),
   confirm_signup INT NOT NULL DEFAULT 0,
@@ -217,5 +217,11 @@ INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token
 INSERT INTO OCCUPATION (id, name) VALUES (1, 'Animateur');
 INSERT INTO OCCUPATION (id, name) VALUES (2, 'Game Master');
 INSERT INTO OCCUPATION (id, name) VALUES (3, 'Coach sportif');
+
+INSERT INTO ACTIVITY (id, name, description, priceAttendee, status) VALUES (1, 'Escape Game', 'Escape Game', 10, 1);
+
+INSERT INTO LOCATION (id, address, name) VALUES (1, '242 rue faubourg Saint-Antoine', 'ESGI');
+
+INSERT INTO RESERVATION (id, attendee, id_activity, siret, id_location) VALUES (1, 1, 1, 53145866900037, 1);
 
 INSERT INTO PROVIDER (firstName, lastName, salary, password, rights, email, id_occupation, token, confirm_signup) VALUES ('Jean', 'Dupont', 2000, sha2('Respons11', 512), 1, 'test@domaine.com', 1, '', 1);

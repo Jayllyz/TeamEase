@@ -1,31 +1,29 @@
 <?php
 session_start();
-include "../includes/db.php";
-$siret = htmlspecialchars($_GET["siret"]);
-if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
+include '../includes/db.php';
+$siret = htmlspecialchars($_GET['siret']);
+if ($_SESSION['rights'] == 2 && isset($_SESSION['siret'])) { ?>
     <!DOCTYPE html>
     <html lang="fr">
     <?php
-    $linkLogo = "../images/logo.png";
-    $linkCss = "../css-js/style.css";
-    $title = "Consultation";
-    include "../includes/head.php";
+    $linkLogo = '../images/logo.png';
+    $linkCss = '../css-js/style.css';
+    $title = 'Consultation';
+    include '../includes/head.php';
     ?>
 
     <body>
-        <?php include "../includes/header.php"; ?>
+        <?php include '../includes/header.php'; ?>
 
         <?php
-        $req = $db->prepare(
-            "SELECT companyName, email, address, rights FROM COMPANY WHERE siret = :siret"
-        );
+        $req = $db->prepare('SELECT companyName, email, address, rights FROM COMPANY WHERE siret = :siret');
         $req->execute([
-            "siret" => $siret,
+          'siret' => $siret,
         ]);
         $result = $req->fetchAll(PDO::FETCH_ASSOC);
         foreach ($result as $select) { ?>
 
-            <h1>Informations de <?= $select["companyName"] ?></h1>
+            <h1>Informations de <?= $select['companyName'] ?></h1>
             <div class="container info_user">
                 <table class="table text-center table-bordered">
                     <tr>
@@ -37,10 +35,10 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                     </tr>
                     <tr>
                         <td><?= $siret ?></td>
-                        <td><?= $select["companyName"] ?></td>
-                        <td><?= $select["email"] ?></td>
-                        <td><?= $select["address"] ?></td>
-                        <td><?= $select["rights"] ?></td>
+                        <td><?= $select['companyName'] ?></td>
+                        <td><?= $select['email'] ?></td>
+                        <td><?= $select['address'] ?></td>
+                        <td><?= $select['rights'] ?></td>
                     </tr>
                 </table>
             </div>
@@ -57,9 +55,9 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
                     </thead>
 
                     <tr>
-                        <td><?= "todo" ?></td>
-                        <td><?= "todo" ?></td>
-                        <td><?= "todo" ?></td>
+                        <td><?= 'todo' ?></td>
+                        <td><?= 'todo' ?></td>
+                        <td><?= 'todo' ?></td>
                     </tr>
                 </table>
                 <div class="text-center mt-auto">
@@ -71,12 +69,10 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
         ?>
 
 
-        <?php include "../includes/footer.php"; ?>
+        <?php include '../includes/footer.php'; ?>
         <script src="css-js/scripts.js"></script>
     </body>
 
     </html>
-<?php } else {
-    header("location: localhost");
-    exit();
-} ?>
+<?php } else {header('location: localhost');
+  exit();} ?>
