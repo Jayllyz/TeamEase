@@ -85,7 +85,7 @@ if (
     $req = $db->prepare(
       'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights, token) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights, :token)'
     );
-    $rights = 0;
+    $rights = 1;
     $token = uniqid();
 
     $req->execute([
