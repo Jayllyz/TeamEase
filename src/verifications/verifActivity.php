@@ -247,7 +247,7 @@ if ($_POST['maxAttendee'] <= 0) {
   exit();
 }
 
-if (!isset($_POST['day[]'])) {
+if (!isset($_POST['day'])) {
   $message = 'Aucun jour de disponibilité n\'a été selectionné';
   header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
