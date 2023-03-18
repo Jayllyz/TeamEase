@@ -222,12 +222,21 @@ function providerList(id, type) {
   }
 }
 
-function addMaterial() {
-  const materialContainer = document.getElementById('material-container');
+function addMaterial(element, id) {
+  let type = element.parentElement.parentElement.parentElement.querySelector('.location');
+  if (type != null) {
+    type = 'location';
+  }
+  type = element.parentElement.parentElement.parentElement.querySelector('.room');
+  if (type != null) {
+    type = 'room';
+  }
+
+  let body = element.parentElement.parentElement.parentElement.querySelector('tbody');
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      materialContainer.innerHTML += xhr.responseText;
+      body.innerHTML += xhr.responseText;
     }
   };
   xhr.open('GET', 'ajaxReq/materialInput.php');
@@ -634,13 +643,23 @@ function populateLocation() {
 }
 
 function addRoom(element, id) {
-  console.log(id);
   const body = element.parentElement.parentElement.querySelector('.accordion-body');
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       if (this.responseText.includes('success')) {
         let roomId = this.responseText.split('success')[1];
+
+        xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            body.innerHTML += this.responseText;
+          }
+        };
+
+        xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('room=true&id=' + roomId);
       } else {
         alert(this.responseText);
         return;
@@ -650,16 +669,6 @@ function addRoom(element, id) {
   xhr.open('POST', 'verifications/verifRoom.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('add=true&location=' + id);
-
-  xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      body.innerHTML += this.responseText;
-    }
-  };
-  xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('room=true&id=' + roomId);
 }
 
 function updateRoom(element, id) {

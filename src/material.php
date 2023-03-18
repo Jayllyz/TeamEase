@@ -7,100 +7,106 @@
   $linkLogo = 'images/logo.png';
   $title = 'Gestion du matériel';
   include 'includes/head.php';
+  if (isset($_GET['location'])) {
+    $query = $db->prepare('SELECT name FROM LOCATION WHERE id = :id');
+    $query->execute([':id' => htmlspecialchars($_GET['location'])]);
+    $location = $query->fetch(PDO::FETCH_COLUMN);
+    $id = htmlspecialchars($_GET['location']);
+  } else {
+    $query = $db->prepare('SELECT name FROM LOCATION ORDER BY id ASC LIMIT 1');
+    $query->execute();
+    $location = $query->fetch(PDO::FETCH_COLUMN);
+    $query = $db->prepare('SELECT id FROM LOCATION ORDER BY id ASC LIMIT 1');
+    $query->execute();
+    $id = $query->fetch(PDO::FETCH_COLUMN);
+  }
   ?>
   <body>
     <?php include 'includes/header.php'; ?>
     <main>
       <div class="container">
         <div class="row">
-            <div class="col-12">
-                <h1 class="text-center">Gestion du matériel</h1>
-            </div>
+          <div class="col-12">
+            <h1 class="text-center">Gestion du matériel de <?php echo $location; ?></h1>
+          </div>
         </div>
 
         <br>
 
-        <div id="material-container">
-            <div class="row">
-                <div class="col-4">
-                    <label class="form-label"><h4>Matériel</h4></label>
-                </div>
-                <div class="col-2">
-                    <label class="form-label"><h4>Total</h4></label>
-                </div>
-                <div class="col-2">
-                    <label class="form-label"><h4>Utilisé</h4></label>
-                </div>
-                <div class="col-2">
-                    <label class="form-label"><h4>Disponible</h4></label>
-                </div>
-                <div class="col-2">
-                    <label class="form-label"><h4>Modification</h4></label>
-                </div>
+        <div>
+          <h3 class="title location">Matériel du site</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">
+                  Nom
+                </th>
+                <th scope="col">
+                  Quantité
+                </th>
+                <th scope="col">
+                  Utilisé
+                </th>
+                <th scope="col">
+                  Disponible
+                </th>
+                <th scope="col">
+                  Modifications
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="text-center my-2">
+              <button type="button" class="btn btn-primary" onclick="addMaterial(this, <?php echo $id; ?>)">Ajouter un matériel</button>
             </div>
-            <?php
-            $query = $db->prepare('SELECT id FROM MATERIAL');
-            $query->execute();
-            $result = $query->fetchAll();
-            $count = count($result);
-            for ($i = 0; $i < $count; $i++) {
-              $query = $db->prepare('SELECT type FROM MATERIAL WHERE id = :id');
-              $query->execute([
-                ':id' => $result[$i]['id'],
-              ]);
-              $type = $query->fetch(PDO::FETCH_COLUMN);
-              $query = $db->prepare('SELECT quantity FROM MATERIAL WHERE id = :id');
-              $query->execute([
-                ':id' => $result[$i]['id'],
-              ]);
-              $quantity = $query->fetch(PDO::FETCH_COLUMN);
-              $query = $db->prepare('SELECT SUM(quantity) FROM MATERIAL_ACTIVITY WHERE id_material = :id');
-              $query->execute([
-                ':id' => $result[$i]['id'],
-              ]);
-              $used = $query->fetch(PDO::FETCH_COLUMN);
-              if ($used == null) {
-                $used = 0;
-              }
-              $available = $quantity - $used;
-              echo '
-                <div class="row mb-4">
-                    <div class="col-4">
-                        <input type="text" class="form-control material-input" id="';
-              echo $result[$i]['id'];
-              echo '" value="' .
-                $type .
-                '" name="name" placeholder="Matériel">
-                    </div>
-                    <div class="col-2">
-                        <input type="number" class="form-control" id="quantity" value="' .
-                $quantity .
-                '" name="quantity">
-                    </div>
-                    <div class="col-2">
-                        <input type="number" class="form-control" id="used" value="' .
-                $used .
-                '" disabled readonly>
-                    </div>
-                    <div class="col-2">
-                        <input type="number" class="form-control" id="available" value="' .
-                $available .
-                '" disabled readonly>
-                    </div>
-                    <div class="col-2">
-                        <button type="button" class="btn btn-success" onclick="updateMaterial(this)">Modifier</button>
-                        <button type="button" class="btn btn-danger" onclick="deleteMaterial(this)">Supprimer</button>
-                    </div>
-                </div>';
-            }
-            ?>
+          </div>
         </div>
 
-        <div class="row">
-            <div class="col-12 text-center my-5">
-                <button type="button" class="btn btn-primary" onclick="addMaterial()">Ajouter un matériel</button>
+        <?php
+        $query = $db->prepare('SELECT id, name FROM ROOM WHERE id_location = :id');
+        $query->execute([':id' => $id]);
+        $rooms = $query->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rooms as $room) {
+          $id = $room['id']; ?>
+          <div>
+            <h5 class="title location">Matériel <?php echo $room['name']; ?></h5>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">
+                    Nom
+                  </th>
+                  <th scope="col">
+                    Quantité
+                  </th>
+                  <th scope="col">
+                    Utilisé
+                  </th>
+                  <th scope="col">
+                    Disponible
+                  </th>
+                  <th scope="col">
+                    Modifications
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+            <div class="row">
+              <div class="text-center my-2">
+                <button type="button" class="btn btn-primary" onclick="addMaterial(this, <?php echo $id; ?>)">Ajouter un matériel</button>
+              </div>
             </div>
-        </div>
+          </div>
+        <?php
+        }
+        ?>
 
       </div>
     </main>

@@ -22,7 +22,7 @@ if (isset($_POST['populate']) == 'true') {
       '">
             ' .
       $location['name'] .
-      '(' .
+      ' (' .
       $location['address'] .
       ')
         </button>
@@ -108,7 +108,7 @@ if (isset($_POST['name']) && isset($_POST['address'])) {
 <div class="accordion-item">
     <h2 class="accordion-header" id="location<?php echo $id; ?>">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLocation<?php echo $id; ?>" aria-expanded="true" aria-controls="collapseLocation<?php echo $id; ?>">
-        <?php echo $_POST['name'] . '(' . $_POST['address'] . ')'; ?>
+        <?php echo $_POST['name'] . ' (' . $_POST['address'] . ')'; ?>
     </button>
     </h2>
     <div id="collapseLocation<?php echo $id; ?>" class="acordion-collapse collapse show" aria-label="location<?php echo $id; ?>" aria-controls="collapseLocation<?php echo $id; ?>">
