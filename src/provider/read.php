@@ -15,7 +15,7 @@ include '../includes/head.php';
 <body>
     <?php include '../includes/header.php'; ?>
     <?php
-    $req = $db->prepare('SELECT lastName, firstName, salary, email,rights, id_occupation FROM PROVIDER WHERE id = :id');
+    $req = $db->prepare('SELECT lastName, firstName, email,rights, id_occupation FROM PROVIDER WHERE id = :id');
     $req->execute([
       'id' => $id,
     ]);
@@ -23,13 +23,14 @@ include '../includes/head.php';
 
     $id_occupation = $result[0]['id_occupation'];
 
-    $req = $db->prepare('SELECT name FROM OCCUPATION WHERE id = :id_occupation');
+    $req = $db->prepare('SELECT name, salary FROM OCCUPATION WHERE id = :id_occupation');
     $req->execute([
       'id_occupation' => $id_occupation,
     ]);
     $occupation = $req->fetchAll(PDO::FETCH_ASSOC);
 
     $result[0]['id_occupation'] = $occupation[0]['name'];
+    $result[0]['salary'] = $occupation[0]['salary'];
 
     $req = $db->prepare(
       'SELECT name, priceAttendee, duration, maxAttendee FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)'

@@ -96,6 +96,16 @@
                      <?php
                       }
                     } ?>
+
+                    <?php if (isset($_SESSION['rights'])) {
+                      if ($_SESSION['rights'] == 2) {
+                        echo '
+                              <li class="nav-item">
+                                  <a class="nav-link" href="job.php">Gestion des métiers</a>
+                              </li>
+                              ';
+                      }
+                    } ?>
                     <li class="nav-item">
                         <a class="nav-link" href="aPropos.php">A propos de nous</a>
                     </li>

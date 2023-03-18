@@ -232,6 +232,77 @@ function providerList(id, type) {
   }
 }
 
+function getJob() {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      const jobTable = document.getElementById('joblist');
+      jobTable.innerHTML = '';
+      jobTable.innerHTML += xhr.responseText;
+    }
+  };
+  xhr.open('GET', '../job/getJob.php');
+  xhr.send();
+}
+
+function addJob() {
+  const name = document.getElementById('job-name').value;
+  const salary = document.getElementById('job-salary').value;
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText == 'success') {
+        alert('Le métier a bien été ajouté');
+      }
+    }
+  };
+  xhr.open('POST', '../job/addJob.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('name=' + name + '&salary=' + salary);
+
+  getJob();
+}
+
+function editJob() {
+  const id = document.getElementById('edit-job-id').innerHTML;
+  const name = document.getElementById('edit-job-name').value;
+  const salary = document.getElementById('edit-job-salary').value;
+
+  console.log(id);
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText == 'success') {
+        alert('Le métier a bien été modifié');
+      }
+      console.log(xhr.responseText);
+    }
+  };
+  xhr.open('POST', '../job/editJob.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id + '&name=' + name + '&salary=' + salary);
+
+  getJob();
+}
+
+function deleteJob(id) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText == 'success') {
+        alert('Le métier a bien été supprimé');
+      }
+    }
+  };
+  xhr.open('POST', '../job/deleteJob.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id);
+
+  getJob();
+}
+
 function addMaterial(element) {
   const body = element.parentElement.parentElement.querySelector('tbody');
   let xhr = new XMLHttpRequest();

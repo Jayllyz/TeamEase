@@ -166,18 +166,6 @@ include 'includes/db.php';
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label"><strong>Salaire par heure </strong></label>
-                    <input type="number" name="salary" class="form-control is-<?= isset($_GET['valid']) &&
-                    $_GET['input'] == 'salary'
-                      ? $_GET['valid']
-                      : '' ?>" value="<?= isset($_COOKIE['salary']) ? $_COOKIE['salary'] : '' ?>" required>
-                    <?php if (isset($_GET['valid'])) { ?>
-                        <div class="<?= $_GET['valid'] ?>-feedback">
-                            <?= $_GET['message'] ?>
-                        </div>
-                    <?php } ?>
-                </div>
-                <div class="mb-3">
                     <label class="form-label"><strong>Mot de passe</strong></label>
                     <input type="password" name="password" class="form-control is-<?= isset($_GET['valid']) &&
                     $_GET['input'] == 'mdp'

@@ -48,7 +48,7 @@ CREATE TABLE MATERIAL_ACTIVITY
 (
   quantity INT NOT NULL,
   id_activity INT NOT NULL,
-  id_material INT NOT NULL AUTO_INCREMENT,
+  id_material INT NOT NULL,
   FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id) ON DELETE CASCADE,
   FOREIGN KEY (id_material) REFERENCES MATERIAL(id) ON DELETE CASCADE
 );
@@ -87,8 +87,9 @@ CREATE TABLE ATTENDEE
 
 CREATE TABLE OCCUPATION
 (
-  id INT NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
+  salary INT NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -134,7 +135,6 @@ CREATE TABLE PROVIDER
   id INT NOT NULL AUTO_INCREMENT,
   firstName VARCHAR(255) NOT NULL,
   lastName VARCHAR(255) NOT NULL,
-  salary INT NOT NULL,
   password VARCHAR(255) NOT NULL,
   rights INT NOT NULL,
   email VARCHAR(255) NOT NULL,
@@ -224,14 +224,8 @@ INSERT INTO CATEGORY (id, name) VALUES (8, "Compétitif");
 INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token, confirm_signup) VALUES (12345678901234, 'TeamEase', 'teamease@gmail.com', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 2, '', 1);
 INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token, confirm_signup) VALUES (12345678901235, 'testCompany', 'test@domaine.com','24 rue test', sha2('Respons11', 512), 0, '', 1);
 
-INSERT INTO OCCUPATION (id, name) VALUES (1, 'Animateur');
-INSERT INTO OCCUPATION (id, name) VALUES (2, 'Game Master');
-INSERT INTO OCCUPATION (id, name) VALUES (3, 'Coach sportif');
+INSERT INTO OCCUPATION (name, salary) VALUES ('Animateur', 200);
+INSERT INTO OCCUPATION (name, salary) VALUES ('Game Master', 200);
+INSERT INTO OCCUPATION (name, salary) VALUES ('Coach sportif', 300);
 
-INSERT INTO ACTIVITY (id, name, description, priceAttendee, status) VALUES (1, 'Escape Game', 'Escape Game', 10, 1);
-
-INSERT INTO LOCATION (id, address, name) VALUES (1, '242 rue faubourg Saint-Antoine', 'ESGI');
-
-INSERT INTO RESERVATION (id, attendee, id_activity, siret, id_location) VALUES (1, 1, 1, 53145866900037, 1);
-
-INSERT INTO PROVIDER (firstName, lastName, salary, password, rights, email, id_occupation, token, confirm_signup) VALUES ('Jean', 'Dupont', 2000, sha2('Respons11', 512), 1, 'test@domaine.com', 1, '', 1);
+INSERT INTO PROVIDER (firstName, lastName, password, rights, email, id_occupation, token, confirm_signup) VALUES ('Jean', 'Dupont', sha2('Respons11', 512), 1, 'test@domaine.com', 1, '', 1);
