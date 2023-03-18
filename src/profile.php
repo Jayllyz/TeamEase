@@ -4,8 +4,12 @@
 <!DOCTYPE html>
 <html>
 
+
+
 <?php
-if (!isset($_SESSION['siret'])) {
+
+
+if (!isset($_SESSION['rights'])) {
   header('Location: login.php');
   exit();
 }
@@ -26,7 +30,7 @@ include 'includes/head.php';
   <div class="container section-about-us border border-2 border-secondary rounded">
     <div>
       <div class="row">
-        <h1>Informations de l'entreprise</h1>
+        <h1>Vos informations</h1>
           
           <br>
 
@@ -66,7 +70,7 @@ include 'includes/head.php';
             
             <br>
               <button class="btn-read">
-              <a href="modify.php?siret=<?= $company['siret'] ?>&name=<?= $company['companyName'] ?>&email=<?= $company[
+              <a href="modifyCompany.php?siret=<?= $company['siret'] ?>&name=<?= $company['companyName'] ?>&email=<?= $company[
   'email'
 ] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
               </button>
@@ -102,9 +106,9 @@ include 'includes/head.php';
 <table class="table text-center table-bordered table-hover" id="active">
                     <thead>
                         <tr>
-                            <th>id_activité</th>
+                            <th>Activité</th>
                             <th>Nb de participant</th>
-                            <th>id_location</th>
+                            <th>Localisation</th>
                         </tr>
                     </thead>
                     <?php for ($i = 0; $i < count($reservations); $i++) { ?>
@@ -152,20 +156,22 @@ include 'includes/head.php';
   </div>
 <?php } ?>
 <?php if ($_SESSION['rights'] == 1) { ?> 
+
   <div class="container section-about-us border border-2 border-secondary rounded">
     <div>
       <div class="row">
-        <h1>Informations de l'entreprise</h1>
+        <h1>Tes Informations</h1>
           
           <br>
 
           <?php
-          $sql = 'SELECT * FROM COMPANY WHERE siret = :siret';
+          $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
           $stmt = $db->prepare($sql);
           $stmt->execute([
-            'siret' => $_SESSION['siret'],
+            'id' => $_SESSION['id'],
           ]);
-          $company = $stmt->fetch();
+          $provider = $stmt->fetch();
+
           ?>
             <br>
             <br>
@@ -173,33 +179,29 @@ include 'includes/head.php';
 
             <div class="text-center">
             <?php
-            echo 'Siret :   n°';
-            echo $company['siret']; //Ne pas changer
+            echo 'Prénom :   ';
+            echo $provider['firstName']; //Ne pas changer
             echo '<br>';
             echo '<br>';
-            echo '<br>';
-            echo "Nom de l'entreprise :   ";
-            echo $company['companyName']; // Ne pas Changer
-            echo '<br>';
+            echo "Nom de famille :   ";
+            echo $provider['lastName']; //Ne pas changer
             echo '<br>';
             echo '<br>';
             echo 'Email :    ';
-            echo $company['email'];
+            echo $provider['email'];
             // Changer
             echo '<br>';
             echo '<br>';
-            echo '<br>';
-            echo 'Adresse :   ';
-            echo $company['address'];
+            echo 'Salaire :   ';
+            echo $provider['salary'];
+            echo '€/heure';
             // Ne pas changer
             echo '<br>';
             ?>
             
             <br>
               <button class="btn-read">
-              <a href="modify.php?siret=<?= $company['siret'] ?>&name=<?= $company['companyName'] ?>&email=<?= $company[
-  'email'
-] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
+              <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider['firstName'] ?>&lastName=<?= $provider['lastName'] ?>&email=<?= $provider['email'] ?>&rights=<?= $provider['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
               </button>
             </div>
       </div>
@@ -209,22 +211,21 @@ include 'includes/head.php';
   <div class="container section-about-us border border-2 border-secondary rounded">
     <div>
       <div class="row">
-          <h1>Dernières Réservation</h1>
+          <h1>Vos Activités </h1>
           <?php
-          $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret ORDER BY id DESC LIMIT 4';
+          $sql = 'SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider';
           $stmt = $db->prepare($sql);
           $stmt->execute([
-            'siret' => $_SESSION['siret'],
+            'id_provider' => $_SESSION['id'],
           ]);
-          $reservations = $stmt->fetchAll(); // mettre les id des activités dans un tableau
-          $id_activity = [];
-          for ($i = 0; $i < count($reservations); $i++) {
-            $id_activity[] = $reservations[$i]['id_activity'];
+          $animate = $stmt->fetchAll(); // mettre les id des activités dans un tableau
+
+          $id_animate = [];
+          for ($i = 0; $i < count($animate); $i++) {
+            $id_animate[] = $animate[$i]['id_activity'];
           }
-          $id_location = [];
-          for ($i = 0; $i < count($reservations); $i++) {
-            $id_location[] = $reservations[$i]['id_location'];
-          }
+          
+
 
   // faire une tableau avec les données
   ?>
@@ -233,33 +234,29 @@ include 'includes/head.php';
   <table class="table text-center table-bordered table-hover" id="active">
                     <thead>
                         <tr>
-                            <th>id_activité</th>
-                            <th>Nb de participant</th>
-                            <th>id_location</th>
+                            <th>Activité</th>
+                            <th>Nb de participant<br> Maximun</th>
+                            <th>durée</th>
+                            <th>Prix par Participant</th>
+                            <th>Description</th>
                         </tr>
                     </thead>
-                    <?php for ($i = 0; $i < count($reservations); $i++) { ?>
+                    <?php for ($i = 0; $i < count($animate); $i++) { ?>
                         <tbody>
                             <tr>
                                 <?php
-                                $sql = 'SELECT name FROM ACTIVITY WHERE id = :id';
+                                $sql = 'SELECT * FROM ACTIVITY WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
-                                  'id' => $id_activity[$i],
+                                  'id' => $id_animate[$i],
                                 ]);
                                 $activity = $stmt->fetch();
                                 ?>
                                 <td><?= $activity['name'] ?></td>
-                                <td><?= $reservations[$i]['attendee'] ?></td>
-                                <?php
-                                $sql = 'SELECT name FROM LOCATION WHERE id = :id';
-                                $stmt = $db->prepare($sql);
-                                $stmt->execute([
-                                  'id' => $id_location[$i],
-                                ]);
-                                $location = $stmt->fetch();
-                                ?>
-                                <td><?= $location['name'] ?></td>
+                                <td><?= $activity['maxAttendee'] ?></td>
+                                <td><?= $activity['duration'] ?>Heure</td>
+                                <td><?= $activity['priceAttendee'] ?>€/Participant</td>
+                                <td><?= $activity['description'] ?></td>
                                 
                             </tr>
                         </tbody>

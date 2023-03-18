@@ -8,7 +8,7 @@ $rights = htmlspecialchars($_GET['rights']);
 $siret = htmlspecialchars($_GET['siret']);
 
 if (isset($email) && !empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-  header('location: ../modify.php?message=Email invalide !&type=danger');
+  header('location: ../modifyCompany.php?message=Email invalide !&type=danger');
   exit();
 }
 
@@ -20,7 +20,7 @@ if (
 ) {
   setcookie('rights', $rights, time() + 3600, '/');
 
-  $compare = $db->prepare('SELECT email, companyName, siret FROM COMPANY');
+  $compare = $db->prepare('SELECT email, companyName, address, siret FROM COMPANY');
   $compare->execute();
   $compare = $compare->fetchAll();
 
@@ -30,6 +30,9 @@ if (
     }
     if ($compare[$i]['companyName'] == $companyName && $compare[$i]['siret'] != $siret) {
       header("location: ../profile.php?message=Nom d'entreprise déjà utilisé !&type=danger");
+    }
+    if ($compare[$i]['address'] == $address && $compare[$i]['siret'] != $siret) {
+      header("location: ../profile.php?message=Adresse déjà utilisé !&type=danger");
     }
   }
 
