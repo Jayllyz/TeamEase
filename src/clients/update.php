@@ -28,7 +28,7 @@ if ($_SESSION["rights"] == 2 && isset($_SESSION["siret"])) { ?>
         <main>
             <form action="verifUpdateCompany.php?siret=<?= $siret ?>" method="post">
                 <div class="container col-md-6">
-                    <?php include "../includes/errorMessage.php"; ?>
+                    <?php include "../includes/msg.php"; ?>
                 </div>
                 <div class="container col-md-4" id="form">
                     <div class="mb-3">
