@@ -2,8 +2,10 @@ name: Prettier
 
 # This action works with pull requests and pushes
 on:
+  pull_request:
   push:
-
+    branches:
+      - main
 jobs:
   prettier:
     runs-on: ubuntu-latest
@@ -14,6 +16,7 @@ jobs:
         with:
           # Make sure the actual branch is checked out when running on pull requests
           ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
       - name: Install npm v8
         run: npm i -g npm@8
