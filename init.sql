@@ -207,3 +207,4 @@ INSERT INTO ACTIVITY (id, name, description, priceAttendee, status) VALUES (1, '
 INSERT INTO LOCATION (id, address, name) VALUES (1, '242 rue faubourg Saint-Antoine', 'ESGI');
 
 INSERT INTO RESERVATION (id, attendee, id_activity, siret, id_location) VALUES (1, 1, 1, 53145866900037, 1);
+
