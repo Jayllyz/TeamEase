@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
+  header('location: index.php');
+  exit();
+}
 include 'includes/db.php';
 if ($_SESSION['rights'] == 2 && isset($_SESSION['siret'])) { ?>
 <!DOCTYPE html>

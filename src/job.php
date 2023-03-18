@@ -1,11 +1,14 @@
-<?php include 'includes/db.php'; ?>
-<!DOCTYPE html>
-<html lang="fr">
 <?php
+session_start();
 if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
   header('location: index.php');
   exit();
 }
+include 'includes/db.php';
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<?php
 $linkLogo = 'images/logo.png';
 $linkCss = 'css-js/style.css';
 $title = 'Gestion des métiers';
