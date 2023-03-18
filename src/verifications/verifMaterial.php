@@ -1,19 +1,6 @@
 <?php
 include '../includes/db.php';
 
-if (isset($_POST['delete']) && isset($_POST['id'])) {
-  $query = $db->prepare('DELETE FROM MATERIAL WHERE id = :id');
-  $result = $query->execute([
-    ':id' => $_POST['id'],
-  ]);
-  if ($result) {
-    echo 'success';
-  } else {
-    echo 'error';
-  }
-  exit();
-}
-
 if (isset($_POST['type'])) {
   if (isset($_POST['delete']) && isset($_POST['id']) && isset($_POST['idPosition'])) {
     if ($_POST['type'] == 'location') {
@@ -134,6 +121,19 @@ if (isset($_POST['type'])) {
       exit();
     }
   }
+}
+
+if (isset($_POST['delete']) && isset($_POST['id'])) {
+  $query = $db->prepare('DELETE FROM MATERIAL WHERE id = :id');
+  $result = $query->execute([
+    ':id' => $_POST['id'],
+  ]);
+  if ($result) {
+    echo 'success';
+  } else {
+    echo 'error';
+  }
+  exit();
 }
 
 if (!isset($_POST['id'])) {
