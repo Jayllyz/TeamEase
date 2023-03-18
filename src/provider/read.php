@@ -1,51 +1,47 @@
 <?php
 session_start();
-include "../includes/db.php";
-$id = htmlspecialchars($_GET["id"]);
-if ($_SESSION["rights"] == 2) { ?>
+include '../includes/db.php';
+$id = htmlspecialchars($_GET['id']);
+if ($_SESSION['rights'] == 2) { ?>
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-$linkLogo = "../images/logo.png";
-$linkCss = "../css-js/style.css";
-$title = "Consultation";
-include "../includes/head.php";
+$linkLogo = '../images/logo.png';
+$linkCss = '../css-js/style.css';
+$title = 'Consultation';
+include '../includes/head.php';
 ?>
 
 <body>
-    <?php include "../includes/header.php"; ?>
+    <?php include '../includes/header.php'; ?>
     <?php
-    $req = $db->prepare(
-        "SELECT lastName, firstName, salary, email,rights, id_occupation FROM PROVIDER WHERE id = :id"
-    );
+    $req = $db->prepare('SELECT lastName, firstName, salary, email,rights, id_occupation FROM PROVIDER WHERE id = :id');
     $req->execute([
-        "id" => $id,
+      'id' => $id,
     ]);
     $result = $req->fetchAll(PDO::FETCH_ASSOC);
 
-    $id_occupation = $result[0]["id_occupation"];
+    $id_occupation = $result[0]['id_occupation'];
 
-    $req = $db->prepare(
-        "SELECT name FROM OCCUPATION WHERE id = :id_occupation"
-    );
+    $req = $db->prepare('SELECT name FROM OCCUPATION WHERE id = :id_occupation');
     $req->execute([
-        "id_occupation" => $id_occupation,
+      'id_occupation' => $id_occupation,
     ]);
     $occupation = $req->fetchAll(PDO::FETCH_ASSOC);
 
-    $result[0]["id_occupation"] = $occupation[0]["name"];
+    $result[0]['id_occupation'] = $occupation[0]['name'];
 
     $req = $db->prepare(
-        "SELECT name, priceAttendee, duration, maxAttendee FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)"
+      'SELECT name, priceAttendee, duration, maxAttendee FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)'
     );
     $req->execute([
-        "id_provider" => $id,
+      'id_provider' => $id,
     ]);
     $result_activity = $req->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($result as $select) { ?>
 
-        <h1 class="mt-auto">Informations de <?= $select["lastName"] . " " . $select["firstName"] ?></h1>
+        <h1 class="mt-auto">Informations de <?= $select['lastName'] . ' ' . $select['firstName'] ?></h1>
         <div class="container info_user">
             <table class="table text-center table-bordered">
                 <tr>
@@ -57,17 +53,17 @@ include "../includes/head.php";
                     <th>Droits</th>
                 </tr>
                 <tr>
-                    <td><?= $select["lastName"] ?></td>
-                    <td><?= $select["firstName"] ?></td>
-                    <td><?= $select["id_occupation"] ?></td>
-                    <td><?= $select["salary"] . "€/h" ?></td>
-                    <td><?= $select["email"] ?></td>
-                    <td><?= $select["rights"] ?></td>
+                    <td><?= $select['lastName'] ?></td>
+                    <td><?= $select['firstName'] ?></td>
+                    <td><?= $select['id_occupation'] ?></td>
+                    <td><?= $select['salary'] . '€/h' ?></td>
+                    <td><?= $select['email'] ?></td>
+                    <td><?= $select['rights'] ?></td>
                 </tr>
             </table>
         </div>
 
-        <?php if($result_activity != null){ ?>
+        <?php if ($result_activity != null) { ?>
         <h1>Activités affectées</h1>
         <div class="container">
             <table class="table text-center table-bordered table-hover">
@@ -82,10 +78,10 @@ include "../includes/head.php";
 
                 <?php foreach ($result_activity as $select_activity) { ?>
                     <tr>
-                        <td><?= $select_activity["name"] ?></td>
-                        <td><?= $select_activity["priceAttendee"] ?></td>
-                        <td><?= $select_activity["duration"] ?></td>
-                        <td><?= $select_activity["maxAttendee"] ?></td>
+                        <td><?= $select_activity['name'] ?></td>
+                        <td><?= $select_activity['priceAttendee'] ?></td>
+                        <td><?= $select_activity['duration'] ?></td>
+                        <td><?= $select_activity['maxAttendee'] ?></td>
                     </tr>
                 <?php } ?>
             </table>
@@ -99,11 +95,9 @@ include "../includes/head.php";
     <?php }
     ?>
 
-    <?php include "../includes/footer.php"; ?>
+    <?php include '../includes/footer.php'; ?>
     <script src="css-js/scripts.js"></script>
 </body>
 </html>
-<?php } else {
-    header("location: localhost");
-    exit();
-} ?>
+<?php } else {header('location: localhost');
+  exit();} ?>
