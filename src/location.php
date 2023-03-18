@@ -1,4 +1,9 @@
-<?php session_start(); ?>
+<?php session_start();
+if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
+  header('location: index.php');
+  exit();
+}
+?>
 <?php include 'includes/db.php'; ?>
 <!DOCTYPE html>
 <html>
