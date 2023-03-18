@@ -222,37 +222,28 @@ function providerList(id, type) {
   }
 }
 
-function addMaterial(element, id) {
-  let type = element.parentElement.parentElement.parentElement.querySelector('.location');
-  if (type != null) {
-    type = 'location';
-  }
-  type = element.parentElement.parentElement.parentElement.querySelector('.room');
-  if (type != null) {
-    type = 'room';
-  }
-
-  let body = element.parentElement.parentElement.parentElement.querySelector('tbody');
+function addMaterial(element) {
+  const body = element.parentElement.parentElement.querySelector('tbody');
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       body.innerHTML += xhr.responseText;
     }
   };
-  xhr.open('GET', 'ajaxReq/materialInput.php');
-  xhr.send();
+  xhr.open('POST', 'ajaxReq/materialInput.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('type=stock');
 }
 
-function updateMaterial(id) {
-  const container = id.parentElement.parentElement;
-  const idMaterial = container.querySelector('.material-input').getAttribute('id');
-  const material = container.querySelector('.material-input').value;
-  const quantity = container.querySelector('#quantity').value;
-  const used = container.querySelector('#used').value;
+function updateMaterial(element, idMaterial) {
+  const row = element.parentElement.parentElement;
+  const name = row.querySelector('#name').value;
+  const quantity = row.querySelector('#quantity').value;
+  const used = row.querySelector('#used').value;
 
   if (parseInt(quantity) < parseInt(used)) {
     alert('La quantité disponible ne peut pas être inférieure à la quantité utilisée');
-    container.querySelector('#quantity').value = parseInt(container.querySelector('#available').value) + parseInt(used);
+    row.querySelector('#quantity').value = parseInt(row.querySelector('#available').value) + parseInt(used);
     return;
   }
 
@@ -260,8 +251,8 @@ function updateMaterial(id) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       if (xhr.responseText == 'success') {
-        container.querySelector('#available').value = quantity - used;
-        alert('Le matériel a bien été modifié');
+        alert('Le matériel à bien été modifié');
+        row.querySelector('#available').value = quantity - used;
       } else {
         alert("Le matériel n'a pas pu être modifié");
       }
@@ -269,25 +260,111 @@ function updateMaterial(id) {
   };
   xhr.open('POST', 'verifications/verifMaterial.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('id=' + idMaterial + '&material=' + material + '&quantity=' + quantity + '&delete=false');
+  xhr.send('id=' + idMaterial + '&material=' + name + '&quantity=' + quantity);
 }
 
-function deleteMaterial(id) {
-  const container = id.parentElement.parentElement;
-  const idMaterial = container.querySelector('.material-input').getAttribute('id');
+function deleteMaterial(element, idMaterial) {
+  if (!confirm('Voulez-vous vraiment supprimer ce matériel ?')) {
+    return;
+  }
+
+  const row = element.parentElement.parentElement;
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      if (xhr.responseText != 'success') {
+      if (xhr.responseText == 'success') {
+        alert('Le matériel à bien été supprimé');
+        row.remove();
+      } else {
         alert("Le matériel n'a pas pu être supprimé");
       }
     }
   };
   xhr.open('POST', 'verifications/verifMaterial.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('id=' + idMaterial + '&material=0&quantity=0&delete=true');
+  xhr.send('id=' + idMaterial + '&delete=true');
+}
 
-  container.remove();
+function allocateMaterial(element) {
+  const body = element.parentElement.parentElement.querySelector('tbody');
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      body.innerHTML += xhr.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/materialInput.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('type=location');
+}
+
+function selectMaterialForAllocation(element, id) {
+  const button = element.parentElement.parentElement.parentElement.querySelector('.btn');
+  button.innerHTML = element.innerHTML;
+  button.id = id;
+}
+
+function updateAllocatedMaterial(element) {
+  const row = element.parentElement.parentElement;
+  const id = row.querySelector('th').querySelector('button').id;
+  const quantity = row.querySelector('#quantity').value;
+
+  let type;
+  let idPosition = -1;
+  const nature = row.parentElement.parentElement.parentElement;
+  if (nature.classList.contains('location')) {
+    type = 'location';
+    idPosition = window.location.search;
+    idPosition = idPosition.split('=')[1];
+    console.log(idPosition);
+  } else if (nature.classList.contains('room')) {
+    type = 'room';
+    idPosition = row.parentElement.parentElement.parentElement.id;
+  }
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText == 'success') {
+        alert('Le matériel à bien été modifié');
+      } else {
+        alert("Le matériel n'a pas pu être modifié");
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifMaterial.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id + '&quantity=' + quantity + '&type=' + type + '&idPosition=' + idPosition);
+}
+
+function unallocateMaterial(element) {
+  row = element.parentElement.parentElement;
+  const id = row.querySelector('th').querySelector('button').id;
+
+  const nature = row.parentElement.parentElement.parentElement;
+  if (nature.classList.contains('location')) {
+    type = 'location';
+    idPosition = window.location.search;
+    idPosition = idPosition.split('=')[1];
+  } else if (nature.classList.contains('room')) {
+    type = 'room';
+    idPosition = row.parentElement.parentElement.parentElement.id;
+  }
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText == 'success') {
+        alert('Le matériel à bien été supprimé');
+        row.remove();
+      } else {
+        alert("Le matériel n'a pas pu être supprimé");
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifMaterial.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id + '&type=' + type + '&idPosition=' + idPosition + '&delete=true');
 }
 
 function assignMaterial() {
@@ -356,7 +433,7 @@ function quantityChange(value, id) {
   };
   xhr.open('POST', 'verifications/verifMaterialStock.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('id=' + id);
+  xhr.send('id=maximum');
   if (document.getElementById('quantity' + id)) {
     materialList(id, 'delete', 'quantity');
   }
