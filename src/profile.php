@@ -70,9 +70,10 @@ include 'includes/head.php';
             
             <br>
               <button class="btn-read">
-              <a href="modifyCompany.php?siret=<?= $company['siret'] ?>&name=<?= $company['companyName'] ?>&email=<?= $company[
-  'email'
-] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
+              <a href="modifyCompany.php?siret=<?= $company['siret'] ?>&name=<?= $company['companyName'] ?>&email=<?= $company['email'] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
+              </button>
+              <button class="btn-read">
+              <a href="modifyCompanyPassword.php?siret=<?= $company['siret'] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
               </button>
             </div>
       </div>
@@ -202,6 +203,9 @@ include 'includes/head.php';
             <br>
               <button class="btn-read">
               <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider['firstName'] ?>&lastName=<?= $provider['lastName'] ?>&email=<?= $provider['email'] ?>&rights=<?= $provider['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
+              </button>
+              <button class="btn-read">
+              <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider['rights']?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
               </button>
             </div>
       </div>

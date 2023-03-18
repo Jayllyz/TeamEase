@@ -15,6 +15,24 @@ function viewPassword() {
   }
 }
 
+function viewPasswordProvider(id) {
+  var passProvider = id.parentElement.querySelector('#passwordProvider');
+  if (passProvider.type === 'password') {
+    passProvider.type = 'text';
+  } else {
+    passProvider.type = 'password';
+  }
+}
+
+function viewVerifPasswordProvider(id) {
+  var passVerifProvider = id.parentElement.querySelector('#verifpasswordProvider');
+  if (passVerifProvider.type === 'password') {
+    passVerifProvider.type = 'text';
+  } else {
+    passVerifProvider.type = 'password';
+  }
+}
+
 function viewPasswordInscription(id) {
   var passInscription = id.parentElement.querySelector('#password');
   if (passInscription == null) {
