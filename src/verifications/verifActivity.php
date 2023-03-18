@@ -110,6 +110,8 @@ if (isset($_GET['update'])) {
     header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=success');
     exit();
   } elseif ($_GET['update'] == 'details') {
+    $result2 = true;
+    $result3 = true;
     $delete = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
     $delete->execute([
       ':id_activity' => $_GET['id'],
@@ -245,6 +247,12 @@ if ($_POST['maxAttendee'] <= 0) {
   exit();
 }
 
+if (!isset($_POST['day[]'])) {
+  $message = 'Aucun jour de disponibilité n\'a été selectionné';
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
+  exit();
+}
+
 $request = $db->prepare(
   'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee, status) 
   VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee, :status)'
@@ -373,6 +381,18 @@ if ($materialCount != 0) {
     }
     $i++;
   } while ($i < $materialCount);
+}
+
+foreach ($_POST['day'] as $day) {
+  $insert = $db->prepare(
+    'INSERT INTO SCHEDULE (day, startHour, endHour, id_activity) VALUES (:day, :startHour, :endHour, :id_activity)'
+  );
+  $result5 = $insert->execute([
+    'day' => $day,
+    'startHour' => $_POST['start' . ucwords($day)],
+    'endHour' => $_POST['end' . ucwords($day)],
+    'id_activity' => $id[0],
+  ]);
 }
 
 if ($result && $result2 && $result3 && $result4) {

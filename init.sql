@@ -1,4 +1,5 @@
 CREATE DATABASE IF NOT EXISTS teamease;
+ALTER DATABASE teamease CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE ACTIVITY
 (
@@ -20,6 +21,8 @@ CREATE TABLE COMPANY
   address VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   rights INT NOT NULL,
+  token VARCHAR(255),
+  confirm_signup INT NOT NULL DEFAULT 0,
   PRIMARY KEY (siret)
 );
 
@@ -30,7 +33,7 @@ CREATE TABLE ESTIMATE
   creationDate DATE NOT NULL,
   siret CHAR(14) NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (siret) REFERENCES COMPANY(siret)
+  FOREIGN KEY (siret) REFERENCES COMPANY(siret) ON DELETE CASCADE
 );
 
 CREATE TABLE MATERIAL
@@ -46,8 +49,8 @@ CREATE TABLE MATERIAL_ACTIVITY
   quantity INT NOT NULL,
   id_activity INT NOT NULL,
   id_material INT NOT NULL AUTO_INCREMENT,
-  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
-  FOREIGN KEY (id_material) REFERENCES MATERIAL(id)
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id) ON DELETE CASCADE,
+  FOREIGN KEY (id_material) REFERENCES MATERIAL(id) ON DELETE CASCADE
 );
 
 CREATE TABLE CATEGORY
@@ -61,8 +64,8 @@ CREATE TABLE BELONG
 (
   id_activity INT NOT NULL,
   id_category INT NOT NULL,
-  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
-  FOREIGN KEY (id_category) REFERENCES CATEGORY(id)
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id) ON DELETE CASCADE,
+  FOREIGN KEY (id_category) REFERENCES CATEGORY(id) ON DELETE CASCADE
 );
 
 CREATE TABLE LOCATION
@@ -97,6 +100,17 @@ CREATE TABLE SERVICE
   PRIMARY KEY (id)
 );
 
+CREATE TABLE SCHEDULE
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  day VARCHAR(255) NOT NULL,
+  startHour TIME NOT NULL,
+  endHour TIME NOT NULL,
+  id_activity INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id) ON DELETE CASCADE
+);
+
 CREATE TABLE RESERVATION
 (
   id INT NOT NULL,
@@ -105,9 +119,9 @@ CREATE TABLE RESERVATION
   siret CHAR(14) NOT NULL,
   id_location INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
-  FOREIGN KEY (siret) REFERENCES COMPANY(siret),
-  FOREIGN KEY (id_location) REFERENCES LOCATION(id)
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id) ON DELETE CASCADE,
+  FOREIGN KEY (siret) REFERENCES COMPANY(siret) ON DELETE CASCADE,
+  FOREIGN KEY (id_location) REFERENCES LOCATION(id) ON DELETE CASCADE
 );
 
 CREATE TABLE INVOICE
@@ -118,7 +132,7 @@ CREATE TABLE INVOICE
   details TEXT NOT NULL,
   id_reservation INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id) ON DELETE CASCADE
 );
 
 CREATE TABLE ROOM
@@ -127,7 +141,7 @@ CREATE TABLE ROOM
   number INT NOT NULL,
   id_location INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_location) REFERENCES LOCATION(id)
+  FOREIGN KEY (id_location) REFERENCES LOCATION(id) ON DELETE CASCADE
 );
 
 CREATE TABLE COMMENT
@@ -137,15 +151,15 @@ CREATE TABLE COMMENT
   notation INT NOT NULL,
   id_reservation INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id) ON DELETE CASCADE
 );
 
 CREATE TABLE RESERVED
 (
   id_attendee INT NOT NULL,
   id_reservation INT NOT NULL,
-  FOREIGN KEY (id_attendee) REFERENCES ATTENDEE(id),
-  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
+  FOREIGN KEY (id_attendee) REFERENCES ATTENDEE(id) ON DELETE CASCADE,
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id) ON DELETE CASCADE
 );
 
 CREATE TABLE PROVIDER
@@ -158,32 +172,34 @@ CREATE TABLE PROVIDER
   rights INT NOT NULL,
   emails VARCHAR(255) NOT NULL,
   id_occupation INT NOT NULL,
+  token VARCHAR(255),
+  confirm_signup INT NOT NULL DEFAULT 0,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_occupation) REFERENCES OCCUPATION(id)
+  FOREIGN KEY (id_occupation) REFERENCES OCCUPATION(id) ON DELETE CASCADE
 );
 
 CREATE TABLE ANIMATE
 (
   id_activity INT NOT NULL,
   id_provider INT NOT NULL AUTO_INCREMENT,
-  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id),
-  FOREIGN KEY (id_provider) REFERENCES PROVIDER(id)
+  FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id) ON DELETE CASCADE,
+  FOREIGN KEY (id_provider) REFERENCES PROVIDER(id) ON DELETE CASCADE
 );
 
 CREATE TABLE MATERIAL_ROOM
 (
   id_material INT NOT NULL AUTO_INCREMENT,
   id_room INT NOT NULL,
-  FOREIGN KEY (id_material) REFERENCES MATERIAL(id),
-  FOREIGN KEY (id_room) REFERENCES ROOM(id)
+  FOREIGN KEY (id_material) REFERENCES MATERIAL(id) ON DELETE CASCADE,
+  FOREIGN KEY (id_room) REFERENCES ROOM(id) ON DELETE CASCADE
 );
 
 CREATE TABLE RESERVATION_SERVICE
 (
   id_service INT NOT NULL,
   id_reservation INT NOT NULL,
-  FOREIGN KEY (id_service) REFERENCES SERVICE(id),
-  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
+  FOREIGN KEY (id_service) REFERENCES SERVICE(id) ON DELETE CASCADE,
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id) ON DELETE CASCADE
 );
 
 INSERT INTO CATEGORY (id, name) VALUES (0, 'En ligne');
@@ -195,8 +211,8 @@ INSERT INTO CATEGORY (id, name) VALUES (5, 'Musique');
 INSERT INTO CATEGORY (id, name) VALUES (6, "Coopératif");
 INSERT INTO CATEGORY (id, name) VALUES (7, "Compétitif");
 
-INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (12345678901234, 'TeamEase', 'teamease@gmail.com', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 2);
-INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (53145866900037, 'ESGI', 'qjolli1@myges.fr', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 0);
+INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token, confirm_signup) VALUES (12345678901234, 'TeamEase', 'teamease@gmail.com', '242 rue faubourg Saint-Antoine', sha2('Respons11', 512), 2, '', 1);
+INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token, confirm_signup) VALUES (12345678901235, 'testCompany', 'test@domaine.com','24 rue test', sha2('Respons11', 512), 0, '', 1);
 
 INSERT INTO OCCUPATION (id, name) VALUES (1, 'Animateur');
 INSERT INTO OCCUPATION (id, name) VALUES (2, 'Game Master');
@@ -208,3 +224,4 @@ INSERT INTO LOCATION (id, address, name) VALUES (1, '242 rue faubourg Saint-Anto
 
 INSERT INTO RESERVATION (id, attendee, id_activity, siret, id_location) VALUES (1, 1, 1, 53145866900037, 1);
 
+INSERT INTO PROVIDER (firstName, lastName, salary, password, rights, email, id_occupation, token, confirm_signup) VALUES ('Jean', 'Dupont', 2000, sha2('Respons11', 512), 1, 'test@domaine.com', 1, '', 1);

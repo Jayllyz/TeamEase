@@ -8,19 +8,19 @@ $password = $_POST['password'];
 $conf_password = $_POST['conf_password'];
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-  header('location: ../signin.php?message=Email invalide !&valid=invalid&input=email');
+  header('location: ../signin.php?message=Email invalide !&valid=invalid&input=email&check=provider');
   exit();
 } else {
   setcookie('email', $email, time() + 3600, '/');
 }
 
 if (isset($lastName) && !strlen($lastName) > 0) {
-  header('location: ../signin.php?message=Le nom est invalide !&valid=invalid&input=name');
+  header('location: ../signin.php?message=Le nom est invalide !&valid=invalid&input=name&check=provider');
   exit();
 }
 
 if (isset($firstName) && !strlen($firstName) > 0) {
-  header('location: ../signin.php?message=Le prenom est invalide !&valid=invalid&input=firstname');
+  header('location: ../signin.php?message=Le prenom est invalide !&valid=invalid&input=firstname&check=provider');
   exit();
 }
 
@@ -32,19 +32,18 @@ $req->execute([
 $reponse = $req->fetch();
 
 if (!$reponse) {
-  header('location: ../signin.php?message=Le métier est invalide !&valid=invalid&input=job');
+  header('location: ../signin.php?message=Le métier est invalide !&valid=invalid&input=job&check=provider');
   exit();
 }
 
-
 if (isset($salary) && !is_numeric($salary)) {
-  header('location: ../signin.php?message=Le salaire est invalide !&valid=invalid&input=salary');
+  header('location: ../signin.php?message=Le salaire est invalide !&valid=invalid&input=salary&check=provider');
   exit();
 }
 
 if (strlen($password) < 6) {
   header(
-    'location: ../signin.php?message=Mot de passe invalide. Il doit avoir 6 caracteres minimum !&valid=invalid&input=mdp'
+    'location: ../signin.php?message=Mot de passe invalide. Il doit avoir 6 caracteres minimum !&valid=invalid&input=mdp&check=provider'
   );
   exit();
 }
@@ -57,7 +56,7 @@ $req->execute([
 $reponse = $req->fetch();
 
 if ($reponse) {
-  header('location: ../signin.php?message=Cet email est déja utilisé !&valid=invalid&input=email');
+  header('location: ../signin.php?message=Cet email est déja utilisé !&valid=invalid&input=email&check=provider');
   exit();
 }
 
@@ -69,7 +68,7 @@ $req->execute([
 $reponse = $req->fetch();
 
 if ($reponse) {
-  header('location: ../signin.php?message=Cet email est déja utilisé !&valid=invalid&input=email');
+  header('location: ../signin.php?message=Cet email est déja utilisé !&valid=invalid&input=email&check=provider');
   exit();
 }
 
@@ -84,9 +83,10 @@ if (
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights)'
+      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights, token) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights, :token)'
     );
     $rights = 0;
+    $token = uniqid();
 
     $req->execute([
       'firstName' => $lastName,
@@ -95,13 +95,26 @@ if (
       'email' => $email,
       'salary' => $salary,
       'rights' => $rights,
+      'token' => $token,
       'password' => hash('sha512', $password),
     ]);
 
-    header('location: ../login.php?message=Votre compte a bien été créé !&type=success&valid=valid');
+    $subject = 'Confirmation de votre inscription';
+    $msgHTML =
+      '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
+                <p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
+      <a href="localhost/includes/confRegistration.php?' .
+      'token=' .
+      $token .
+      '&email=' .
+      $email .
+      '&type=' .
+      'provider">Confirmation !</a>';
+    $destination = '../login.php';
+    include '../includes/mailer.php';
   } else {
     header(
-      'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp'
+      'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp&check=provider'
     );
     exit();
   }

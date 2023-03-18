@@ -1,11 +1,9 @@
 <?php
-
+include '../includes/functions.php';
 $email = $_POST['emailCompany'];
 $password = $_POST['passwordCompany'];
 $conf_password = $_POST['conf_password'];
-$name = $_POST['nameCompany'];
 $siret = $_POST['siret'];
-$address = $_POST['address'];
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
   header('location: ../signin.php?message=Email invalide !&valid=invalid&input=emailCompany');
@@ -16,6 +14,16 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 if (strlen($siret) != 14 && !is_numeric($siret)) {
   header('location: ../signin.php?message=Le SIRET doit contenir 14 chiffres !&valid=invalid&input=siret');
+  exit();
+}
+
+$output = callInsee($siret);
+$jsonDecode = json_decode($output, true);
+
+if ($jsonDecode['header']['statut'] != 200) {
+  header(
+    "location: ../signin.php?message=Le SIRET n'existe pas ou une erreur est survenue !&valid=invalid&input=siret"
+  );
   exit();
 }
 
@@ -33,15 +41,18 @@ if ($reponse) {
   setcookie('siret', $siret, time() + 3600, '/');
 }
 
-if (strlen($name) == 0) {
-  header("location: ../signin.php?message=Nom d'entreprise invalide !&valid=invalid&input=nameCompany");
-  exit();
-}
+$address =
+  $jsonDecode['etablissement']['adresseEtablissement']['numeroVoieEtablissement'] .
+  ' ' .
+  $jsonDecode['etablissement']['adresseEtablissement']['typeVoieEtablissement'] .
+  ' ' .
+  $jsonDecode['etablissement']['adresseEtablissement']['libelleVoieEtablissement'] .
+  ', ' .
+  $jsonDecode['etablissement']['adresseEtablissement']['codePostalEtablissement'] .
+  ', ' .
+  $jsonDecode['etablissement']['adresseEtablissement']['libelleCommuneEtablissement'];
 
-if (strlen($address) < 5) {
-  header('location: ../signin.php?message=Adresse invalide !&valid=invalid&input=address');
-  exit();
-}
+$name = $jsonDecode['etablissement']['uniteLegale']['denominationUniteLegale'];
 
 if (strlen($password) < 6) {
   header(
@@ -84,9 +95,10 @@ if (
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO COMPANY (siret, companyName, email, address, password, rights) VALUES (:siret, :companyName, :email, :address, :password, :rights)'
+      'INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token) VALUES (:siret, :companyName, :email, :address, :password, :rights, :token)'
     );
     $rights = 0;
+    $token = uniqid();
 
     $req->execute([
       'siret' => $siret,
@@ -95,9 +107,22 @@ if (
       'address' => $address,
       'password' => hash('sha512', $password),
       'rights' => $rights,
+      'token' => $token,
     ]);
 
-    header('location: ../login.php?message=Votre compte a bien été créé !&type=success&valid=valid');
+    $subject = 'Confirmation de votre inscription';
+    $msgHTML =
+      '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
+                <p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
+      <a href="localhost/includes/confRegistration.php?' .
+      'token=' .
+      $token .
+      '&email=' .
+      $email .
+      '&type=' .
+      'company">Confirmation !</a>';
+    $destination = '../login.php';
+    include '../includes/mailer.php';
   } else {
     header(
       'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp'

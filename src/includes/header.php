@@ -6,25 +6,25 @@
         </div>
 
         <div class="col-12 col-md-9">
-            <form class="d-flex" action="GET" action="#">
-                <div class="col-10">
-                    <input id="search" class="form-control form-control-lg me-3" name="search" type="search" placeholder="Rechercher une activité" aria-label="Search">
+            <form class="d-flex" method="GET" action="catalog.php">
+                <div class="col-8 me-2">
+                    <input id="search" class="form-control form-control-lg me-3" name="search" type="search" oninput="searchBar(this.value)" placeholder="Rechercher une activité" aria-label="Search">
+                    <div class="absolute" id="suggestions"></div>
                 </div>
                 <div class="col-2">
                     <button class="btn btn-outline-secondary btn-lg" type="submit">Rechercher</button>
                 </div>
             </form>
 
-            <div class="col-md-1"></div>
             <div class="row">
-                <a class="btn btn-secondary col mx-3 mt-3" <?php if (
+                <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (
                   isset($_SESSION['siret']) ||
                   isset($_SESSION['id'])
                 ) {
                   echo 'href="#">Mes reservations</a>';
                 } else {
                   echo 'href="login.php">Se connecter</a>';
-                } ?> <a class="btn btn-secondary col mx-3 mt-3" <?php if (
+                } ?> <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (
    isset($_SESSION['siret']) ||
    isset($_SESSION['id'])
  ) {
@@ -67,9 +67,6 @@
                             ?>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="partenaire.php">Entreprises partenaires</a>
-                    </li>
                     <?php if (isset($_SESSION['rights'])) {
                       if ($_SESSION['rights'] == 2) {
                         echo '
@@ -83,7 +80,7 @@
                         <a class="nav-link" href="aPropos.php">A propos de nous</a>
                     </li>
                     <li class="nav-item">
-                        <?php if (isset($_SESSION["siret"]) && $_SESSION["rights"] == 2) { ?>
+                        <?php if (isset($_SESSION['siret']) && $_SESSION['rights'] == 2) { ?>
 
                             <a href="admin.php" class="logo_admin">
                                 <svg viewBox="0 0 24 24" width="24" height="24" fill="black" id="logo_admin">
@@ -99,5 +96,5 @@
             </div>
         </div>
     </nav>
-
+    <script src="css-js/js/searchBar.js"></script>
 </div>
