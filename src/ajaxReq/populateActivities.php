@@ -10,10 +10,8 @@ if (isset($_GET['page'])) {
 }
 if ($_POST['searchBarInput'] == 'none') {
   $searchBarInput = '';
-} elseif ($_POST['search'] == 'none') {
-  $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\'';
 } else {
-  $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\' AND ';
+  $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\' ';
 }
 if ($_POST['search'] == 'none') {
   $search = '';

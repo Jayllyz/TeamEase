@@ -578,6 +578,8 @@ function checkConfirm(text) {
 
 function populateActivity(page) {
   let search = localStorage.getItem('search');
+  let searchBarInput = window.location.search;
+  searchBarInput = searchBarInput.split('=')[1];
   if (search == null) {
     search = 'none';
   }
