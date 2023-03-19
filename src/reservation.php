@@ -35,11 +35,7 @@ include 'includes/head.php';
   ? $_COOKIE['attendee']
   : '' ?>" required>
                 <label for="date" class="form-label"><h4>Date de votre réservation</h4></label>
-                <input type="date" class="form-control" id="myDate" min="<?php echo date(
-                  'Y-m-d'
-                ); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" value = "<?php echo date(
-  'Y-m-d'
-); ?>" onchange="selectedDateReservation(this)" required>
+                <input type="text" class="form-control" id="date" onchange="selectedDateReservation(this)" required>
                 <div id="container-slot">
                     <label for="time" class="form-label"><h4>Heure de votre créneau</h4></label>
                 </div>
@@ -49,18 +45,6 @@ include 'includes/head.php';
             </div>
         </form>
     </main>
-
-    <script>
-    $('#myDate').datepicker({
-        beforeShowDay: function(date) {
-            var dayOfWeek = date.getDay();
-            return [
-            dayOfWeek !== 0 && dayOfWeek !== 1 && dayOfWeek !== 4 && dayOfWeek !== 6,
-            ''
-            ];
-        }
-        });
-    </script>
     <script src="css-js/scripts.js"></script>
     <?php include 'includes/footer.php'; ?>
 </body>

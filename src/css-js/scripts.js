@@ -904,3 +904,12 @@ function selectRoom(element) {
 function selectedDateReservation(element) {
   console.log(element.value);
 }
+
+// le sheitan
+
+$('#date').datepicker({
+  beforeShowDay: function (date) {
+    var dayOfWeek = date.getDay();
+    return [dayOfWeek !== 0 && dayOfWeek !== 1 && dayOfWeek !== 4 && dayOfWeek !== 6];
+  },
+});

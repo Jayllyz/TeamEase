@@ -2,12 +2,14 @@
     <meta charset="utf-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="<?= $linkCss ?>">
     <link rel="shortcut icon" type="image/png" href="<?= $linkLogo ?>" />
   <title><?= $title ?></title>
   <?php if ($title == 'Inscription') {
     echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
   } ?>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/i18n/datepicker.fr.min.js" integrity="sha512-ZI77WJhrvOxBocHwtjKtMY8e3WDMOvQj6Uc9d9XphZU0Q6iISV7Yj1F+0V7Jdu8aUuB7lT9iajpsZ7REhAVTzg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 </head>
