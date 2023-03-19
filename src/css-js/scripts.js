@@ -583,10 +583,8 @@ function populateActivity(page) {
   if (search == null) {
     search = 'none';
   }
-  if (search == 'maxAttendeeDesc') {
-    const element = document.getElementById('maxAttendee');
-    element.classList.add('desc');
-    element.innerHTML = 'Nombre de participants <i class="bi bi-arrow-down-short"></i>';
+  if (searchBarInput == undefined) {
+    searchBarInput = '';
   }
   const activities = document.getElementById('activities');
   let xhr = new XMLHttpRequest();
