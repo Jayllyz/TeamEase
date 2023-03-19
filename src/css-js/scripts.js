@@ -7,6 +7,7 @@ let parameters = {
 
 function viewPassword() {
   var passConnexion = document.getElementById('password');
+  console.log(passConnexion);
 
   if (passConnexion.type === 'password') {
     passConnexion.type = 'text';
@@ -15,8 +16,10 @@ function viewPassword() {
   }
 }
 
-function viewPasswordProvider(id) {
-  var passProvider = id.parentElement.querySelector('#passwordProvider');
+function viewPasswordProvider() {
+
+  var passProvider = document.getElementById('PasswordProvider');
+  console.log(passProvider);
   if (passProvider.type === 'password') {
     passProvider.type = 'text';
   } else {
@@ -24,8 +27,10 @@ function viewPasswordProvider(id) {
   }
 }
 
-function viewVerifPasswordProvider(id) {
-  var passVerifProvider = id.parentElement.querySelector('#verifpasswordProvider');
+function viewVerifPasswordProvider() {
+
+  var passVerifProvider = document.getElementById('VerifPasswordProvider');
+  console.log(passVerifProvider);
   if (passVerifProvider.type === 'password') {
     passVerifProvider.type = 'text';
   } else {
