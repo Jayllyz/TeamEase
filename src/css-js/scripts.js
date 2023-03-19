@@ -15,6 +15,46 @@ function viewPassword() {
   }
 }
 
+function viewPasswordProvider() {
+
+  var passProvider = document.getElementById('PasswordProvider');
+  if (passProvider.type === 'password') {
+    passProvider.type = 'text';
+  } else {
+    passProvider.type = 'password';
+  }
+}
+
+function viewVerifPasswordProvider() {
+
+  var passVerifProvider = document.getElementById('VerifPasswordProvider');
+  if (passVerifProvider.type === 'password') {
+    passVerifProvider.type = 'text';
+  } else {
+    passVerifProvider.type = 'password';
+  }
+}
+
+function viewPasswordCompany(){
+  var passProvider = document.getElementById('PasswordCompany');
+  if (passProvider.type === 'password') {
+    passProvider.type = 'text';
+  } else {
+    passProvider.type = 'password';
+}
+}
+
+function viewVerifPasswordCompany(){
+
+  var passVerifCompany = document.getElementById('VerifPasswordCompany');
+  if (passVerifCompany.type === 'password') {
+    passVerifCompany.type = 'text';
+  } else {
+    passVerifCompany.type = 'password';
+}
+}
+
+
 function viewPasswordInscription(id) {
   var passInscription = id.parentElement.querySelector('#password');
   if (passInscription == null) {
