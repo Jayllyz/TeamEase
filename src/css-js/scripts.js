@@ -585,6 +585,8 @@ function populateActivity(page) {
   }
   if (searchBarInput == undefined) {
     searchBarInput = '';
+  } else if (searchBarInput.includes('L%27')) {
+    searchBarInput = '';
   }
   const activities = document.getElementById('activities');
   let xhr = new XMLHttpRequest();
