@@ -7,8 +7,6 @@
 
 
 <?php
-
-
 if (!isset($_SESSION['rights'])) {
   header('Location: login.php');
   exit();
@@ -70,10 +68,14 @@ include 'includes/head.php';
             
             <br>
               <button class="btn-read">
-              <a href="modifyCompany.php?siret=<?= $company['siret'] ?>&name=<?= $company['companyName'] ?>&email=<?= $company['email'] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
+              <a href="modifyCompany.php?siret=<?= $company['siret'] ?>&name=<?= $company[
+  'companyName'
+] ?>&email=<?= $company['email'] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
               </button>
               <button class="btn-read">
-              <a href="modifyCompanyPassword.php?siret=<?= $company['siret'] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
+              <a href="modifyCompanyPassword.php?siret=<?= $company['siret'] ?>&rights=<?= $company[
+  'rights'
+] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
               </button>
             </div>
       </div>
@@ -168,11 +170,8 @@ include 'includes/head.php';
           <?php
           $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
           $stmt = $db->prepare($sql);
-          $stmt->execute([
-            'id' => $_SESSION['id'],
-          ]);
+          $stmt->execute(['id' => $_SESSION['id']]);
           $provider = $stmt->fetch();
-
           ?>
             <br>
             <br>
@@ -184,7 +183,7 @@ include 'includes/head.php';
             echo $provider['firstName']; //Ne pas changer
             echo '<br>';
             echo '<br>';
-            echo "Nom de famille :   ";
+            echo 'Nom de famille :   ';
             echo $provider['lastName']; //Ne pas changer
             echo '<br>';
             echo '<br>';
@@ -202,10 +201,16 @@ include 'includes/head.php';
             
             <br>
               <button class="btn-read">
-              <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider['firstName'] ?>&lastName=<?= $provider['lastName'] ?>&email=<?= $provider['email'] ?>&rights=<?= $provider['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
+              <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider[
+  'firstName'
+] ?>&lastName=<?= $provider['lastName'] ?>&email=<?= $provider['email'] ?>&rights=<?= $provider[
+  'rights'
+] ?>" class="btn ms-2 me-2">Modifier</a>
               </button>
               <button class="btn-read">
-              <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider['rights']?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
+              <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider[
+  'rights'
+] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
               </button>
             </div>
       </div>
@@ -219,17 +224,12 @@ include 'includes/head.php';
           <?php
           $sql = 'SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider';
           $stmt = $db->prepare($sql);
-          $stmt->execute([
-            'id_provider' => $_SESSION['id'],
-          ]);
+          $stmt->execute(['id_provider' => $_SESSION['id']]);
           $animate = $stmt->fetchAll(); // mettre les id des activités dans un tableau
-
           $id_animate = [];
           for ($i = 0; $i < count($animate); $i++) {
             $id_animate[] = $animate[$i]['id_activity'];
           }
-          
-
 
   // faire une tableau avec les données
   ?>

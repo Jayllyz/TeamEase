@@ -3,9 +3,6 @@ include 'includes/db.php';
 $id = htmlspecialchars($_GET['id']);
 $rights = htmlspecialchars($_GET['rights']);
 
-
-
-
 if (isset($_SESSION['id'])) { ?>
 
     <!DOCTYPE html>
@@ -13,7 +10,7 @@ if (isset($_SESSION['id'])) { ?>
     <?php
     $linkLogo = 'images/logo.png';
     $linkCss = 'css-js/style.css';
-    $title = "Modification de Mot de Passe";
+    $title = 'Modification de Mot de Passe';
     include 'includes/head.php';
     ?>
 

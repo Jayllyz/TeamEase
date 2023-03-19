@@ -7,8 +7,6 @@ $lastName = $_POST['lastName'];
 $rights = htmlspecialchars($_GET['rights']);
 $id = htmlspecialchars($_GET['id']);
 
-
-
 if (isset($email) && !empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
   header('location: ../modifyProvider.php?message=Email invalide !&type=danger');
   exit();
@@ -31,7 +29,7 @@ if (
       header('location: ../profile.php?message=Email déjà utilisé !&type=danger');
     }
     if ($compare[$i]['firstName'] == $firstName && $compare[$i]['lastName'] == $lastName && $compare[$i]['id'] != $id) {
-      header("location: ../profile.php?message=Nom et Prénom déjà utilisé !&type=danger");
+      header('location: ../profile.php?message=Nom et Prénom déjà utilisé !&type=danger');
     }
   }
 
@@ -43,7 +41,6 @@ if (
   $oldemail = $oldemail['email'];
 
   if ($oldemail != $email) {
-
     $token = uniqid();
 
     $update = $db->prepare(
@@ -72,8 +69,7 @@ if (
       'provider">Confirmation changement email !</a>';
     $destination = '../login.php';
     include '../includes/mailer.php';
- 
-  }else{
+  } else {
     $update = $db->prepare(
       'UPDATE PROVIDER SET email = :email, firstName = :firstName, rights = :rights, lastName = :lastName WHERE id = :id'
     );

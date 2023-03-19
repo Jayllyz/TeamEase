@@ -16,7 +16,6 @@ function viewPassword() {
 }
 
 function viewPasswordProvider() {
-
   var passProvider = document.getElementById('PasswordProvider');
   if (passProvider.type === 'password') {
     passProvider.type = 'text';
@@ -26,7 +25,6 @@ function viewPasswordProvider() {
 }
 
 function viewVerifPasswordProvider() {
-
   var passVerifProvider = document.getElementById('VerifPasswordProvider');
   if (passVerifProvider.type === 'password') {
     passVerifProvider.type = 'text';
@@ -35,25 +33,23 @@ function viewVerifPasswordProvider() {
   }
 }
 
-function viewPasswordCompany(){
+function viewPasswordCompany() {
   var passProvider = document.getElementById('PasswordCompany');
   if (passProvider.type === 'password') {
     passProvider.type = 'text';
   } else {
     passProvider.type = 'password';
-}
+  }
 }
 
-function viewVerifPasswordCompany(){
-
+function viewVerifPasswordCompany() {
   var passVerifCompany = document.getElementById('VerifPasswordCompany');
   if (passVerifCompany.type === 'password') {
     passVerifCompany.type = 'text';
   } else {
     passVerifCompany.type = 'password';
+  }
 }
-}
-
 
 function viewPasswordInscription(id) {
   var passInscription = id.parentElement.querySelector('#password');

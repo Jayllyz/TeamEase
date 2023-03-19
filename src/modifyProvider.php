@@ -6,8 +6,6 @@ $lastName = htmlspecialchars($_GET['lastName']);
 $email = htmlspecialchars($_GET['email']);
 $rights = htmlspecialchars($_GET['rights']);
 
-
-
 if (isset($_SESSION['id'])) { ?>
 
     <!DOCTYPE html>

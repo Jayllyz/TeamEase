@@ -3,15 +3,14 @@ include 'includes/db.php';
 $siret = htmlspecialchars($_GET['siret']);
 $rights = htmlspecialchars($_GET['rights']);
 
-
-if (isset($siret)){ ?>
+if (isset($siret)) { ?>
 
     <!DOCTYPE html>
     <html lang="fr">
     <?php
     $linkLogo = 'images/logo.png';
     $linkCss = 'css-js/style.css';
-    $title = "Modification de Mot de Passe";
+    $title = 'Modification de Mot de Passe';
     include 'includes/head.php';
     ?>
 

@@ -34,7 +34,7 @@ if (
       exit();
     }
     if ($compare[$i]['address'] == $address && $compare[$i]['siret'] != $siret) {
-      header("location: ../profile.php?message=Adresse déjà utilisé !&type=danger");
+      header('location: ../profile.php?message=Adresse déjà utilisé !&type=danger');
       exit();
     }
   }
@@ -47,9 +47,7 @@ if (
   $oldemail = $oldemail['email'];
 
   if ($oldemail != $email) {
-
     $token = uniqid();
-
 
     $update = $db->prepare(
       'UPDATE COMPANY SET email = :email, companyName = :companyName, rights = :rights, address = :address, token= :token, confirm_signup= :confirm_signup WHERE siret = :siret'
@@ -62,25 +60,22 @@ if (
       'siret' => $siret,
       'token' => $token,
       'confirm_signup' => 0,
-
     ]);
 
-      $subject = 'Confirmation de changement de mail';
-      $msgHTML =
-        '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
+    $subject = 'Confirmation de changement de mail';
+    $msgHTML =
+      '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
                   <p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre changement de mail :<br></p>
         <a href="localhost/includes/confemail.php?' .
-        'token=' .
-        $token .
-        '&email=' .
-        $email .
-        '&type=' .
-        'company">Confirmation changement de mail !</a>';
-      $destination = '../login.php';
-      include '../includes/mailer.php';
-
-  }else
-  {
+      'token=' .
+      $token .
+      '&email=' .
+      $email .
+      '&type=' .
+      'company">Confirmation changement de mail !</a>';
+    $destination = '../login.php';
+    include '../includes/mailer.php';
+  } else {
     $update = $db->prepare(
       'UPDATE COMPANY SET email = :email, companyName = :companyName, rights = :rights, address = :address WHERE siret = :siret'
     );
@@ -94,6 +89,4 @@ if (
     header('location: ../profile.php?message=Modification effectuée !&type=success');
     exit();
   }
-
-
 }
