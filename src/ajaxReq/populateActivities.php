@@ -4,16 +4,14 @@ include '../includes/db.php';
 ?>
 <?php
 if (isset($_GET['page'])) {
-  $currentPage = $_GET['page'];
+  $currentPage = htmlspecialchars($_GET['page']);
 } else {
   $currentPage = 1;
 }
 if ($_POST['searchBarInput'] == 'none') {
   $searchBarInput = '';
-} elseif ($_POST['search'] == 'none') {
-  $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\'';
 } else {
-  $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\' AND ';
+  $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\' ';
 }
 if ($_POST['search'] == 'none') {
   $search = '';

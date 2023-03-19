@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
+  header('location: index.php');
+  exit();
+}
 include 'includes/db.php';
 if ($_SESSION['rights'] == 2 && isset($_SESSION['siret'])) { ?>
 <!DOCTYPE html>
@@ -18,7 +22,7 @@ if (isset($_GET['check'])) {
 
 <body onload="checkRadio('jsCheckRadio', 'back')">
     <?php include 'includes/header.php'; ?>
-
+    <script src="css-js/scripts.js"></script>
     <main>
         <div class="container col-md-6">
             <?php include 'includes/msg.php'; ?>
@@ -159,21 +163,20 @@ if (isset($_GET['check'])) {
                         </tr>
                     </thead>
                     <?php
-                    $query = $db->query(
-                      'SELECT id, lastName, firstName, email, rights, salary, id_occupation FROM PROVIDER'
-                    );
+                    $query = $db->query('SELECT id, lastName, firstName, email, rights, id_occupation FROM PROVIDER');
                     $result = $query->fetchAll(PDO::FETCH_ASSOC);
                     if ($result != null) {
 
                       $id_occupation = $result[0]['id_occupation'];
 
-                      $req = $db->prepare('SELECT name FROM OCCUPATION WHERE id = :id_occupation');
+                      $req = $db->prepare('SELECT name, salary FROM OCCUPATION WHERE id = :id_occupation');
                       $req->execute([
                         'id_occupation' => $id_occupation,
                       ]);
                       $occupation = $req->fetchAll(PDO::FETCH_ASSOC);
 
                       $result[0]['id_occupation'] = $occupation[0]['name'];
+                      $result[0]['salary'] = $occupation[0]['salary'];
 
                       foreach ($result as $select) { ?>
                             <tbody id="<?= $select['id'] ?>">
@@ -265,7 +268,6 @@ if (isset($_GET['check'])) {
 
     <?php include 'includes/footer.php'; ?>
 
-    <script src="css-js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>

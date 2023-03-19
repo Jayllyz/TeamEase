@@ -3,7 +3,6 @@ $firstName = $_POST['firstname'];
 $lastName = $_POST['name'];
 $email = $_POST['email'];
 $job = $_POST['job'];
-$salary = $_POST['salary'];
 $password = $_POST['password'];
 $conf_password = $_POST['conf_password'];
 
@@ -33,11 +32,6 @@ $reponse = $req->fetch();
 
 if (!$reponse) {
   header('location: ../signin.php?message=Le métier est invalide !&valid=invalid&input=job&check=provider');
-  exit();
-}
-
-if (isset($salary) && !is_numeric($salary)) {
-  header('location: ../signin.php?message=Le salaire est invalide !&valid=invalid&input=salary&check=provider');
   exit();
 }
 
@@ -78,12 +72,11 @@ if (
   !empty($password) &&
   !empty($conf_password) &&
   !empty($firstName) &&
-  !empty($job) &&
-  !empty($salary)
+  !empty($job)
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, salary, password, rights, token) VALUES (:firstName, :lastName, :occupation, :email, :salary, :password, :rights, :token)'
+      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, password, rights, token) VALUES (:firstName, :lastName, :occupation, :email, :password, :rights, :token)'
     );
     $rights = 1;
     $token = uniqid();
@@ -93,7 +86,6 @@ if (
       'lastName' => $firstName,
       'occupation' => $job,
       'email' => $email,
-      'salary' => $salary,
       'rights' => $rights,
       'token' => $token,
       'password' => hash('sha512', $password),

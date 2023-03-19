@@ -37,7 +37,9 @@ include 'includes/head.php';
         <h1><b><?php echo $activity['name']; ?></b></h1>
         <div class="row mt-5 text-white">
             <div class="col-8" style="border-right:solid #59A859">
-                <img class="images img-thumbnail" src="<?php echo $image0; ?>" alt="">
+            <?php if ($image0 != null) { ?>
+                <img class="images img-thumbnail" src="<?php echo $image0; ?>" alt="Image 1">
+            <?php } ?>
             </div>
             <div class="col-4" style="background: ForestGreen">
                 <div class="row">
@@ -102,7 +104,7 @@ include 'includes/head.php';
 
         <hr class="mb-3">
         <h2>Catégories
-        <?php if ($_SESSION['rights'] == 2) {
+        <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
           echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-category">Modifier</button>';
         } ?>
         </h2>
@@ -123,6 +125,24 @@ include 'includes/head.php';
 
         <hr class="mt-3">
 
+        <?php if (
+          $image1 != 'images/activities/placeholder.jpg' ||
+          $image2 != 'images/activities/placeholder.jpg' ||
+          $image3 != 'images/activities/placeholder.jpg'
+        ) {
+
+          //count the number of images to display
+          $count = 0;
+          if ($image1 != 'images/activities/placeholder.jpg') {
+            $count++;
+          }
+          if ($image2 != 'images/activities/placeholder.jpg') {
+            $count++;
+          }
+          if ($image3 != 'images/activities/placeholder.jpg') {
+            $count++;
+          }
+          ?>
         <div class="row mt-5">
             <h2 class="col-12"><b>Images de l'activité</b></h2>
         </div>
@@ -130,19 +150,33 @@ include 'includes/head.php';
         <div id="showcase" class="carousel slide" data-bs-ride="carousel" data-interval="5000">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#showcase" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <?php
+          if ($count > 1) { ?>
           <button type="button" data-bs-target="#showcase" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <?php }
+          if ($count > 2) { ?>
           <button type="button" data-bs-target="#showcase" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <?php }
+          ?>
         </div>
         <div class="carousel-inner">
+         <?php
+         if ($image1 != 'images/activities/placeholder.jpg') { ?>
           <div class="carousel-item active">
             <img src="<?php echo $image1; ?>" class="d-block w-100">
           </div>
+          <?php }
+         if ($image2 != 'images/activities/placeholder.jpg') { ?>
           <div class="carousel-item">
             <img src="<?php echo $image2; ?>" class="d-block w-100">
           </div>
+          <?php }
+         if ($image3 != 'images/activities/placeholder.jpg') { ?>
           <div class="carousel-item">
             <img src="<?php echo $image3; ?>" class="d-block w-100">
           </div>
+          <?php }
+         ?>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#showcase" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -154,10 +188,12 @@ include 'includes/head.php';
         </button>
       </div>
     </div>
+    <?php
+        } ?>
 
     <div class="container">
         <h1 class="mb-5">Description de l'activité
-            <?php if ($_SESSION['rights'] == 2) {
+            <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
               echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-description">Modifier</button>';
             } ?>
         </h1>
@@ -166,7 +202,7 @@ include 'includes/head.php';
         <hr class="my-5" size="5">
 
         <h2 class="text-center">Details de l'activité
-        <?php if ($_SESSION['rights'] == 2) {
+        <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
           echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-details">Modifier</button>';
         } ?>
         </h2>

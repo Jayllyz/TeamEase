@@ -1,8 +1,10 @@
 <?php
+ob_start();
 //Suppression d'une activité------------------------------------------------------------------------
 session_start();
 if (!isset($_SESSION['rights']) == 2) {
   header('Location: ../index.php');
+  exit();
 }
 include '../includes/db.php';
 
@@ -78,6 +80,21 @@ if (isset($_GET['update'])) {
     if (!isset($_POST['category'])) {
       $message = 'Veuillez selectionner au moins une catégorie';
       header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+
+    foreach ($_POST['category'] as $category) {
+      if ($category == 'En ligne') {
+        $online = true;
+      }
+      if ($category == 'En personne') {
+        $inPerson = true;
+      }
+    }
+
+    if ($online && $inPerson) {
+      $message = 'Une activité ne peut pas être à la fois en ligne et en personne';
+      header('location:../activity.php?message=' . $message . '&type=danger');
       exit();
     }
 
@@ -225,29 +242,68 @@ $getId->execute();
 $result3 = true;
 $result4 = true;
 
-if (!isset($_POST['category'])) {
-  $message = "Aucune catégorie n'a été selectionnée";
+if (!isset($_POST['name']) || empty($_POST['name'])) {
+  $message = "Le nom de l'activité n'a pas été renseigné";
   header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
+} else {
+  setcookie('nameActivity', $_POST['name'], time() + 3600, '/');
+}
+
+if (!isset($_POST['description']) || empty($_POST['description'])) {
+  $message = "La description de l'activité n'a pas été renseignée";
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
+  exit();
+} else {
+  setcookie('descriptionActivity', $_POST['description'], time() + 3600, '/');
 }
 
 if ($_POST['duration'] <= 0) {
   $message = "La durée de l'activité doit être supérieure à 0";
   header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
+} else {
+  setcookie('durationActivity', $_POST['duration'], time() + 3600, '/');
 }
+
 if ($_POST['price'] < 0) {
   $message = "Le prix de l'activité ne peut être négatif";
   header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
+} else {
+  setcookie('priceActivity', $_POST['price'], time() + 3600, '/');
 }
+
 if ($_POST['maxAttendee'] <= 0) {
   $message = 'Le nombre de participants maximum doit être supérieur à 0';
   header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();
+} else {
+  setcookie('maxAttendeeActivity', $_POST['maxAttendee'], time() + 3600, '/');
 }
 
-if (!isset($_POST['day[]'])) {
+if (!isset($_POST['category'])) {
+  $message = "Aucune catégorie n'a été selectionnée";
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
+  exit();
+}
+
+foreach ($_POST['category'] as $category) {
+  if ($category == 'En ligne') {
+    $online = true;
+  }
+  if ($category == 'En personne') {
+    $inPerson = true;
+  }
+}
+
+if ($online && $inPerson) {
+  $message = 'Une activité ne peut pas être à la fois en ligne et en personne';
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
+  exit();
+}
+
+if (!isset($_POST['day'])) {
   $message = 'Aucun jour de disponibilité n\'a été selectionné';
   header('location:../addActivityPage.php?message=' . $message . '&type=danger');
   exit();

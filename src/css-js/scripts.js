@@ -272,28 +272,99 @@ function providerList(id, type) {
   }
 }
 
-function addMaterial() {
-  const materialContainer = document.getElementById('material-container');
+function getJob() {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      materialContainer.innerHTML += xhr.responseText;
+      const jobTable = document.getElementById('joblist');
+      jobTable.innerHTML = '';
+      jobTable.innerHTML += xhr.responseText;
     }
   };
-  xhr.open('GET', 'ajaxReq/materialInput.php');
+  xhr.open('GET', '../job/getJob.php');
   xhr.send();
 }
 
-function updateMaterial(id) {
-  const container = id.parentElement.parentElement;
-  const idMaterial = container.querySelector('.material-input').getAttribute('id');
-  const material = container.querySelector('.material-input').value;
-  const quantity = container.querySelector('#quantity').value;
-  const used = container.querySelector('#used').value;
+function addJob() {
+  const name = document.getElementById('job-name').value;
+  const salary = document.getElementById('job-salary').value;
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText == 'success') {
+        alert('Le métier a bien été ajouté');
+      }
+    }
+  };
+  xhr.open('POST', '../job/addJob.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('name=' + name + '&salary=' + salary);
+
+  getJob();
+}
+
+function editJob() {
+  const id = document.getElementById('edit-job-id').innerHTML;
+  const name = document.getElementById('edit-job-name').value;
+  const salary = document.getElementById('edit-job-salary').value;
+
+  console.log(id);
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText == 'success') {
+        alert('Le métier a bien été modifié');
+      }
+      console.log(xhr.responseText);
+    }
+  };
+  xhr.open('POST', '../job/editJob.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id + '&name=' + name + '&salary=' + salary);
+
+  getJob();
+}
+
+function deleteJob(id) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText == 'success') {
+        alert('Le métier a bien été supprimé');
+      }
+    }
+  };
+  xhr.open('POST', '../job/deleteJob.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id);
+
+  getJob();
+}
+
+function addMaterial(element) {
+  const body = element.parentElement.parentElement.querySelector('tbody');
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      body.innerHTML += xhr.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/materialInput.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('type=stock');
+}
+
+function updateMaterial(element, idMaterial) {
+  const row = element.parentElement.parentElement;
+  const name = row.querySelector('#name').value;
+  const quantity = row.querySelector('#quantity').value;
+  const used = row.querySelector('#used').value;
 
   if (parseInt(quantity) < parseInt(used)) {
     alert('La quantité disponible ne peut pas être inférieure à la quantité utilisée');
-    container.querySelector('#quantity').value = parseInt(container.querySelector('#available').value) + parseInt(used);
+    row.querySelector('#quantity').value = parseInt(row.querySelector('#available').value) + parseInt(used);
     return;
   }
 
@@ -301,8 +372,8 @@ function updateMaterial(id) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       if (xhr.responseText == 'success') {
-        container.querySelector('#available').value = quantity - used;
-        alert('Le matériel a bien été modifié');
+        alert('Le matériel à bien été modifié');
+        row.querySelector('#available').value = quantity - used;
       } else {
         alert("Le matériel n'a pas pu être modifié");
       }
@@ -310,25 +381,130 @@ function updateMaterial(id) {
   };
   xhr.open('POST', 'verifications/verifMaterial.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('id=' + idMaterial + '&material=' + material + '&quantity=' + quantity + '&delete=false');
+  xhr.send('id=' + idMaterial + '&material=' + name + '&quantity=' + quantity);
 }
 
-function deleteMaterial(id) {
-  const container = id.parentElement.parentElement;
-  const idMaterial = container.querySelector('.material-input').getAttribute('id');
+function deleteMaterial(element, idMaterial) {
+  if (!confirm('Voulez-vous vraiment supprimer ce matériel ?')) {
+    return;
+  }
+
+  const row = element.parentElement.parentElement;
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      if (xhr.responseText != 'success') {
+      if (xhr.responseText == 'success') {
+        alert('Le matériel à bien été supprimé');
+        row.remove();
+      } else {
         alert("Le matériel n'a pas pu être supprimé");
       }
     }
   };
   xhr.open('POST', 'verifications/verifMaterial.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('id=' + idMaterial + '&material=0&quantity=0&delete=true');
+  xhr.send('id=' + idMaterial + '&delete=true');
+}
 
-  container.remove();
+function allocateMaterial(element) {
+  const body = element.parentElement.parentElement.querySelector('tbody');
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      body.innerHTML += xhr.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/materialInput.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('type=location');
+}
+
+function selectMaterialForAllocation(element, id) {
+  const button = element.parentElement.parentElement.parentElement.querySelector('.btn');
+  button.innerHTML = element.innerHTML;
+  button.id = id;
+}
+
+function updateAllocatedMaterial(element) {
+  const row = element.parentElement.parentElement;
+  const id = row.querySelector('th').querySelector('button').id;
+  const quantity = row.querySelector('#quantity').value;
+
+  if (parseInt(quantity) < 0) {
+    alert('La quantité ne peut pas être inférieure à 0');
+    row.querySelector('#quantity').value = 0;
+    return;
+  }
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (parseInt(xhr.responseText) < parseInt(quantity)) {
+        alert(
+          'La quantité allouée est supérieure à la quantité disponible, la quantité disponible: ' + xhr.responseText
+        );
+        return;
+      }
+      let type;
+      let idPosition = -1;
+      const nature = row.parentElement.parentElement.parentElement;
+      if (nature.classList.contains('location')) {
+        type = 'location';
+        idPosition = window.location.search;
+        idPosition = idPosition.split('=')[1];
+      } else if (nature.classList.contains('room')) {
+        type = 'room';
+        idPosition = row.parentElement.parentElement.parentElement.id;
+      }
+
+      let xhr2 = new XMLHttpRequest();
+      xhr2.onreadystatechange = function () {
+        if (xhr2.readyState === XMLHttpRequest.DONE && xhr2.status === 200) {
+          if (xhr2.responseText == 'success') {
+            alert('Le matériel à bien été modifié');
+          } else {
+            alert("Le matériel n'a pas pu être modifié");
+          }
+        }
+      };
+      xhr2.open('POST', 'verifications/verifMaterial.php');
+      xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr2.send('id=' + id + '&quantity=' + quantity + '&type=' + type + '&idPosition=' + idPosition);
+    }
+  };
+  xhr.open('POST', 'verifications/verifMaterialStock.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id);
+}
+
+function unallocateMaterial(element) {
+  row = element.parentElement.parentElement;
+  const id = row.querySelector('th').querySelector('button').id;
+
+  const nature = row.parentElement.parentElement.parentElement;
+  if (nature.classList.contains('location')) {
+    type = 'location';
+    idPosition = window.location.search;
+    idPosition = idPosition.split('=')[1];
+  } else if (nature.classList.contains('room')) {
+    type = 'room';
+    idPosition = row.parentElement.parentElement.parentElement.id;
+  }
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      if (xhr.responseText == 'success') {
+        alert('Le matériel à bien été supprimé');
+        row.remove();
+      } else {
+        alert("Le matériel n'a pas pu être supprimé");
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifMaterial.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id + '&type=' + type + '&idPosition=' + idPosition + '&delete=true');
 }
 
 function assignMaterial() {
@@ -385,19 +561,6 @@ function quantityChange(value, id) {
     document.getElementById(id).parentElement.querySelector('.form-control').value = '';
     return;
   }
-  let xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      if (xhr.responseText < value) {
-        alert('La quantité de matériel disponible est insuffisante, la quantité disponible:' + xhr.responseText);
-        document.getElementById(id).parentElement.querySelector('.form-control').value = '';
-        return;
-      }
-    }
-  };
-  xhr.open('POST', 'verifications/verifMaterialStock.php');
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('id=' + id);
   if (document.getElementById('quantity' + id)) {
     materialList(id, 'delete', 'quantity');
   }
@@ -455,13 +618,15 @@ function checkConfirm(text) {
 
 function populateActivity(page) {
   let search = localStorage.getItem('search');
+  let searchBarInput = window.location.search;
+  searchBarInput = searchBarInput.split('=')[1];
   if (search == null) {
     search = 'none';
   }
-  if (search == 'maxAttendeeDesc') {
-    const element = document.getElementById('maxAttendee');
-    element.classList.add('desc');
-    element.innerHTML = 'Nombre de participants <i class="bi bi-arrow-down-short"></i>';
+  if (searchBarInput == undefined) {
+    searchBarInput = '';
+  } else if (searchBarInput.includes('L%27')) {
+    searchBarInput = '';
   }
   const activities = document.getElementById('activities');
   let xhr = new XMLHttpRequest();
@@ -606,5 +771,149 @@ function filterStatus(page, element) {
 }
 
 function selectedDay(day) {
-  document.getElementById(day + 'Hour').style = 'display: block';
+  if (document.getElementById(day + 'Hour').style.display == 'block') {
+    document.getElementById(day + 'Hour').style = 'display: none';
+  } else {
+    document.getElementById(day + 'Hour').style = 'display: block';
+  }
+}
+
+function addLocation(element) {
+  nameLocation = element.parentElement.parentElement.querySelector('.name').value;
+  addressLocation = element.parentElement.parentElement.querySelector('.address').value;
+
+  if (nameLocation != '' && addressLocation != '') {
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        if (this.responseText == 'success') {
+          visuallyAddLocation(nameLocation, addressLocation);
+          alert('Le site a bien été ajouté');
+        } else {
+          alert(this.responseText);
+        }
+      }
+    };
+    xhr.open('POST', 'verifications/verifLocation.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('name=' + nameLocation + '&address=' + addressLocation);
+  } else {
+    alert('Veuillez remplir tous les champs');
+  }
+}
+
+function visuallyAddLocation(name, address) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById('locationContainer').innerHTML += this.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('name=' + name + '&address=' + address);
+}
+
+function deleteLocation(element, id) {
+  const location = element.parentElement.parentElement.parentElement;
+  if (!confirm('Voulez-vous vraiment supprimer ce site ?')) {
+    return;
+  }
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText == 'success') {
+        alert('Le site a bien été supprimé');
+      } else {
+        alert('Une erreur est survenue');
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifLocation.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('delete=' + id);
+  location.remove();
+}
+
+function populateLocation() {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById('locationContainer').innerHTML = this.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('populate=true');
+}
+
+function addRoom(element, id) {
+  const body = element.parentElement.parentElement.querySelector('.accordion-body');
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText.includes('success')) {
+        let roomId = this.responseText.split('success')[1];
+
+        xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            body.innerHTML += this.responseText;
+          }
+        };
+
+        xhr.open('POST', 'ajaxReq/locationAccordion.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('room=true&id=' + roomId);
+      } else {
+        alert(this.responseText);
+        return;
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifRoom.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('add=true&location=' + id);
+}
+
+function updateRoom(element, id) {
+  let name = element.parentElement.parentElement.querySelector('input').value;
+  if (name == '') {
+    alert('Veuillez nommer la salle');
+    return;
+  }
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText == 'success') {
+        alert('La salle a bien été modifiée');
+      } else {
+        alert(this.responseText);
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifRoom.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id + '&name=' + name);
+}
+
+function deleteRoom(element, id) {
+  if (!confirm('Voulez-vous vraiment supprimer cette salle ?')) {
+    return;
+  }
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText == 'success') {
+        alert('La salle a bien été supprimée');
+        element.parentElement.parentElement.remove();
+      } else {
+        alert(this.responseText);
+      }
+    }
+  };
+  xhr.open('POST', 'verifications/verifRoom.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id + '&delete=true');
 }
