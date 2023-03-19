@@ -85,8 +85,8 @@ include 'includes/head.php';
             </div>
             <div class="row">
                 <div class="col">
-                    <label for="duration"><h4>Durée de l'activité (en heure)</h4></label>
-                    <input type="number" name="duration" class="form-control" value="<?= isset(
+                    <label for="duration"><h4>Durée de l'activité (en minute)</h4></label>
+                    <input type="number" min="10" max="1440" name="duration" class="form-control" value="<?= isset(
                       $_COOKIE['durationActivity']
                     )
                       ? $_COOKIE['durationActivity']

@@ -900,3 +900,7 @@ function selectRoom(element) {
   input = document.getElementById('roomInput');
   input.value = element.id;
 }
+
+function selectedDateReservation(element) {
+  console.log(element.value);
+}

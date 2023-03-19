@@ -17,27 +17,50 @@ include 'includes/head.php';
               include 'includes/msg.php';
             } ?>
         </div>
-
+        <?php
+        $query = $db->prepare(
+          'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id'
+        );
+        $query->execute([
+          'id' => htmlspecialchars($_GET['id']),
+        ]);
+        $activity = $query->fetch(PDO::FETCH_ASSOC);
+        ?>
         <form action="">
             <div class="container col-md-4" id="form">
                 <label for="attendee" class="form-label"><h4>Nombre de participants</h4></label>
-                <input type="number" class="form-control" id="attendee" name="attendee" value="<?= isset(
-                  $_COOKIE['attendee']
-                )
-                  ? $_COOKIE['attendee']
-                  : '' ?>" required>
+                <input type="number" class="form-control" min="1" max="<?= $activity[
+                  'maxAttendee'
+                ] ?>" id="attendee" name="attendee" value="<?= isset($_COOKIE['attendee'])
+  ? $_COOKIE['attendee']
+  : '' ?>" required>
                 <label for="date" class="form-label"><h4>Date de votre réservation</h4></label>
-                <input type="date" class="form-control" id="date" name="date" value="<?= isset($_COOKIE['date'])
-                  ? $_COOKIE['date']
-                  : '' ?>" required>
-                <label for="time" class="form-label"><h4>Heure de votre réservation</h4></label>
-                <select class="form-control" id="time" name="time" required></select>
+                <input type="date" class="form-control" id="myDate" min="<?php echo date(
+                  'Y-m-d'
+                ); ?>" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" value = "<?php echo date(
+  'Y-m-d'
+); ?>" onchange="selectedDateReservation(this)" required>
+                <div id="container-slot">
+                    <label for="time" class="form-label"><h4>Heure de votre créneau</h4></label>
+                </div>
                 <div class="d-flex justify-content-center mt-3">
-                    <input class="btn btn-success" type="submit" value="Valider">
+                    <input type="submit" class="btn btn-success">
                 </div>
             </div>
         </form>
     </main>
+
+    <script>
+    $('#myDate').datepicker({
+        beforeShowDay: function(date) {
+            var dayOfWeek = date.getDay();
+            return [
+            dayOfWeek !== 0 && dayOfWeek !== 1 && dayOfWeek !== 4 && dayOfWeek !== 6,
+            ''
+            ];
+        }
+        });
+    </script>
     <script src="css-js/scripts.js"></script>
     <?php include 'includes/footer.php'; ?>
 </body>

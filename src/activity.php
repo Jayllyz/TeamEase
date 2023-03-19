@@ -213,7 +213,7 @@ include 'includes/head.php';
             <div class="col-4 text-center" style="border-right:solid #C0C1B0">
                 <h4>Durée de l'activité</h4>
                 <div class="text-center">
-                    <p class="fs-5"><?php echo $activity['duration']; ?>  h</p>
+                    <p class="fs-5"><?php echo $activity['duration']; ?>  min</p>
                 </div>
             </div>
             <div class="col-4 text-center" style="border-right:solid #C0C1B0">
