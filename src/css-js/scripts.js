@@ -877,3 +877,26 @@ function deleteRoom(element, id) {
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('id=' + id + '&delete=true');
 }
+
+function selectLocation(element) {
+  id = element.id;
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      let div = element.parentElement.parentElement.parentElement;
+      div.querySelector('#room') ? div.querySelector('#room').remove() : null;
+      div.querySelector('button').innerHTML = element.innerHTML;
+      div.innerHTML += this.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/roomDropdown.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id);
+}
+
+function selectRoom(element) {
+  let div = element.parentElement.parentElement.parentElement;
+  div.querySelector('#room').innerHTML = element.innerHTML;
+  input = document.getElementById('roomInput');
+  input.value = element.id;
+}

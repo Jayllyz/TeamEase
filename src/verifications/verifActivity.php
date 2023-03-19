@@ -303,6 +303,12 @@ if ($online && $inPerson) {
   exit();
 }
 
+if (!isset($_POST['room'])) {
+  $message = 'Aucune salle n\'a été selectionnée';
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
+  exit();
+}
+
 if (!isset($_POST['day'])) {
   $message = 'Aucun jour de disponibilité n\'a été selectionné';
   header('location:../addActivityPage.php?message=' . $message . '&type=danger');
@@ -310,8 +316,8 @@ if (!isset($_POST['day'])) {
 }
 
 $request = $db->prepare(
-  'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee, status) 
-  VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee, :status)'
+  'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee, status, id_room) 
+  VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee, :status, :id_room)'
 );
 
 $result = $request->execute([
@@ -321,6 +327,7 @@ $result = $request->execute([
   'priceAttendee' => $_POST['price'],
   'maxAttendee' => $_POST['maxAttendee'],
   'status' => 1,
+  'id_room' => $_POST['room'],
 ]);
 
 $getId = $db->prepare('SELECT id FROM ACTIVITY ORDER BY id DESC LIMIT 1');

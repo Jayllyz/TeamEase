@@ -91,7 +91,9 @@ include 'includes/head.php';
                     <div class="col pt-4" style="border-left:solid #59A859">
                         <p class="fs-3" style="margin:0">Réserver</p>
                         <?php if (isset($_SESSION['email'])) {
-                          echo '<a href="" class="btn btn-primary">Bouton pour aller sur la page de reservation</a>
+                          echo '<a href="reservation.php?id=' .
+                            $id .
+                            '" class="btn btn-primary">Bouton pour aller sur la page de reservation</a>
                             ';
                         } else {
                           echo '<a href="login.php" class="btn btn-primary">Se connecter</a>
