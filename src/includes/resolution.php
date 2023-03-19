@@ -1,5 +1,12 @@
 <?php
-for ($i = 0; $i < 4; $i++) {
+$count = 0;
+foreach ($_FILES as $file) {
+  if ($file['name'] != '') {
+    $count += 1;
+  }
+}
+
+for ($i = 0; $i < $count; $i++) {
   if ($i == 0) {
     $image = $_FILES['mainImage']['name'];
     $array = explode('.', $image);

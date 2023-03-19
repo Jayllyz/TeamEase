@@ -102,7 +102,7 @@ include 'includes/head.php';
 
         <hr class="mb-3">
         <h2>Catégories
-        <?php if ($_SESSION['rights'] == 2) {
+        <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
           echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-category">Modifier</button>';
         } ?>
         </h2>
@@ -157,7 +157,7 @@ include 'includes/head.php';
 
     <div class="container">
         <h1 class="mb-5">Description de l'activité
-            <?php if ($_SESSION['rights'] == 2) {
+            <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
               echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-description">Modifier</button>';
             } ?>
         </h1>
@@ -166,7 +166,7 @@ include 'includes/head.php';
         <hr class="my-5" size="5">
 
         <h2 class="text-center">Details de l'activité
-        <?php if ($_SESSION['rights'] == 2) {
+        <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
           echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-details">Modifier</button>';
         } ?>
         </h2>
