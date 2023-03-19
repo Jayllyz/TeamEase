@@ -19,25 +19,31 @@ include 'includes/head.php';
         </div>
         <?php
         $query = $db->prepare(
-          'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id'
+          'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id'
         );
         $query->execute([
           'id' => htmlspecialchars($_GET['id']),
         ]);
-        $activity = $query->fetch(PDO::FETCH_ASSOC);
+        $activities = $query->fetchAll(PDO::FETCH_ASSOC);
         ?>
         <form action="">
             <div class="container col-md-4" id="form">
                 <label for="attendee" class="form-label"><h4>Nombre de participants</h4></label>
-                <input type="number" class="form-control" min="1" max="<?= $activity[
+                <input type="number" class="form-control" min="1" max="<?= $activities[0][
                   'maxAttendee'
                 ] ?>" id="attendee" name="attendee" value="<?= isset($_COOKIE['attendee'])
   ? $_COOKIE['attendee']
   : '' ?>" required>
                 <label for="date" class="form-label"><h4>Date de votre réservation</h4></label>
+                <?php foreach ($activities as $activity) { ?>
+                    <div style="display:none" class="<?= $activity['day'] ?>">
+                    </div>
+                <?php } ?>
                 <input type="text" class="form-control" id="date" onchange="selectedDateReservation(this)" required>
-                <div id="container-slot">
+                <div id="slot" style="display:none">
                     <label for="time" class="form-label"><h4>Heure de votre créneau</h4></label>
+                    <select class="form-control" id="container-slot">
+                    </select>
                 </div>
                 <div class="d-flex justify-content-center mt-3">
                     <input type="submit" class="btn btn-success">

@@ -902,14 +902,112 @@ function selectRoom(element) {
 }
 
 function selectedDateReservation(element) {
-  console.log(element.value);
+  let dateString = element.value;
+  const dateParts = dateString.split('-');
+  const year = parseInt(dateParts[2], 10);
+  const month = parseInt(dateParts[1], 10) - 1;
+  const day = parseInt(dateParts[0], 10);
+  const date = new Date(year, month, day);
+  const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const dayOfWeek = daysOfWeek[date.getDay()];
+  dateString = dateString.replaceAll('-', '/');
+  idActivity = window.location.search;
+  idActivity = idActivity.split('=')[1];
+  idActivity = idActivity.split('#')[0];
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
+      document.getElementById('container-slot').innerHTML = this.responseText;
+      document.getElementById('slot').style.display = 'block';
+    }
+  };
+  xhr.open('POST', 'ajaxReq/activitySlot.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('day=' + dayOfWeek + '&id=' + idActivity + '&date=' + dateString);
 }
 
-// le sheitan
+jQuery(function ($) {
+  $.datepicker.regional['fr'] = {
+    closeText: 'Fermer',
+    prevText: '&#x3c;Préc',
+    nextText: 'Suiv&#x3e;',
+    currentText: "Aujourd'hui",
+    monthNames: [
+      'Janvier',
+      'Fevrier',
+      'Mars',
+      'Avril',
+      'Mai',
+      'Juin',
+      'Juillet',
+      'Aout',
+      'Septembre',
+      'Octobre',
+      'Novembre',
+      'Decembre',
+    ],
+    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+    dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+    dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+    weekHeader: 'Sm',
+    dateFormat: 'dd-mm-yy',
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: '',
+    minDate: 0,
+    maxDate: '+12M +0D',
+    numberOfMonths: 1,
+    showButtonPanel: true,
+  };
+  $.datepicker.setDefaults($.datepicker.regional['fr']);
+});
+
+function disabledDays(date) {
+  let dayOfWeek = date.getDay();
+  let day = [];
+  let div = document.getElementById('date').parentElement;
+
+  if (div.querySelector('.sunday') != null) {
+    day.push(true);
+  } else {
+    day.push(false);
+  }
+  if (div.querySelector('.monday') != null) {
+    day.push(true);
+  } else {
+    day.push(false);
+  }
+  if (div.querySelector('.tuesday') != null) {
+    day.push(true);
+  } else {
+    day.push(false);
+  }
+  if (div.querySelector('.wednesday') != null) {
+    day.push(true);
+  } else {
+    day.push(false);
+  }
+  if (div.querySelector('.thursday') != null) {
+    day.push(true);
+  } else {
+    day.push(false);
+  }
+  if (div.querySelector('.friday') != null) {
+    day.push(true);
+  } else {
+    day.push(false);
+  }
+  if (div.querySelector('.saturday') != null) {
+    day.push(true);
+  } else {
+    day.push(false);
+  }
+  return [day[dayOfWeek]];
+}
 
 $('#date').datepicker({
-  beforeShowDay: function (date) {
-    var dayOfWeek = date.getDay();
-    return [dayOfWeek !== 0 && dayOfWeek !== 1 && dayOfWeek !== 4 && dayOfWeek !== 6];
-  },
+  beforeShowDay: disabledDays,
 });

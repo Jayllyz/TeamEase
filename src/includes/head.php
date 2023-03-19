@@ -9,7 +9,6 @@
   <?php if ($title == 'Inscription') {
     echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
   } ?>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/i18n/datepicker.fr.min.js" integrity="sha512-ZI77WJhrvOxBocHwtjKtMY8e3WDMOvQj6Uc9d9XphZU0Q6iISV7Yj1F+0V7Jdu8aUuB7lT9iajpsZ7REhAVTzg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 </head>
