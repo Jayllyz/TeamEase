@@ -69,24 +69,42 @@ include 'includes/head.php';
 
             <div class="my-3">
                 <label for="name" class="form-label"><h4>Nom de l'activité</h4></label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Nom de l'activité" required>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Nom de l'activité" value="<?= isset(
+                  $_COOKIE['nameActivity']
+                )
+                  ? $_COOKIE['nameActivity']
+                  : '' ?>" required>
             </div>
             <div class="form-group mb-4 my-3">
                 <label for="description"><h4>Description de l'activité</h4></label>
-                <textarea class="form-control" id="description" name="description" rows="10" required></textarea>
+                <textarea class="form-control" id="description" name="description" rows="10" required><?php if (
+                  isset($_COOKIE['descriptionActivity'])
+                ) {
+                  echo $_COOKIE['descriptionActivity'];
+                } ?></textarea>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="duration"><h4>Durée de l'activité (en heure)</h4></label>
-                    <input type="number" name="duration" class="form-control" required>
+                    <input type="number" name="duration" class="form-control" value="<?= isset(
+                      $_COOKIE['durationActivity']
+                    )
+                      ? $_COOKIE['durationActivity']
+                      : '' ?>" required>
                 </div>
                 <div class="col">
                     <label for="price"><h4>Prix par personne (en €)</h4></label>
-                    <input type="number" name="price" class="form-control" required>
+                    <input type="number" name="price" class="form-control"value="<?= isset($_COOKIE['priceActivity'])
+                      ? $_COOKIE['priceActivity']
+                      : '' ?>" required>
                 </div>
                 <div class="col">
                     <label for="maxAttendee"><h4>Nombre maximum de participants</h4></label>
-                    <input type="number" name="maxAttendee" class="form-control" required>
+                    <input type="number" name="maxAttendee" class="form-control" value="<?= isset(
+                      $_COOKIE['maxAttendeeActivity']
+                    )
+                      ? $_COOKIE['maxAttendeeActivity']
+                      : '' ?>" required>
                 </div>
             </div>
             <br>

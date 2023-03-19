@@ -4,7 +4,7 @@ include '../includes/db.php';
 ?>
 <?php
 if (isset($_GET['page'])) {
-  $currentPage = $_GET['page'];
+  $currentPage = htmlspecialchars($_GET['page']);
 } else {
   $currentPage = 1;
 }
