@@ -67,7 +67,6 @@ include 'includes/head.php';
             }
             ?>
 
-<?php var_dump($_COOKIE); ?>
             <div class="my-3">
                 <label for="name" class="form-label"><h4>Nom de l'activité</h4></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Nom de l'activité" value="<?= isset(
@@ -78,8 +77,10 @@ include 'includes/head.php';
             </div>
             <div class="form-group mb-4 my-3">
                 <label for="description"><h4>Description de l'activité</h4></label>
-                <textarea class="form-control" id="description" name="description" rows="10" required><?php if(isset($_COOKIE['descriptionActivity'])){
-                echo $_COOKIE['descriptionActivity'];
+                <textarea class="form-control" id="description" name="description" rows="10" required><?php if (
+                  isset($_COOKIE['descriptionActivity'])
+                ) {
+                  echo $_COOKIE['descriptionActivity'];
                 } ?></textarea>
             </div>
             <div class="row">
