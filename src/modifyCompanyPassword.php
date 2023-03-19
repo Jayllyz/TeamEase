@@ -3,9 +3,6 @@ include 'includes/db.php';
 $siret = htmlspecialchars($_GET['siret']);
 $rights = htmlspecialchars($_GET['rights']);
 
-var_dump($siret);
-var_dump($rights);
-
 
 if (isset($siret)){ ?>
 
@@ -34,14 +31,14 @@ if (isset($siret)){ ?>
                         <input type="checkbox" class="form-check-input" onClick="viewPassword()">
                         <br>
                         <label class="form-label mt-3"><strong>Nouveau Mot de Passe</strong></label>
-                        <input type="password" class="form-control" name="newpassword" id="viewPasswordProvider" required>
+                        <input type="password" class="form-control" name="newpassword" id="PasswordCompany" required>
                         <label class="form-label">Voir mon mot de passe</label>
-                        <input type="checkbox" class="form-check-input" onClick="viewPasswordProvider()">
+                        <input type="checkbox" class="form-check-input" onClick="viewPasswordCompany()">
                         <br>
                         <label class="form-label mt-3"><strong>Confirmation Mot de Passe</strong></label>
-                        <input type="password" class="form-control" name="newpasswordverif" id="viewVerifPasswordProvider" required>
+                        <input type="password" class="form-control" name="newpassword" id="VerifPasswordCompany" required>
                         <label class="form-label">Voir mon mot de passe</label>
-                        <input type="checkbox" class="form-check-input" onClick="viewVerifPasswordProvider()">
+                        <input type="checkbox" class="form-check-input" onClick="viewVerifPasswordCompany()">
                         <br>
                         <button type="submit" name="submit" class="btn mt-3 btn-submit">Confirmer</button>
                     </div>
