@@ -166,19 +166,16 @@ if (isset($_GET['check'])) {
                     $query = $db->query('SELECT id, lastName, firstName, email, rights, id_occupation FROM PROVIDER');
                     $result = $query->fetchAll(PDO::FETCH_ASSOC);
                     if ($result != null) {
-
-                      $id_occupation = $result[0]['id_occupation'];
-
-                      $req = $db->prepare('SELECT name, salary FROM OCCUPATION WHERE id = :id_occupation');
-                      $req->execute([
-                        'id_occupation' => $id_occupation,
-                      ]);
-                      $occupation = $req->fetchAll(PDO::FETCH_ASSOC);
-
-                      $result[0]['id_occupation'] = $occupation[0]['name'];
-                      $result[0]['salary'] = $occupation[0]['salary'];
-
                       foreach ($result as $select) { ?>
+                        <?php
+                        $id_occupation = $select['id_occupation'];
+                        $req = $db->prepare('SELECT name, salary FROM OCCUPATION WHERE id = :id_occupation');
+                        $req->execute(['id_occupation' => $id_occupation]);
+                        $occupation = $req->fetchAll(PDO::FETCH_ASSOC);
+                        $select['id_occupation'] = $occupation[0]['name'];
+                        $select['salary'] = $occupation[0]['salary'];
+                        ?>
+
                             <tbody id="<?= $select['id'] ?>">
                                 <tr>
                                     <td><?= $select['id'] ?></td>
@@ -186,7 +183,7 @@ if (isset($_GET['check'])) {
                                     <td><?= $select['firstName'] ?></td>
                                     <td><?= $select['email'] ?></td>
                                     <td><?= $select['id_occupation'] ?></td>
-                                    <td><?= $select['salary'] ?></td>
+                                    <td><?= $select['salary'] . '€/h' ?></td>
                                     <td><?php
                                     echo $select['rights'];
                                     echo '<br>';
@@ -255,8 +252,7 @@ if (isset($_GET['check'])) {
                                     </td>
                                 </tr>
                             </tbody>
-                        <?php }
-                      ?>
+                        <?php } ?>
                     <?php
                     }
                     ?>
