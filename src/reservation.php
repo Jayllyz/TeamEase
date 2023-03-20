@@ -1,4 +1,8 @@
 <?php session_start();
+if (!isset($_SESSION['siret'])) {
+  header('Location: ../index.php');
+  exit();
+}
 include 'includes/db.php';
 ?>
 <!DOCTYPE html>
@@ -31,7 +35,7 @@ include 'includes/head.php';
         $idActivity = htmlspecialchars($_GET['id']);
         ?>
         <form action="verifications/reservation.php?id=<?= $idActivity ?>"  onsubmit="return validateForm(this.name)" method="POST">
-            <div class="container col-md-4" id="form">
+            <div class="container col-md-3" id="form">
                 <label for="attendee" class="form-label"><h4>Nombre de participants</h4></label>
                 <input type="number" class="form-control" min="1" max="<?= $activities[0][
                   'maxAttendee'

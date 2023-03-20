@@ -45,10 +45,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php">Accueil</a>
+                        <a class="nav-link active" aria-current="page" href="../index.php">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="catalog.php">Catalogue d'activités</a>
+                        <a class="nav-link" href="../catalog.php">Catalogue d'activités</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -58,7 +58,7 @@
                             <?php
                             $query = $db->query('SELECT name FROM CATEGORY');
                             while ($category = $query->fetch()) {
-                              echo '<li><a class="dropdown-item" href="catalog.php?category=' .
+                              echo '<li><a class="dropdown-item" href="../catalog.php?category=' .
                                 $category['name'] .
                                 '">' .
                                 $category['name'] .
@@ -71,7 +71,7 @@
                       if ($_SESSION['rights'] == 2) {
                         echo '
                             <li class="nav-item">
-                                <a class="nav-link" href="location.php">Gestion des locaux</a>
+                                <a class="nav-link" href="../location.php">Gestion des locaux</a>
                             </li>
                             '; ?>
                             <li class="nav-item dropdown">
@@ -82,7 +82,7 @@
                                     <?php
                                     $query = $db->query('SELECT id, name FROM LOCATION');
                                     while ($location = $query->fetch()) {
-                                      echo '<li><a class="dropdown-item" href="material.php?location=' .
+                                      echo '<li><a class="dropdown-item" href="../material.php?location=' .
                                         $location['id'] .
                                         '">' .
                                         $location['name'] .
@@ -90,7 +90,7 @@
                                     }
                                     ?>
                                     <hr>
-                                    <li><a class="dropdown-item" href="material.php?location=stock">Stock de matériel</a></li>
+                                    <li><a class="dropdown-item" href="../material.php?location=stock">Stock de matériel</a></li>
                                 </ul>
                             </li> 
                      <?php
@@ -107,7 +107,7 @@
                       }
                     } ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="aPropos.php">A propos de nous</a>
+                        <a class="nav-link" href="../aPropos.php">A propos de nous</a>
                     </li>
                     <li class="nav-item">
                         <?php if (isset($_SESSION['siret']) && $_SESSION['rights'] == 2) { ?>
