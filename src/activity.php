@@ -33,7 +33,9 @@ include 'includes/head.php';
   </div>
   <main>
     <div class="container mb-5 text-center">
+      <div class="container col-md-6">
         <?php include 'includes/msg.php'; ?>
+        </div>
         <h1><b><?php echo $activity['name']; ?></b></h1>
         <div class="row mt-5 text-white">
             <div class="col-8" style="border-right:solid #59A859">
@@ -91,7 +93,9 @@ include 'includes/head.php';
                     <div class="col pt-4" style="border-left:solid #59A859">
                         <p class="fs-3" style="margin:0">Réserver</p>
                         <?php if (isset($_SESSION['email'])) {
-                          echo '<a href="" class="btn btn-primary">Bouton pour aller sur la page de reservation</a>
+                          echo '<a href="reservation.php?id=' .
+                            $id .
+                            '" class="btn btn-primary">Bouton pour aller sur la page de reservation</a>
                             ';
                         } else {
                           echo '<a href="login.php" class="btn btn-primary">Se connecter</a>
@@ -131,7 +135,6 @@ include 'includes/head.php';
           $image3 != 'images/activities/placeholder.jpg'
         ) {
 
-          //count the number of images to display
           $count = 0;
           if ($image1 != 'images/activities/placeholder.jpg') {
             $count++;
@@ -211,7 +214,7 @@ include 'includes/head.php';
             <div class="col-4 text-center" style="border-right:solid #C0C1B0">
                 <h4>Durée de l'activité</h4>
                 <div class="text-center">
-                    <p class="fs-5"><?php echo $activity['duration']; ?>  h</p>
+                    <p class="fs-5"><?php echo $activity['duration']; ?>  min</p>
                 </div>
             </div>
             <div class="col-4 text-center" style="border-right:solid #C0C1B0">
@@ -236,7 +239,7 @@ include 'includes/head.php';
         </div>
         <hr style="margin:0" size="5">
         <div class="row">
-            <div class="col-6" style="border-right:solid #C0C1B0">
+            <div class="col-4" style="border-right:solid #C0C1B0">
             <h2 class="text-center mb-3">Prestataires</h2>
                 <ul class="text-center no-dot" style="padding:0">
                     <?php
@@ -257,8 +260,8 @@ include 'includes/head.php';
                     ?>
                 </ul>
             </div>
-            <div class="col-6">
-            <h2 class="text-center mb-3">Matériel fourni</h2>
+            <div class="col-4" style="border-right:solid #C0C1B0">
+              <h2 class="text-center mb-3">Matériel fourni</h2>
                 <ul class="text-center no-dot" style="padding:0">
                     <?php
                     $query = $db->prepare(
@@ -280,6 +283,30 @@ include 'includes/head.php';
                         echo '<li class="fs-3">' . $material['quantity'] . ' ' . $material['type'] . '</li>';
                       }
                     }
+                    ?>
+                </ul>
+            </div>
+            <div class="col-4">
+              <h2 class="text-center mb-3">Lieu de l'activité</h2>
+                <ul class="text-center no-dot" style="padding:0">
+                    <?php
+                    $query = $db->prepare(
+                      'SELECT LOCATION.id AS locationId, ROOM.id AS roomId, ROOM.name AS roomName, LOCATION.address, LOCATION.name AS locationName FROM ROOM INNER JOIN LOCATION ON ROOM.id_location = LOCATION.id WHERE ROOM.id IN (SELECT id_room FROM ACTIVITY WHERE id=:id)'
+                    );
+                    $query->execute([
+                      ':id' => $id,
+                    ]);
+                    $location = $query->fetch(PDO::FETCH_ASSOC);
+                    ?>
+                    <p class="text-center fs-3 mb-0"><?= $location['locationName'] ?></p>
+                    <p class="text-center fs-5 mb-0"><?= $location['address'] ?></p>
+                    <?php
+                    if ($location['roomName'] != 'none') { ?>
+                    <p class="text-center fs-3 mb-0"><?= $location['roomName'] ?></p>
+                    <?php }
+                    $locationId = $location['locationId'];
+                    $roomName = $location['roomName'];
+                    $roomId = $location['roomId'];
                     ?>
                 </ul>
             </div>
@@ -409,9 +436,9 @@ include 'includes/head.php';
                                     <button type="button" class="btn btn-primary" onclick="assignProvider()">Ajouter un prestataire</button>
                                 </div>
                             </div>
-                            <div class="mb-4">
+                              <div class="mb-4">
                                 <label for="material" class="form-label"><h4>Matériels</h4></label>
-                                <div id="material-container" class="mb-4">
+                                <div id="material-container">
                                     <?php
                                     $query = $db->query(
                                       'SELECT id, type FROM MATERIAL WHERE id IN (SELECT id_material FROM MATERIAL_ACTIVITY WHERE id_activity = ' .
@@ -467,9 +494,49 @@ include 'includes/head.php';
                                     ?>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-primary" onclick="assignMaterial()">Ajouter du matériel</button>
+                                  <button type="button" class="btn btn-primary" onclick="assignMaterial()">Ajouter du matériel</button>
                                 </div>
                             </div>
+                            <div class="mb-4">
+                              <label for="room" class="form-label"><h4>Salle</h4></label>
+                                  <div>
+                                      <?php
+                                      $query = $db->query('SELECT name, id FROM LOCATION');
+                                      $locations = $query->fetchAll(PDO::FETCH_ASSOC);
+                                      ?>
+                                      <button type="button" class="btn btn-secondary dropdown-toggle mx-2" id="" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <?= $location['locationName'] ?>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                          <?php foreach ($locations as $location) {
+                                            echo '<li><a class="dropdown-item" onclick="selectLocation(this)" id="' .
+                                              $location['id'] .
+                                              '">' .
+                                              $location['name'] .
+                                              '</a></li>';
+                                          } ?>
+                                      </ul>
+                                      <?php
+                                      $query = $db->query(
+                                        'SELECT id, name FROM ROOM WHERE id_location = ' . $locationId
+                                      );
+                                      $rooms = $query->fetchAll(PDO::FETCH_ASSOC);
+                                      ?>
+                                      <button type="button" class="btn btn-secondary dropdown-toggle mx-2" id="room" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <?= $roomName ?>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                          <?php foreach ($rooms as $room) {
+                                            echo '<li><a class="dropdown-item" onclick="selectRoom(this)" id="' .
+                                              $room['id'] .
+                                              '">' .
+                                              $room['name'] .
+                                              '</a></li>';
+                                          } ?>
+                                      </ul>
+                                  </div>
+                                  <input id="roomInput" name="room" type="number" value="<?= $roomId ?>" style="display:none">
+                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

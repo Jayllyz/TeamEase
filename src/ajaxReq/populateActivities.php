@@ -126,7 +126,7 @@ if ($countId == 0) {
     echo '<div class="row"></p>
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
       $activity['duration'] .
-      'h | Prix par participants : ' .
+      ' min | Prix par participants : ' .
       $activity['priceAttendee'] .
       '<i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
                | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
@@ -220,7 +220,7 @@ if ($countId == 0) {
     echo '<div class="row"></p>
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
       $activity['duration'] .
-      'h | Prix par participants : ' .
+      ' min | Prix par participants : ' .
       $activity['priceAttendee'] .
       '<i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
                | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
