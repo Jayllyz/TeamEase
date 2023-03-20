@@ -21,7 +21,7 @@
                   isset($_SESSION['siret']) ||
                   isset($_SESSION['id'])
                 ) {
-                  echo 'href="#">Mes reservations</a>';
+                  echo 'href="../clients/reservations.php">Mes reservations</a>';
                 } else {
                   echo 'href="login.php">Se connecter</a>';
                 } ?> <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (
