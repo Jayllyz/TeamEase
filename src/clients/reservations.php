@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['siret'])) {
+  header('Location: ../index.php');
+  exit();
+}
 include '../includes/db.php';
 ?>
 <!DOCTYPE html>
