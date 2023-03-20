@@ -212,14 +212,20 @@ if (isset($_GET['update'])) {
       header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
       exit();
     }
+    if (!isset($_POST['room'])) {
+      $message = 'Veuillez sélectionner une salle';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
     $request = $db->prepare(
-      'UPDATE ACTIVITY SET duration = :duration, priceAttendee = :priceAttendee, maxAttendee = :maxAttendee WHERE id = :id'
+      'UPDATE ACTIVITY SET duration = :duration, priceAttendee = :priceAttendee, maxAttendee = :maxAttendee, room_id = :id_room WHERE id = :id'
     );
     $result = $request->execute([
       ':duration' => $_POST['duration'],
       ':priceAttendee' => $_POST['priceAttendee'],
       ':maxAttendee' => $_POST['maxAttendee'],
       ':id' => $_GET['id'],
+      ':id_room' => $_POST['room'],
     ]);
     if ($result && $result2 && $result3) {
       $message = 'Les détails ont bien été modifiés';

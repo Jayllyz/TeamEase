@@ -10,19 +10,13 @@ $date = date('Y-m-d', strtotime($date));
 $select = htmlspecialchars($_POST['slot']);
 $siret = $_SESSION['siret'];
 $idActivity = htmlspecialchars($_GET['id']);
-
-$req = $db->prepare('SELECT id_room FROM ACTIVITY WHERE id = :id');
-$req->execute([
-  'id' => $idActivity,
-]);
 $idRoom = $req->fetch(PDO::FETCH_ASSOC);
 
 $req = $db->prepare(
-  'SELECT * FROM RESERVATION WHERE id_activity = :id_activity AND id_room = :id_room AND date = :date AND time = :time AND siret = :siret'
+  'SELECT * FROM RESERVATION WHERE id_activity = :id_activity AND date = :date AND time = :time AND siret = :siret'
 );
 $req->execute([
   'id_activity' => $idActivity,
-  'id_room' => $idRoom['id_room'],
   'siret' => $siret,
   'date' => $date,
   'time' => $select,
@@ -35,11 +29,10 @@ if ($response) {
 }
 
 $req = $db->prepare(
-  'INSERT INTO RESERVATION (id_activity, id_room,siret,  date, time, attendee) VALUES (:id_activity, :id_room, :siret, :date, :time, :attendee)'
+  'INSERT INTO RESERVATION (id_activity, siret, date, time, attendee) VALUES (:id_activity, :siret, :date, :time, :attendee)'
 );
 $result = $req->execute([
   'id_activity' => $idActivity,
-  'id_room' => $idRoom['id_room'],
   'siret' => $siret,
   'date' => $date,
   'time' => $select,

@@ -134,7 +134,6 @@ CREATE TABLE RESERVATION
   attendee INT NOT NULL,
   id_activity INT NOT NULL,
   siret CHAR(14) NOT NULL,
-  id_room INT NOT NULL,
   date DATE NOT NULL,
   time TIME NOT NULL,
   PRIMARY KEY (id),
