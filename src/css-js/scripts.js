@@ -903,6 +903,8 @@ function selectRoom(element) {
 
 function selectedDateReservation(element) {
   let dateString = element.value;
+  dateString = dateString.replaceAll('/', '-');
+  dateString = dateString.split('-').reverse().join('-');
   const dateParts = dateString.split('-');
   const year = parseInt(dateParts[2], 10);
   const month = parseInt(dateParts[1], 10) - 1;
@@ -924,7 +926,16 @@ function selectedDateReservation(element) {
   };
   xhr.open('POST', 'ajaxReq/activitySlot.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('day=' + dayOfWeek + '&id=' + idActivity + '&date=' + dateString);
+  xhr.send(
+    'day=' +
+      dayOfWeek +
+      '&id=' +
+      idActivity +
+      '&date=' +
+      dateString +
+      '&attendee=' +
+      document.getElementById('attendee').value
+  );
 }
 
 jQuery(function ($) {

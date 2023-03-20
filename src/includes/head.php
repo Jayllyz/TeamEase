@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="<?= $linkCss ?>">
     <link rel="shortcut icon" type="image/png" href="<?= $linkLogo ?>" />
   <title><?= $title ?></title>
-  <?php if ($title == 'Inscription') {
+  <?php if ($title == 'Inscription' || $title == 'Reservation') {
     echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
   } ?>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

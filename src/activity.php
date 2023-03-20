@@ -33,7 +33,9 @@ include 'includes/head.php';
   </div>
   <main>
     <div class="container mb-5 text-center">
+      <div class="container col-md-6">
         <?php include 'includes/msg.php'; ?>
+        </div>
         <h1><b><?php echo $activity['name']; ?></b></h1>
         <div class="row mt-5 text-white">
             <div class="col-8" style="border-right:solid #59A859">
@@ -133,7 +135,6 @@ include 'includes/head.php';
           $image3 != 'images/activities/placeholder.jpg'
         ) {
 
-          //count the number of images to display
           $count = 0;
           if ($image1 != 'images/activities/placeholder.jpg') {
             $count++;
