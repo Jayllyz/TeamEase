@@ -15,7 +15,9 @@ include '../includes/head.php';
 <body>
     <?php include '../includes/header.php'; ?>
     <?php
-    $req = $db->prepare('SELECT lastName, firstName, email,rights, id_occupation FROM PROVIDER WHERE id = :id');
+    $req = $db->prepare(
+      'SELECT lastName, firstName, email,rights, id_occupation, confirm_signup FROM PROVIDER WHERE id = :id'
+    );
     $req->execute([
       'id' => $id,
     ]);
@@ -51,6 +53,7 @@ include '../includes/head.php';
                     <th>Métier</th>
                     <th>Salaire</th>
                     <th>Email</th>
+                    <th>Status du compte</th>
                     <th>Droits</th>
                 </tr>
                 <tr>
@@ -59,7 +62,8 @@ include '../includes/head.php';
                     <td><?= $select['id_occupation'] ?></td>
                     <td><?= $select['salary'] . '€/h' ?></td>
                     <td><?= $select['email'] ?></td>
-                    <td><?= $select['rights'] ?></td>
+                    <td><?= $select['confirm_signup'] ? 'Compte confirmé' : 'Compte non confirmé' ?></td>
+                    <td><?= $select['rights'] ? 'Prestataire (1)' : 'Prestataire banni (-1)' ?></td>
                 </tr>
             </table>
         </div>
