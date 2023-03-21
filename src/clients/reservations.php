@@ -150,7 +150,9 @@ $siret = $_SESSION['siret'];
                                     </script>
                                     <input type="hidden" name="price" value="<?= $price * 100 ?>">
                                 </form>
-                            <a href="#" class="btn-update btn ms-2 me-2">Télécharger un devis</a>
+                            <a href="../includes/estimate.php?id=<?= $select[
+                              'id'
+                            ] ?>" class="btn-update btn ms-2 me-2">Télécharger un devis</a>
                                 <br>
                             <a href="cancel.php?id=<?= $select['id'] ?>" class="btn-ban btn ms-2 me-2">Annuler</a>
                             <?php } else {echo '<svg width="46" height="46" fill="none" stroke="#0c9234" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
