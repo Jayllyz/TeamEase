@@ -63,6 +63,7 @@ if ($countId == 0) {
           </div>';
 } elseif ($countId - ($currentPage - 1) * 10 < 10) {
   for ($i = ($currentPage - 1) * 10; $i < $countId; $i++) {
+
     $query = $db->prepare(
       'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id =:id',
     );
@@ -92,9 +93,9 @@ if ($countId == 0) {
       $activity['name'] .
       '"></a>
             </div>
-            <div class="card-body col-8 row">
+            <div class="card-body bg-dark col-8 p-0 row">
               <div class="col-11 card-title">
-              <h4><a href="activity.php?id=' .
+              <h4 class="mt-2"><a href="activity.php?id=' .
       $id[$i] .
       '" class="text-light">' .
       $activity['name'] .
@@ -134,7 +135,7 @@ if ($countId == 0) {
                 <p>' .
       $activity['SUBSTRING(description, 1, 450)'] .
       '</p>
-              <p class="mb-0">';
+      <div class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
       $query = $db->prepare(
         'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)',
@@ -147,7 +148,7 @@ if ($countId == 0) {
         $categoryName[$j]['name'] .
         '</a>';
     }
-    echo '<div class="row"></p>
+    echo '</div><div class="row">
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
       $activity['duration'] .
       ' min | Prix par participants : ' .
@@ -156,13 +157,42 @@ if ($countId == 0) {
                | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
       $activity['maxAttendee'] .
       '</p></div>';
-    echo '
+    ?> <div class="row p-0 m-0"> <?php
+ $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+ $query->execute([':id' => $id]);
+ $day = $query->fetchAll(PDO::FETCH_ASSOC);
+ $j = 0;
+ $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+ $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+ for ($i = 0; $i < 7; $i++) {
+   if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
+     echo '<div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+     $j++;
+   } else {
+     echo '<div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+   }
+ }
+ ?></div>
+      <?php echo '
                 </div>
                 </div>
               </div>';
   }
 } else {
   for ($i = ($currentPage - 1) * 10; $i < 10 * $currentPage; $i++) {
+
     $query = $db->prepare(
       'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id = :id',
     );
@@ -245,7 +275,7 @@ if ($countId == 0) {
         $categoryName[$j]['name'] .
         '</a>';
     }
-    echo '<div class="row"></p>
+    echo '</p><div class="row">
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
       $activity['duration'] .
       ' min | Prix par participants : ' .
@@ -254,7 +284,35 @@ if ($countId == 0) {
                | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
       $activity['maxAttendee'] .
       '</p></div>';
-    echo '
+    ?> <div class="row p-0 m-0"> <?php
+ $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+ $query->execute([':id' => $id]);
+ $day = $query->fetchAll(PDO::FETCH_ASSOC);
+ $j = 0;
+ $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+ $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+ for ($i = 0; $i < 7; $i++) {
+   if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
+     echo '<div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+     $j++;
+   } else {
+     echo '<div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+   }
+ }
+ ?></div>
+      <?php echo '
                 </div>
                 </div>
               </div>';
