@@ -200,7 +200,9 @@ include 'includes/head.php';
               echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-description">Modifier</button>';
             } ?>
         </h1>
-        <p class="fs-5" style="margin-left: 30px; margin-right: 30px"><?php echo $activity['description']; ?></p>
+        <p class="fs-5" style="margin-left: 30px; margin-right: 30px; white-space: pre-line"><?php echo $activity[
+          'description'
+        ]; ?></p>
 
         <hr class="my-5" size="5">
 
@@ -310,6 +312,37 @@ include 'includes/head.php';
                     ?>
                 </ul>
             </div>
+            <hr size="5">
+            <h3>Jours d'ouverture</h3>
+              <?php
+              $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+              $query->execute([':id' => $id]);
+              $day = $query->fetchAll(PDO::FETCH_ASSOC);
+              $j = 0;
+              $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+              $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+              for ($i = 0; $i < 7; $i++) {
+                if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
+                  echo '<div class="card bg-primary text-white col mx-2 mb-2">
+                          <div class="card-body">
+                            ' .
+                    $frenchDay[$i] .
+                    '
+                          </div>
+                        </div>';
+                  $j++;
+                } else {
+                  echo '<div class="card bg-secondary text-white col mx-2 mb-2">
+                          <div class="card-body">
+                            ' .
+                    $frenchDay[$i] .
+                    '
+                          </div>
+                        </div>';
+                }
+              }
+              ?>
+            <hr size="5">
         </div>
     </div>
 
