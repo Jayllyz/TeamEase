@@ -36,11 +36,15 @@ include 'includes/head.php';
         <form action="verifications/reservation.php?id=<?= $idActivity ?>&price=<?= $price ?>"  onsubmit="return validateForm(this.name)" method="POST">
             <div class="container col-md-3" id="form">
                 <label for="attendee" class="form-label"><h4>Nombre de participants</h4></label>
+                <div class="input-group">
                 <input type="number" class="form-control" min="1" max="<?= $activities[0][
                   'maxAttendee'
                 ] ?>" id="attendee" name="attendee" value="<?= isset($_COOKIE['attendee'])
   ? $_COOKIE['attendee']
   : '' ?>" onchange="selectedDateReservation(date)" required>
+    <span class="input-group-text" id="priceDisplay">0.00</span>
+    <span class="input-group-text">€</span>
+  </div>
                 <div id="priceHelp" class="form-text"><?= $price . ' € par personne'?></div>
                 <label for="date" class="form-label"><h4>Date de votre réservation</h4></label>
                 <?php foreach ($activities as $activity) { ?>
@@ -53,7 +57,7 @@ include 'includes/head.php';
                     <select class="form-control" name="slot" id="container-slot">
                     </select>
                 </div>
-                <input type="hidden" name="price" value="<?= $price ?>">
+                <input type="hidden" name="price" id="price" value="<?= $price ?>">
 
                 <div class="g-recaptcha mb-4 mt-4" id="captcha" data-sitekey="<?= $siteKey ?>" data-callback="validCaptcha"></div>
 
