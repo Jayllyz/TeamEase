@@ -137,7 +137,7 @@ if ($countId == 0) {
               <p class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
       $query = $db->prepare(
-        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)'
+        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)',
       );
       $query->execute([':id_activity' => $id[$i]]);
       $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -235,7 +235,7 @@ if ($countId == 0) {
               <p class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
       $query = $db->prepare(
-        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)'
+        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)',
       );
       $query->execute([':id_activity' => $id[$i]]);
       $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);
