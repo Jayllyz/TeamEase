@@ -4,5 +4,3 @@ data
 logs
 src/images/activities
 src/vendor
-src/composer.json
-src/composer.lock

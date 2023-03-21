@@ -1,5 +1,9 @@
 FROM php:8.0.0-alpine
 
+COPY composer.json /home/php/src/composer.json
+
+COPY composer.lock /home/php/src/composer.lock
+
 WORKDIR /home/php/src
 
 RUN apk add --update linux-headers
@@ -18,4 +22,4 @@ RUN apk add --no-cache libjpeg-turbo-dev libpng-dev && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-run composer require spipu/html2pdf && composer require stripe/stripe-php && composer require phpmailer/phpmailer
+RUN composer install

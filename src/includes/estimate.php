@@ -1,72 +1,92 @@
 <?php
+session_start();
+include 'db.php';
+
+$idClient = $_SESSION['siret'];
+$idReservation = htmlspecialchars($_GET['id']);
+
+$req = $db->prepare('SELECT * FROM COMPANY WHERE siret = :siret');
+$req->execute([
+  'siret' => $idClient,
+]);
+$selectClient = $req->fetch(PDO::FETCH_ASSOC);
+
+$nameClient = $selectClient['companyName'];
+$mailClient = $selectClient['email'];
+$addressClient = $selectClient['address'];
+
+$req = $db->prepare('SELECT * FROM RESERVATION WHERE id = :id');
+$req->execute([
+  'id' => $idReservation,
+]);
+$selectReservation = $req->fetch(PDO::FETCH_ASSOC);
+
+$req = $db->prepare('SELECT amount FROM ESTIMATE WHERE id_reservation = :id_reservation');
+$req->execute([
+  'id_reservation' => $idReservation,
+]);
+$selectEstimate = $req->fetch(PDO::FETCH_ASSOC);
+
+$price = $selectEstimate['amount'];
+$idActivity = $selectReservation['id_activity'];
+$attendee = $selectReservation['attendee'];
+
+$req = $db->prepare('SELECT * FROM ACTIVITY WHERE id = :id');
+$req->execute([
+  'id' => $idActivity,
+]);
+$selectActivity = $req->fetch(PDO::FETCH_ASSOC);
+
+$activityName = $selectActivity['name'];
+$activityDescription = $selectActivity['description'];
+$priceAttendee = $selectActivity['priceAttendee'];
 
 define('autoload', '/home/php/src/vendor/autoload.php');
 
-require_once(autoload);
+require_once autoload;
 
 use Spipu\Html2Pdf\Html2Pdf;
 
-	$user = array(
-		"id" => 1,
-		"siret" => "152 356 785",
-		"firstname" => "John",
-		"lastname" => "Doe",
-		"email" => "john.doe@gmail.com",
-		"portable" => "06.25.35.45.35",
-		"address" => "26 Avenue du Bourg\n75000 Paris"
-	);
+$teamease = [
+  'id' => 1,
+  'siret' => '735 792 677 62909',
+  'name' => 'Together&Stronger',
+  'email' => 'teameasepa@gmail.com',
+  'portable' => '07.12.42.69.22',
+  'address' => "242 Faubourg Saint-Antoine\n75012 Paris",
+];
 
-	$client = array(
-		"id" => 1,
-		"firstname" => "Luc",
-		"lastname" => "Kennedy",
-		"mail" => "luc.kennedy@gmail.com",
-		"portable" => "06.32.23.15.58",
-		"address" => "5 Avenue du Boulevard Maréchal Juin\n14000 Caen",
-		"infos" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium eos tempora, magni delectus porro cum labore eligendi."
-	);
+$client = [
+  'id' => $idClient,
+  'name' => $nameClient,
+  'mail' => $mailClient,
+  'address' => $addressClient,
+];
 
-	$project = array(
-		"id" => 1,
-		"name" => "Création d'un Portfolio",
-		"status" => 1,
-		"infos" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium eos tempora, magni delectus porro cum labore eligendi.",
-		"created" => 1,
-		"paid" => false,
-		"client_id" => 1,
-		"user_id" => 1
-	);
+$project = [
+  'id' => 1,
+  'name' => $activityName,
+  'status' => 1,
+  'infos' => $activityDescription,
+  'created' => 1,
+  'paid' => false,
+  'client_id' => $idClient,
+  'user_id' => 1,
+];
 
-	$tasks[] = array(
-		"id" => 1,
-		"ref" => "96ER1",
-		"description" => "Veille technologique",
-		"price" => 200,
-		"quantity" => 1,
-		"project_id" => 1
-	);
+$tasks[] = [
+  'id' => 1,
+  'ref' => $idActivity,
+  'name' => $activityName,
+  'price' => $price,
+  'priceAttendee' => $priceAttendee,
+  'attendee' => $attendee,
+  'project_id' => 1,
+];
 
-	$tasks[] = array(
-		"id" => 2,
-		"ref" => "152DE",
-		"description" => "Création et intégration d'un thème pour Wordpress",
-		"price" => 500,
-		"quantity" => 1,
-		"project_id" => 1
-	);
-
-	$tasks[] = array(
-		"id" => 3,
-		"ref" => "25365",
-		"description" => "Développement d'un plugin Wordpress sur mesure pour le client",
-		"price" => 1000,
-		"quantity" => 1,
-		"project_id" => 1
-	);
-
-	ob_start();
-	$total = 0;
-	$total_tva = 0;
+ob_start();
+$total = 0;
+$total_tva = 0;
 ?>
 
 <style type="text/css">
@@ -100,13 +120,17 @@ use Spipu\Html2Pdf\Html2Pdf;
 		border-bottom: none;
 	}
 	.space { padding-top: 250px; }
+
+	.10p { width: 10%; } .15p { width: 15%; } 
+    .25p { width: 25%; } .50p { width: 50%; } 
+    .60p { width: 60%; } .75p { width: 75%; }
 </style>
 
 <page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page;">
 
 	<page_footer>
 		<hr />
-		<p>Fait a Paris, le <?php echo date("d/m/y"); ?></p>
+		<p>Fait a Paris, le <?php echo date('d/m/y'); ?></p>
 		<p>Signature du particulier, suivie de la mension manuscrite "bon pour accord".</p>
 		<p>&nbsp;</p>
 	</page_footer>
@@ -114,58 +138,51 @@ use Spipu\Html2Pdf\Html2Pdf;
 	<table style="vertical-align: top;">
 		<tr>
 			<td class="75p">
-				<strong><?php echo $user['firstname']." ".$user['lastname']; ?></strong><br />
-				<?php echo nl2br($user['address']); ?><br />
-				<strong>SIRET:</strong> <?php echo $user['siret']; ?><br />
-				<?php echo $user['email']; ?>
+				<strong><?php echo $teamease['name']; ?></strong><br />
+				<?php echo nl2br($teamease['address']); ?><br />
+				<strong>SIRET:</strong> <?php echo $teamease['siret']; ?><br />
+				<?php echo $teamease['email']; ?>
 			</td>
 			<td class="25p">
-				<strong><?php echo $client['firstname']." ".$client['lastname']; ?></strong><br />
-				<?php echo nl2br($client['address']); ?><br />
+				<strong><?php echo $teamease['name']; ?></strong><br />
+				<?php echo nl2br($teamease['address']); ?><br />
 			</td>
 		</tr>
 	</table>
 
-	<table style="margin-top: 50px;">
+	<table style="margin-top: 80px;">
 		<tr>
-			<td class="50p"><h2>Devis n°14</h2></td>
-			<td class="50p" style="text-align: right;">Emis le <?php echo date("d/m/y"); ?></td>
-		</tr>
-		<tr>
-			<td style="padding-top: 15px;" colspan="2"><strong>Objectif:</strong> <?php echo $project['name']; ?></td>
+			<td class="50p"><h2>Devis n°<?= $idReservation ?></h2></td>
+			<td class="50p" style="text-align: right;">Emis le <?php echo date('d/m/y'); ?></td>
 		</tr>
 	</table>
 
-	<table style="margin-top: 30px;" class="border">
+	<table style="margin-top: 50px;" class="border">
 		<thead>
 			<tr>
-				<th class="60p">Description</th>
-				<th class="10p">Quantité</th>
+				<th class="50p">Activité</th>
+				<th class="15p">Participants</th>
+				<th class="15p">Prix par participants (HT)</th>
 				<th class="15p">Prix Unitaire</th>
-				<th class="15p">Montant</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ($tasks as $task): ?>
 			<tr>
-				<td><?php echo $task['description']; ?></td>
-				<td><?php echo $task['quantity']; ?></td>
-				<td><?php echo $task['price']; ?> &euro;</td>
-				<td><?php
-						$price_tva = $task['price']*1.2;
-						echo $price_tva;
-					?>
-				&euro;</td>
-
-				<?php
-					$total += $task['price'];
-					$total_tva += $price_tva;
-				?>
+				<td><?php echo $task['name']; ?></td>
+				<td><?php echo $task['attendee']; ?></td>
+				<td><?php echo $task['priceAttendee'] * 0.8; ?> &euro;</td>
+				<td><?php echo $price * 0.8; ?> &euro;</td>
 			</tr>
-			<?php endforeach ?>
+				<?php
+    $price_tva = $task['price'] * 1.2;
+    $total += $task['price'];
+    $total_tva += $price_tva;
+    ?>
+			<?php endforeach; ?>
 
 			<tr>
-				<td class="space"></td>
+				<td style="padding-top: 50px;"></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -174,15 +191,15 @@ use Spipu\Html2Pdf\Html2Pdf;
 			<tr>
 				<td colspan="2" class="no-border"></td>
 				<td style="text-align: center;" rowspan="3"><strong>Total:</strong></td>
-				<td>HT : <?php echo $total; ?> &euro;</td>
+				<td>HT : <?php echo $price * 0.8; ?> &euro;</td>
 			</tr>
 			<tr>
 				<td colspan="2" class="no-border"></td>
-				<td>TVA : <?php echo ($total_tva - $total); ?> &euro;</td>
+				<td>TVA : <?php echo $total_tva - $total; ?> &euro;</td>
 			</tr>
 			<tr>
 				<td colspan="2" class="no-border"></td>
-				<td>TTC : <?php echo $total_tva; ?> &euro;</td>
+				<td>TTC : <?php echo $price; ?> &euro;</td>
 			</tr>
 		</tbody>
 	</table>
@@ -190,15 +207,16 @@ use Spipu\Html2Pdf\Html2Pdf;
 </page>
 
 <?php
-	$content = ob_get_clean();
-	try {
-		$pdf = new Html2Pdf("p","A4","fr");
-		$pdf->writeHTML($content);
-		$pdf->Output('Devis.pdf');
-	} catch (Html2PdfException $e) {
-		$pdf->clean();
-		$formatter = new ExceptionFormatter($e);
-		echo $formatter->getHtmlMessage();
-	}
+$content = ob_get_clean();
+try {
+  $pdf = new Html2Pdf('p', 'A4', 'fr');
+  $pdf->writeHTML($content);
+  $pdf->Output('Devis.pdf');
+} catch (Html2PdfException $e) {
+  $pdf->clean();
+  $formatter = new ExceptionFormatter($e);
+  echo $formatter->getHtmlMessage();
+}
+
 
 ?>
