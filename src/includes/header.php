@@ -29,7 +29,7 @@
    isset($_SESSION['id'])
  ) {
    echo 'href="logout.php">Se deconnecter</a>';
-   echo '<a class="btn btn-secondary col col-2 mx-3 mt-3" href="profile.php">Ton profil</a>';
+   echo '<a class="btn btn-secondary col col-2 mx-3 mt-3" href="/profile.php">Mon profil</a>';
  } else {
    echo 'href="signin.php">S\'inscrire</a>';
  } ?> </div>
