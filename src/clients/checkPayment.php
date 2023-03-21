@@ -4,7 +4,7 @@ include '../includes/db.php';
 
 define('autoload', '/home/php/src/vendor/autoload.php');
 
-require_once(autoload);
+require_once autoload;
 
 $secret = $_ENV['STRIPE_SECRET'];
 
