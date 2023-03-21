@@ -3,5 +3,6 @@
 data
 logs
 src/images/activities
-src/PHPMailer
-src/stripe-php
+src/vendor
+src/composer.json
+src/composer.lock

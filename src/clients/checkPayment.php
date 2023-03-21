@@ -2,7 +2,9 @@
 
 include '../includes/db.php';
 
-require_once '../stripe-php/init.php';
+define('autoload', '/home/php/src/vendor/autoload.php');
+
+require_once(autoload);
 
 $secret = $_ENV['STRIPE_SECRET'];
 
