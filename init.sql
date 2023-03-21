@@ -14,16 +14,6 @@ CREATE TABLE COMPANY
   PRIMARY KEY (siret)
 );
 
-CREATE TABLE ESTIMATE
-(
-  id INT NOT NULL AUTO_INCREMENT,
-  amount INT NOT NULL,
-  creationDate DATE NOT NULL,
-  siret CHAR(14) NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (siret) REFERENCES COMPANY(siret) ON DELETE CASCADE
-);
-
 CREATE TABLE MATERIAL
 (
   id INT NOT NULL AUTO_INCREMENT,
@@ -142,6 +132,27 @@ CREATE TABLE RESERVATION
   FOREIGN KEY (siret) REFERENCES COMPANY(siret) ON DELETE CASCADE
 );
 
+CREATE TABLE ESTIMATE
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  amount INT NOT NULL,
+  creationDate DATE NOT NULL,
+  id_reservation INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id)
+);
+
+CREATE TABLE INVOICE
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  amount INT NOT NULL,
+  paymentDay DATE NOT NULL,
+  details TEXT NOT NULL,
+  id_reservation INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id) ON DELETE CASCADE
+);
+
 CREATE TABLE MATERIAL_ACTIVITY
 (
   quantity INT NOT NULL,
@@ -157,17 +168,6 @@ CREATE TABLE BELONG
   id_category INT NOT NULL,
   FOREIGN KEY (id_activity) REFERENCES ACTIVITY(id) ON DELETE CASCADE,
   FOREIGN KEY (id_category) REFERENCES CATEGORY(id) ON DELETE CASCADE
-);
-
-CREATE TABLE INVOICE
-(
-  id INT NOT NULL AUTO_INCREMENT,
-  amount INT NOT NULL,
-  paymentDay DATE NOT NULL,
-  details TEXT NOT NULL,
-  id_reservation INT NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (id_reservation) REFERENCES RESERVATION(id) ON DELETE CASCADE
 );
 
 CREATE TABLE COMMENT
@@ -232,3 +232,14 @@ INSERT INTO OCCUPATION (name, salary) VALUES ('Game Master', 200);
 INSERT INTO OCCUPATION (name, salary) VALUES ('Coach sportif', 300);
 
 INSERT INTO PROVIDER (firstName, lastName, password, rights, email, id_occupation, token, confirm_signup) VALUES ('Jean', 'Dupont', sha2('Respons11', 512), 1, 'test@domaine.com', 1, '', 1);
+
+INSERT INTO LOCATION (name, address) VALUES ('Paris', '24 rue test');
+INSERT INTO LOCATION (name, address) VALUES ('Lyon', '24 rue test');
+
+INSERT INTO ROOM(name, id_location) VALUES ('Salle 1', 1);
+INSERT INTO ROOM(name, id_location) VALUES ('Salle 2', 2);
+INSERT INTO ROOM(name, id_location) VALUES ('Salle 3', 2);
+
+INSERT INTO ACTIVITY(maxAttendee, duration, priceAttendee, name, description, id_room, status) VALUES (10, 60, 10, 'Escape Game', 'Escape Game', 1, 1);
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('Monday', '10:00:00', '18:00:00', 1);
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('Wednesday', '09:00:00', '22:00:00', 1);

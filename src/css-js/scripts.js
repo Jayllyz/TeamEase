@@ -612,12 +612,24 @@ function checkConfirm(text) {
   }
 }
 
-function populateActivity(page) {
+function populateActivity(page, category) {
+  if (category != undefined) {
+    let categories = [];
+    categories.push(category);
+    localStorage.setItem('categories', JSON.stringify(categories));
+    document.getElementById(category).classList = 'btn btn-success col-2 m-2';
+  }
+
   let search = localStorage.getItem('search');
   let searchBarInput = window.location.search;
-  searchBarInput = searchBarInput.split('=')[1];
-  if (search == null) {
+  if (!searchBarInput.includes('category')) {
+    searchBarInput = searchBarInput.split('=')[1];
+    if (search == null) {
+      search = 'none';
+    }
+  } else {
     search = 'none';
+    searchBarInput = '';
   }
   if (searchBarInput == undefined) {
     searchBarInput = '';
@@ -633,11 +645,71 @@ function populateActivity(page) {
   };
   xhr.open('POST', 'ajaxReq/populateActivities.php?page=' + page);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('search=' + search + '&searchBarInput=' + searchBarInput);
+  xhr.send(
+    'search=' +
+      search +
+      '&searchBarInput=' +
+      searchBarInput +
+      '&category=' +
+      JSON.parse(localStorage.getItem('category'))
+  );
 
   window.addEventListener('beforeunload', function () {
     localStorage.removeItem('search');
+    localStorage.removeItem('category');
   });
+}
+
+function filterCategory(page, element) {
+  const id = element.getAttribute('id');
+  if (element.classList == 'btn btn-outline-success col-2 m-2') {
+    let categories = JSON.parse(localStorage.getItem('category'));
+    if (categories == null) {
+      categories = [];
+      categories.push(id);
+    } else if (categories.includes(0)) {
+      categories = categories.map((category) => {
+        if (category == 0) {
+          return id;
+        } else {
+          return category;
+        }
+      });
+    } else {
+      categories.push(id);
+    }
+    localStorage.setItem('category', JSON.stringify(categories));
+    console.log(localStorage.getItem('category'));
+    element.classList = 'btn btn-success col-2 m-2';
+  } else if (element.classList == 'btn btn-success col-2 m-2') {
+    let categories = JSON.parse(localStorage.getItem('category'));
+    categories = categories.map((category) => {
+      if (category == id) {
+        return '-' + id;
+      } else {
+        return category;
+      }
+    });
+    localStorage.setItem('category', JSON.stringify(categories));
+    console.log(localStorage.getItem('category'));
+    element.classList = 'btn btn-danger col-2 m-2';
+  } else if (element.classList == 'btn btn-danger col-2 m-2') {
+    let categories = JSON.parse(localStorage.getItem('category'));
+    categories = categories.map((category) => {
+      if (category == '-' + id) {
+        return 0;
+      } else {
+        return category;
+      }
+    });
+    categories = categories.filter((category) => {
+      return category != 0;
+    });
+    localStorage.setItem('category', JSON.stringify(categories));
+    console.log(localStorage.getItem('category'));
+    element.classList = 'btn btn-outline-success col-2 m-2';
+  }
+  populateActivity(page);
 }
 
 function removeFilter(element) {

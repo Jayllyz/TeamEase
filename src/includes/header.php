@@ -56,10 +56,10 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <?php
-                            $query = $db->query('SELECT name FROM CATEGORY');
-                            while ($category = $query->fetch()) {
+                            $query = $db->query('SELECT name, id FROM CATEGORY');
+                            while ($category = $query->fetch(PDO::FETCH_ASSOC)) {
                               echo '<li><a class="dropdown-item" href="../catalog.php?category=' .
-                                $category['name'] .
+                                $category['id'] .
                                 '">' .
                                 $category['name'] .
                                 '</a></li>';
