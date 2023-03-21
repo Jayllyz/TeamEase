@@ -185,7 +185,7 @@ if (isset($_GET['update'])) {
       do {
         if ($quantity[$i] == $materials[$i]) {
           $insert = $db->prepare(
-            'INSERT INTO MATERIAL_ACTIVITY (id_activity, id_material, quantity) VALUES (:id_activity, :id_material, :quantity)'
+            'INSERT INTO MATERIAL_ACTIVITY (id_activity, id_material, quantity) VALUES (:id_activity, :id_material, :quantity)',
           );
           $result3 = $insert->execute([
             'id_activity' => $_GET['id'],
@@ -218,7 +218,7 @@ if (isset($_GET['update'])) {
       exit();
     }
     $request = $db->prepare(
-      'UPDATE ACTIVITY SET duration = :duration, priceAttendee = :priceAttendee, maxAttendee = :maxAttendee, room_id = :id_room WHERE id = :id'
+      'UPDATE ACTIVITY SET duration = :duration, priceAttendee = :priceAttendee, maxAttendee = :maxAttendee, room_id = :id_room WHERE id = :id',
     );
     $result = $request->execute([
       ':duration' => $_POST['duration'],
@@ -323,7 +323,7 @@ if (!isset($_POST['day'])) {
 
 $request = $db->prepare(
   'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee, status, id_room) 
-  VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee, :status, :id_room)'
+  VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee, :status, :id_room)',
 );
 
 $result = $request->execute([
@@ -440,7 +440,7 @@ if ($materialCount != 0) {
   do {
     if ($quantity[$i] == $materials[$i]) {
       $insert = $db->prepare(
-        'INSERT INTO MATERIAL_ACTIVITY (id_activity, id_material, quantity) VALUES (:id_activity, :id_material, :quantity)'
+        'INSERT INTO MATERIAL_ACTIVITY (id_activity, id_material, quantity) VALUES (:id_activity, :id_material, :quantity)',
       );
       $result4 = $insert->execute([
         'id_activity' => $id[0],
@@ -454,7 +454,7 @@ if ($materialCount != 0) {
 
 foreach ($_POST['day'] as $day) {
   $insert = $db->prepare(
-    'INSERT INTO SCHEDULE (day, startHour, endHour, id_activity) VALUES (:day, :startHour, :endHour, :id_activity)'
+    'INSERT INTO SCHEDULE (day, startHour, endHour, id_activity) VALUES (:day, :startHour, :endHour, :id_activity)',
   );
   $result5 = $insert->execute([
     'day' => $day,

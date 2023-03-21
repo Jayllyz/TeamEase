@@ -22,7 +22,7 @@ $jsonDecode = json_decode($output, true);
 
 if ($jsonDecode['header']['statut'] != 200) {
   header(
-    "location: ../signin.php?message=Le SIRET n'existe pas ou une erreur est survenue !&valid=invalid&input=siret"
+    "location: ../signin.php?message=Le SIRET n'existe pas ou une erreur est survenue !&valid=invalid&input=siret",
   );
   exit();
 }
@@ -56,7 +56,7 @@ $name = $jsonDecode['etablissement']['uniteLegale']['denominationUniteLegale'];
 
 if (strlen($password) < 6) {
   header(
-    'location: ../signin.php?message=Mot de passe invalide. Il doit avoir 6 caracteres minimum !&valid=invalid&input=passwordCompany'
+    'location: ../signin.php?message=Mot de passe invalide. Il doit avoir 6 caracteres minimum !&valid=invalid&input=passwordCompany',
   );
   exit();
 }
@@ -95,7 +95,7 @@ if (
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token) VALUES (:siret, :companyName, :email, :address, :password, :rights, :token)'
+      'INSERT INTO COMPANY (siret, companyName, email, address, password, rights, token) VALUES (:siret, :companyName, :email, :address, :password, :rights, :token)',
     );
     $rights = 0;
     $token = uniqid();
@@ -125,7 +125,7 @@ if (
     include '../includes/mailer.php';
   } else {
     header(
-      'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp'
+      'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp',
     );
     exit();
   }

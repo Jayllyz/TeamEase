@@ -27,19 +27,19 @@ if (
 
   if ($compare['password'] != $oldpassword) {
     header(
-      "location: ../modifyCompanyPassword.php?siret=$siret&rights=$rights&message=Mot de passe incorrect !&type=danger"
+      "location: ../modifyCompanyPassword.php?siret=$siret&rights=$rights&message=Mot de passe incorrect !&type=danger",
     );
     exit();
   }
   if ($newpassword != $newpasswordverif) {
     header(
-      "location: ../modifyCompanyPassword.php?siret=$siret&rights=$rights&message=Les mots de passe ne correspondent pas entre eux !&type=danger"
+      "location: ../modifyCompanyPassword.php?siret=$siret&rights=$rights&message=Les mots de passe ne correspondent pas entre eux !&type=danger",
     );
     exit();
   }
   if ($oldpassword == $newpassword) {
     header(
-      "location: ../modifyCompanyPassword.php?siret=$siret&rights=$rights&message=Le mot de passe choisi est le même que l'ancien !&type=danger"
+      "location: ../modifyCompanyPassword.php?siret=$siret&rights=$rights&message=Le mot de passe choisi est le même que l'ancien !&type=danger",
     );
     exit();
   }

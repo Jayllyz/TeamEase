@@ -27,7 +27,7 @@ if (
   setcookie('rights', $rights, time() + 3600, '/');
 
   $update = $db->prepare(
-    'UPDATE PROVIDER SET email = :email, lastName = :lastName, firstName = :firstName, rights = :rights, id_occupation = :job, salary = :salary WHERE id = :id'
+    'UPDATE PROVIDER SET email = :email, lastName = :lastName, firstName = :firstName, rights = :rights, id_occupation = :job, salary = :salary WHERE id = :id',
   );
   $update->execute([
     'email' => $email,

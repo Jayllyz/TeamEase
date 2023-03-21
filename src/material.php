@@ -49,7 +49,7 @@ if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
               <tbody>
                 <?php
                 $query = $db->prepare(
-                  'SELECT id, type, MATERIAL_LOCATION.quantity FROM MATERIAL INNER JOIN MATERIAL_LOCATION ON MATERIAL.id = MATERIAL_LOCATION.id_material WHERE MATERIAL_LOCATION.id_location = :id_location'
+                  'SELECT id, type, MATERIAL_LOCATION.quantity FROM MATERIAL INNER JOIN MATERIAL_LOCATION ON MATERIAL.id = MATERIAL_LOCATION.id_material WHERE MATERIAL_LOCATION.id_location = :id_location',
                 );
                 $query->execute([':id_location' => $id]);
                 $materials = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -113,7 +113,7 @@ if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
                 <tbody>
                   <?php
                   $query = $db->prepare(
-                    'SELECT id, type, MATERIAL_ROOM.quantity FROM MATERIAL INNER JOIN MATERIAL_ROOM ON MATERIAL.id = MATERIAL_ROOM.id_material WHERE MATERIAL_ROOM.id_room = :id_room'
+                    'SELECT id, type, MATERIAL_ROOM.quantity FROM MATERIAL INNER JOIN MATERIAL_ROOM ON MATERIAL.id = MATERIAL_ROOM.id_material WHERE MATERIAL_ROOM.id_room = :id_room',
                   );
                   $query->execute([':id_room' => $room['id']]);
                   $materials = $query->fetchAll(PDO::FETCH_ASSOC);

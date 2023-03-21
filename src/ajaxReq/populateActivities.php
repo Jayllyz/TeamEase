@@ -64,7 +64,7 @@ if ($countId == 0) {
 } elseif ($countId - ($currentPage - 1) * 10 < 10) {
   for ($i = ($currentPage - 1) * 10; $i < $countId; $i++) {
     $query = $db->prepare(
-      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id =:id'
+      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id =:id',
     );
     $query->execute([
       ':id' => $id[$i],
@@ -137,7 +137,7 @@ if ($countId == 0) {
               <p class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
       $query = $db->prepare(
-        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)'
+        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)',
       );
       $query->execute([':id_activity' => $id[$i]]);
       $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -164,7 +164,7 @@ if ($countId == 0) {
 } else {
   for ($i = ($currentPage - 1) * 10; $i < 10 * $currentPage; $i++) {
     $query = $db->prepare(
-      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id = :id'
+      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id = :id',
     );
     $query->execute([
       ':id' => $id[$i],
@@ -235,7 +235,7 @@ if ($countId == 0) {
               <p class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
       $query = $db->prepare(
-        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)'
+        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)',
       );
       $query->execute([':id_activity' => $id[$i]]);
       $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);

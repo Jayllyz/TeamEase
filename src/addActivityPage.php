@@ -70,7 +70,7 @@ include 'includes/head.php';
             <div class="my-3">
                 <label for="name" class="form-label"><h4>Nom de l'activité</h4></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Nom de l'activité" value="<?= isset(
-                  $_COOKIE['nameActivity']
+                  $_COOKIE['nameActivity'],
                 )
                   ? $_COOKIE['nameActivity']
                   : '' ?>" required>
@@ -87,7 +87,7 @@ include 'includes/head.php';
                 <div class="col">
                     <label for="duration"><h4>Durée de l'activité (en minute)</h4></label>
                     <input type="number" min="10" max="1440" name="duration" class="form-control" value="<?= isset(
-                      $_COOKIE['durationActivity']
+                      $_COOKIE['durationActivity'],
                     )
                       ? $_COOKIE['durationActivity']
                       : '' ?>" required>
@@ -101,7 +101,7 @@ include 'includes/head.php';
                 <div class="col">
                     <label for="maxAttendee"><h4>Nombre maximum de participants</h4></label>
                     <input type="number" name="maxAttendee" class="form-control" value="<?= isset(
-                      $_COOKIE['maxAttendeeActivity']
+                      $_COOKIE['maxAttendeeActivity'],
                     )
                       ? $_COOKIE['maxAttendeeActivity']
                       : '' ?>" required>

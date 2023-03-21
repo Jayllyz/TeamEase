@@ -27,19 +27,19 @@ if (
 
   if ($compare['password'] != $oldpassword) {
     header(
-      "location: ../modifyProviderPassword.php?id=$id&rights=$rights&message=Mot de passe incorrect !&type=danger"
+      "location: ../modifyProviderPassword.php?id=$id&rights=$rights&message=Mot de passe incorrect !&type=danger",
     );
     exit();
   }
   if ($newpassword != $newpasswordverif) {
     header(
-      "location: ../modifyProviderPassword.php?id=$id&rights=$rights&message=Les mots de passe ne correspondent pas entre eux !&type=danger"
+      "location: ../modifyProviderPassword.php?id=$id&rights=$rights&message=Les mots de passe ne correspondent pas entre eux !&type=danger",
     );
     exit();
   }
   if ($oldpassword == $newpassword) {
     header(
-      "location: ../modifyProviderPassword.php?id=$id&rights=$rights&message=Le mot de passe choisi est le même que l'ancien !&type=danger"
+      "location: ../modifyProviderPassword.php?id=$id&rights=$rights&message=Le mot de passe choisi est le même que l'ancien !&type=danger",
     );
     exit();
   }

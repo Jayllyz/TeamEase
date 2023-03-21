@@ -28,7 +28,7 @@ $siret = $_SESSION['siret'];
 
         <?php
         $req = $db->prepare(
-          'SELECT id, id_activity, attendee, date, DATE_FORMAT(time, \'%H:%i\') AS time , status FROM RESERVATION WHERE siret = :siret'
+          'SELECT id, id_activity, attendee, date, DATE_FORMAT(time, \'%H:%i\') AS time , status FROM RESERVATION WHERE siret = :siret',
         );
         $req->execute([
           'siret' => $siret,

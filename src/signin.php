@@ -43,7 +43,7 @@ include 'includes/db.php';
                 <div class="mb-3">
                     <label class="form-label"><strong>n° de SIRET</strong></label>
                     <input type="number" name="siret" placeholder="31130000800017" size="14" class="form-control is-<?= isset(
-                      $_GET['valid']
+                      $_GET['valid'],
                     ) && $_GET['input'] == 'siret'
                       ? $_GET['valid']
                       : '' ?>" value="<?= isset($_COOKIE['siret']) ? $_COOKIE['siret'] : '' ?>" required>

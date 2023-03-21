@@ -37,7 +37,7 @@ if (!$reponse) {
 
 if (strlen($password) < 6) {
   header(
-    'location: ../signin.php?message=Mot de passe invalide. Il doit avoir 6 caracteres minimum !&valid=invalid&input=mdp&check=provider'
+    'location: ../signin.php?message=Mot de passe invalide. Il doit avoir 6 caracteres minimum !&valid=invalid&input=mdp&check=provider',
   );
   exit();
 }
@@ -76,7 +76,7 @@ if (
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
-      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, password, rights, token) VALUES (:firstName, :lastName, :occupation, :email, :password, :rights, :token)'
+      'INSERT INTO PROVIDER (lastName, firstName, id_occupation, email, password, rights, token) VALUES (:firstName, :lastName, :occupation, :email, :password, :rights, :token)',
     );
     $rights = 1;
     $token = uniqid();
@@ -106,7 +106,7 @@ if (
     include '../includes/mailer.php';
   } else {
     header(
-      'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp&check=provider'
+      'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp&check=provider',
     );
     exit();
   }

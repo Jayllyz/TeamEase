@@ -5,7 +5,7 @@ $id = $_POST['id'];
 
 if (isset($id) && !strlen($id) > 0 && !is_numeric($id)) {
   header(
-    'location: ../job.php?message=L\'identifiant du métier est invalide !&valid=invalid&input=name&check=provider'
+    'location: ../job.php?message=L\'identifiant du métier est invalide !&valid=invalid&input=name&check=provider',
   );
   exit();
 }
