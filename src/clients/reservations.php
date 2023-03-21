@@ -28,7 +28,7 @@ $siret = $_SESSION['siret'];
 
         <?php
         $req = $db->prepare(
-          'SELECT id, id_activity, attendee, id_room, date, DATE_FORMAT(time, \'%H:%i\') AS time , status FROM RESERVATION WHERE siret = :siret'
+          'SELECT id, id_activity, attendee, date, DATE_FORMAT(time, \'%H:%i\') AS time , status FROM RESERVATION WHERE siret = :siret'
         );
         $req->execute([
           'siret' => $siret,
@@ -41,6 +41,13 @@ $siret = $_SESSION['siret'];
             $date = explode('-', $select['date']);
             $date = $date[2] . '/' . $date[1] . '/' . $date[0];
             $select['date'] = $date;
+
+
+            $req = $db->prepare('SELECT id_room FROM ACTIVITY WHERE id = :id');
+            $req->execute([
+              'id' => $select['id_activity'],
+            ]);
+            $id_room = $req->fetch(PDO::FETCH_ASSOC);
             ?>
 
             <div class="container info_user">
@@ -91,7 +98,7 @@ $siret = $_SESSION['siret'];
                     <td><?
                     $req = $db->prepare('SELECT id_location FROM ROOM WHERE id = :id');
                     $req->execute([
-                      'id' => $select['id_room'],
+                      'id' => $id_room,
                     ]);
                     $result = $req->fetch(PDO::FETCH_ASSOC);
                     
