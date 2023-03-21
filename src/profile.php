@@ -70,12 +70,12 @@ include 'includes/head.php';
             ?>
             
             <br>
-              <button class="btn-read">
+              <button class="btn btn-success">
               <a href="modifyCompany.php?siret=<?= $company['siret'] ?>&name=<?= $company[
   'companyName'
 ] ?>&email=<?= $company['email'] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
               </button>
-              <button class="btn-read">
+              <button class="btn btn-success">
               <a href="modifyCompanyPassword.php?siret=<?= $company['siret'] ?>&rights=<?= $company[
   'rights'
 ] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
@@ -369,7 +369,8 @@ include 'includes/head.php';
                             <th>Nb de participant<br> Maximun</th>
                             <th>durée</th>
                             <th>Prix par Participant</th>
-                            <th>Description</th>
+                            <th>Localisation</th>
+                            <th>Salle</th>
                         </tr>
                     </thead>
                     <?php for ($i = 0; $i < count($animate); $i++) { ?>
@@ -382,12 +383,31 @@ include 'includes/head.php';
                                   'id' => $id_animate[$i],
                                 ]);
                                 $activity = $stmt->fetch();
+
+
+                                $id_room[] = $stmt->fetch();
+                                $sql = 'SELECT id_location, name FROM ROOM WHERE id = :id';
+                                $stmt = $db->prepare($sql);
+                                $stmt->execute([
+                                  'id' => $activity['id_room'],
+                                ]);
+                                $id_room = $stmt->fetch();
+                    
+                    
+                                $id_location[] = $id_room['id_location'];
+                                $sql= 'SELECT name, address FROM LOCATION WHERE id = :id';
+                                $stmt = $db->prepare($sql);
+                                $stmt->execute([
+                                  'id' => $id_location[$i],
+                                ]);
+                                $id_location = $stmt->fetch();
                                 ?>
                                 <td><?= $activity['name'] ?></td>
                                 <td><?= $activity['maxAttendee'] ?></td>
                                 <td><?= $activity['duration'] ?>Heure</td>
                                 <td><?= $activity['priceAttendee'] ?>€/Participant</td>
-                                <td><?= $activity['description'] ?></td>
+                                <td><?= $id_location['name'] ?><br><?= $id_location['address'] ?></td>
+                                <td><?= $id_room['name'] ?></td>
                                 
                             </tr>
                         </tbody>
