@@ -952,6 +952,12 @@ function selectedDateReservation(element) {
   idActivity = window.location.search;
   idActivity = idActivity.split('=')[1];
   idActivity = idActivity.split('#')[0];
+
+  let attendees = document.getElementById('attendee').value;
+  let price = document.getElementById('price').value;
+  let priceDisplay = document.getElementById('priceDisplay');
+  priceDisplay.innerHTML = price * attendees;
+
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -962,16 +968,7 @@ function selectedDateReservation(element) {
   };
   xhr.open('POST', 'ajaxReq/activitySlot.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send(
-    'day=' +
-      dayOfWeek +
-      '&id=' +
-      idActivity +
-      '&date=' +
-      dateString +
-      '&attendee=' +
-      document.getElementById('attendee').value
-  );
+  xhr.send('day=' + dayOfWeek + '&id=' + idActivity + '&date=' + dateString + '&attendee=' + attendees);
 }
 
 jQuery(function ($) {
