@@ -33,7 +33,8 @@ $siret = $_SESSION['siret'];
         $req->execute([
           'siret' => $siret,
         ]);
-        $result = $req->fetchAll(PDO::FETCH_ASSOC);?>
+        $result = $req->fetchAll(PDO::FETCH_ASSOC);
+        ?>
 
 
         <div class="container info_user">
@@ -48,13 +49,12 @@ $siret = $_SESSION['siret'];
             <th>Action</th>
            </tr>
 
-      <?php  foreach ($result as $select) { ?>
+      <?php foreach ($result as $select) { ?>
 
             <?php
             $date = explode('-', $select['date']);
             $date = $date[2] . '/' . $date[1] . '/' . $date[0];
             $select['date'] = $date;
-
 
             $req = $db->prepare('SELECT id_room FROM ACTIVITY WHERE id = :id');
             $req->execute([
@@ -65,33 +65,33 @@ $siret = $_SESSION['siret'];
 
                    <tr>
                     <td><?php
-                      $req = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
-                      $req->execute([
-                        'id' => $select['id_activity'],
-                      ]);
-                      $result = $req->fetchAll(PDO::FETCH_ASSOC);
-                      foreach ($result as $name) {
-                        echo $name['name'];
-                      }
+                    $req = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
+                    $req->execute([
+                      'id' => $select['id_activity'],
+                    ]);
+                    $result = $req->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($result as $name) {
+                      echo $name['name'];
+                    }
                     ?></td>
                     <td><?= $date ?></td>
 
                     <td><?php
-                        $req = $db->prepare('SELECT duration FROM ACTIVITY WHERE id = :id');
-                        $req->execute([
-                          'id' => $select['id_activity'],
-                        ]);
+                    $req = $db->prepare('SELECT duration FROM ACTIVITY WHERE id = :id');
+                    $req->execute([
+                      'id' => $select['id_activity'],
+                    ]);
 
-                        $result = $req->fetch(PDO::FETCH_ASSOC);
-                        if ($result['duration'] > 60) {
-                          $hour = floor($result['duration'] / 60);
-                          $min = $result['duration'] % 60;
-                          $duration = $hour . 'h' . $min;
-                          echo $select['time'] . ' <br> ' . 'durée : ' . $duration;
-                        } else {
-                          echo $select['time'] . ' <br> ' . 'durée : ' . $result['duration'] . 'min';
-                        }
-                      ?></td>
+                    $result = $req->fetch(PDO::FETCH_ASSOC);
+                    if ($result['duration'] > 60) {
+                      $hour = floor($result['duration'] / 60);
+                      $min = $result['duration'] % 60;
+                      $duration = $hour . 'h' . $min;
+                      echo $select['time'] . ' <br> ' . 'durée : ' . $duration;
+                    } else {
+                      echo $select['time'] . ' <br> ' . 'durée : ' . $result['duration'] . 'min';
+                    }
+                    ?></td>
 
 
 
@@ -126,7 +126,7 @@ $siret = $_SESSION['siret'];
                             'id' => $select['id_activity'],
                           ]);
                           $name = $req->fetch(PDO::FETCH_ASSOC);
-                          
+
                           $req = $db->prepare('SELECT amount FROM ESTIMATE WHERE id_reservation = :id');
                           $req->execute([
                             'id' => $select['id'],
@@ -158,8 +158,7 @@ $siret = $_SESSION['siret'];
 </svg>';} ?>
                     </td>
                    </tr>
-        <?php }
-        ?>
+        <?php } ?>
                      </table>
             </div>
     </main>
