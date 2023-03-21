@@ -4,7 +4,7 @@ include '../includes/db.php';
 
 if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
   $query = $db->prepare(
-    'SELECT DATE_FORMAT(startHour, \'%H:%i\') AS startHour, DATE_FORMAT(endHour, \'%H:%i\') AS endHour, duration, maxAttendee FROM SCHEDULE INNER JOIN ACTIVITY ON ACTIVITY.id = SCHEDULE.id_activity WHERE id_activity = :id AND day = :day'
+    'SELECT DATE_FORMAT(startHour, \'%H:%i\') AS startHour, DATE_FORMAT(endHour, \'%H:%i\') AS endHour, duration, maxAttendee FROM SCHEDULE INNER JOIN ACTIVITY ON ACTIVITY.id = SCHEDULE.id_activity WHERE id_activity = :id AND day = :day',
   );
   $query->execute([
     'id' => htmlspecialchars($_POST['id']),
@@ -65,7 +65,7 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
       $timeFormat = $startSlotArray[$j] . ':00';
 
       $query = $db->prepare(
-        'SELECT date, time, attendee, siret FROM RESERVATION WHERE id_activity = :id AND date = DATE(:date) AND time = :startHour'
+        'SELECT date, time, attendee, siret FROM RESERVATION WHERE id_activity = :id AND date = DATE(:date) AND time = :startHour',
       );
       $query->execute([
         'id' => $_POST['id'],

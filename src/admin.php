@@ -64,7 +64,7 @@ if (isset($_GET['check'])) {
                     </thead>
                     <?php
                     $query = $db->query(
-                      'SELECT siret, companyName, email, rights, address FROM COMPANY WHERE rights != 2'
+                      'SELECT siret, companyName, email, rights, address FROM COMPANY WHERE rights != 2',
                     );
                     $result = $query->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($result as $select) { ?>

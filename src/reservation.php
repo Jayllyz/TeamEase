@@ -24,7 +24,7 @@ include 'includes/head.php';
         </div>
         <?php
         $query = $db->prepare(
-          'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id'
+          'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
         );
         $query->execute([
           'id' => htmlspecialchars($_GET['id']),
@@ -45,7 +45,7 @@ include 'includes/head.php';
     <span class="input-group-text" id="priceDisplay">0.00</span>
     <span class="input-group-text">€</span>
   </div>
-                <div id="priceHelp" class="form-text"><?= $price . ' € par personne'?></div>
+                <div id="priceHelp" class="form-text"><?= $price . ' € par personne' ?></div>
                 <label for="date" class="form-label"><h4>Date de votre réservation</h4></label>
                 <?php foreach ($activities as $activity) { ?>
                     <div style="display:none" class="<?= $activity['day'] ?>">

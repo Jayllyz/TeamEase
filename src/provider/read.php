@@ -16,7 +16,7 @@ include '../includes/head.php';
     <?php include '../includes/header.php'; ?>
     <?php
     $req = $db->prepare(
-      'SELECT lastName, firstName, email,rights, id_occupation, confirm_signup FROM PROVIDER WHERE id = :id'
+      'SELECT lastName, firstName, email,rights, id_occupation, confirm_signup FROM PROVIDER WHERE id = :id',
     );
     $req->execute([
       'id' => $id,
@@ -35,7 +35,7 @@ include '../includes/head.php';
     $result[0]['salary'] = $occupation[0]['salary'];
 
     $req = $db->prepare(
-      'SELECT name, priceAttendee, duration, maxAttendee FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)'
+      'SELECT name, priceAttendee, duration, maxAttendee FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)',
     );
     $req->execute([
       'id_provider' => $id,
