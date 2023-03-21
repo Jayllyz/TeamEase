@@ -13,6 +13,24 @@ if ($_POST['searchBarInput'] == 'none') {
 } else {
   $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\' ';
 }
+if (isset($_POST['category']) && $_POST['category'] != '' && $_POST['category'] != 'null') {
+  $categories = $_POST['category'];
+} else {
+  $categories = 'none';
+}
+$categoryList = explode(',', $categories);
+$categoriesFilter = '';
+foreach ($categoryList as $value) {
+  if ($value < 0) {
+    $categoriesFilter =
+      $categoriesFilter . ' AND NOT id IN (SELECT id_activity FROM BELONG WHERE id_category=' . abs($value) . ') ';
+  } elseif ($value > 0 && $value != 'none') {
+    $categoriesFilter =
+      $categoriesFilter . ' AND id IN (SELECT id_activity FROM BELONG WHERE id_category=' . abs($value) . ') ';
+  } else {
+    $categoriesFilter = $categoriesFilter . '';
+  }
+}
 if ($_POST['search'] == 'none') {
   $search = '';
 } elseif ($_POST['search'] == 'maxAttendeeDesc') {
@@ -36,7 +54,7 @@ if ($_POST['search'] == 'none') {
 } elseif ($_POST['search'] == 'statusAsc') {
   $search = 'ORDER BY status ASC';
 }
-$query = $db->query('SELECT id FROM ACTIVITY WHERE status = 1 ' . $searchBarInput . $search);
+$query = $db->query('SELECT id FROM ACTIVITY WHERE status = 1 ' . $categoriesFilter . $searchBarInput . $search);
 $id = $query->fetchAll(PDO::FETCH_COLUMN);
 $countId = count($id);
 if ($countId == 0) {
@@ -65,10 +83,12 @@ if ($countId == 0) {
             <div class="col-4">
             <a href="activity.php?id=' .
       $id[$i] .
-      '"><img src="images/activities/' .
-      $id[$i] .
-      $activity['name'] .
-      '0.jpg" class="card-img-top" alt="' .
+      '"><img src="';
+    $path = 'images/activities/';
+    $id = $id[$i];
+    include '../includes/image.php';
+    echo $image0 .
+      '" class="card-img-top" alt="' .
       $activity['name'] .
       '"></a>
             </div>
@@ -117,11 +137,15 @@ if ($countId == 0) {
               <p class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
       $query = $db->prepare(
-        'SELECT name FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE :id_activity = :id_activity)'
+        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)'
       );
       $query->execute([':id_activity' => $id[$i]]);
-      $categoryName = $query->fetchAll(PDO::FETCH_COLUMN);
-      echo '<a type="button" class="btn btn-info mx-2" href="">' . $categoryName[0] . '</a>';
+      $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);
+      echo '<a type="button" class="btn btn-info mx-2" href="catalog.php?category=' .
+        $categoryName[$j]['id'] .
+        '">' .
+        $categoryName[$j]['name'] .
+        '</a>';
     }
     echo '<div class="row"></p>
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
@@ -211,11 +235,15 @@ if ($countId == 0) {
               <p class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
       $query = $db->prepare(
-        'SELECT name FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE :id_activity = :id_activity)'
+        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)'
       );
       $query->execute([':id_activity' => $id[$i]]);
-      $categoryName = $query->fetchAll(PDO::FETCH_COLUMN);
-      echo '<a type="button" class="btn btn-info mx-2" href="">' . $categoryName[0] . '</a>';
+      $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);
+      echo '<a type="button" class="btn btn-info mx-2" href="catalog.php?category=' .
+        $categoryName[$j]['id'] .
+        '">' .
+        $categoryName[$j]['name'] .
+        '</a>';
     }
     echo '<div class="row"></p>
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
