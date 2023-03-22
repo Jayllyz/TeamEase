@@ -93,8 +93,8 @@ if ($countId == 0) {
       $activity['name'] .
       '"></a>
             </div>
-            <div class="card-body bg-dark col-8 p-0 row">
-              <div class="col-11 card-title">
+            <div class="card-body bg-secondary col-8 p-0 row">
+              <div class="col-11 m-0 card-title">
               <h4 class="mt-2"><a href="activity.php?id=' .
       $id[$i] .
       '" class="text-light">' .
@@ -104,7 +104,7 @@ if ($countId == 0) {
     $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
     if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
       echo '
-                <div class="col-1 d-flex justify-content-end pe-3">
+                <div class="col-1 d-flex justify-content-end pe-3 mt-2">
                 <button type="button" class="btn-close btn-danger btn-sm" aria-label="Close" data-bs-toggle="modal" data-bs-target="#suppression' .
         $altId .
         '"></button>
@@ -157,28 +157,28 @@ if ($countId == 0) {
                | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
       $activity['maxAttendee'] .
       '</p></div>';
-    ?> <div class="row p-0 m-0"> <?php
+    ?> <div class="d-flex p-0 m-0 ps-3"> <?php
  $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
  $query->execute([':id' => $id]);
  $day = $query->fetchAll(PDO::FETCH_ASSOC);
  $j = 0;
  $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
- $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+ $frenchDayInitial = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
  for ($i = 0; $i < 7; $i++) {
    if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
-     echo '<div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
-                <div class="card-body px-2 py-1">
+     echo '<div class="card bg-primary text-white mx-1 p-0 fs-6 text-center iconWeek">
+                <div class="card-body">
                   ' .
-       $frenchDay[$i] .
+       $frenchDayInitial[$i] .
        '
                 </div>
               </div>';
      $j++;
    } else {
-     echo '<div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
-                <div class="card-body px-2 py-1">
+     echo '<div class="card text-white mx-1 p-0 fs-6 text-center iconWeek" style="background-color:#7A828A">
+                <div class="card-body">
                   ' .
-       $frenchDay[$i] .
+       $frenchDayInitial[$i] .
        '
                 </div>
               </div>';
@@ -302,7 +302,7 @@ if ($countId == 0) {
               </div>';
      $j++;
    } else {
-     echo '<div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
+     echo '<div class="card text-white col mx-1 p-0 fs-6 text-center" style="background-color:#7A828A">
                 <div class="card-body px-2 py-1">
                   ' .
        $frenchDay[$i] .
