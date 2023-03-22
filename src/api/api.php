@@ -12,11 +12,6 @@ if (isPath('activities')) {
     require_once __DIR__ . '/routes/activities/get.php';
     die();
   }
-
-  //   if (isPostMethod()) {
-  //     require_once __DIR__ . '/routes/activities/post.php';
-  //     die();
-  //   }
 }
 
 // if (isPath('users/:user')) {
@@ -24,12 +19,6 @@ if (isPath('activities')) {
 //     require_once __DIR__ . '/routes/users/delete.php';
 //     die();
 //   }
-
-//   if (isPatchMethod()) {
-//     require_once __DIR__ . '/routes/users/patch.php';
-//     die();
-//   }
-// }
 
 echo jsonResponse(
   404,
