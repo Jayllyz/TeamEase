@@ -113,7 +113,7 @@ include 'includes/head.php';
 
 
                 
-
+?>
                 <table class="table text-center table-bordered table-hover" id="active">
                     <thead>
                         <tr>
