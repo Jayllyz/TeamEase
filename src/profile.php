@@ -361,7 +361,6 @@ include 'includes/head.php';
                                 $stmt->execute([
                                   'id' => $activity['id_room'],
                                 ]);
-
                                 $id_room = $stmt->fetch();
                                 $id_location[] = $id_room['id_location'];
                                 $sql = 'SELECT name, address FROM LOCATION WHERE id = :id';

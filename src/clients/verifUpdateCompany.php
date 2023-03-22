@@ -21,7 +21,7 @@ if (
   setcookie('rights', $rights, time() + 3600, '/');
 
   $update = $db->prepare(
-    'UPDATE COMPANY SET email = :email, companyName = :companyName, rights = :rights, address = :address WHERE siret = :siret'
+    'UPDATE COMPANY SET email = :email, companyName = :companyName, rights = :rights, address = :address WHERE siret = :siret',
   );
   $update->execute([
     'email' => $email,
