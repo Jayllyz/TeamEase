@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../libraries/response.php';
-require_once __DIR__ . '/../../entities/activites/get.php';
+include '/home/php/src/api/entities/activities/get.php';
 
 try {
   $getActivities = getAllActivities();
