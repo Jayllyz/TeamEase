@@ -109,11 +109,7 @@ include 'includes/head.php';
           for ($i = 0; $i < count($reservations); $i++) {
             $id_activity[] = $reservations[$i]['id_activity'];
           }
-
-
-
-                
-?>
+          ?>
                 <table class="table text-center table-bordered table-hover" id="active">
                     <thead>
                         <tr>
@@ -137,22 +133,18 @@ include 'includes/head.php';
                                   'id' => $id_activity[$i],
                                 ]);
                                 $activity = $stmt->fetch();
-
                                 $sql = 'SELECT id_location, name FROM ROOM  WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
                                   'id' => $activity['id_room'],
                                 ]);
                                 $room = $stmt->fetch();
-
                                 $sql = 'SELECT name,address FROM LOCATION WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
                                   'id' => $room['id_location'],
                                 ]);
                                 $location = $stmt->fetch();
-
-
                                 ?>
                                 <td><?= $activity['name'] ?></td>
                                 <td><?= $reservations[$i]['attendee'] ?></td>
@@ -163,8 +155,11 @@ include 'includes/head.php';
                                 $date = $date[2] . '/' . $date[1] . '/' . $date[0];
                                 ?>
                                 <td><?= $date ?></td>
-                                <?php $reservations[$i]['time'] = explode(':', $reservations[$i]['time']);
-                                $reservations[$i]['time'] = $reservations[$i]['time'][0] . 'h' . $reservations[$i]['time'][1]; ?>
+                                <?php
+                                $reservations[$i]['time'] = explode(':', $reservations[$i]['time']);
+                                $reservations[$i]['time'] =
+                                  $reservations[$i]['time'][0] . 'h' . $reservations[$i]['time'][1];
+                                ?>
                                 <td><?= $reservations[$i]['time'] ?></td>
                                 
                             </tr>
@@ -184,19 +179,17 @@ include 'includes/head.php';
           <br>
       </div>
       <?php
-          $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
-          $stmt = $db->prepare($sql);
-          $stmt->execute([
-            'siret' => $_SESSION['siret'],
-            'status' => 1,
-          ]);
-          $reservations = $stmt->fetchAll(); // mettre les id des activités dans un tableau
-          $id_activity = [];
-          for ($i = 0; $i < count($reservations); $i++) {
-            $id_activity[] = $reservations[$i]['id_activity'];
-          }
-
-
+      $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
+      $stmt = $db->prepare($sql);
+      $stmt->execute([
+        'siret' => $_SESSION['siret'],
+        'status' => 1,
+      ]);
+      $reservations = $stmt->fetchAll(); // mettre les id des activités dans un tableau
+      $id_activity = [];
+      for ($i = 0; $i < count($reservations); $i++) {
+        $id_activity[] = $reservations[$i]['id_activity'];
+      }
 
       // faire une tableau avec les données
       ?>
@@ -221,22 +214,18 @@ include 'includes/head.php';
                                   'id' => $id_activity[$i],
                                 ]);
                                 $activity = $stmt->fetch();
-
                                 $sql = 'SELECT id_location, name FROM ROOM  WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
                                   'id' => $activity['id_room'],
                                 ]);
                                 $room = $stmt->fetch();
-
                                 $sql = 'SELECT name,address FROM LOCATION WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
                                   'id' => $room['id_location'],
                                 ]);
                                 $location = $stmt->fetch();
-
-
                                 ?>
                                 <td><?= $activity['name'] ?></td>
                                 <td><?= $reservations[$i]['attendee'] ?></td>
@@ -247,9 +236,11 @@ include 'includes/head.php';
                                 $date = $date[2] . '/' . $date[1] . '/' . $date[0];
                                 ?>
                                 <td><?= $date ?></td>
-                                <?php 
+                                <?php
                                 $reservations[$i]['time'] = explode(':', $reservations[$i]['time']);
-                                $reservations[$i]['time'] = $reservations[$i]['time'][0] . 'h' . $reservations[$i]['time'][1]; ?>
+                                $reservations[$i]['time'] =
+                                  $reservations[$i]['time'][0] . 'h' . $reservations[$i]['time'][1];
+                                ?>
                                 <td><?= $reservations[$i]['time'] ?></td>
                                 
                             </tr>
@@ -337,7 +328,8 @@ include 'includes/head.php';
             echo '<br>';
             echo '<br>';
             echo 'Email :    ';
-            echo $provider['email']; // Changer
+            echo $provider['email'];
+            // Changer
             echo '<br>';
             echo '<br>';
             // Ne pas changer
@@ -376,7 +368,6 @@ include 'includes/head.php';
             $id_animate[] = $animate[$i]['id_activity'];
           }
 
-
   // faire une tableau avec les données
   ?>
                 
@@ -402,22 +393,18 @@ include 'includes/head.php';
                                   'id' => $id_animate[$i],
                                 ]);
                                 $activity = $stmt->fetch();
-
                                 $sql = 'SELECT id_location,name FROM ROOM WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
                                   'id' => $activity['id_room'],
                                 ]);
                                 $room = $stmt->fetch();
-
                                 $sql = 'SELECT name,address FROM LOCATION WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
                                   'id' => $room['id_location'],
                                 ]);
                                 $location = $stmt->fetch();
-
-
                                 ?>
                                 <td><?= $activity['name'] ?></td>
                                 <td><?= $activity['maxAttendee'] ?></td>
