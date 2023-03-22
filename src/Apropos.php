@@ -7,10 +7,6 @@
 
 
 <?php
-if (!isset($_SESSION['rights'])) {
-  header('Location: login.php');
-  exit();
-}
 $linkCss = 'css-js/style.css';
 $linkLogo = 'images/logo.png';
 $title = 'Catalogue des activités';
@@ -43,5 +39,5 @@ include 'includes/head.php';
       </div>
 
     <br>
-    
+
 
