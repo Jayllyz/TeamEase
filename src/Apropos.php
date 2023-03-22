@@ -1,13 +1,15 @@
 <?php session_start(); ?>
-
 <?php include 'includes/db.php'; ?>
 
 <!DOCTYPE html>
 <html>
+
+
+
 <?php
 $linkCss = 'css-js/style.css';
 $linkLogo = 'images/logo.png';
-$title = 'Accueil';
+$title = 'Catalogue des activités';
 include 'includes/head.php';
 ?>
 

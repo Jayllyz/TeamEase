@@ -28,7 +28,10 @@ include 'includes/head.php';
   <div class="container section-about-us border border-2 border-secondary rounded">
     <div>
       <div class="row">
-        <h1>Vos informations</h1>
+      <div class="col-8">
+            <h5>Vos information</h5>
+          </div>
+
           
           <br>
 
@@ -67,12 +70,12 @@ include 'includes/head.php';
             ?>
             
             <br>
-              <button class="btn-read">
+              <button class="btn btn-success">
               <a href="modifyCompany.php?siret=<?= $company['siret'] ?>&name=<?= $company[
   'companyName'
 ] ?>&email=<?= $company['email'] ?>&rights=<?= $company['rights'] ?>" class="btn ms-2 me-2">Modifier</a>
               </button>
-              <button class="btn-read">
+              <button class="btn btn-success">
               <a href="modifyCompanyPassword.php?siret=<?= $company['siret'] ?>&rights=<?= $company[
   'rights'
 ] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
@@ -83,9 +86,17 @@ include 'includes/head.php';
   </div>
 
   <div class="container section-about-us border border-2 border-secondary rounded">
-    <div>
-      <div class="row">
-          <h1>Dernières Réservation</h1>
+    <div class="container rounded align-text-bottom">
+        <div class="row align-items-center">
+          <div class="col-8">
+            <h5>Dernière Réservation</h5>
+          </div>
+          <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
+            <a class="btn btn-read" type="submit" href="clients/reservations.php">Voir plus</a>
+          </div>
+        </div>
+      </div>
+
           <?php
           $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
           $stmt = $db->prepare($sql);
@@ -101,15 +112,15 @@ include 'includes/head.php';
 
 
 
-      // faire une tableau avec les données
-      ?>
                 
 
-<table class="table text-center table-bordered table-hover" id="active">
+                <table class="table text-center table-bordered table-hover" id="active">
                     <thead>
                         <tr>
                             <th>Activité</th>
                             <th>Nb de participant</th>
+                            <th>Date</th>
+                            <th>Heure</th>
                             <th>Localisation</th>
                             <th>Salle</th>
                             <th>Date</th>
@@ -246,6 +257,53 @@ include 'includes/head.php';
                     <?php } ?>
                 </table>
 
+                        </tr>
+                    </thead>
+                    <?php for ($i = 0; $i < count($reservations); $i++) { ?>
+                        <tbody>
+                            <tr>
+                                <?php
+                                $sql = 'SELECT name FROM ACTIVITY WHERE id = :id';
+                                $stmt = $db->prepare($sql);
+                                $stmt->execute([
+                                  'id' => $id_activity[$i],
+                                ]);
+                                $activity = $stmt->fetch();
+                                $id_location = [];
+                                $id_room = [];
+                                $sql = 'SELECT id_room FROM ACTIVITY WHERE id = :id';
+                                $stmt = $db->prepare($sql);
+                                $stmt->execute([
+                                  'id' => $id_activity[$i],
+                                ]);
+                                $id_room[] = $stmt->fetch();
+                                $sql = 'SELECT id_location, name FROM ROOM WHERE id = :id';
+                                $stmt = $db->prepare($sql);
+                                $stmt->execute(['id' => $id_room[$i]['id_room']]);
+                                $id_room = $stmt->fetch();
+                                $id_location[] = $id_room['id_location'];
+                                $sql = 'SELECT name, address FROM LOCATION WHERE id = :id';
+                                $stmt = $db->prepare($sql);
+                                $stmt->execute([
+                                  'id' => $id_location[$i],
+                                ]);
+                                $id_location = $stmt->fetch();
+                                $date = explode('-', $reservations[$i]['date']);
+                                $date = $date[2] . '/' . $date[1] . '/' . $date[0];
+                                $time = explode(':', $reservations[$i]['time']);
+                                $time = $time[0] . 'h' . $time[1];
+                                ?>
+                                <td><?= $activity['name'] ?></td>
+                                <td><?= $reservations[$i]['attendee'] ?></td>
+                                <td><?= $date ?></td>
+                                <td><?= $time ?></td>
+                                <td><?= $id_location['name'] ?><br><?= $id_location['address'] ?></td>
+                                <td><?= $id_room['name'] ?></td>
+                                
+                            </tr>
+                        </tbody>
+                    <?php } ?>
+                </table>
     </div>
   </div>
 <?php } ?>
@@ -279,8 +337,7 @@ include 'includes/head.php';
             echo '<br>';
             echo '<br>';
             echo 'Email :    ';
-            echo $provider['email'];
-            // Changer
+            echo $provider['email']; // Changer
             echo '<br>';
             echo '<br>';
             // Ne pas changer
@@ -288,14 +345,14 @@ include 'includes/head.php';
             ?>
             
             <br>
-              <button class="btn-read">
+              <button class="btn btn-success">
               <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider[
   'firstName'
 ] ?>&lastName=<?= $provider['lastName'] ?>&email=<?= $provider['email'] ?>&rights=<?= $provider[
   'rights'
 ] ?>" class="btn ms-2 me-2">Modifier</a>
               </button>
-              <button class="btn-read">
+              <button class="btn btn-success">
               <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider[
   'rights'
 ] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
