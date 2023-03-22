@@ -2,10 +2,18 @@
 
 function banWordFilter($string)
 {
-  $banWords = ['connard', 'pute', 'salope'];
+  $banWords = ['placeholder', 'badword', 'verybadword'];
   for ($i = 0; $i < count($banWords); $i++) {
     if (strpos($string, $banWords[$i])) {
-      echo 'Sananes va te ban';
+      echo jsonResponse(
+        400,
+        [],
+        [
+          'success' => false,
+          'error' => 'Bad word detected',
+        ],
+      );
+      exit();
     }
   }
 } ?>
