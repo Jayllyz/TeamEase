@@ -29,10 +29,6 @@ to the development of WEB or heavy applications, including budgeting)
 # clone the repo
 git clone
 
-# install dependencies
-# sudo apt install unzip
-wget https://github.com/PHPMailer/PHPMailer/archive/master.zip && unzip master.zip && mv PHPMailer-master src/PHPMailer
-
 # create .env file
 #PHP
 PHP_PORT= # 80 or 8080

@@ -1,8 +1,9 @@
 {
-  "trailingComma": "es5",
-  "tabWidth": 2,
-  "useTabs": false,
-  "singleQuote": true,
-  "printWidth": 120,
-  "bracketSpacing": true
+    "phpVersion": "8.0",
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "printWidth": 120,
+    "bracketSpacing": false
 }

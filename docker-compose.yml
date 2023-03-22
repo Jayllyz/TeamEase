@@ -12,7 +12,8 @@ services:
     working_dir: /home/php/src
     entrypoint: php
     volumes:
-      - .:/home/php
+      - .:/home/php/
+      - /home/php/src/vendor/
     ports:
       - '${PHP_PORT}:${PHP_PORT}'
     env_file: .env

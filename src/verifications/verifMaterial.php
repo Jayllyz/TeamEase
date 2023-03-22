@@ -44,7 +44,7 @@ if (isset($_POST['type'])) {
 
   if ($_POST['type'] == 'location') {
     $query = $db->prepare(
-      'SELECT id_material FROM MATERIAL_LOCATION WHERE id_material = :id AND id_location = :idPosition'
+      'SELECT id_material FROM MATERIAL_LOCATION WHERE id_material = :id AND id_location = :idPosition',
     );
     $query->execute([
       ':id' => $_POST['id'],
@@ -53,7 +53,7 @@ if (isset($_POST['type'])) {
     $exist = $query->fetch(PDO::FETCH_COLUMN);
     if ($exist) {
       $update = $db->prepare(
-        'UPDATE MATERIAL_LOCATION SET quantity = :quantity WHERE id_material = :id AND id_location = :idPosition'
+        'UPDATE MATERIAL_LOCATION SET quantity = :quantity WHERE id_material = :id AND id_location = :idPosition',
       );
       $result = $update->execute([
         ':id' => $_POST['id'],
@@ -68,7 +68,7 @@ if (isset($_POST['type'])) {
       exit();
     } else {
       $insert = $db->prepare(
-        'INSERT INTO MATERIAL_LOCATION (id_material, id_location, quantity) VALUES (:id, :idPosition, :quantity)'
+        'INSERT INTO MATERIAL_LOCATION (id_material, id_location, quantity) VALUES (:id, :idPosition, :quantity)',
       );
       $result = $insert->execute([
         ':id' => $_POST['id'],
@@ -91,7 +91,7 @@ if (isset($_POST['type'])) {
     $exist = $query->fetch(PDO::FETCH_COLUMN);
     if ($exist) {
       $update = $db->prepare(
-        'UPDATE MATERIAL_ROOM SET quantity = :quantity WHERE id_material = :id AND id_room = :idPosition'
+        'UPDATE MATERIAL_ROOM SET quantity = :quantity WHERE id_material = :id AND id_room = :idPosition',
       );
       $result = $update->execute([
         ':id' => $_POST['id'],
@@ -106,7 +106,7 @@ if (isset($_POST['type'])) {
       exit();
     } else {
       $insert = $db->prepare(
-        'INSERT INTO MATERIAL_ROOM (id_material, id_room, quantity) VALUES (:id, :idPosition, :quantity)'
+        'INSERT INTO MATERIAL_ROOM (id_material, id_room, quantity) VALUES (:id, :idPosition, :quantity)',
       );
       $result = $insert->execute([
         ':id' => $_POST['id'],

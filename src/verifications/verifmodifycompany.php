@@ -50,7 +50,7 @@ if (
     $token = uniqid();
 
     $update = $db->prepare(
-      'UPDATE COMPANY SET email = :email, companyName = :companyName, rights = :rights, address = :address, token= :token, confirm_signup= :confirm_signup WHERE siret = :siret'
+      'UPDATE COMPANY SET email = :email, companyName = :companyName, rights = :rights, address = :address, token= :token, confirm_signup= :confirm_signup WHERE siret = :siret',
     );
     $update->execute([
       'email' => $email,
@@ -77,7 +77,7 @@ if (
     include '../includes/mailer.php';
   } else {
     $update = $db->prepare(
-      'UPDATE COMPANY SET email = :email, companyName = :companyName, rights = :rights, address = :address WHERE siret = :siret'
+      'UPDATE COMPANY SET email = :email, companyName = :companyName, rights = :rights, address = :address WHERE siret = :siret',
     );
     $update->execute([
       'email' => $email,

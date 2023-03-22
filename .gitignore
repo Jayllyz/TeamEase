@@ -3,5 +3,4 @@
 data
 logs
 src/images/activities
-src/PHPMailer
-src/stripe-php
+src/vendor

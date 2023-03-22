@@ -44,7 +44,7 @@ if (
     $token = uniqid();
 
     $update = $db->prepare(
-      'UPDATE PROVIDER SET email = :email, firstName = :firstName, rights = :rights, lastName = :lastName, token= :token, confirm_signup= :confirm_signup WHERE id = :id'
+      'UPDATE PROVIDER SET email = :email, firstName = :firstName, rights = :rights, lastName = :lastName, token= :token, confirm_signup= :confirm_signup WHERE id = :id',
     );
     $update->execute([
       'email' => $email,
@@ -71,7 +71,7 @@ if (
     include '../includes/mailer.php';
   } else {
     $update = $db->prepare(
-      'UPDATE PROVIDER SET email = :email, firstName = :firstName, rights = :rights, lastName = :lastName WHERE id = :id'
+      'UPDATE PROVIDER SET email = :email, firstName = :firstName, rights = :rights, lastName = :lastName WHERE id = :id',
     );
     $update->execute([
       'email' => $email,

@@ -70,7 +70,7 @@ include 'includes/head.php';
             <div class="my-3">
                 <label for="name" class="form-label"><h4>Nom de l'activité</h4></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Nom de l'activité" value="<?= isset(
-                  $_COOKIE['nameActivity']
+                  $_COOKIE['nameActivity'],
                 )
                   ? $_COOKIE['nameActivity']
                   : '' ?>" required>
@@ -87,7 +87,7 @@ include 'includes/head.php';
                 <div class="col">
                     <label for="duration"><h4>Durée de l'activité (en minute)</h4></label>
                     <input type="number" min="10" max="1440" name="duration" class="form-control" value="<?= isset(
-                      $_COOKIE['durationActivity']
+                      $_COOKIE['durationActivity'],
                     )
                       ? $_COOKIE['durationActivity']
                       : '' ?>" required>
@@ -101,7 +101,7 @@ include 'includes/head.php';
                 <div class="col">
                     <label for="maxAttendee"><h4>Nombre maximum de participants</h4></label>
                     <input type="number" name="maxAttendee" class="form-control" value="<?= isset(
-                      $_COOKIE['maxAttendeeActivity']
+                      $_COOKIE['maxAttendeeActivity'],
                     )
                       ? $_COOKIE['maxAttendeeActivity']
                       : '' ?>" required>
@@ -253,24 +253,6 @@ include 'includes/head.php';
                                 $location['name'] .
                                 '</a></li>';
                             } ?>
-                        </ul>
-                        <?php
-                        $idLocation = $_POST['id'];
-                        $query = $db->query('SELECT id, name FROM ROOM WHERE id_location = ' . $idLocation);
-                        $rooms = $query->fetchAll(PDO::FETCH_ASSOC);
-                        ?>
-                        <button type="button" class="btn btn-secondary dropdown-toggle mx-2" id="room" data-bs-toggle="dropdown" aria-expanded="false">
-                            Salles
-                        </button>
-                        <ul class="dropdown-menu">
-                            <?php foreach ($rooms as $room) {
-                              echo '<li><a class="dropdown-item" onclick="selectRoom(this)" id="' .
-                                $room['id'] .
-                                '">' .
-                                $room['name'] .
-                                '</a></li>';
-                            } ?>
-                        </ul>
                     </div>
                     <input id="roomInput" name="room" type="number" style="display:none">
             </div>

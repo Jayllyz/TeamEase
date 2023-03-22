@@ -9,7 +9,7 @@ if (isset($_POST['submit'])) {
   $company = htmlspecialchars($_GET['company']);
   if (strlen($password) < 6 || strlen($password) > 15) {
     header(
-      'location: ../includes/changePassword.php?message=Mot de passe invalide. Il doit etre compris entre 6 et 15 caractères !&type=danger'
+      'location: ../includes/changePassword.php?message=Mot de passe invalide. Il doit etre compris entre 6 et 15 caractères !&type=danger',
     );
     exit();
   }
@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
     exit();
   } else {
     header(
-      "location: ../includes/changePassword.php?message=Les mots de passes ne sont pas identiques !&type=warning&email=$email&token=$token"
+      "location: ../includes/changePassword.php?message=Les mots de passes ne sont pas identiques !&type=warning&email=$email&token=$token",
     );
     exit();
   }

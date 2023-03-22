@@ -17,7 +17,7 @@ if ($_SESSION['rights'] == 2 && isset($_SESSION['siret'])) { ?>
 
         <?php
         $req = $db->prepare(
-          'SELECT companyName, email, address, confirm_signup , rights FROM COMPANY WHERE siret = :siret'
+          'SELECT companyName, email, address, confirm_signup , rights FROM COMPANY WHERE siret = :siret',
         );
         $req->execute([
           'siret' => $siret,

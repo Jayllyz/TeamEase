@@ -54,7 +54,7 @@ include 'includes/head.php';
                         <p class="fs-2">
                             <?php
                             $query = $db->prepare(
-                              'SELECT AVG(notation) FROM COMMENT WHERE id_reservation IN (SELECT id FROM RESERVATION WHERE id_activity = 0)'
+                              'SELECT AVG(notation) FROM COMMENT WHERE id_reservation IN (SELECT id FROM RESERVATION WHERE id_activity = 0)',
                             );
                             $query->execute([
                               ':id' => $id,
@@ -115,7 +115,7 @@ include 'includes/head.php';
         <div class="d-flex justify-content-center">
             <?php
             $query = $db->prepare(
-              'SELECT name FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id)'
+              'SELECT name FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id)',
             );
             $query->execute([
               ':id' => $id,
@@ -200,7 +200,9 @@ include 'includes/head.php';
               echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-description">Modifier</button>';
             } ?>
         </h1>
-        <p class="fs-5" style="margin-left: 30px; margin-right: 30px"><?php echo $activity['description']; ?></p>
+        <p class="fs-5" style="margin-left: 30px; margin-right: 30px; white-space: pre-line"><?php echo $activity[
+          'description'
+        ]; ?></p>
 
         <hr class="my-5" size="5">
 
@@ -244,7 +246,7 @@ include 'includes/head.php';
                 <ul class="text-center no-dot" style="padding:0">
                     <?php
                     $query = $db->prepare(
-                      'SELECT firstName, lastName FROM PROVIDER WHERE id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)'
+                      'SELECT firstName, lastName FROM PROVIDER WHERE id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)',
                     );
                     $query->execute([
                       ':id' => $id,
@@ -265,7 +267,7 @@ include 'includes/head.php';
                 <ul class="text-center no-dot" style="padding:0">
                     <?php
                     $query = $db->prepare(
-                      'SELECT id, type FROM MATERIAL WHERE id IN (SELECT id_material FROM MATERIAL_ACTIVITY WHERE id_activity = :id)'
+                      'SELECT id, type FROM MATERIAL WHERE id IN (SELECT id_material FROM MATERIAL_ACTIVITY WHERE id_activity = :id)',
                     );
                     $query->execute([
                       ':id' => $id,
@@ -276,7 +278,7 @@ include 'includes/head.php';
                     } else {
                       foreach ($materials as $material) {
                         $query = $db->prepare(
-                          'SELECT quantity FROM MATERIAL_ACTIVITY WHERE id_material = :id_material AND id_activity = :id_activity'
+                          'SELECT quantity FROM MATERIAL_ACTIVITY WHERE id_material = :id_material AND id_activity = :id_activity',
                         );
                         $query->execute([':id_material' => $material['id'], ':id_activity' => $id]);
                         $material['quantity'] = $query->fetch(PDO::FETCH_ASSOC)['quantity'];
@@ -291,7 +293,7 @@ include 'includes/head.php';
                 <ul class="text-center no-dot" style="padding:0">
                     <?php
                     $query = $db->prepare(
-                      'SELECT LOCATION.id AS locationId, ROOM.id AS roomId, ROOM.name AS roomName, LOCATION.address, LOCATION.name AS locationName FROM ROOM INNER JOIN LOCATION ON ROOM.id_location = LOCATION.id WHERE ROOM.id IN (SELECT id_room FROM ACTIVITY WHERE id=:id)'
+                      'SELECT LOCATION.id AS locationId, ROOM.id AS roomId, ROOM.name AS roomName, LOCATION.address, LOCATION.name AS locationName FROM ROOM INNER JOIN LOCATION ON ROOM.id_location = LOCATION.id WHERE ROOM.id IN (SELECT id_room FROM ACTIVITY WHERE id=:id)',
                     );
                     $query->execute([
                       ':id' => $id,
@@ -310,6 +312,37 @@ include 'includes/head.php';
                     ?>
                 </ul>
             </div>
+            <hr size="5">
+            <h3>Jours d'ouverture</h3>
+              <?php
+              $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+              $query->execute([':id' => $id]);
+              $day = $query->fetchAll(PDO::FETCH_ASSOC);
+              $j = 0;
+              $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+              $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+              for ($i = 0; $i < 7; $i++) {
+                if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
+                  echo '<div class="card bg-primary text-white col mx-2 mb-2">
+                          <div class="card-body">
+                            ' .
+                    $frenchDay[$i] .
+                    '
+                          </div>
+                        </div>';
+                  $j++;
+                } else {
+                  echo '<div class="card bg-secondary text-white col mx-2 mb-2">
+                          <div class="card-body">
+                            ' .
+                    $frenchDay[$i] .
+                    '
+                          </div>
+                        </div>';
+                }
+              }
+              ?>
+            <hr size="5">
         </div>
     </div>
 
@@ -369,14 +402,14 @@ include 'includes/head.php';
                                     $query = $db->query('SELECT name FROM OCCUPATION');
                                     $occupations = $query->fetchAll(PDO::FETCH_ASSOC);
                                     $query = $db->prepare(
-                                      'SELECT p.id, p.firstName, UPPER(p.lastName), o.name FROM PROVIDER p JOIN OCCUPATION o ON p.id_occupation = o.id WHERE p.id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)'
+                                      'SELECT p.id, p.firstName, UPPER(p.lastName), o.name FROM PROVIDER p JOIN OCCUPATION o ON p.id_occupation = o.id WHERE p.id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)',
                                     );
                                     $query->execute([
                                       ':id' => $id,
                                     ]);
                                     $providers = $query->fetchAll(PDO::FETCH_ASSOC);
                                     $query = $db->prepare(
-                                      'SELECT id_material, quantity FROM MATERIAL_ACTIVITY WHERE id_activity = :id'
+                                      'SELECT id_material, quantity FROM MATERIAL_ACTIVITY WHERE id_activity = :id',
                                     );
                                     $query->execute([
                                       ':id' => $id,
@@ -387,7 +420,7 @@ include 'includes/head.php';
                                       $query = $db->query(
                                         'SELECT id, firstName, UPPER(lastName) FROM PROVIDER WHERE id_occupation IN (SELECT id FROM OCCUPATION WHERE name = "' .
                                           $providers[$i]['name'] .
-                                          '")'
+                                          '")',
                                       );
                                       $dropdownProvider = $query->fetchAll(PDO::FETCH_ASSOC);
                                       echo '
@@ -443,7 +476,7 @@ include 'includes/head.php';
                                     $query = $db->query(
                                       'SELECT id, type FROM MATERIAL WHERE id IN (SELECT id_material FROM MATERIAL_ACTIVITY WHERE id_activity = ' .
                                         $id .
-                                        ')'
+                                        ')',
                                     );
                                     $materials = $query->fetchAll(PDO::FETCH_ASSOC);
                                     $query = $db->query('SELECT id,type FROM MATERIAL');
@@ -455,7 +488,7 @@ include 'includes/head.php';
                                           $material['id'] .
                                           ' AND id_activity = ' .
                                           $id .
-                                          ''
+                                          '',
                                       );
                                       $quantity = $query->fetch(PDO::FETCH_ASSOC);
                                       echo '
@@ -518,7 +551,7 @@ include 'includes/head.php';
                                       </ul>
                                       <?php
                                       $query = $db->query(
-                                        'SELECT id, name FROM ROOM WHERE id_location = ' . $locationId
+                                        'SELECT id, name FROM ROOM WHERE id_location = ' . $locationId,
                                       );
                                       $rooms = $query->fetchAll(PDO::FETCH_ASSOC);
                                       ?>
@@ -560,7 +593,7 @@ include 'includes/head.php';
                           }
                         }
                         $query = $db->prepare(
-                          'SELECT id_material, quantity FROM MATERIAL_ACTIVITY WHERE id_activity = :id'
+                          'SELECT id_material, quantity FROM MATERIAL_ACTIVITY WHERE id_activity = :id',
                         );
                         $query->execute([
                           ':id' => $id,
@@ -607,7 +640,7 @@ include 'includes/head.php';
                             $fetch = $query->fetchAll(PDO::FETCH_COLUMN);
                             $count = count($fetch);
                             $query = $db->prepare(
-                              'SELECT name FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id)'
+                              'SELECT name FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id)',
                             );
                             $query->execute([
                               ':id' => $id,

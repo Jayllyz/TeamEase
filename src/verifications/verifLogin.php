@@ -42,7 +42,7 @@ if (isset($_POST['submit'])) {
   }
 
   $req = $db->prepare(
-    'SELECT siret, rights,email,confirm_signup FROM COMPANY WHERE email = :email AND password = :password'
+    'SELECT siret, rights,email,confirm_signup FROM COMPANY WHERE email = :email AND password = :password',
   );
   $req->execute([
     'email' => $_POST['login'],
@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
     }
   } else {
     $req = $db->prepare(
-      'SELECT id, rights,email,confirm_signup FROM PROVIDER WHERE email = :email AND password = :password'
+      'SELECT id, rights,email,confirm_signup FROM PROVIDER WHERE email = :email AND password = :password',
     );
     $req->execute([
       'email' => $_POST['login'],

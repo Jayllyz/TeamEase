@@ -12,16 +12,16 @@ include 'includes/head.php';
 ?>
 <?php
 if (isset($_GET['page'])) {
-  $page = $_GET['page'];
+  $page = htmlspecialchars($_GET['page']);
 } else {
   $page = 1;
 }
-if (isset($_GET['search'])) {
-  $search = $_GET['search'];
+if (isset($_GET['category'])) {
+  $category = htmlspecialchars($_GET['category']);
+  $populate = $page . ',' . $category;
 } else {
-  $search = 'none';
+  $populate = $page;
 }
-$populate = $page . ',' . '\'' . $search . '\'';
 ?>
 
 <body onload="populateActivity(<?php echo $populate; ?>)">
@@ -41,6 +41,21 @@ $populate = $page . ',' . '\'' . $search . '\'';
           <a href="addActivityPage.php" class="btn btn-secondary">Ajouter une activité</a>
           </div>';
         } ?>
+      </div>
+      <hr size="5">
+      <div class="row">
+        <?php
+        $query = $db->prepare('SELECT name, id FROM CATEGORY');
+        $query->execute();
+        $categories = $query->fetchAll(PDO::FETCH_ASSOC);
+        echo '<div class="row d-flex justify-content-center">';
+        foreach ($categories as $category) { ?>
+          <button class="btn btn-outline-success col-2 m-2" onclick="filterCategory(<?php echo $page; ?>, this)" id=<?= $category[
+  'id'
+] ?>><?php echo $category['name']; ?></button>
+        <?php }
+        echo '</div>';
+        ?>
       </div>
       <hr size="5">
       <div class="row">

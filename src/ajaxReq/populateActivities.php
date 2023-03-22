@@ -13,6 +13,24 @@ if ($_POST['searchBarInput'] == 'none') {
 } else {
   $searchBarInput = 'AND name LIKE \'%' . $_POST['searchBarInput'] . '%\' ';
 }
+if (isset($_POST['category']) && $_POST['category'] != '' && $_POST['category'] != 'null') {
+  $categories = $_POST['category'];
+} else {
+  $categories = 'none';
+}
+$categoryList = explode(',', $categories);
+$categoriesFilter = '';
+foreach ($categoryList as $value) {
+  if ($value < 0) {
+    $categoriesFilter =
+      $categoriesFilter . ' AND NOT id IN (SELECT id_activity FROM BELONG WHERE id_category=' . abs($value) . ') ';
+  } elseif ($value > 0 && $value != 'none') {
+    $categoriesFilter =
+      $categoriesFilter . ' AND id IN (SELECT id_activity FROM BELONG WHERE id_category=' . abs($value) . ') ';
+  } else {
+    $categoriesFilter = $categoriesFilter . '';
+  }
+}
 if ($_POST['search'] == 'none') {
   $search = '';
 } elseif ($_POST['search'] == 'maxAttendeeDesc') {
@@ -36,7 +54,7 @@ if ($_POST['search'] == 'none') {
 } elseif ($_POST['search'] == 'statusAsc') {
   $search = 'ORDER BY status ASC';
 }
-$query = $db->query('SELECT id FROM ACTIVITY WHERE status = 1 ' . $searchBarInput . $search);
+$query = $db->query('SELECT id FROM ACTIVITY WHERE status = 1 ' . $categoriesFilter . $searchBarInput . $search);
 $id = $query->fetchAll(PDO::FETCH_COLUMN);
 $countId = count($id);
 if ($countId == 0) {
@@ -45,8 +63,9 @@ if ($countId == 0) {
           </div>';
 } elseif ($countId - ($currentPage - 1) * 10 < 10) {
   for ($i = ($currentPage - 1) * 10; $i < $countId; $i++) {
+
     $query = $db->prepare(
-      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id =:id'
+      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id =:id',
     );
     $query->execute([
       ':id' => $id[$i],
@@ -65,16 +84,18 @@ if ($countId == 0) {
             <div class="col-4">
             <a href="activity.php?id=' .
       $id[$i] .
-      '"><img src="images/activities/' .
-      $id[$i] .
-      $activity['name'] .
-      '0.jpg" class="card-img-top" alt="' .
+      '"><img src="';
+    $path = 'images/activities/';
+    $id = $id[$i];
+    include '../includes/image.php';
+    echo $image0 .
+      '" class="card-img-top" alt="' .
       $activity['name'] .
       '"></a>
             </div>
-            <div class="card-body col-8 row">
+            <div class="card-body bg-dark col-8 p-0 row">
               <div class="col-11 card-title">
-              <h4><a href="activity.php?id=' .
+              <h4 class="mt-2"><a href="activity.php?id=' .
       $id[$i] .
       '" class="text-light">' .
       $activity['name'] .
@@ -114,16 +135,20 @@ if ($countId == 0) {
                 <p>' .
       $activity['SUBSTRING(description, 1, 450)'] .
       '</p>
-              <p class="mb-0">';
+      <div class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
       $query = $db->prepare(
-        'SELECT name FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE :id_activity = :id_activity)'
+        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)',
       );
       $query->execute([':id_activity' => $id[$i]]);
-      $categoryName = $query->fetchAll(PDO::FETCH_COLUMN);
-      echo '<a type="button" class="btn btn-info mx-2" href="">' . $categoryName[0] . '</a>';
+      $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);
+      echo '<a type="button" class="btn btn-info mx-2" href="catalog.php?category=' .
+        $categoryName[$j]['id'] .
+        '">' .
+        $categoryName[$j]['name'] .
+        '</a>';
     }
-    echo '<div class="row"></p>
+    echo '</div><div class="row">
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
       $activity['duration'] .
       ' min | Prix par participants : ' .
@@ -132,15 +157,44 @@ if ($countId == 0) {
                | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
       $activity['maxAttendee'] .
       '</p></div>';
-    echo '
+    ?> <div class="row p-0 m-0"> <?php
+ $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+ $query->execute([':id' => $id]);
+ $day = $query->fetchAll(PDO::FETCH_ASSOC);
+ $j = 0;
+ $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+ $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+ for ($i = 0; $i < 7; $i++) {
+   if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
+     echo '<div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+     $j++;
+   } else {
+     echo '<div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+   }
+ }
+ ?></div>
+      <?php echo '
                 </div>
                 </div>
               </div>';
   }
 } else {
   for ($i = ($currentPage - 1) * 10; $i < 10 * $currentPage; $i++) {
+
     $query = $db->prepare(
-      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id = :id'
+      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id = :id',
     );
     $query->execute([
       ':id' => $id[$i],
@@ -211,13 +265,17 @@ if ($countId == 0) {
               <p class="mb-0">';
     for ($j = 0; $j < $countCategory; $j++) {
       $query = $db->prepare(
-        'SELECT name FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE :id_activity = :id_activity)'
+        'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)',
       );
       $query->execute([':id_activity' => $id[$i]]);
-      $categoryName = $query->fetchAll(PDO::FETCH_COLUMN);
-      echo '<a type="button" class="btn btn-info mx-2" href="">' . $categoryName[0] . '</a>';
+      $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);
+      echo '<a type="button" class="btn btn-info mx-2" href="catalog.php?category=' .
+        $categoryName[$j]['id'] .
+        '">' .
+        $categoryName[$j]['name'] .
+        '</a>';
     }
-    echo '<div class="row"></p>
+    echo '</p><div class="row">
               <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
       $activity['duration'] .
       ' min | Prix par participants : ' .
@@ -226,7 +284,35 @@ if ($countId == 0) {
                | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
       $activity['maxAttendee'] .
       '</p></div>';
-    echo '
+    ?> <div class="row p-0 m-0"> <?php
+ $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+ $query->execute([':id' => $id]);
+ $day = $query->fetchAll(PDO::FETCH_ASSOC);
+ $j = 0;
+ $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+ $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+ for ($i = 0; $i < 7; $i++) {
+   if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
+     echo '<div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+     $j++;
+   } else {
+     echo '<div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+   }
+ }
+ ?></div>
+      <?php echo '
                 </div>
                 </div>
               </div>';

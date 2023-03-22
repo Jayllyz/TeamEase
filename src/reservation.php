@@ -20,28 +20,32 @@ include 'includes/head.php';
     <main>
         <h1 style="margin-top: 1rem; margin-bottom: 1rem;">Reservation</h1>
         <div class="container col-md-6">
-            <?php if (!isset($_GET['input'])) {
-              include 'includes/msg.php';
-            } ?>
+              <?php include 'includes/msg.php'; ?>
         </div>
         <?php
         $query = $db->prepare(
-          'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id'
+          'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
         );
         $query->execute([
           'id' => htmlspecialchars($_GET['id']),
         ]);
         $activities = $query->fetchAll(PDO::FETCH_ASSOC);
         $idActivity = htmlspecialchars($_GET['id']);
+        $price = $activities[0]['priceAttendee'];
         ?>
-        <form action="verifications/reservation.php?id=<?= $idActivity ?>"  onsubmit="return validateForm(this.name)" method="POST">
+        <form action="verifications/reservation.php?id=<?= $idActivity ?>&price=<?= $price ?>"  onsubmit="return validateForm(this.name)" method="POST">
             <div class="container col-md-3" id="form">
                 <label for="attendee" class="form-label"><h4>Nombre de participants</h4></label>
+                <div class="input-group">
                 <input type="number" class="form-control" min="1" max="<?= $activities[0][
                   'maxAttendee'
                 ] ?>" id="attendee" name="attendee" value="<?= isset($_COOKIE['attendee'])
   ? $_COOKIE['attendee']
   : '' ?>" onchange="selectedDateReservation(date)" required>
+    <span class="input-group-text" id="priceDisplay">0.00</span>
+    <span class="input-group-text">€</span>
+  </div>
+                <div id="priceHelp" class="form-text"><?= $price . ' € par personne' ?></div>
                 <label for="date" class="form-label"><h4>Date de votre réservation</h4></label>
                 <?php foreach ($activities as $activity) { ?>
                     <div style="display:none" class="<?= $activity['day'] ?>">
@@ -53,6 +57,7 @@ include 'includes/head.php';
                     <select class="form-control" name="slot" id="container-slot">
                     </select>
                 </div>
+                <input type="hidden" name="price" id="price" value="<?= $price ?>">
 
                 <div class="g-recaptcha mb-4 mt-4" id="captcha" data-sitekey="<?= $siteKey ?>" data-callback="validCaptcha"></div>
 

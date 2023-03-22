@@ -13,7 +13,7 @@ $req->execute([
 
 if ($req === false) {
   header(
-    'Location: ../clients/reservations.php?message=Une erreur est survenue lors de l\'annulation de votre réservation.&type=error'
+    'Location: ../clients/reservations.php?message=Une erreur est survenue lors de l\'annulation de votre réservation.&type=error',
   );
   exit();
 }
