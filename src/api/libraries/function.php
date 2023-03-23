@@ -10,7 +10,7 @@ function banWordFilter($string)
         [],
         [
           'success' => false,
-          'error' => 'Bad word detected',
+          'error' => 'Je ne peux pas repondre a cette question car elle contient un mot interdit' . PHP_EOL,
         ],
       );
       exit();
@@ -26,7 +26,7 @@ function bodyCheck($body)
       [],
       [
         'success' => false,
-        'error' => 'Body is empty',
+        'error' => 'Desole je n\'ai pas compris votre question' . PHP_EOL,
       ],
     );
     exit();
@@ -38,7 +38,7 @@ function bodyCheck($body)
       [],
       [
         'success' => false,
-        'error' => 'Question is empty',
+        'error' => 'Desole je n\'ai pas compris votre question' . PHP_EOL,
       ],
     );
     exit();
@@ -135,8 +135,12 @@ function checkAllQuestionHowMuchParameters($parameters)
       ];
       $message =
         "J'ai trouve " . count($result) . ' activites disponibles le ' . $frenchDay[$parameters['day']] . ':' . PHP_EOL;
-      foreach ($result as $activity) {
-        $message .= '- ' . $activity['name'] . PHP_EOL;
+      if (count($result) == 0) {
+        $message = "Il n'y a pas d'activites disponibles le " . $frenchDay[$parameters['day']] . PHP_EOL;
+      } else {
+        foreach ($result as $activity) {
+          $message .= '- ' . $activity['name'] . PHP_EOL;
+        }
       }
       echo jsonResponse(
         200,
@@ -149,10 +153,14 @@ function checkAllQuestionHowMuchParameters($parameters)
     }
     if (array_key_exists('category', $parameters)) {
       $result = getAllActivitiesByCategory($parameters['category']);
-      $message =
-        "J'ai trouve " . count($result) . ' activites de la catégorie ' . $parameters['category'] . ':' . PHP_EOL;
-      foreach ($result as $activity) {
-        $message .= '- ' . $activity['name'] . PHP_EOL;
+      if (count($result) == 0) {
+        $message = "Il n'y a pas d'activites dans la categorie " . $parameters['category'] . PHP_EOL;
+      } else {
+        $message =
+          "J'ai trouve " . count($result) . ' activites dans la categorie ' . $parameters['category'] . ':' . PHP_EOL;
+        foreach ($result as $activity) {
+          $message .= '- ' . $activity['name'] . PHP_EOL;
+        }
       }
       echo jsonResponse(
         200,
@@ -165,9 +173,13 @@ function checkAllQuestionHowMuchParameters($parameters)
     }
     if (array_key_exists('location', $parameters)) {
       $result = getAllActivitiesByLocation($parameters['location']);
-      $message = "J'ai trouve " . count($result) . ' activites au ' . $parameters['location'] . ':' . PHP_EOL;
-      foreach ($result as $activity) {
-        $message .= '- ' . $activity['name'] . PHP_EOL;
+      if (count($result) == 0) {
+        $message = "Il n'y a pas d'activites au " . $parameters['location'] . PHP_EOL;
+      } else {
+        $message = "J'ai trouve " . count($result) . ' activites au ' . $parameters['location'] . ':' . PHP_EOL;
+        foreach ($result as $activity) {
+          $message .= '- ' . $activity['name'] . PHP_EOL;
+        }
       }
       echo jsonResponse(
         200,
@@ -180,15 +192,19 @@ function checkAllQuestionHowMuchParameters($parameters)
     }
     if (array_key_exists('attendee', $parameters)) {
       $result = getAllActivitiesByMaxAttendee($parameters['attendee'], $parameters['attendeeCheck']);
-      $message =
-        "J'ai trouve " .
-        count($result) .
-        ' activites avec un maximum de ' .
-        $parameters['attendee'] .
-        ' participants:' .
-        PHP_EOL;
-      foreach ($result as $activity) {
-        $message .= '- ' . $activity['name'] . PHP_EOL;
+      if (count($result) == 0) {
+        $message = "Il n'y a pas d'activites avec un maximum de " . $parameters['attendee'] . ' participants' . PHP_EOL;
+      } else {
+        $message =
+          "J'ai trouve " .
+          count($result) .
+          ' activites avec un maximum de ' .
+          $parameters['attendee'] .
+          ' participants:' .
+          PHP_EOL;
+        foreach ($result as $activity) {
+          $message .= '- ' . $activity['name'] . PHP_EOL;
+        }
       }
       echo jsonResponse(
         200,
@@ -201,15 +217,28 @@ function checkAllQuestionHowMuchParameters($parameters)
     }
     if (array_key_exists('price', $parameters)) {
       $result = getAllActivitiesPrice($parameters['price'], $parameters['priceLower']);
-      $message =
-        "J'ai trouve " .
-        count($result) .
-        ' activites avec un prix ' .
-        ($parameters['priceLower'] ? 'inférieur' : 'supérieur') .
-        ' à ' .
-        $parameters['price'] .
-        '€:' .
-        PHP_EOL;
+      if (count($result) == 0) {
+        $message =
+          "Il n'y a pas d'activites avec un prix " .
+          ($parameters['priceLower'] ? 'inférieur' : 'supérieur') .
+          ' à ' .
+          $parameters['price'] .
+          '€' .
+          PHP_EOL;
+      } else {
+        $message =
+          "J'ai trouve " .
+          count($result) .
+          ' activites avec un prix ' .
+          ($parameters['priceLower'] ? 'inférieur' : 'supérieur') .
+          ' à ' .
+          $parameters['price'] .
+          '€:' .
+          PHP_EOL;
+        foreach ($result as $activity) {
+          $message .= '- ' . $activity['name'] . PHP_EOL;
+        }
+      }
       echo jsonResponse(
         200,
         [],
@@ -221,9 +250,13 @@ function checkAllQuestionHowMuchParameters($parameters)
     }
   } else {
     $result = getAllActivities();
-    $message = "J'ai trouve " . count($result) . ' activites:' . PHP_EOL;
-    foreach ($result as $activity) {
-      $message .= '- ' . $activity['name'] . PHP_EOL;
+    if (count($result) == 0) {
+      $message = "Il n'y a pas d'activites disponibles" . PHP_EOL;
+    } else {
+      $message = "J'ai trouve " . count($result) . ' activites:' . PHP_EOL;
+      foreach ($result as $activity) {
+        $message .= '- ' . $activity['name'] . PHP_EOL;
+      }
     }
     echo jsonResponse(
       200,
@@ -301,7 +334,6 @@ function checkAllQuestionHowParameters($parameters)
         [],
         [
           'success' => false,
-          'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
         ],
       );
       exit();
@@ -332,7 +364,6 @@ function checkAllQuestionHowParameters($parameters)
       [],
       [
         'success' => false,
-        'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
       ],
     );
     exit();
@@ -367,7 +398,6 @@ function checkAllQuestionHowParameters($parameters)
       [],
       [
         'success' => false,
-        'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
       ],
     );
     exit();
@@ -413,7 +443,6 @@ function checkAllQuestionHowParameters($parameters)
     [],
     [
       'success' => false,
-      'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision",
     ],
   );
   exit();
@@ -469,7 +498,6 @@ function checkAllQuestionWhyParameters($parameters)
     [],
     [
       'success' => false,
-      'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
     ],
   );
   exit();
@@ -535,7 +563,6 @@ function checkAllQuestionWhatParameters($parameters)
     [],
     [
       'success' => false,
-      'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
     ],
   );
   exit();

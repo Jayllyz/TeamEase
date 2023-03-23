@@ -9,6 +9,14 @@ struct MemoryStruct {
     size_t size;
 };
 
+void clean_stdin(void)
+{
+    int c;
+    do {
+        c = getchar();
+    } while (c != '\n' && c != EOF);
+}
+
 static size_t WriteMemoryCallback(void *ptr, size_t size, size_t nmemb, void *data)
 {
     size_t realsize = size * nmemb;
@@ -29,7 +37,6 @@ static size_t WriteMemoryCallback(void *ptr, size_t size, size_t nmemb, void *da
 
 void curlApi(char *url, char *input)
 {
-
     struct MemoryStruct chunk;
     chunk.memory = malloc(1);
     chunk.size = 0;
@@ -68,19 +75,24 @@ void curlApi(char *url, char *input)
             cJSON *json;
             json = cJSON_Parse(chunk.memory);
             if (!json) {
-                fprintf(stderr, "Error Parsing JSON\n");
+                fprintf(stderr, "Je suis desole une erreur est survenue\n");
             }
             else {
-                cJSON *success = cJSON_GetObjectItem(json,"success");
-                if(cJSON_IsFalse(success)) {
+                cJSON *success = cJSON_GetObjectItem(json, "success");
+                cJSON *error = NULL;
+                if (cJSON_IsFalse(success)) {
+                    error = cJSON_GetObjectItem(json, "error");
+                    if (error != NULL) {
+                        printf("\n %s \n", error->valuestring);
+                        return;
+                    }
                     printf("Je suis désolé, je n'ai pas compris votre question. Veuillez réessayer.\n");
                 }
-                cJSON *message = cJSON_GetObjectItem(json,"message");
+                cJSON *message = cJSON_GetObjectItem(json, "message");
 
                 printf("\n %s \n", message->valuestring);
-
+                cJSON_Delete(json);
             }
-            cJSON_Delete(json);
         }
     }
 
@@ -93,11 +105,16 @@ int main(int argc, char *argv[])
 
     char *input = malloc(200);
     do {
-    printf("Votre question ? : \n");
-    scanf("%s", input);
+        printf("Votre question ? : \n");
+        scanf("%s", input);
+        clean_stdin();
 
-    curlApi("http://localhost:80/api/api.php/activities", input);}
-    while (strcmp(input, "quitter") != 0);
+        if (input != NULL) {
+            curlApi("http://localhost:80/api/api.php/activities", input);
+        }
+        free(input);
+        input = malloc(200);
+    } while (strcmp(input, "quitter") != 0);
 
     printf("\nAu revoir...\n");
 

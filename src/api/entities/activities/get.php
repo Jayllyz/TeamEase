@@ -67,11 +67,11 @@ function getAllActivitiesByCategory(string $category): array
   include '/home/php/src/includes/db.php';
 
   $getActivities = $db->prepare(
-    'select a.name from ACTIVITY a inner join BELONG b  on a.id = b.id_activity  inner join CATEGORY c on b.id_category = c.id  where c.name = "en ligne";',
+    'select a.name from ACTIVITY a inner join BELONG b  on a.id = b.id_activity  inner join CATEGORY c on b.id_category = c.id  where c.name = :category;',
   );
   $getActivities->bindParam(':category', $category);
   $getActivities->execute();
-  return $getActivities->fetch(PDO::FETCH_ASSOC);
+  return $getActivities->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function getAllActivitiesByDay(string $day): array
