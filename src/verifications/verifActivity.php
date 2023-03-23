@@ -16,6 +16,7 @@ if (isset($_GET['delete'])) {
   ]);
   $activity = $request->fetch(PDO::FETCH_ASSOC);
   $path = '../images/activities/';
+  $idImage = $id;
   include '../includes/image.php';
   if ($image0 != '../images/activities/placeholder.jpg') {
     unlink($image0);
@@ -475,6 +476,7 @@ if ($result && $result2 && $result3 && $result4) {
   ]);
   $activity = $request->fetch(PDO::FETCH_ASSOC);
   $path = '../images/activities/';
+  $idImage = $id;
   include '../includes/image.php';
   if ($image0 != '../images/activities/placeholder.jpg') {
     unlink($image0);

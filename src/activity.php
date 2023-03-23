@@ -28,6 +28,7 @@ include 'includes/head.php';
   <div class="container col-md-6">
     <?php
     $path = 'images/activities/';
+    $idImage = $id;
     include 'includes/image.php';
     ?>
   </div>
@@ -343,6 +344,41 @@ include 'includes/head.php';
               }
               ?>
             <hr size="5">
+            <h3>Commentaires et avis sur l'activité</h3>
+            <div class="container col-md-8">
+              <?php
+              $query = $db->prepare(
+                'SELECT COMMENT.content, COMMENT.notation, date_format(COMMENT.date, "%d/%m/%Y") as day, date_format(COMMENT.date, "%H:%i") as time, COMPANY.companyName FROM COMMENT INNER JOIN RESERVATION ON id_reservation = RESERVATION.id INNER JOIN COMPANY ON RESERVATION.siret = COMPANY.siret WHERE RESERVATION.id_activity = :id',
+              );
+              $query->execute([':id' => $id]);
+              $comments = $query->fetchAll(PDO::FETCH_ASSOC);
+              foreach ($comments as $comment) { ?>
+              <div class="card text-white p-0 mb-3 fs-6" style="background-color:#7A828A">
+                <div class="card-body row">
+                  <div class="card-title text-start ps-3 col-10 d-flex">
+                    <h4>
+                      <?= $comment['companyName'] . ' - ' . $comment['day'] . ' - ' . $comment['time'] ?>
+                    </h4>
+                  </div>
+                  
+                  <h6 class="col-2">
+                    <?php for ($i = 0; $i < 5; $i++) {
+                      if ($i < $comment['notation']) {
+                        echo '<i class="bi bi-star-fill" style="color: yellow"></i>';
+                      } else {
+                        echo '<i class="bi bi-star" style="color: yellow"></i>';
+                      }
+                    } ?>
+                  </h6>
+                  <hr size="4" class="mb-0">
+                  <p class="card-text text-start" style="white-space: pre-line">
+                    <?= $comment['content'] ?>
+                  </p>
+                </div>
+              </div>
+              <?php }
+              ?>
+            </div>
         </div>
     </div>
 
@@ -358,7 +394,7 @@ include 'includes/head.php';
                     <form action="verifications/verifActivity.php?update=description&id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea name="description" class="form-control" rows="10"><?php echo $activity[
+                            <textarea name="description" class="form-control" rows="10" style="white-space: pre-line"><?php echo $activity[
                               'description'
                             ]; ?></textarea>
                         </div>
