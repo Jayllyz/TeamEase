@@ -165,11 +165,47 @@ echo $image0;
         </div>
       <?php }
     }
-    ?></div>
-      </div>
-    </div>
-  </div>
-  <?php
+    echo '</div><div class="row">
+              <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
+      $activity['duration'] .
+      ' min | Prix par participants : ' .
+      $activity['priceAttendee'] .
+      '<i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
+               | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
+      $activity['maxAttendee'] .
+      '</p></div>';
+    ?> <div class="d-flex p-0 m-0 ps-3"> <?php
+ $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+ $query->execute([':id' => $id]);
+ $day = $query->fetchAll(PDO::FETCH_ASSOC);
+ $j = 0;
+ $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+ $frenchDayInitial = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+ for ($i = 0; $i < 7; $i++) {
+   if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
+     echo '<div class="card bg-primary text-white mx-1 p-0 fs-6 text-center iconWeek">
+                <div class="card-body">
+                  ' .
+       $frenchDayInitial[$i] .
+       '
+                </div>
+              </div>';
+     $j++;
+   } else {
+     echo '<div class="card text-white mx-1 p-0 fs-6 text-center iconWeek" style="background-color:#7A828A">
+                <div class="card-body">
+                  ' .
+       $frenchDayInitial[$i] .
+       '
+                </div>
+              </div>';
+   }
+ }
+ ?></div>
+      <?php echo '
+                </div>
+                </div>
+              </div>';
   }
 } else {
   for ($i = ($currentPage - 1) * 10; $i < 10 * $currentPage; $i++) {
@@ -276,11 +312,47 @@ echo $image0;
         </div>
       <?php }
     }
-    ?></div>
-      </div>
-    </div>
-  </div>
-  <?php
+    echo '</p><div class="row">
+              <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
+      $activity['duration'] .
+      ' min | Prix par participants : ' .
+      $activity['priceAttendee'] .
+      '<i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
+               | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
+      $activity['maxAttendee'] .
+      '</p></div>';
+    ?> <div class="row p-0 m-0"> <?php
+ $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+ $query->execute([':id' => $id]);
+ $day = $query->fetchAll(PDO::FETCH_ASSOC);
+ $j = 0;
+ $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+ $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+ for ($i = 0; $i < 7; $i++) {
+   if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
+     echo '<div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+     $j++;
+   } else {
+     echo '<div class="card text-white col mx-1 p-0 fs-6 text-center" style="background-color:#7A828A">
+                <div class="card-body px-2 py-1">
+                  ' .
+       $frenchDay[$i] .
+       '
+                </div>
+              </div>';
+   }
+ }
+ ?></div>
+      <?php echo '
+                </div>
+                </div>
+              </div>';
   }
 }
 ?>
