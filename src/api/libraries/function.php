@@ -131,6 +131,7 @@ function checkAllQuestionHowMuchParameters($parameters)
           'success' => true,
           'data' => $result,
           'count' => count($result),
+          'type' => 'day',
         ],
       );
     }
