@@ -16,7 +16,10 @@ try {
 
   for ($i = 0; $i < count($body['question']); $i++) {
     if (preg_match('/[cC][oO0][mM][bB6][iI1][eE3][nN]/', $body['question'][$i])) {
-      searchQuestionParameters($body['question'], $i);
+      searchQuestionHowMuchParameters($body['question'], $i + 1);
+    }
+    if (preg_match('/[cC][oO0][mM][mM][eE3][nN][tT]/', $body['question'][$i])) {
+      searchQuestionHowParameters($body['question'], $i + 1);
     }
   }
   exit();

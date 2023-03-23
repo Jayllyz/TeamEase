@@ -45,16 +45,10 @@ function bodyCheck($body)
   }
 }
 
-function searchQuestionParameters($body, $i)
+function searchQuestionHowMuchParameters($body, $i)
 {
-  $test = false;
   $parameters = [];
-  while ($test != true) {
-    $i++;
-    if ($i > count($body) - 1) {
-      checkAllQuestionParameters($parameters);
-      break;
-    }
+  for ($i; $i < count($body); $i++) {
     if (preg_match('/\b(disponible)\b/i', $body[$i])) {
       $parameters += ['disponible' => true];
     }
@@ -122,9 +116,10 @@ function searchQuestionParameters($body, $i)
       }
     }
   }
+  checkAllQuestionHowMuchParameters($parameters);
 }
 
-function checkAllQuestionParameters($parameters)
+function checkAllQuestionHowMuchParameters($parameters)
 {
   if (array_key_exists('disponible', $parameters)) {
     if (array_key_exists('day', $parameters)) {
@@ -135,6 +130,7 @@ function checkAllQuestionParameters($parameters)
         [
           'success' => true,
           'data' => $result,
+          'count' => count($result),
         ],
       );
     }
@@ -199,4 +195,186 @@ function checkAllQuestionParameters($parameters)
   }
 }
 
+function searchQuestionHowParameters($body, $i)
+{
+  $parameters = [];
+  for ($i; $i < count($body); $i++) {
+    if (preg_match('/\b(voi(s|r))\b/i', $body[$i])) {
+      $parameters += ['see' => true];
+    }
+    if (preg_match('/\b(filte(|r))\b/i', $body[$i])) {
+      $parameters += ['filter' => true];
+    }
+    if (preg_match('/\b(inscription|inscri(s|t|re))\b/i', $body[$i])) {
+      $parameters += ['register' => true];
+    }
+    if (preg_match('/\b(connexion|connecte(|r))\b/i', $body[$i])) {
+      $parameters += ['connect' => true];
+    }
+    if (preg_match('/\b(r(é|e)servation(|s)|r(é|e)serv(é|e)(|r))\b/i', $body[$i])) {
+      $parameters += ['reservation' => true];
+    }
+    if (preg_match('/\b((re|)cherche(|r))\b/i', $body[$i])) {
+      $parameters += ['search' => true];
+    }
+    if (preg_match('/\b(activit(e|é))\b/i', $body[$i])) {
+      $parameters += ['activity' => true];
+    }
+    if (preg_match('/\b(information(|s))\b/i', $body[$i])) {
+      $parameters += ['information' => true];
+    }
+  }
+  checkAllQuestionHowParameters($parameters);
+}
+
+function checkAllQuestionHowParameters($parameters)
+{
+  if (array_key_exists('see', $parameters)) {
+    if (array_key_exists('information', $parameters)) {
+      if (array_key_exists('activity', $parameters)) {
+        echo jsonResponse(
+          200,
+          [],
+          [
+            'success' => true,
+            'answer' =>
+              "Pour voir les informations d'une activité, il faut cliquer sur l'activité que vous souhaitez voir. Vous pouvez voir ensuite informations de l'activité sur la page.",
+          ],
+        );
+        exit();
+      }
+      if (array_key_exists('reservation', $parameters)) {
+        echo jsonResponse(
+          200,
+          [],
+          [
+            'success' => true,
+            'answer' =>
+              "Pour voir les informations sur vos reservations vous pouvez vous rendre sur la page \"Réservation\".",
+          ],
+        );
+        exit();
+      }
+      echo jsonResponse(
+        200,
+        [],
+        [
+          'success' => false,
+          'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
+        ],
+      );
+      exit();
+    }
+    if (array_key_exists('activity', $parameters)) {
+      echo jsonResponse(
+        200,
+        [],
+        [
+          'success' => true,
+          'answer' => "Pour voir les activités, vous pouvez vous rendre sur la page \"Catalogue\".",
+        ],
+      );
+    }
+    if (array_key_exists('reservation', $parameters)) {
+      echo jsonResponse(
+        200,
+        [],
+        [
+          'success' => true,
+          'answer' => "Pour voir vos reservations vous pouvez vous rendre sur la page \"Réservation\".",
+        ],
+      );
+      exit();
+    }
+    echo jsonResponse(
+      200,
+      [],
+      [
+        'success' => false,
+        'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
+      ],
+    );
+    exit();
+  }
+  if (array_key_exists('search', $parameters) || array_key_exists('filter', $parameters)) {
+    if (array_key_exists('activity', $parameters) && array_key_exists('search', $parameters)) {
+      echo jsonResponse(
+        200,
+        [],
+        [
+          'success' => true,
+          'answer' =>
+            "Pour rechercher une activité, vous pouvez utiliser la barre de recherche sur le haut de la page, ensuite taper le nom de l'activité que vous souhaitez rechercher ou vous rendre sur la page \"Catalogue\" et utiliser les filtres pour retrouvez votre activité.",
+        ],
+      );
+      exit();
+    }
+    if (array_key_exists('activity', $parameters) && array_key_exists('search', $parameters)) {
+      echo jsonResponse(
+        200,
+        [],
+        [
+          'success' => true,
+          'answer' =>
+            "Pour filtrer les activités, vous pouvez vous rendre sur la page \"Catalogue\" et utiliser les filtres pour restreindre vos recherches.",
+        ],
+      );
+      exit();
+    }
+    echo jsonResponse(
+      200,
+      [],
+      [
+        'success' => false,
+        'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
+      ],
+    );
+    exit();
+  }
+  if (array_key_exists('reservation', $parameters)) {
+    echo jsonResponse(
+      200,
+      [],
+      [
+        'success' => true,
+        'answer' =>
+          "Pour réserver une activité, vous pouvez vous devez être sur la page de l'activité que souhaitez réserver, ensuite vous pouvez réserver l'activité en cliquant sur le bouton \"Réserver\", cela vous amènera vers un formulaire de réservation, vous devez remplir ce formulaire pour réserver l'activité. Vous pourrez retrouver votre réservation ou l'annuler sur la page \"Réservation\"",
+      ],
+    );
+    exit();
+  }
+  if (array_key_exists('register', $parameters)) {
+    echo jsonResponse(
+      200,
+      [],
+      [
+        'success' => true,
+        'answer' =>
+          "Pour vous inscrire en cliquant sur le bouton \"S'inscrire\" en haut de la page, vous pouvez vous inscrire en tant qu'entreprise ou en tant que préstataire selon vos dispositions, vous pouvez choisir cela en changéant de formulaire d'inscription.",
+      ],
+    );
+    exit();
+  }
+  if (array_key_exists('connect', $parameters)) {
+    echo jsonResponse(
+      200,
+      [],
+      [
+        'success' => true,
+        'answer' =>
+          "Pour vous connecter à votre compte, vous pouvez vous rendre sur la page \"Connexion\" en appuyant sur le bouton \"Se connecter\" en haut de la page. Si vous n'avez pas de compte vous pouvez vous inscrire en appuyant sur le bouton \"S'inscrire\" en haut de la page.",
+      ],
+    );
+    exit();
+  }
+  echo jsonResponse(
+    200,
+    [],
+    [
+      'success' => false,
+      'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision",
+    ],
+  );
+  exit();
+}
 ?>
