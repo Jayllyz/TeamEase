@@ -149,60 +149,88 @@ function checkAllQuestionHowMuchParameters($parameters)
     }
     if (array_key_exists('category', $parameters)) {
       $result = getAllActivitiesByCategory($parameters['category']);
+      $message =
+        "J'ai trouvé " . count($result) . ' activités de la catégorie ' . $parameters['category'] . ':' . PHP_EOL;
+      foreach ($result as $activity) {
+        $message .= '- ' . $activity['name'] . PHP_EOL;
+      }
       echo jsonResponse(
         200,
         [],
         [
           'success' => true,
-          'activities' => $result,
-          'count' => count($result),
+          'message' => $message,
         ],
       );
     }
     if (array_key_exists('location', $parameters)) {
       $result = getAllActivitiesByLocation($parameters['location']);
+      $message = "J'ai trouvé " . count($result) . ' activités au ' . $parameters['location'] . ':' . PHP_EOL;
+      foreach ($result as $activity) {
+        $message .= '- ' . $activity['name'] . PHP_EOL;
+      }
       echo jsonResponse(
         200,
         [],
         [
           'success' => true,
-          'activities' => $result,
-          'count' => count($result),
+          'message' => $message,
         ],
       );
     }
     if (array_key_exists('attendee', $parameters)) {
       $result = getAllActivitiesByMaxAttendee($parameters['attendee'], $parameters['attendeeCheck']);
+      $message =
+        "J'ai trouvé " .
+        count($result) .
+        ' activités avec un maximum de ' .
+        $parameters['attendee'] .
+        ' participants:' .
+        PHP_EOL;
+      foreach ($result as $activity) {
+        $message .= '- ' . $activity['name'] . PHP_EOL;
+      }
       echo jsonResponse(
         200,
         [],
         [
           'success' => true,
-          'activities' => $result,
-          'count' => count($result),
+          'message' => $message,
         ],
       );
     }
     if (array_key_exists('price', $parameters)) {
       $result = getAllActivitiesPrice($parameters['price'], $parameters['priceLower']);
+      $message =
+        "J'ai trouvé " .
+        count($result) .
+        ' activités avec un prix ' .
+        ($parameters['priceLower'] ? 'inférieur' : 'supérieur') .
+        ' à ' .
+        $parameters['price'] .
+        '€:' .
+        PHP_EOL;
       echo jsonResponse(
         200,
         [],
         [
           'success' => true,
-          'activities' => $result,
-          'count' => count($result),
+          'message' => $message,
         ],
       );
     }
   } else {
     $result = getAllActivities();
+    $message = "J'ai trouvé " . count($result) . ' activités:' . PHP_EOL;
+    foreach ($result as $activity) {
+      $message .= '- ' . $activity['name'] . PHP_EOL;
+    }
     echo jsonResponse(
       200,
       [],
       [
         'success' => true,
-        'data' => $result,
+        'message' => $message,
       ],
     );
   }
@@ -250,7 +278,7 @@ function checkAllQuestionHowParameters($parameters)
           [],
           [
             'success' => true,
-            'answer' =>
+            'message' =>
               "Pour voir les informations d'une activité, il faut cliquer sur l'activité que vous souhaitez voir. Vous pouvez voir ensuite informations de l'activité sur la page.",
           ],
         );
@@ -262,7 +290,7 @@ function checkAllQuestionHowParameters($parameters)
           [],
           [
             'success' => true,
-            'answer' =>
+            'message' =>
               "Pour voir les informations sur vos reservations vous pouvez vous rendre sur la page \"Réservation\".",
           ],
         );
@@ -273,7 +301,7 @@ function checkAllQuestionHowParameters($parameters)
         [],
         [
           'success' => false,
-          'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
+          'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
         ],
       );
       exit();
@@ -284,7 +312,7 @@ function checkAllQuestionHowParameters($parameters)
         [],
         [
           'success' => true,
-          'answer' => "Pour voir les activités, vous pouvez vous rendre sur la page \"Catalogue\".",
+          'message' => "Pour voir les activités, vous pouvez vous rendre sur la page \"Catalogue\".",
         ],
       );
     }
@@ -294,7 +322,7 @@ function checkAllQuestionHowParameters($parameters)
         [],
         [
           'success' => true,
-          'answer' => "Pour voir vos reservations vous pouvez vous rendre sur la page \"Réservation\".",
+          'message' => "Pour voir vos reservations vous pouvez vous rendre sur la page \"Réservation\".",
         ],
       );
       exit();
@@ -304,7 +332,7 @@ function checkAllQuestionHowParameters($parameters)
       [],
       [
         'success' => false,
-        'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
+        'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
       ],
     );
     exit();
@@ -316,7 +344,7 @@ function checkAllQuestionHowParameters($parameters)
         [],
         [
           'success' => true,
-          'answer' =>
+          'message' =>
             "Pour rechercher une activité, vous pouvez utiliser la barre de recherche sur le haut de la page, ensuite taper le nom de l'activité que vous souhaitez rechercher ou vous rendre sur la page \"Catalogue\" et utiliser les filtres pour retrouvez votre activité.",
         ],
       );
@@ -328,7 +356,7 @@ function checkAllQuestionHowParameters($parameters)
         [],
         [
           'success' => true,
-          'answer' =>
+          'message' =>
             "Pour filtrer les activités, vous pouvez vous rendre sur la page \"Catalogue\" et utiliser les filtres pour restreindre vos recherches.",
         ],
       );
@@ -339,7 +367,7 @@ function checkAllQuestionHowParameters($parameters)
       [],
       [
         'success' => false,
-        'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
+        'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
       ],
     );
     exit();
@@ -350,7 +378,7 @@ function checkAllQuestionHowParameters($parameters)
       [],
       [
         'success' => true,
-        'answer' =>
+        'message' =>
           "Pour réserver une activité, vous pouvez vous devez être sur la page de l'activité que souhaitez réserver, ensuite vous pouvez réserver l'activité en cliquant sur le bouton \"Réserver\", cela vous amènera vers un formulaire de réservation, vous devez remplir ce formulaire pour réserver l'activité. Vous pourrez retrouver votre réservation ou l'annuler sur la page \"Réservation\"",
       ],
     );
@@ -362,7 +390,7 @@ function checkAllQuestionHowParameters($parameters)
       [],
       [
         'success' => true,
-        'answer' =>
+        'message' =>
           "Pour vous inscrire en cliquant sur le bouton \"S'inscrire\" en haut de la page, vous pouvez vous inscrire en tant qu'entreprise ou en tant que préstataire selon vos dispositions, vous pouvez choisir cela en changéant de formulaire d'inscription.",
       ],
     );
@@ -374,7 +402,7 @@ function checkAllQuestionHowParameters($parameters)
       [],
       [
         'success' => true,
-        'answer' =>
+        'message' =>
           "Pour vous connecter à votre compte, vous pouvez vous rendre sur la page \"Connexion\" en appuyant sur le bouton \"Se connecter\" en haut de la page. Si vous n'avez pas de compte vous pouvez vous inscrire en appuyant sur le bouton \"S'inscrire\" en haut de la page.",
       ],
     );
@@ -385,7 +413,7 @@ function checkAllQuestionHowParameters($parameters)
     [],
     [
       'success' => false,
-      'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision",
+      'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision",
     ],
   );
   exit();
@@ -417,7 +445,7 @@ function checkAllQuestionWhyParameters($parameters)
         [],
         [
           'success' => true,
-          'answer' =>
+          'message' =>
             "Nous avons choisi de créer TeamEase car nous avons constaté que les entreprises n'avaient pas de moyen simple et efficace de trouver des activités de teambuilding pour leurs employés. Nous avons donc décidé de créer une plateforme qui permet aux entreprises de trouver des activités de teambuilding et aux prestataires de proposer leurs activités.",
         ],
       );
@@ -429,7 +457,7 @@ function checkAllQuestionWhyParameters($parameters)
         [],
         [
           'success' => true,
-          'answer' =>
+          'message' =>
             "Un team building réussi c'est l'occasion de rapprocher les collaborateurs, mais aussi de les amener dans un cadre propice à l'innovation et à la créativité. De plus, des personnes qui ont l'habitude de travailler en équipe apportent davantage en évoluant ensemble que la somme de leurs individualités réunies.",
         ],
       );
@@ -441,7 +469,7 @@ function checkAllQuestionWhyParameters($parameters)
     [],
     [
       'success' => false,
-      'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
+      'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
     ],
   );
   exit();
@@ -473,7 +501,7 @@ function checkAllQuestionWhatParameters($parameters)
         [],
         [
           'success' => true,
-          'answer' =>
+          'message' =>
             'Notre but est de permettre aux entreprises de trouver des activités de teambuilding pour leurs employés et aux prestataires de proposer leurs activités.',
         ],
       );
@@ -484,7 +512,7 @@ function checkAllQuestionWhatParameters($parameters)
       [],
       [
         'success' => true,
-        'answer' =>
+        'message' =>
           'TeamEase est une plateforme qui permet aux entreprises de trouver des activités de teambuilding pour leurs employés et aux prestataires de proposer leurs activités.',
       ],
     );
@@ -496,7 +524,7 @@ function checkAllQuestionWhatParameters($parameters)
       [],
       [
         'success' => true,
-        'answer' =>
+        'message' =>
           'Le teambuilding est un ensemble d’activités qui permettent de renforcer les liens entre les collaborateurs et de développer leur esprit d’équipe.',
       ],
     );
@@ -507,7 +535,7 @@ function checkAllQuestionWhatParameters($parameters)
     [],
     [
       'success' => false,
-      'answer' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
+      'message' => "Je n'ai pas compris votre question veuillez la reformuler ou donner plus de précision.",
     ],
   );
   exit();
