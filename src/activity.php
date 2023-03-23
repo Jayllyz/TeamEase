@@ -28,6 +28,7 @@ include 'includes/head.php';
   <div class="container col-md-6">
     <?php
     $path = 'images/activities/';
+    $idImage = $id;
     include 'includes/image.php';
     ?>
   </div>
