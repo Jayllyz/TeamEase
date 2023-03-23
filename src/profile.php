@@ -474,9 +474,10 @@ include 'includes/head.php';
                       </tr>
                     </thead>
                   <tbody>
-                    <tr>
+                    
                     <?php
                     for ($i = 0; $i < 7; $i++) {
+                      echo '<tr>';
 
 
                       $sql = 'SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider';
@@ -554,23 +555,30 @@ include 'includes/head.php';
 
 
                           for($j=0 ;$j< count($reservations) ; $j++){
-                            $sql = 'SELECT * FROM ACTIVITY WHERE id IN (SELECT id_activity FROM RESERVATION WHERE id= :id)';
+                            
+                          
+                          
+                            $configdate = explode('-', $reservations[$j]['date']);
+                            $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+
+                            $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
                             $stmt = $db->prepare($sql);
-                            $stmt->execute(['id' => $reservations[$j]['id']]);
-                            $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $stmt->execute(['id' => $reservations[$j]['id_activity']]);
+                            $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            
 
-
-                          
-                          
-                          $configdate = explode('-', $reservations[$j]['date']);
-                          $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
-
-                              if($datereservation == $dateplanning){
+                            if($datereservation == $dateplanning){
+                            
+                              $sql = 'SELECT name FROM ACTIVITY WHERE id = :id';
+                              $stmt = $db->prepare($sql);
+                              $stmt->execute(['id' => 5]);
+                              $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
                               
-                              echo "<br>". $activity[$j]['name'] . "<br>";
+                              echo "<br>" . $activities[0]['name'] . "<br>";
 
-                            }
                           }
+                          
+                        }
 
                           echo "</td>";
 
@@ -590,41 +598,52 @@ include 'includes/head.php';
                           }
                           echo "</td>";
 
-                          $sql = 'SELECT id_room FROM ACTIVITY WHERE id IN (SELECT id FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider))';
-                            $stmt = $db->prepare($sql);
-                            $stmt->execute(['id_provider' => $_SESSION['id']]);
-                            $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            $sql = 'SELECT id_location, name FROM ROOM WHERE id IN (SELECT id_room FROM ACTIVITY WHERE id IN (SELECT id FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)))';
-                            $stmt = $db->prepare($sql);
-                            $stmt->execute(['id_provider' => $_SESSION['id']]);
-                            $room = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            $sql = 'SELECT name,address FROM LOCATION WHERE id IN (SELECT id_location FROM ROOM WHERE id IN (SELECT id_room FROM ACTIVITY WHERE id IN (SELECT id FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider))))';
-                            $stmt = $db->prepare($sql);
-                            $stmt->execute(['id_provider' => $_SESSION['id']]);
-                            $location = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 
                           echo "<td>";
                           for($k=0 ;$k<count($reservations) ; $k++){ 
+                            $sql = 'SELECT id_room FROM ACTIVITY WHERE id = :id';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id' => $reservations[$k]['id_activity']]);
+                            $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+                            $sql = 'SELECT name,id_location FROM ROOM WHERE id = :id';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id' => $activity[0]['id_room']]);
+                            $room = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            
+                            $sql = 'SELECT name,address FROM LOCATION WHERE id = :id';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id' => $room[0]['id_location']]);
+                            $location = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             
 
                             $configdate = explode('-', $reservations[$k]['date']);
                             $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
                             if($datereservation == $dateplanning){
-                              echo "<br>". $location[$k]['name'] . "<br>";
-                              echo $location[$k]['address'] . "<br>";
+                              echo "<br>". $location[0]['name'] . "<br>";
+                              echo $location[0]['address'] . "<br>";
                             }
                           }
                           echo "</td>";
                           echo "<td>";
                           for($k=0 ;$k<count($reservations) ; $k++){
+
+                            $sql = 'SELECT id_room FROM ACTIVITY WHERE id = :id';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id' => $reservations[$k]['id_activity']]);
+                            $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+                            $sql = 'SELECT name,id_location FROM ROOM WHERE id = :id';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id' => $activity[0]['id_room']]);
+                            $room = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             
                             $configdate = explode('-', $reservations[$k]['date']);
                             $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
                             if($datereservation == $dateplanning){
-                              echo "<br>". $room[$k]["name"] . "<br>";
+                              echo "<br>". $room[0]["name"] . "<br>";
 
                             }
                           }
