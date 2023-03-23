@@ -124,13 +124,26 @@ function checkAllQuestionHowMuchParameters($parameters)
   if (array_key_exists('disponible', $parameters)) {
     if (array_key_exists('day', $parameters)) {
       $result = getAllActivitiesByDay($parameters['day']);
+      $frenchDay = [
+        'monday' => 'lundi',
+        'tuesday' => 'mardi',
+        'wednesday' => 'mercredi',
+        'thursday' => 'jeudi',
+        'friday' => 'vendredi',
+        'saturday' => 'samedi',
+        'sunday' => 'dimanche',
+      ];
+      $message =
+        "J'ai trouvé " . count($result) . ' activités disponibles le ' . $frenchDay[$parameters['day']] . ':' . PHP_EOL;
+      foreach ($result as $activity) {
+        $message .= '- ' . $activity['name'] . PHP_EOL;
+      }
       echo jsonResponse(
         200,
         [],
         [
           'success' => true,
-          'message' => "J'ai trouvé" . count($result) . 'activités disponibles le ' . $parameters['day'],
-          'data' => $result,
+          'message' => $message,
         ],
       );
     }
