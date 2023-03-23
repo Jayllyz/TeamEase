@@ -44,7 +44,6 @@ $priceAttendee = $selectActivity['priceAttendee'];
 
 require_once '/home/php/src/vendor/autoload.php';
 
-
 use Spipu\Html2Pdf\Html2Pdf;
 
 $teamease = [
@@ -152,7 +151,7 @@ $total_tva = 0;
 
 	<table style="margin-top: 80px;">
 		<tr>
-			<?php if($isinvoice != true) { ?>
+			<?php if ($isinvoice != true) { ?>
 			<td class="50p"><h2>Devis n°<?= $idReservation ?></h2></td>
 			<?php } else { ?>
 			<td class="50p"><h2>Facture n°<?= $idReservation ?></h2></td>
@@ -215,10 +214,10 @@ $content = ob_get_clean();
 try {
   $pdf = new Html2Pdf('p', 'A4', 'fr');
   $pdf->writeHTML($content);
-  if($isinvoice != true) {
-	$pdf->output('Devis.pdf');
+  if ($isinvoice != true) {
+    $pdf->output('Devis.pdf');
   } else {
-	$invoice = $pdf->output('Facture.pdf', 'S');
+    $invoice = $pdf->output('Facture.pdf', 'S');
   }
 } catch (Html2PdfException $e) {
   $pdf->clean();
