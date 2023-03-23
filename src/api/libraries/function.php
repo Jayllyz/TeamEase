@@ -134,7 +134,7 @@ function checkAllQuestionHowMuchParameters($parameters)
         'sunday' => 'dimanche',
       ];
       $message =
-        "J'ai trouvé " . count($result) . ' activités disponibles le ' . $frenchDay[$parameters['day']] . ':' . PHP_EOL;
+        "J'ai trouve " . count($result) . ' activites disponibles le ' . $frenchDay[$parameters['day']] . ':' . PHP_EOL;
       foreach ($result as $activity) {
         $message .= '- ' . $activity['name'] . PHP_EOL;
       }
@@ -150,7 +150,7 @@ function checkAllQuestionHowMuchParameters($parameters)
     if (array_key_exists('category', $parameters)) {
       $result = getAllActivitiesByCategory($parameters['category']);
       $message =
-        "J'ai trouvé " . count($result) . ' activités de la catégorie ' . $parameters['category'] . ':' . PHP_EOL;
+        "J'ai trouve " . count($result) . ' activites de la catégorie ' . $parameters['category'] . ':' . PHP_EOL;
       foreach ($result as $activity) {
         $message .= '- ' . $activity['name'] . PHP_EOL;
       }
@@ -165,7 +165,7 @@ function checkAllQuestionHowMuchParameters($parameters)
     }
     if (array_key_exists('location', $parameters)) {
       $result = getAllActivitiesByLocation($parameters['location']);
-      $message = "J'ai trouvé " . count($result) . ' activités au ' . $parameters['location'] . ':' . PHP_EOL;
+      $message = "J'ai trouve " . count($result) . ' activites au ' . $parameters['location'] . ':' . PHP_EOL;
       foreach ($result as $activity) {
         $message .= '- ' . $activity['name'] . PHP_EOL;
       }
@@ -181,9 +181,9 @@ function checkAllQuestionHowMuchParameters($parameters)
     if (array_key_exists('attendee', $parameters)) {
       $result = getAllActivitiesByMaxAttendee($parameters['attendee'], $parameters['attendeeCheck']);
       $message =
-        "J'ai trouvé " .
+        "J'ai trouve " .
         count($result) .
-        ' activités avec un maximum de ' .
+        ' activites avec un maximum de ' .
         $parameters['attendee'] .
         ' participants:' .
         PHP_EOL;
@@ -202,9 +202,9 @@ function checkAllQuestionHowMuchParameters($parameters)
     if (array_key_exists('price', $parameters)) {
       $result = getAllActivitiesPrice($parameters['price'], $parameters['priceLower']);
       $message =
-        "J'ai trouvé " .
+        "J'ai trouve " .
         count($result) .
-        ' activités avec un prix ' .
+        ' activites avec un prix ' .
         ($parameters['priceLower'] ? 'inférieur' : 'supérieur') .
         ' à ' .
         $parameters['price'] .
@@ -221,7 +221,7 @@ function checkAllQuestionHowMuchParameters($parameters)
     }
   } else {
     $result = getAllActivities();
-    $message = "J'ai trouvé " . count($result) . ' activités:' . PHP_EOL;
+    $message = "J'ai trouve " . count($result) . ' activites:' . PHP_EOL;
     foreach ($result as $activity) {
       $message .= '- ' . $activity['name'] . PHP_EOL;
     }
