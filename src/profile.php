@@ -115,8 +115,6 @@ include 'includes/head.php';
                         <tr>
                             <th>Activité</th>
                             <th>Nb de participant</th>
-                            <th>Date</th>
-                            <th>Heure</th>
                             <th>Localisation</th>
                             <th>Salle</th>
                             <th>Date</th>
@@ -172,11 +170,16 @@ include 'includes/head.php';
     </div>
   </div>
 
-  <div class="container section-about-us border border-2 border-secondary rounded">
-    <div>
-      <div class="row">
-          <h1>Dernière Activités fait</h1>
-          <br>
+    <div class="container section-about-us border border-2 border-secondary rounded">
+    <div class="container rounded align-text-bottom">
+        <div class="row align-items-center">
+          <div class="col-8">
+            <h5>Dernière Activité Terminé</h5>
+          </div>
+          <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
+            <a class="btn btn-read" type="submit" href="clients/reservations.php">Voir plus</a>
+          </div>
+        </div>
       </div>
       <?php
       $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
@@ -301,9 +304,13 @@ include 'includes/head.php';
 <?php if ($_SESSION['rights'] == 1) { ?> 
 
   <div class="container section-about-us border border-2 border-secondary rounded">
-    <div>
-      <div class="row">
-        <h1>Tes Informations</h1>
+    <div class="container rounded align-text-bottom">
+        <div class="row align-items-center">
+          <div class="col-8">
+            <h5>Vos Information</h5>
+          </div>
+        </div>
+      </div>
           
           <br>
 
@@ -355,9 +362,13 @@ include 'includes/head.php';
   </div>
 
   <div class="container section-about-us border border-2 border-secondary rounded">
-    <div>
-      <div class="row">
-          <h1>Vos Activités </h1>
+    <div class="container rounded align-text-bottom">
+        <div class="row align-items-center">
+          <div class="col-8">
+            <h5>Vos Activité</h5>
+          </div>
+        </div>
+      </div>
           <?php
           $sql = 'SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider';
           $stmt = $db->prepare($sql);
@@ -408,7 +419,7 @@ include 'includes/head.php';
                                 ?>
                                 <td><?= $activity['name'] ?></td>
                                 <td><?= $activity['maxAttendee'] ?></td>
-                                <td><?= $activity['duration'] ?>Heure</td>
+                                <td><?= $activity['duration'] ?> minutes</td>
                                 <td><?= $activity['priceAttendee'] ?>€/Participant</td>
                                 <td><?= $location['name'] ?> <br> <?= $location['address'] ?> </td>
                                 <td><?= $room['name'] ?></td>
@@ -424,6 +435,219 @@ include 'includes/head.php';
     </div>
   </div>
 
+  <div class="container section-about-us border border-2 border-secondary rounded">
+    <div class="container rounded align-text-bottom">
+        <div class="row align-items-center">
+          <div class="col-8">
+            <h5>Planning</h5>
+          </div>
+        </div>
+      </div>
+
+      <?php
+      
+
+      
+      $sql = 'SELECT * FROM RESERVATION WHERE id_activity = :id_activity';
+      $stmt = $db->prepare($sql);
+      $stmt->execute(['id_activity' => $animate[0]['id_activity']]);
+      $reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+      
+      
+
+
+      
+      ?>
+
+
+      <table style="border: 1px solid black;"  class="table text-center table-bordered table-hover" id="active">
+                    <thead>
+                      <tr>
+                        <th>Jours</th>
+                        <th>Activité</th>
+                        <th>L'Heure</th>
+                        <th>Adresse</th>
+                        <th>Salle</th>
+                        <th>Nombre de participants</th>
+                      </tr>
+                    </thead>
+                  <tbody>
+                    <tr>
+                    <?php
+                    for ($i = 0; $i < 7; $i++) {
+
+
+                      $sql = 'SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider';
+                      $stmt = $db->prepare($sql);
+                      $stmt->execute(['id_provider' => $_SESSION['id']]);
+                      $animate = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                      $sql = 'SELECT count(*) FROM RESERVATION WHERE id_activity IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)';
+                      $stmt = $db->prepare($sql);
+                      $stmt->execute(
+                        [
+                          'id_provider' => $_SESSION['id'],
+                        ]
+                      );
+                      $reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+                      $date = date('Y-m-d');
+                      $dayOfWeek = date('w', strtotime($date));
+                      $dayOfWeek -= 8;
+                      
+                      $monday = date('Y-m-d', strtotime("-$dayOfWeek day", strtotime($date)));
+                      
+                    
+                        $day = date('Y-m-d', strtotime("+$i day", strtotime($monday)));
+                        $dayOfWeek = date("w", strtotime($day));
+                        if($dayOfWeek == 1){
+                            $dayofWeeks = "Monday";
+                        }
+                        if($dayOfWeek == 2){
+                            $dayofWeeks = "Tuesday";
+                        }
+                        if($dayOfWeek == 3){
+                            $dayofWeeks = "Wednesday";
+                        }
+                        if($dayOfWeek == 4){
+                            $dayofWeeks = "Thursday";
+                        }
+                        if($dayOfWeek == 5){
+                            $dayofWeeks = "Friday";
+                        }
+                        if($dayOfWeek == 6){
+                            $dayofWeeks = "Saturday";
+                        }
+                        if($dayOfWeek == 0){
+                            $dayofWeeks = "Sunday";
+                        }
+
+
+                        $configdate = explode('-', $day);
+                        $dateplanning = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+                        echo "<td>$dayofWeeks <br> $dateplanning</td>";
+
+
+
+                          
+                          $sql = 'SELECT * FROM SCHEDULE WHERE id_activity IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)';
+                          $stmt = $db->prepare($sql);
+                          $stmt->execute(['id_provider' => $_SESSION['id']]);
+                          $schedule = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                          
+
+                          $sql = 'SELECT * FROM RESERVATION WHERE id_activity IN (SELECT id FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider))';
+                          $stmt = $db->prepare($sql);
+                          $stmt->execute(['id_provider' => $_SESSION['id']]);
+                          $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                        
+
+
+                          
+                          echo "<td>";
+
+
+                          for($j=0 ;$j< count($reservations) ; $j++){
+                            $sql = 'SELECT * FROM ACTIVITY WHERE id IN (SELECT id_activity FROM RESERVATION WHERE id= :id)';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id' => $reservations[$j]['id']]);
+                            $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+                          
+                          
+                          $configdate = explode('-', $reservations[$j]['date']);
+                          $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+
+                              if($datereservation == $dateplanning){
+                              
+                              echo "<br>". $activity[$j]['name'] . "<br>";
+
+                            }
+                          }
+
+                          echo "</td>";
+
+                          echo "<td>";
+                          for($k=0 ;$k<count($reservations) ; $k++){
+
+                            
+                            
+                            
+
+                            $configdate = explode('-', $reservations[$k]['date']);
+                            $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+                            if($datereservation == $dateplanning){
+                              echo "<br>". $reservations[$k]["time"] . "<br>";
+
+                            }
+                          }
+                          echo "</td>";
+
+                          $sql = 'SELECT id_room FROM ACTIVITY WHERE id IN (SELECT id FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider))';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id_provider' => $_SESSION['id']]);
+                            $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            $sql = 'SELECT id_location, name FROM ROOM WHERE id IN (SELECT id_room FROM ACTIVITY WHERE id IN (SELECT id FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)))';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id_provider' => $_SESSION['id']]);
+                            $room = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            $sql = 'SELECT name,address FROM LOCATION WHERE id IN (SELECT id_location FROM ROOM WHERE id IN (SELECT id_room FROM ACTIVITY WHERE id IN (SELECT id FROM ACTIVITY WHERE id IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider))))';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id_provider' => $_SESSION['id']]);
+                            $location = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+                          echo "<td>";
+                          for($k=0 ;$k<count($reservations) ; $k++){ 
+                            
+
+                            $configdate = explode('-', $reservations[$k]['date']);
+                            $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+                            if($datereservation == $dateplanning){
+                              echo "<br>". $location[$k]['name'] . "<br>";
+                              echo $location[$k]['address'] . "<br>";
+                            }
+                          }
+                          echo "</td>";
+                          echo "<td>";
+                          for($k=0 ;$k<count($reservations) ; $k++){
+                            
+                            $configdate = explode('-', $reservations[$k]['date']);
+                            $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+                            if($datereservation == $dateplanning){
+                              echo "<br>". $room[$k]["name"] . "<br>";
+
+                            }
+                          }
+                          echo "</td>";
+                          echo "<td>";
+                          for($k=0 ;$k<count($reservations) ; $k++){
+                            
+                            $configdate = explode('-', $reservations[$k]['date']);
+                            $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+                            if($datereservation == $dateplanning){
+                              echo "<br>". $reservations[$k]["attendee"] . "<br>";
+
+                            }
+                          }
+                          echo "</td>";
+                        
+
+                        echo"</tr>";
+                    }
+                    ?>
+                    
+                    </tbody>
+                </table>
 <?php } ?>
 
   </main>

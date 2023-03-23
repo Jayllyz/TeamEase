@@ -107,6 +107,9 @@
                       }
                     } ?>
                     <li class="nav-item">
+                        <a class="nav-link" href="../planning.php">Planning</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../aPropos.php">A propos de nous</a>
                     </li>
                     <li class="nav-item">
