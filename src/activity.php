@@ -93,15 +93,18 @@ include 'includes/head.php';
                     </div>
                     <div class="col pt-4" style="border-left:solid #59A859">
                         <p class="fs-3" style="margin:0">Réserver</p>
-                        <?php if (isset($_SESSION['email'])) {
+                        <?php if (isset($_SESSION['email']) && isset($_SESSION['siret'])) {
                           echo '<a href="reservation.php?id=' .
                             $id .
                             '" class="btn btn-primary">Réserver</a>
                             ';
-                        } else {
+                        } else if(!isset($_SESSION['email'])){
                           echo '<a href="login.php" class="btn btn-primary">Se connecter</a>
                             ';
-                        } ?>
+                        } else {
+                          echo 'Vous ne pouvez pas réserver une activité en tant que prestataire';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
