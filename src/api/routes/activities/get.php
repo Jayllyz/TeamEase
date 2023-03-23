@@ -21,6 +21,12 @@ try {
     if (preg_match('/[cC][oO0][mM][mM][eE3][nN][tT]/', $body['question'][$i])) {
       searchQuestionHowParameters($body['question'], $i + 1);
     }
+    if (preg_match('/[pP][oO0][uU][rR][qQ][uU][oO0][iI]/', $body['question'][$i])) {
+      searchQuestionWhyParameters($body['question'], $i + 1);
+    }
+    if (preg_match('/([qQ]uelle[s]?|[qQ]uel[s]?|[qQ]u\'est(|-ce))/i', $body['question'][$i])) {
+      searchQuestionWhatParameters($body['question'], $i + 1);
+    }
   }
   exit();
 } catch (Exception $exception) {
