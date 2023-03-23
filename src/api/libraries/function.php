@@ -129,9 +129,8 @@ function checkAllQuestionHowMuchParameters($parameters)
         [],
         [
           'success' => true,
+          'message' => "J'ai trouvé" . count($result) . 'activités disponibles le ' . $parameters['day'],
           'data' => $result,
-          'count' => count($result),
-          'type' => 'day',
         ],
       );
     }
