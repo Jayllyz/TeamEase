@@ -77,43 +77,34 @@ if ($countId == 0) {
     ]);
     $countCategory = count($query->fetchAll(PDO::FETCH_COLUMN));
     $category = $query->fetchAll(PDO::FETCH_COLUMN);
-    echo '
+    ?>
             <div class="card text-light bg-secondary mb-3">
-  
-            <div class="row">
-            <div class="col-4">
-            <a href="activity.php?id=' .
-      $id[$i] .
-      '"><img src="';
-    $path = 'images/activities/';
-    $id = $id[$i];
-    include '../includes/image.php';
-    echo $image0 .
-      '" class="card-img-top" alt="' .
+              <div class="row">
+                <div class="col-4">
+                  <a href="activity.php?id=<?= $id[$i] ?>"><img src="<?php
+$path = 'images/activities/';
+$idImage = $id[$i];
+include '../includes/image.php';
+echo $image0;
+?>" class="card-img-top" alt="' .
       $activity['name'] .
       '"></a>
             </div>
             <div class="card-body bg-dark col-8 p-0 row">
               <div class="col-11 card-title">
-              <h4 class="mt-2"><a href="activity.php?id=' .
-      $id[$i] .
-      '" class="text-light">' .
-      $activity['name'] .
-      '</a></h4>
-              </div>';
-    $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
-    if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
-      echo '
+              <h4 class="mt-2">
+                <a href="activity.php?id=<?= $id[$i] ?>" class="text-light"><?= $activity['name'] ?></a>
+              </h4>
+              </div>
+              <?php
+              $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
+              if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) { ?>
                 <div class="col-1 d-flex justify-content-end pe-3">
-                <button type="button" class="btn-close btn-danger btn-sm" aria-label="Close" data-bs-toggle="modal" data-bs-target="#suppression' .
-        $altId .
-        '"></button>
-                </div>';
-    }
-    echo '
-                <div class="modal fade popup" id="suppression' .
-      $altId .
-      '" tabindex="-1" aria-labelledby="suppressionLabel" aria-hidden="true">
+                <button type="button" class="btn-close btn-danger btn-sm" aria-label="Close" data-bs-toggle="modal" data-bs-target="#suppression<?= $altId ?>"></button>
+                </div>
+    <?php }
+              ?>
+                <div class="modal fade popup" id="suppression<?= $altId ?>" tabindex="-1" aria-labelledby="suppressionLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -125,76 +116,66 @@ if ($countId == 0) {
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                          <a type="button" class="btn btn-danger" href="verifications/verifActivity.php?delete=' .
-      $altId .
-      '">Supprimer</a>
+                          <a type="button" class="btn btn-danger" href="verifications/verifActivity.php?delete=<?= $altId ?>">Supprimer</a>
                         </div>
                     </div>
                   </div>
                 </div>
-                <p>' .
-      $activity['SUBSTRING(description, 1, 450)'] .
-      '</p>
-      <div class="mb-0">';
-    for ($j = 0; $j < $countCategory; $j++) {
+                <p> <?= $activity['SUBSTRING(description, 1, 450)'] ?></p>
+      <div class="mb-0">
+    <?php for ($j = 0; $j < $countCategory; $j++) {
+
       $query = $db->prepare(
         'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)',
       );
       $query->execute([':id_activity' => $id[$i]]);
       $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);
-      echo '<a type="button" class="btn btn-info mx-2" href="catalog.php?category=' .
-        $categoryName[$j]['id'] .
-        '">' .
-        $categoryName[$j]['name'] .
-        '</a>';
+      ?>
+      <a type="button" class="btn btn-info mx-2" href="catalog.php?category=<?= $categoryName[$j][
+        'id'
+      ] ?>"><?= $categoryName[$j]['name'] ?></a>
+      <?php
+    } ?>
+    </div><div class="row">
+              <p class="fs-6 mb-0 col">Durée de l'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l'activité"></i> <?= $activity[
+                'duration'
+              ] ?> min | Prix par participants : 
+      <?= $activity[
+        'priceAttendee'
+      ] ?><i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
+               | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i><?= $activity[
+                 'maxAttendee'
+               ] ?></p>
+    </div>
+    <div class="row p-0 m-0"> <?php
+    $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+    $query->execute([':id' => $id[$i]]);
+    $day = $query->fetchAll(PDO::FETCH_ASSOC);
+    $j = 0;
+    $dayOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+    for ($k = 0; $k < 7; $k++) {
+      if (in_array($dayOfWeek[$k], array_column($day, 'day'))) { ?>
+        <div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
+          <div class="card-body px-2 py-1"><?= $frenchDay[$k] ?></div>
+        </div>
+        <?php $j++;} else { ?>
+        <div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
+          <div class="card-body px-2 py-1"><?= $frenchDay[$k] ?></div>
+        </div>
+      <?php }
     }
-    echo '</div><div class="row">
-              <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
-      $activity['duration'] .
-      ' min | Prix par participants : ' .
-      $activity['priceAttendee'] .
-      '<i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
-               | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
-      $activity['maxAttendee'] .
-      '</p></div>';
-    ?> <div class="row p-0 m-0"> <?php
- $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
- $query->execute([':id' => $id]);
- $day = $query->fetchAll(PDO::FETCH_ASSOC);
- $j = 0;
- $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
- $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
- for ($i = 0; $i < 7; $i++) {
-   if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
-     echo '<div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
-                <div class="card-body px-2 py-1">
-                  ' .
-       $frenchDay[$i] .
-       '
-                </div>
-              </div>';
-     $j++;
-   } else {
-     echo '<div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
-                <div class="card-body px-2 py-1">
-                  ' .
-       $frenchDay[$i] .
-       '
-                </div>
-              </div>';
-   }
- }
- ?></div>
-      <?php echo '
-                </div>
-                </div>
-              </div>';
+    ?></div>
+      </div>
+    </div>
+  </div>
+  <?php
   }
 } else {
   for ($i = ($currentPage - 1) * 10; $i < 10 * $currentPage; $i++) {
 
     $query = $db->prepare(
-      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id = :id',
+      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id =:id',
     );
     $query->execute([
       ':id' => $id[$i],
@@ -206,41 +187,35 @@ if ($countId == 0) {
     ]);
     $countCategory = count($query->fetchAll(PDO::FETCH_COLUMN));
     $category = $query->fetchAll(PDO::FETCH_COLUMN);
-    echo '
+    ?>
             <div class="card text-light bg-secondary mb-3">
   
             <div class="row">
             <div class="col-4">
-            <a href="activity.php?id=' .
-      $id[$i] .
-      '"><img src="images/activities/' .
-      $id[$i] .
-      $activity['name'] .
-      '0.jpg" class="card-img-top" alt="' .
+            <a href="activity.php?id=<?= $id[$i] ?>"><img src="<?php
+$path = 'images/activities/';
+$idImage = $id[$i];
+include '../includes/image.php';
+echo $image0;
+?>" class="card-img-top" alt="' .
       $activity['name'] .
       '"></a>
             </div>
-            <div class="card-body col-8 row">
+            <div class="card-body bg-dark col-8 p-0 row">
               <div class="col-11 card-title">
-              <h4><a href="activity.php?id=' .
-      $id[$i] .
-      '" class="text-light">' .
-      $activity['name'] .
-      '</a></h4>
-              </div>';
-    $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
-    if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
-      echo '
+              <h4 class="mt-2">
+                <a href="activity.php?id=<?= $id[$i] ?>" class="text-light"><?= $activity['name'] ?></a>
+              </h4>
+              </div>
+              <?php
+              $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
+              if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) { ?>
                 <div class="col-1 d-flex justify-content-end pe-3">
-                <button type="button" class="btn-close btn-danger btn-sm" aria-label="Close" data-bs-toggle="modal" data-bs-target="#suppression' .
-        $altId .
-        '"></button>
-                </div>';
-    }
-    echo '
-                <div class="modal fade popup" id="suppression' .
-      $altId .
-      '" tabindex="-1" aria-labelledby="suppressionLabel" aria-hidden="true">
+                <button type="button" class="btn-close btn-danger btn-sm" aria-label="Close" data-bs-toggle="modal" data-bs-target="#suppression<?= $altId ?>"></button>
+                </div>
+    <?php }
+              ?>
+                <div class="modal fade popup" id="suppression<?= $altId ?>" tabindex="-1" aria-labelledby="suppressionLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -252,70 +227,60 @@ if ($countId == 0) {
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                          <a type="button" class="btn btn-danger" href="verifications/verifActivity.php?delete=' .
-      $altId .
-      '">Supprimer</a>
+                          <a type="button" class="btn btn-danger" href="verifications/verifActivity.php?delete=<?= $altId ?>">Supprimer</a>
                         </div>
                     </div>
                   </div>
                 </div>
-                <p>' .
-      $activity['SUBSTRING(description, 1, 450)'] .
-      '</p>
-              <p class="mb-0">';
-    for ($j = 0; $j < $countCategory; $j++) {
+                <p> <?= $activity['SUBSTRING(description, 1, 450)'] ?></p>
+      <div class="mb-0">
+    <?php for ($j = 0; $j < $countCategory; $j++) {
+
       $query = $db->prepare(
         'SELECT name, id FROM CATEGORY WHERE id IN (SELECT id_category FROM BELONG WHERE id_activity = :id_activity)',
       );
       $query->execute([':id_activity' => $id[$i]]);
       $categoryName = $query->fetchAll(PDO::FETCH_ASSOC);
-      echo '<a type="button" class="btn btn-info mx-2" href="catalog.php?category=' .
-        $categoryName[$j]['id'] .
-        '">' .
-        $categoryName[$j]['name'] .
-        '</a>';
+      ?>
+      <a type="button" class="btn btn-info mx-2" href="catalog.php?category=<?= $categoryName[$j][
+        'id'
+      ] ?>"><?= $categoryName[$j]['name'] ?></a>
+      <?php
+    } ?>
+    </div><div class="row">
+              <p class="fs-6 mb-0 col">Durée de l'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i><?= $activity[
+                'duration'
+              ] ?> min | Prix par participants : 
+      <?= $activity[
+        'priceAttendee'
+      ] ?><i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
+               | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i><?= $activity[
+                 'maxAttendee'
+               ] ?></p>
+    </div>
+    <div class="row p-0 m-0"> <?php
+    $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
+    $query->execute([':id' => $id]);
+    $day = $query->fetchAll(PDO::FETCH_ASSOC);
+    $j = 0;
+    $dayOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+    for ($k = 0; $k < 7; $k++) {
+      if (in_array($dayOfWeek[$k], array_column($day, 'day'))) { ?>
+        <div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
+          <div class="card-body px-2 py-1"><?= $frenchDay[$k] ?></div>
+        </div>
+        <?php $j++;} else { ?>
+        <div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
+          <div class="card-body px-2 py-1"><?= $frenchDay[$k] ?></div>
+        </div>
+      <?php }
     }
-    echo '</p><div class="row">
-              <p class="fs-6 mb-0 col">Durée de l\'activité : <i class="bi bi-clock" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Durée de l\'activité"></i> ' .
-      $activity['duration'] .
-      ' min | Prix par participants : ' .
-      $activity['priceAttendee'] .
-      '<i class="bi bi-currency-euro"></i> / <i class="bi bi-person-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Prix par participant"></i>
-               | Nombre maximum de participants : <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nombre maximum de participants"></i> ' .
-      $activity['maxAttendee'] .
-      '</p></div>';
-    ?> <div class="row p-0 m-0"> <?php
- $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
- $query->execute([':id' => $id]);
- $day = $query->fetchAll(PDO::FETCH_ASSOC);
- $j = 0;
- $dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
- $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
- for ($i = 0; $i < 7; $i++) {
-   if (in_array($dayOfWeek[$i], array_column($day, 'day'))) {
-     echo '<div class="card bg-primary text-white col mx-1 p-0 fs-6 text-center">
-                <div class="card-body px-2 py-1">
-                  ' .
-       $frenchDay[$i] .
-       '
-                </div>
-              </div>';
-     $j++;
-   } else {
-     echo '<div class="card bg-secondary text-white col mx-1 p-0 fs-6 text-center">
-                <div class="card-body px-2 py-1">
-                  ' .
-       $frenchDay[$i] .
-       '
-                </div>
-              </div>';
-   }
- }
- ?></div>
-      <?php echo '
-                </div>
-                </div>
-              </div>';
+    ?></div>
+      </div>
+    </div>
+  </div>
+  <?php
   }
 }
 ?>
