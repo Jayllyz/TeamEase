@@ -65,33 +65,20 @@ void curlApi(char *url, char *input)
             fprintf(stderr, "curl_easy_perform() failed: %s", curl_easy_strerror(res));
         else {
 
-            printf("Receive => %s\n", chunk.memory);
-
             cJSON *json;
             json = cJSON_Parse(chunk.memory);
             if (!json) {
                 fprintf(stderr, "Error Parsing JSON\n");
             }
             else {
-                // cJSON *success = cJSON_GetObjectItem(json,"success");
-                // if(cJSON_IsFalse(success)) {
-                //     printf("Je suis désolé, je n'ai pas compris votre question. Veuillez réessayer.\n");
-                // }
-                // cJSON *message = cJSON_GetObjectItem(json,"message");
-                // cJSON *data = cJSON_GetObjectItem(json,"data");
-                // int numResults = cJSON_GetArraySize(data);
+                cJSON *success = cJSON_GetObjectItem(json,"success");
+                if(cJSON_IsFalse(success)) {
+                    printf("Je suis désolé, je n'ai pas compris votre question. Veuillez réessayer.\n");
+                }
+                cJSON *message = cJSON_GetObjectItem(json,"message");
 
-                // printf("\n %s \n", message->valuestring);
+                printf("\n %s \n", message->valuestring);
 
-                // cJSON *result;
-                // cJSON *name;
-                // for (int i = 0; i < numResults; i++) {
-                //     result = cJSON_GetArrayItem(data, i);
-
-                //      name = cJSON_GetObjectItem(result,"name");
-                //     printf(" - activité : => %s" , name->valuestring);
-
-                // }
             }
             cJSON_Delete(json);
         }
@@ -102,15 +89,17 @@ void curlApi(char *url, char *input)
 
 int main(int argc, char *argv[])
 {
-    printf("Bienvenue sur l'interface de notre BOT FAQ !\n");
+    printf("Bienvenue sur l'interface de notre BOT FAQ !\n\n");
 
     char *input = malloc(200);
+    do {
     printf("Votre question ? : \n");
     scanf("%s", input);
 
-    curlApi("http://localhost:80/api/api.php/activities", input);
+    curlApi("http://localhost:80/api/api.php/activities", input);}
+    while (strcmp(input, "quitter") != 0);
 
-    printf("Exiting...\n");
+    printf("\nAu revoir...\n");
 
     return 0;
 }
