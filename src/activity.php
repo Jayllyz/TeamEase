@@ -98,13 +98,12 @@ include 'includes/head.php';
                             $id .
                             '" class="btn btn-primary">Réserver</a>
                             ';
-                        } else if(!isset($_SESSION['email'])){
+                        } elseif (!isset($_SESSION['email'])) {
                           echo '<a href="login.php" class="btn btn-primary">Se connecter</a>
                             ';
                         } else {
                           echo 'Vous ne pouvez pas réserver une activité en tant que prestataire';
-                        }
-                        ?>
+                        } ?>
                     </div>
                 </div>
             </div>
