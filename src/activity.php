@@ -347,16 +347,19 @@ include 'includes/head.php';
             <div class="container col-md-8">
               <?php
               $query = $db->prepare(
-                'SELECT COMMENT.content, COMMENT.notation, COMPANY.companyName FROM COMMENT INNER JOIN RESERVATION ON id_reservation = RESERVATION.id INNER JOIN COMPANY ON RESERVATION.siret = COMPANY.siret WHERE RESERVATION.id_activity = :id',
+                'SELECT COMMENT.content, COMMENT.notation, date_format(COMMENT.date, "%d/%m/%Y") as day, date_format(COMMENT.date, "%H:%i") as time, COMPANY.companyName FROM COMMENT INNER JOIN RESERVATION ON id_reservation = RESERVATION.id INNER JOIN COMPANY ON RESERVATION.siret = COMPANY.siret WHERE RESERVATION.id_activity = :id',
               );
               $query->execute([':id' => $id]);
               $comments = $query->fetchAll(PDO::FETCH_ASSOC);
               foreach ($comments as $comment) { ?>
               <div class="card text-white p-0 mb-3 fs-6" style="background-color:#7A828A">
                 <div class="card-body row">
-                  <h4 class="card-title text-start ps-3 col-10">
-                    <?= $comment['companyName'] ?>
-                  </h4>
+                  <div class="card-title text-start ps-3 col-10 d-flex">
+                    <h4>
+                      <?= $comment['companyName'] . ' - ' . $comment['day'] . ' - ' . $comment['time'] ?>
+                    </h4>
+                  </div>
+                  
                   <h6 class="col-2">
                     <?php for ($i = 0; $i < 5; $i++) {
                       if ($i < $comment['notation']) {
