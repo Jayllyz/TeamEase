@@ -1021,7 +1021,7 @@ function selectedDateReservation(element) {
   const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   const dayOfWeek = daysOfWeek[date.getDay()];
   dateString = dateString.replaceAll('-', '/');
-  idActivity = window.location.search;
+  let idActivity = window.location.search;
   idActivity = idActivity.split('=')[1];
   idActivity = idActivity.split('#')[0];
 
