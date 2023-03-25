@@ -29,7 +29,7 @@ include 'includes/head.php';
             <div>
                 <div class="row">
                     <div class="col-8">
-                        <h5>Vos information</h5>
+                        <h5>Vos informations :</h5>
                     </div>
 
 
@@ -85,11 +85,22 @@ include 'includes/head.php';
             </div>
         </div>
 
+        <?php
+          $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
+          $stmt = $db->prepare($sql);
+          $stmt->execute([
+            'siret' => $_SESSION['siret'],
+            'status' => 0,
+          ]);
+          $reservations = $stmt->fetchAll();
+
+          if(count($reservations) != 0) {?>
+
         <div class="container section-about-us border border-2 border-secondary rounded">
             <div class="container rounded align-text-bottom">
                 <div class="row align-items-center">
                     <div class="col-8">
-                        <h5>Dernière Réservation</h5>
+                        <h5>Dernière Réservations :</h5>
                     </div>
                     <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
                         <a class="btn btn-read" type="submit" href="clients/reservations.php">Voir plus</a>
@@ -98,13 +109,6 @@ include 'includes/head.php';
             </div>
 
             <?php
-          $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
-          $stmt = $db->prepare($sql);
-          $stmt->execute([
-            'siret' => $_SESSION['siret'],
-            'status' => 0,
-          ]);
-          $reservations = $stmt->fetchAll(); // mettre les id des activités dans un tableau
           $id_activity = [];
           for ($i = 0; $i < count($reservations); $i++) {
             $id_activity[] = $reservations[$i]['id_activity'];
@@ -171,27 +175,31 @@ include 'includes/head.php';
 
         </div>
         </div>
+        <?php
+          }
+          ?>
+        <?php
+        $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+        'siret' => $_SESSION['siret'],
+        'status' => 1,
+        ]);
+        $reservations = $stmt->fetchAll();
+        if(count($reservations) != 0){
+        ?>
 
         <div class="container section-about-us border border-2 border-secondary rounded">
             <div>
                 <div class="row">
-                    <h1>Dernière Activités fait</h1>
+                    <h1>Dernière Activités réalisées</h1>
                     <br>
                 </div>
-                <?php
-      $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
-      $stmt = $db->prepare($sql);
-      $stmt->execute([
-        'siret' => $_SESSION['siret'],
-        'status' => 1,
-      ]);
-      $reservations = $stmt->fetchAll();
-      $id_activity = [];
-      for ($i = 0; $i < count($reservations); $i++) {
-        $id_activity[] = $reservations[$i]['id_activity'];
-      }
 
-      ?>
+
+                <?
+                $id_activity = [];
+                for ($i = 0; $i < count($reservations); $i++) { $id_activity[]=$reservations[$i]['id_activity']; } ?>
                 <table class="table text-center table-bordered table-hover" id="active">
                     <thead>
                         <tr>
@@ -296,7 +304,7 @@ include 'includes/head.php';
                 </table>
             </div>
         </div>
-        <?php } ?>
+        <?php } } ?>
         <?php if ($_SESSION['rights'] == 1) { ?>
 
         <div class="container section-about-us border border-2 border-secondary rounded">
