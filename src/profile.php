@@ -50,22 +50,26 @@ include 'includes/head.php';
                     <div class="text-center">
                         <?php
                         echo 'Siret :   n°';
-                        echo $company['siret']; //Ne pas changer
+                        echo $company['siret'];
+                        //Ne pas changer
                         echo '<br>';
                         echo '<br>';
                         echo '<br>';
                         echo "Nom de l'entreprise :   ";
-                        echo $company['companyName']; // Ne pas Changer
+                        echo $company['companyName'];
+                        // Ne pas Changer
                         echo '<br>';
                         echo '<br>';
                         echo '<br>';
                         echo 'Email :    ';
-                        echo $company['email']; // Changer
+                        echo $company['email'];
+                        // Changer
                         echo '<br>';
                         echo '<br>';
                         echo '<br>';
                         echo 'Adresse :   ';
-                        echo $company['address']; // Ne pas changer
+                        echo $company['address'];
+                        // Ne pas changer
                         echo '<br>';
                         ?>
 
@@ -324,17 +328,21 @@ include 'includes/head.php';
                     <div class="text-center">
                         <?php
                         echo 'Prénom :   ';
-                        echo $provider['firstName']; //Ne pas changer
+                        echo $provider['firstName'];
+                        //Ne pas changer
                         echo '<br>';
                         echo '<br>';
                         echo 'Nom de famille :   ';
-                        echo $provider['lastName']; //Ne pas changer
+                        echo $provider['lastName'];
+                        //Ne pas changer
                         echo '<br>';
                         echo '<br>';
                         echo 'Email :    ';
-                        echo $provider['email']; // Changer
+                        echo $provider['email'];
+                        // Changer
                         echo '<br>';
-                        echo '<br>'; // Ne pas changer
+                        echo '<br>';
+                        // Ne pas changer
                         echo '<br>';
                         ?>
 
