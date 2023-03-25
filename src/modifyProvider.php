@@ -21,6 +21,7 @@ include 'includes/head.php';
 
     <?php include 'includes/header.php'; ?>
     <main>
+        <h1 class="text-center mt-5">Modifier vos Informations</h1>
         <form action="verifications/verifmodifyprovider.php?id=<?= $id ?>&rights=<?= $rights ?>" method="post">
             <div class="container col-md-6">
                 <?php include 'includes/msg.php'; ?>
@@ -40,6 +41,7 @@ include 'includes/head.php';
     </main>
 
     <?php include 'includes/footer.php'; ?>
+
     <script src="css-js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">

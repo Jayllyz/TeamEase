@@ -20,7 +20,7 @@
             <div class="row">
                 <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
                   echo 'href="../clients/reservations.php">Mes reservations</a>';
-                } else {
+                } else if (!isset($_SESSION['id'])) {
                   echo 'href="login.php">Se connecter</a>';
                 } ?> <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (
    isset($_SESSION['siret']) ||
