@@ -9,8 +9,8 @@
     <link rel="shortcut icon" type="image/png" href="<?= $linkLogo ?>" />
     <title><?= $title ?></title>
     <?php if ($title == 'Inscription' || $title == 'Reservation' || $title == 'Modification de réservation') {
-    echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
-  } ?>
+      echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
+    } ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 </head>

@@ -13,11 +13,9 @@ $linkLogo = '../images/logo.png';
 $linkCss = '../css-js/style.css';
 $title = 'Modification de réservation';
 include '../includes/head.php';
-$req = $db->prepare(
-'SELECT * FROM RESERVATION WHERE id = :id',
-);
+$req = $db->prepare('SELECT * FROM RESERVATION WHERE id = :id');
 $req->execute([
-'id' => htmlspecialchars($_GET['id']),
+  'id' => htmlspecialchars($_GET['id']),
 ]);
 $reserv = $req->fetch(PDO::FETCH_ASSOC);
 
@@ -35,7 +33,6 @@ $idReserv = $reserv['id'];
             <?php include '../includes/msg.php'; ?>
         </div>
         <?php
-
         $query = $db->prepare(
           'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
         );
@@ -43,7 +40,6 @@ $idReserv = $reserv['id'];
           'id' => htmlspecialchars($_GET['id']),
         ]);
         $activities = $query->fetchAll(PDO::FETCH_ASSOC);
-
 
         $price = $activities[0]['priceAttendee'];
         ?>
@@ -56,8 +52,8 @@ $idReserv = $reserv['id'];
                 </label>
                 <div class="input-group">
                     <input type="number" class="form-control" min="1" max="<?= $activities[0][
-                        'maxAttendee'
-                        ] ?>" id="attendee" name="attendee"
+                      'maxAttendee'
+                    ] ?>" id="attendee" name="attendee"
                         onchange="selectedDateReservation(date, <?= $idActivity ?>)" value="<?= $attendee ?>" required>
                     <span class="input-group-text" id="priceDisplay"><?= $price * $attendee ?></span>
                     <span class="input-group-text">€</span>

@@ -41,8 +41,8 @@ include 'includes/head.php';
                 </label>
                 <div class="input-group">
                     <input type="number" class="form-control" min="1" max="<?= $activities[0][
-                  'maxAttendee'
-                ] ?>" id="attendee" name="attendee" value="<?= isset($_COOKIE['attendee'])
+                      'maxAttendee'
+                    ] ?>" id="attendee" name="attendee" value="<?= isset($_COOKIE['attendee'])
   ? $_COOKIE['attendee']
   : '' ?>" onchange="selectedDateReservation(date, <?= $idActivity ?>)" required>
                     <span class="input-group-text" id="priceDisplay">0.00</span>

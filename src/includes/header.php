@@ -18,9 +18,7 @@
             </form>
 
             <div class="row">
-                <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (
-                  isset($_SESSION['siret'])
-                ) {
+                <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
                   echo 'href="../clients/reservations.php">Mes reservations</a>';
                 } else {
                   echo 'href="login.php">Se connecter</a>';
@@ -85,15 +83,15 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <?php
-                                    $query = $db->query('SELECT id, name FROM LOCATION');
-                                    while ($location = $query->fetch()) {
-                                      echo '<li><a class="dropdown-item" href="../material.php?location=' .
-                                        $location['id'] .
-                                        '">' .
-                                        $location['name'] .
-                                        '</a></li>';
-                                    }
-                                    ?>
+                            $query = $db->query('SELECT id, name FROM LOCATION');
+                            while ($location = $query->fetch()) {
+                              echo '<li><a class="dropdown-item" href="../material.php?location=' .
+                                $location['id'] .
+                                '">' .
+                                $location['name'] .
+                                '</a></li>';
+                            }
+                            ?>
                             <hr>
                             <li><a class="dropdown-item" href="../material.php?location=stock">Stock de matériel</a>
                             </li>

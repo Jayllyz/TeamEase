@@ -52,16 +52,16 @@ $siret = $_SESSION['siret'];
                 <?php foreach ($result as $select) { ?>
 
                 <?php
-            $date = explode('-', $select['date']);
-            $date = $date[2] . '/' . $date[1] . '/' . $date[0];
-            $select['date'] = $date;
+                $date = explode('-', $select['date']);
+                $date = $date[2] . '/' . $date[1] . '/' . $date[0];
+                $select['date'] = $date;
 
-            $req = $db->prepare('SELECT id_room FROM ACTIVITY WHERE id = :id');
-            $req->execute([
-              'id' => $select['id_activity'],
-            ]);
-            $id_room = $req->fetch(PDO::FETCH_ASSOC);
-            ?>
+                $req = $db->prepare('SELECT id_room FROM ACTIVITY WHERE id = :id');
+                $req->execute([
+                  'id' => $select['id_activity'],
+                ]);
+                $id_room = $req->fetch(PDO::FETCH_ASSOC);
+                ?>
 
                 <tr>
                     <td><?php
@@ -123,19 +123,19 @@ $siret = $_SESSION['siret'];
                     } ?></td>
                     <td><?php if ($select['status'] == 0) { ?>
                         <?php
-                          $req = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
-                          $req->execute([
-                            'id' => $select['id_activity'],
-                          ]);
-                          $name = $req->fetch(PDO::FETCH_ASSOC);
+                        $req = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
+                        $req->execute([
+                          'id' => $select['id_activity'],
+                        ]);
+                        $name = $req->fetch(PDO::FETCH_ASSOC);
 
-                          $req = $db->prepare('SELECT amount FROM ESTIMATE WHERE id_reservation = :id');
-                          $req->execute([
-                            'id' => $select['id'],
-                          ]);
-                          $price = $req->fetch(PDO::FETCH_ASSOC);
-                          $price = $price['amount'] * $select['attendee'];
-                          ?>
+                        $req = $db->prepare('SELECT amount FROM ESTIMATE WHERE id_reservation = :id');
+                        $req->execute([
+                          'id' => $select['id'],
+                        ]);
+                        $price = $req->fetch(PDO::FETCH_ASSOC);
+                        $price = $price['amount'] * $select['attendee'];
+                        ?>
 
                         <div class="button_profil">
                             <form action="checkPayment.php?id=<?= $select['id'] ?>" class="mb-4" method="POST">
