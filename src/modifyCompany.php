@@ -16,11 +16,11 @@ if (isset($_SESSION['siret'])) { ?>
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-    $linkLogo = 'images/logo.png';
-    $linkCss = 'css-js/style.css';
-    $title = "Modification de $name";
-    include 'includes/head.php';
-    ?>
+$linkLogo = 'images/logo.png';
+$linkCss = 'css-js/style.css';
+$title = "Modification de $name";
+include 'includes/head.php';
+?>
 
 <body>
 

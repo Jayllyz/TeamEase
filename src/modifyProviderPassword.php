@@ -8,11 +8,11 @@ if (isset($_SESSION['id'])) { ?>
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-    $linkLogo = 'images/logo.png';
-    $linkCss = 'css-js/style.css';
-    $title = 'Modification de Mot de Passe';
-    include 'includes/head.php';
-    ?>
+$linkLogo = 'images/logo.png';
+$linkCss = 'css-js/style.css';
+$title = 'Modification de Mot de Passe';
+include 'includes/head.php';
+?>
 
 <body>
 
