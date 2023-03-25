@@ -458,7 +458,7 @@ foreach ($_POST['day'] as $day) {
     'INSERT INTO SCHEDULE (day, startHour, endHour, id_activity) VALUES (:day, :startHour, :endHour, :id_activity)',
   );
   $result5 = $insert->execute([
-    'day' => $day,
+    'day' => strtolower($day),
     'startHour' => $_POST['start' . ucwords($day)],
     'endHour' => $_POST['end' . ucwords($day)],
     'id_activity' => $id[0],

@@ -6,7 +6,7 @@ let parameters = {
 };
 
 function viewPassword() {
-  var passConnexion = document.getElementById('password');
+  let passConnexion = document.getElementById('password');
 
   if (passConnexion.type === 'password') {
     passConnexion.type = 'text';
@@ -16,7 +16,7 @@ function viewPassword() {
 }
 
 function viewPasswordProvider() {
-  var passProvider = document.getElementById('PasswordProvider');
+  let passProvider = document.getElementById('PasswordProvider');
   if (passProvider.type === 'password') {
     passProvider.type = 'text';
   } else {
@@ -25,7 +25,7 @@ function viewPasswordProvider() {
 }
 
 function viewVerifPasswordProvider() {
-  var passVerifProvider = document.getElementById('VerifPasswordProvider');
+  let passVerifProvider = document.getElementById('VerifPasswordProvider');
   if (passVerifProvider.type === 'password') {
     passVerifProvider.type = 'text';
   } else {
@@ -34,7 +34,7 @@ function viewVerifPasswordProvider() {
 }
 
 function viewPasswordCompany() {
-  var passProvider = document.getElementById('PasswordCompany');
+  let passProvider = document.getElementById('PasswordCompany');
   if (passProvider.type === 'password') {
     passProvider.type = 'text';
   } else {
@@ -43,7 +43,7 @@ function viewPasswordCompany() {
 }
 
 function viewVerifPasswordCompany() {
-  var passVerifCompany = document.getElementById('VerifPasswordCompany');
+  let passVerifCompany = document.getElementById('VerifPasswordCompany');
   if (passVerifCompany.type === 'password') {
     passVerifCompany.type = 'text';
   } else {
@@ -52,7 +52,7 @@ function viewVerifPasswordCompany() {
 }
 
 function viewPasswordInscription(id) {
-  var passInscription = id.parentElement.querySelector('#password');
+  let passInscription = id.parentElement.querySelector('#password');
   if (passInscription == null) {
     passInscription = id.parentElement.querySelector('#passwordProvider');
   }
@@ -65,7 +65,7 @@ function viewPasswordInscription(id) {
 }
 
 function viewConfPasswordInscription(id) {
-  var confPassInscription = id.parentElement.querySelector('#conf_Password_inscription');
+  let confPassInscription = id.parentElement.querySelector('#conf_Password_inscription');
   if (confPassInscription.type === 'password') {
     confPassInscription.type = 'text';
   } else {
@@ -1009,21 +1009,14 @@ function selectRoom(element) {
   input.value = element.id;
 }
 
-function selectedDateReservation(element) {
+function selectedDateReservation(element, idActivity) {
   let dateString = element.value;
   dateString = dateString.replaceAll('/', '-');
   dateString = dateString.split('-').reverse().join('-');
-  const dateParts = dateString.split('-');
-  const year = parseInt(dateParts[2], 10);
-  const month = parseInt(dateParts[1], 10) - 1;
-  const day = parseInt(dateParts[0], 10);
-  const date = new Date(year, month, day);
+  const date = new Date(dateString);
   const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   const dayOfWeek = daysOfWeek[date.getDay()];
   dateString = dateString.replaceAll('-', '/');
-  let idActivity = window.location.search;
-  idActivity = idActivity.split('=')[1];
-  idActivity = idActivity.split('#')[0];
 
   let attendees = document.getElementById('attendee').value;
   let price = document.getElementById('price').value;
@@ -1038,7 +1031,11 @@ function selectedDateReservation(element) {
       document.getElementById('slot').style.display = 'block';
     }
   };
-  xhr.open('POST', 'ajaxReq/activitySlot.php', true);
+  if (document.getElementById('editForm') != null) {
+    xhr.open('POST', '../ajaxReq/activitySlot.php', true);
+  } else {
+    xhr.open('POST', 'ajaxReq/activitySlot.php', true);
+  }
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('day=' + dayOfWeek + '&id=' + idActivity + '&date=' + dateString + '&attendee=' + attendees);
 }

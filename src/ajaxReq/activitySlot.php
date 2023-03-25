@@ -3,6 +3,8 @@ session_start();
 include '../includes/db.php';
 
 if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
+  echo $_POST['id'];
+  echo $_POST['day'];
   $query = $db->prepare(
     'SELECT DATE_FORMAT(startHour, \'%H:%i\') AS startHour, DATE_FORMAT(endHour, \'%H:%i\') AS endHour, duration, maxAttendee FROM SCHEDULE INNER JOIN ACTIVITY ON ACTIVITY.id = SCHEDULE.id_activity WHERE id_activity = :id AND day = :day',
   );
@@ -11,6 +13,8 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
     'day' => htmlspecialchars($_POST['day']),
   ]);
   $schedule = $query->fetchAll(PDO::FETCH_ASSOC);
+
+  var_dump($schedule);
 
   $date = htmlspecialchars($_POST['date']);
   $attendee = htmlspecialchars($_POST['attendee']);
@@ -32,48 +36,39 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
     $endSlotArray = [];
 
     for ($i = 0; $i < $totalSlots; $i++) { ?>
-        <?php
-        $hour = floor($startHour / 60);
-        $minute = $startHour % 60;
-        if ($hour < 10) {
-          $hour = '0' . $hour;
-        }
-        if ($minute < 10) {
-          $minute = '0' . $minute;
-        }
-        $startSlot = $hour . ':' . $minute;
-        $startSlotArray = array_merge($startSlotArray, [$startSlot]);
-
-        $startHour += $duration;
-        $hour = floor($startHour / 60);
-        $minute = $startHour % 60;
-        if ($hour < 10) {
-          $hour = '0' . $hour;
-        }
-        if ($minute < 10) {
-          $minute = '0' . $minute;
-        }
-        $endSlot = $hour . ':' . $minute;
-        $endSlotArray = array_merge($endSlotArray, [$endSlot]);
-
-        $startHour -= $duration;
-        $startHour += $durationWithPause;
-        ?>
-  <?php }
-
+<?php
+$hour = floor($startHour / 60);
+$minute = $startHour % 60;
+if ($hour < 10) {
+  $hour = '0' . $hour;
+}
+if ($minute < 10) {
+  $minute = '0' . $minute;
+}
+$startSlot = $hour . ':' . $minute;
+$startSlotArray = array_merge($startSlotArray, [$startSlot]);
+$startHour += $duration;
+$hour = floor($startHour / 60);
+$minute = $startHour % 60;
+if ($hour < 10) {
+  $hour = '0' . $hour;
+}
+if ($minute < 10) {
+  $minute = '0' . $minute;
+}
+$endSlot = $hour . ':' . $minute;
+$endSlotArray = array_merge($endSlotArray, [$endSlot]);
+$startHour -= $duration;
+$startHour += $durationWithPause;
+?>
+<?php }
     for ($j = 0; $j < count($startSlotArray); $j++) {
       $timeFormat = $startSlotArray[$j] . ':00';
-
       $query = $db->prepare(
         'SELECT date, time, attendee, siret FROM RESERVATION WHERE id_activity = :id AND date = DATE(:date) AND time = :startHour',
       );
-      $query->execute([
-        'id' => $_POST['id'],
-        'date' => $date,
-        'startHour' => $timeFormat,
-      ]);
+      $query->execute(['id' => $_POST['id'], 'date' => $date, 'startHour' => $timeFormat]);
       $reponse = $query->fetch(PDO::FETCH_ASSOC);
-
       if ($reponse == true) {
         if ($attendee + $reponse['attendee'] <= $slot['maxAttendee'] && $reponse['siret'] != $_SESSION['siret']) {
           echo '<option value=' .
@@ -96,6 +91,4 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
       }
     }
   }
-}
-
-?>
+} ?>
