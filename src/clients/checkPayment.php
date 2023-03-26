@@ -48,6 +48,28 @@ $destination = '../clients/reservations.php';
 require_once '../includes/estimate.php';
 require_once '../includes/mailer.php';
 
+$select = $db->prepare('SELECT id_activity FROM RESERVATION WHERE id = :id');
+$select->execute([
+  'id' => htmlspecialchars($_GET['id']),
+]);
+$idActivity = $select->fetch(PDO::FETCH_ASSOC);
+
+$select = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
+$select->execute([
+  'id' => $idActivity['id_activity'],
+]);
+$nameActivity = $select->fetch(PDO::FETCH_ASSOC);
+
+$req = $db->prepare(
+  'INSERT INTO INVOICE (amount, idReservation, paymentDay, details) VALUES (:amount, :idReservation, :paymentDay, :details)',
+);
+$req->execute([
+  'amount' => $price,
+  'idReservation' => htmlspecialchars($_GET['id']),
+  'paymentDay' => date('Y-m-d'),
+  'details' => 'Réservation de l\'activité ' . $nameActivity['name'],
+]);
+
 header(
   'Location: ../clients/reservations.php?message=Votre paiement a bien été effectué, vous allez recevoir votre facture par mail.&type=success',
 );
