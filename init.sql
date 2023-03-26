@@ -242,5 +242,7 @@ INSERT INTO ROOM(name, id_location) VALUES ('Salle 2', 2);
 INSERT INTO ROOM(name, id_location) VALUES ('Salle 3', 2);
 
 INSERT INTO ACTIVITY(maxAttendee, duration, priceAttendee, name, description, id_room, status) VALUES (10, 60, 10, 'Escape Game', 'Escape Game', 1, 1);
-INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('monday', '10:00:00', '18:00:00', 1);
-INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('wednesday', '09:00:00', '22:00:00', 1);
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('Monday', '10:00:00', '18:00:00', 1);
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('Wednesday', '09:00:00', '22:00:00', 1);
+INSERT INTO BELONG(id_activity, id_category) VALUES (1, 1);
+INSERT INTO BELONG(id_activity, id_category) VALUES (1, 3);
