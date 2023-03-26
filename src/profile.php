@@ -422,14 +422,7 @@ include 'includes/head.php';
                       $date = date('Y-m-d');
                       $dayOfWeek = date('w', strtotime($date));
                       $dayOfWeek -= 1;
-                      $monday = date(
-                        'Y-m-d',
-                        strtotime(
-                          "-$dayOfWeek day",
-
-                          strtotime($date),
-                        ),
-                      );
+                      $monday = date('Y-m-d', strtotime("-$dayOfWeek day", strtotime($date)));
                       $day = date('Y-m-d', strtotime("+$i day", strtotime($monday)));
                       $dayOfWeek = date('w', strtotime($day));
                       if ($dayOfWeek == 1) {
@@ -478,7 +471,6 @@ include 'includes/head.php';
                           $stmt = $db->prepare($sql);
                           $stmt->execute(['id' => $reservations[$k]['id_activity']]);
                           $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
                           if (
                             $datereservation == $dateplanning &&
                             $reservations[$k]['time'] == $reservations[$j]['time']
@@ -495,7 +487,6 @@ include 'includes/head.php';
                           }
                         }
                       }
-
                       echo '</td>';
                       echo '<td>';
                       for ($k = 0; $k < count($reservations); $k++) {
@@ -791,7 +782,6 @@ include 'includes/head.php';
       $sql = 'SELECT * FROM RESERVATION WHERE id_activity = :id_activity';
       $stmt = $db->prepare($sql);
       $stmt->execute(['id_activity' => $animate[0]['id_activity']]);
-
       $reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
       ?>
 
@@ -825,11 +815,7 @@ include 'includes/head.php';
                       $date = date('Y-m-d');
                       $dayOfWeek = date('w', strtotime($date));
                       $dayOfWeek -= 1;
-                      $monday = date(
-                        'Y-m-d',
-
-                        strtotime("-$dayOfWeek day", strtotime($date)),
-                      );
+                      $monday = date('Y-m-d', strtotime("-$dayOfWeek day", strtotime($date)));
                       $day = date('Y-m-d', strtotime("+$i day", strtotime($monday)));
                       $dayOfWeek = date('w', strtotime($day));
                       if ($dayOfWeek == 1) {
@@ -880,7 +866,6 @@ include 'includes/head.php';
                           $stmt = $db->prepare($sql);
                           $stmt->execute(['id' => $reservations[$k]['id_activity']]);
                           $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
                           if (
                             $datereservation == $dateplanning &&
                             $reservations[$k]['time'] == $reservations[$j]['time']
@@ -1015,7 +1000,6 @@ include 'includes/head.php';
                           }
                         }
                       }
-
                       echo '</td>';
                       echo '</tr>';
                     } ?>
