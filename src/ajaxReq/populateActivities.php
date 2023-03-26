@@ -79,16 +79,15 @@ if ($countId == 0) {
     $category = $query->fetchAll(PDO::FETCH_COLUMN);
     ?>
 <div class="card text-light bg-secondary mb-3">
+    <?php
+    $path = 'images/activities/';
+    $idImage = $id[$i];
+    include '../includes/image.php';
+    ?>
     <div class="row">
         <div class="col-4">
-            <a href="activity.php?id=<?= $id[$i] ?>"><img src="<?php
-$path = 'images/activities/';
-$idImage = $id[$i];
-include '../includes/image.php';
-echo $image0;
-?>" class="card-img-top" alt="' .
-      $activity['name'] .
-      '"></a>
+            <a href="activity.php?id=<?= $id[$i] ?>"><img src="<?= $image0 ?>" class="card-img-top"
+                    alt="<?= $activity['name'] ?>"></a>
         </div>
         <div class="card-body col-8 p-0 row">
             <div class="col-11 card-title">
@@ -203,16 +202,16 @@ echo $image0;
     ?>
 <div class="card text-light bg-secondary mb-3">
 
+    <?php
+    $path = 'images/activities/';
+    $idImage = $id[$i];
+    include '../includes/image.php';
+    ?>
+
     <div class="row">
         <div class="col-4">
-            <a href="activity.php?id=<?= $id[$i] ?>"><img src="<?php
-$path = 'images/activities/';
-$idImage = $id[$i];
-include '../includes/image.php';
-echo $image0;
-?>" class="card-img-top" alt="' .
-      $activity['name'] .
-      '"></a>
+            <a href="activity.php?id=<?= $id[$i] ?>"><img src="<?= $image0 ?>" class="card-img-top"
+                    alt="<?= $activity['name'] ?>"></a>
         </div>
         <div class="card-body col-8 p-0 row">
             <div class="col-11 card-title">
@@ -249,7 +248,7 @@ echo $image0;
                     </div>
                 </div>
             </div>
-            <p> <?= $activity['SUBSTRING(description, 1, 450)'] ?></p>
+            <p><?= $activity['SUBSTRING(description, 1, 450)'] ?></p>
             <div class="mb-0">
                 <?php for ($j = 0; $j < $countCategory; $j++) {
 

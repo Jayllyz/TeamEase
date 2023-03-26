@@ -1130,3 +1130,53 @@ function disabledDays(date) {
 $('#date').datepicker({
   beforeShowDay: disabledDays,
 });
+
+// Fonction pour afficher les etoiles
+stars = document.querySelectorAll('.bi-star-fill');
+
+init();
+
+function init() {
+  stars.forEach((stars) => {
+    stars.addEventListener('click', saveRating);
+    stars.addEventListener('mouseover', selected);
+    stars.addEventListener('mouseleave', unselected);
+  });
+}
+
+function saveRating(e) {
+  removeEventListenerToAllStars();
+  input = document.getElementById('notationInput');
+  input.value = e.target.dataset.value;
+}
+
+function removeEventListenerToAllStars() {
+  stars.forEach((star) => {
+    star.removeEventListener('click', saveRating);
+    star.removeEventListener('mouseover', selected);
+    star.removeEventListener('mouseleave', unselected);
+  });
+}
+
+function selected(e, css = 'hover-star') {
+  const hoveredStar = e.target;
+  hoveredStar.classList.add(css);
+  const previousSiblings = getPreviousSiblings(hoveredStar);
+  previousSiblings.forEach((elem) => elem.classList.add(css));
+}
+function unselected(e, css = 'hover-star') {
+  const hoveredStar = e.target;
+  hoveredStar.classList.remove(css);
+  const previousSiblings = getPreviousSiblings(hoveredStar);
+  previousSiblings.forEach((elem) => elem.classList.remove(css));
+}
+function getPreviousSiblings(elem) {
+  let siblings = [];
+  const spanNodeType = 1;
+  while ((elem = elem.previousSibling)) {
+    if (elem.nodeType === spanNodeType) {
+      siblings = [elem, ...siblings];
+    }
+  }
+  return siblings;
+}
