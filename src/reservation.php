@@ -58,6 +58,8 @@ include 'includes/head.php';
                 <?php } ?>
                 <input type="text" class="form-control" name="date" id="date"
                     onchange="selectedDateReservation(this, <?= $idActivity ?>)" required>
+
+                <p id="ifempty" style="display: none;" class="mt-2"></p>
                 <div id="slot" style="display:none">
                     <label for="time" class="form-label">
                         <h4>Heure de votre créneau</h4>
