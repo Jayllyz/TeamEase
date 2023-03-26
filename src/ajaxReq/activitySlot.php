@@ -2,7 +2,6 @@
 include '../includes/db.php';
 
 if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
-
   $idActivity = htmlspecialchars($_POST['id']);
   $day = htmlspecialchars($_POST['day']);
 
@@ -23,7 +22,6 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
   $date = htmlspecialchars($_POST['date']);
   $attendee = htmlspecialchars($_POST['attendee']);
 
-
   foreach ($schedule as $slot) {
     $startHour = explode(':', $slot['startHour']);
     $endHour = explode(':', $slot['endHour']);
@@ -40,45 +38,42 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
     $startSlotArray = [];
     $endSlotArray = [];
 
-    for ($i = 0; $i < $totalSlots; $i++) { 
+    for ($i = 0; $i < $totalSlots; $i++) {
+      $hour = floor($startHour / 60);
+      $minute = $startHour % 60;
 
-    $hour = floor($startHour / 60);
-    $minute = $startHour % 60;
-    
-    if ($hour < 10) {
-      $hour = '0' . $hour;
-    }
-    if ($minute < 10) {
-      $minute = '0' . $minute;
-    }
+      if ($hour < 10) {
+        $hour = '0' . $hour;
+      }
+      if ($minute < 10) {
+        $minute = '0' . $minute;
+      }
 
-    $startSlot = $hour . ':' . $minute;
-    $startSlotArray = array_merge($startSlotArray, [$startSlot]);
-    $startHour += $duration;
-    $hour = floor($startHour / 60);
-    $minute = $startHour % 60;
-    
-    if ($hour < 10) {
-      $hour = '0' . $hour;
-    }
-    if ($minute < 10) {
-      $minute = '0' . $minute;
-    }
-    
-    $endSlot = $hour . ':' . $minute;
-    $endSlotArray = array_merge($endSlotArray, [$endSlot]);
-    $startHour -= $duration;
-    $startHour += $durationWithPause;
+      $startSlot = $hour . ':' . $minute;
+      $startSlotArray = array_merge($startSlotArray, [$startSlot]);
+      $startHour += $duration;
+      $hour = floor($startHour / 60);
+      $minute = $startHour % 60;
 
-}
+      if ($hour < 10) {
+        $hour = '0' . $hour;
+      }
+      if ($minute < 10) {
+        $minute = '0' . $minute;
+      }
+
+      $endSlot = $hour . ':' . $minute;
+      $endSlotArray = array_merge($endSlotArray, [$endSlot]);
+      $startHour -= $duration;
+      $startHour += $durationWithPause;
+    }
     for ($j = 0; $j < count($startSlotArray); $j++) {
       $timeFormat = $startSlotArray[$j] . ':00';
       $timeFormatEnd = $endSlotArray[$j] . ':00';
 
-
-      $checkRoom=$db->prepare('SELECT id FROM ACTIVITY WHERE id_room = :id_room AND id != :id ');
+      $checkRoom = $db->prepare('SELECT id FROM ACTIVITY WHERE id_room = :id_room AND id != :id ');
       $checkRoom->execute(['id_room' => $id_room, 'id' => $_POST['id']]);
-      $checkRoom=$checkRoom->fetchAll(PDO::FETCH_ASSOC);
+      $checkRoom = $checkRoom->fetchAll(PDO::FETCH_ASSOC);
 
       $query = $db->prepare(
         'SELECT date, time, attendee, siret FROM RESERVATION WHERE id_activity = :id AND date = DATE(:date) AND time = :startHour',
@@ -86,49 +81,54 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
       $query->execute(['id' => $_POST['id'], 'date' => $date, 'startHour' => $timeFormat]);
       $reponse = $query->fetch(PDO::FETCH_ASSOC);
 
-
       if (is_array($reponse) && !empty($reponse)) {
         if ($attendee + $reponse['attendee'] <= $slot['maxAttendee'] && $reponse['siret'] != $_SESSION['siret']) {
+          foreach ($checkRoom as $room) {
+            $query = $db->prepare(
+              'SELECT date, time FROM RESERVATION WHERE date = DATE(:date) AND time >= :startHour AND time <= :endHour AND id_activity = :id',
+            );
+            $query->execute([
+              'id' => $room['id'],
+              'date' => $date,
+              'startHour' => $timeFormat,
+              'endHour' => $timeFormatEnd,
+            ]);
+            $roomDate = $query->fetch(PDO::FETCH_ASSOC);
 
-            foreach($checkRoom as $room){
-              $query = $db->prepare(
-                'SELECT date, time FROM RESERVATION WHERE date = DATE(:date) AND time >= :startHour AND time <= :endHour AND id_activity = :id',
-              );
-              $query->execute(['id' => $room['id'], 'date' => $date, 'startHour' => $timeFormat, 'endHour' => $timeFormatEnd]);
-              $roomDate = $query->fetch(PDO::FETCH_ASSOC);
-
-              
-              if($roomDate === false){
-                echo '<option value=' .
+            if ($roomDate === false) {
+              echo '<option value=' .
                 $startSlotArray[$j] .
                 '>' .
                 $startSlotArray[$j] .
                 ' - ' .
                 $endSlotArray[$j] .
                 '</option>';
-              }
             }
+          }
         }
-      }
-      else if ($attendee <= $slot['maxAttendee']) {
+      } elseif ($attendee <= $slot['maxAttendee']) {
+        foreach ($checkRoom as $room) {
+          $query = $db->prepare(
+            'SELECT date, time FROM RESERVATION WHERE date = DATE(:date) AND time >= :startHour AND time <= :endHour AND id_activity = :id',
+          );
+          $query->execute([
+            'id' => $room['id'],
+            'date' => $date,
+            'startHour' => $timeFormat,
+            'endHour' => $timeFormatEnd,
+          ]);
+          $roomDate = $query->fetch(PDO::FETCH_ASSOC);
 
-          foreach($checkRoom as $room){
-            $query = $db->prepare(
-              'SELECT date, time FROM RESERVATION WHERE date = DATE(:date) AND time >= :startHour AND time <= :endHour AND id_activity = :id',
-            );
-            $query->execute(['id' => $room['id'], 'date' => $date, 'startHour' => $timeFormat, 'endHour' => $timeFormatEnd]);
-            $roomDate = $query->fetch(PDO::FETCH_ASSOC);
-
-            if($roomDate === false){
-              echo '<option value=' .
+          if ($roomDate === false) {
+            echo '<option value=' .
               $startSlotArray[$j] .
               '>' .
               $startSlotArray[$j] .
               ' - ' .
               $endSlotArray[$j] .
               '</option>';
-            }
           }
+        }
       }
     }
   }
