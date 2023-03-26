@@ -1026,7 +1026,13 @@ function selectedDateReservation(element, idActivity) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
+      if (this.responseText === '' && dateString !== '') {
+        document.getElementById('ifempty').innerHTML = 'Aucun créneau disponible';
+        document.getElementById('ifempty').style.display = 'block';
+        document.getElementById('slot').style.display = 'none';
+        return;
+      }
+      document.getElementById('ifempty').style.display = 'none';
       document.getElementById('container-slot').innerHTML = this.responseText;
       document.getElementById('slot').style.display = 'block';
     }
