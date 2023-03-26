@@ -1,6 +1,7 @@
 <?php
 session_start();
-include 'db.php';
+ob_start();
+require_once 'db.php';
 
 $idClient = $_SESSION['siret'];
 $idReservation = htmlspecialchars($_GET['id']);
@@ -41,9 +42,7 @@ $activityName = $selectActivity['name'];
 $activityDescription = $selectActivity['description'];
 $priceAttendee = $selectActivity['priceAttendee'];
 
-define('autoload', '/home/php/src/vendor/autoload.php');
-
-require_once autoload;
+require_once '/home/php/src/vendor/autoload.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
 
@@ -152,7 +151,11 @@ $total_tva = 0;
 
 	<table style="margin-top: 80px;">
 		<tr>
+			<?php if ($isinvoice != true) { ?>
 			<td class="50p"><h2>Devis n°<?= $idReservation ?></h2></td>
+			<?php } else { ?>
+			<td class="50p"><h2>Facture n°<?= $idReservation ?></h2></td>
+			<?php } ?>
 			<td class="50p" style="text-align: right;">Emis le <?php echo date('d/m/y'); ?></td>
 		</tr>
 	</table>
@@ -211,7 +214,11 @@ $content = ob_get_clean();
 try {
   $pdf = new Html2Pdf('p', 'A4', 'fr');
   $pdf->writeHTML($content);
-  $pdf->Output('Devis.pdf');
+  if ($isinvoice != true) {
+    $pdf->output('Devis.pdf');
+  } else {
+    $invoice = $pdf->output('Facture.pdf', 'S');
+  }
 } catch (Html2PdfException $e) {
   $pdf->clean();
   $formatter = new ExceptionFormatter($e);

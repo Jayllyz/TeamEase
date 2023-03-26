@@ -16,6 +16,7 @@ if (isset($_GET['delete'])) {
   ]);
   $activity = $request->fetch(PDO::FETCH_ASSOC);
   $path = '../images/activities/';
+  $idImage = $id;
   include '../includes/image.php';
   if ($image0 != '../images/activities/placeholder.jpg') {
     unlink($image0);
@@ -457,7 +458,7 @@ foreach ($_POST['day'] as $day) {
     'INSERT INTO SCHEDULE (day, startHour, endHour, id_activity) VALUES (:day, :startHour, :endHour, :id_activity)',
   );
   $result5 = $insert->execute([
-    'day' => $day,
+    'day' => strtolower($day),
     'startHour' => $_POST['start' . ucwords($day)],
     'endHour' => $_POST['end' . ucwords($day)],
     'id_activity' => $id[0],
@@ -475,6 +476,7 @@ if ($result && $result2 && $result3 && $result4) {
   ]);
   $activity = $request->fetch(PDO::FETCH_ASSOC);
   $path = '../images/activities/';
+  $idImage = $id;
   include '../includes/image.php';
   if ($image0 != '../images/activities/placeholder.jpg') {
     unlink($image0);

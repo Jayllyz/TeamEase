@@ -190,6 +190,15 @@ a {
   text-decoration: none;
 }
 
-.table-color {
-  background-color: black;
+.iconWeek {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hover-star {
+  color: yellow !important;
 }
