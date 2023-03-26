@@ -29,10 +29,7 @@ include 'includes/head.php';
         </div>
       </div>
         <table style="border: 1px solid black;" class="table text-center table-bordered table-hover" id="active">
-                    <?php
-                    
-
-                    ?>
+                    <?php  ?>
                     <thead>
                         <tr>
                             <th></th>
