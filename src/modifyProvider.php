@@ -50,4 +50,6 @@ include 'includes/head.php';
 
 </html>
 <?php } else {header('location: profile.php');
-  exit();} ?>
+  exit();}
+?>
+
