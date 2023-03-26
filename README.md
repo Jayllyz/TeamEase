@@ -45,9 +45,16 @@ EMAIL_PASSWORD= #password
 TOKEN_INSEE= #insee token
 CAPTCHA_SITE= #captcha site key
 CAPTCHA_SECRET= #captcha secret key
+STRIPE_PUBLIC= #stripe public key
+STRIPE_SECRET = #stripe secret key
 
 # Start Docker
 docker-compose up -d --build
+
+#In case composer doesn't work in PHP container (for dependencies)
+docker-compose exec php composer install
+# OR
+docker-compose exec php composer require <package> && ...
 ```
 
 ## Contributors
