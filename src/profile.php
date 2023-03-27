@@ -426,34 +426,30 @@ include 'includes/head.php';
                       $day = date('Y-m-d', strtotime("+$i day", strtotime($monday)));
                       $dayOfWeek = date('w', strtotime($day));
                       if ($dayOfWeek == 1) {
-                        $dayofWeeks = 'Monday';
+                        $dayofWeeks = 'Lundi';
                       }
                       if ($dayOfWeek == 2) {
-                        $dayofWeeks = 'Tuesday';
+                        $dayofWeeks = 'Mardi';
                       }
                       if ($dayOfWeek == 3) {
-                        $dayofWeeks = 'Wednesday';
+                        $dayofWeeks = 'Mercredi';
                       }
                       if ($dayOfWeek == 4) {
-                        $dayofWeeks = 'Thursday';
+                        $dayofWeeks = 'Jeudi';
                       }
                       if ($dayOfWeek == 5) {
-                        $dayofWeeks = 'Friday';
+                        $dayofWeeks = 'Vendredi';
                       }
                       if ($dayOfWeek == 6) {
-                        $dayofWeeks = 'Saturday';
+                        $dayofWeeks = 'Samedi';
                       }
                       if ($dayOfWeek == 0) {
-                        $dayofWeeks = 'Sunday';
+                        $dayofWeeks = 'Dimanche';
                       }
                       $configdate = explode('-', $day);
                       $dateplanning = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
                       echo "<td>$dayofWeeks <br> $dateplanning</td>";
-                      $sql =
-                        'SELECT * FROM SCHEDULE WHERE id_activity IN (SELECT id_activity FROM RESERVATION WHERE siret = :siret)';
-                      $stmt = $db->prepare($sql);
-                      $stmt->execute(['siret' => $_SESSION['siret']]);
-                      $schedule = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                      
                       $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret';
                       $stmt = $db->prepare($sql);
                       $stmt->execute(['siret' => $_SESSION['siret']]);
@@ -493,6 +489,10 @@ include 'includes/head.php';
                         $configdate = explode('-', $reservations[$k]['date']);
                         $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
                         for ($j = 0; $j < count($reservations); $j++) {
+                          $sql = 'SELECT duration FROM ACTIVITY WHERE id = :id';
+                          $stmt = $db->prepare($sql);
+                          $stmt->execute(['id' => $reservations[$j]['id_activity']]);
+                          $duration = $stmt->fetch();
                           if (
                             $datereservation == $dateplanning &&
                             $reservations[$k]['time'] == $reservations[$j]['time']
@@ -503,7 +503,23 @@ include 'includes/head.php';
                             ) {
                               break;
                             } else {
-                              echo '<br>' . $reservations[$k]['time'] . '<br>';
+                              $time = explode(':', $reservations[$k]['time']);
+                              $time = $time[0] . 'h' . $time[1];
+
+                              $duration =intval($duration[0]);
+                              $duration = $duration * 60;
+                              $durations = gmdate("H:i", $duration);
+
+                              $time_heure = substr($time, 0, 2);
+                              $time_minutes = substr($time, 3, 2);
+                              $times = $time_heure . ':' . $time_minutes;
+                              $times = strtotime($times);
+                              $times = date('H:i', $times + $duration);
+
+                              $times = explode(':', $times);
+                              $times = $times[0] . 'h' . $times[1];
+                              
+                              echo '<br>' . $time . ' - ' . $times . '<br>' ;
                             }
                           }
                         }
@@ -547,6 +563,7 @@ include 'includes/head.php';
                         }
                       }
                       echo '</td>';
+
                       echo '<td>';
                       for ($k = 0; $k < count($reservations); $k++) {
                         $sql = 'SELECT id,id_room FROM ACTIVITY WHERE id = :id';
@@ -615,15 +632,7 @@ include 'includes/head.php';
                         
 <?php } ?>
 <?php if ($_SESSION['rights'] == 1) { ?> 
-
-  <div class="container section-about-us border border-2 border-secondary rounded">
-    <div class="container rounded align-text-bottom">
-        <div class="row align-items-center">
-          <div class="col-8">
-            <h5>Vos Information</h5>
-          </div>
-        </div>
-      </div>
+  <?php // PARTIE PROVIDER ?>
           
           <br>
 
@@ -819,39 +828,37 @@ include 'includes/head.php';
                       $day = date('Y-m-d', strtotime("+$i day", strtotime($monday)));
                       $dayOfWeek = date('w', strtotime($day));
                       if ($dayOfWeek == 1) {
-                        $dayofWeeks = 'Monday';
+                        $dayofWeeks = 'Lundi';
                       }
                       if ($dayOfWeek == 2) {
-                        $dayofWeeks = 'Tuesday';
+                        $dayofWeeks = 'Mardi';
                       }
                       if ($dayOfWeek == 3) {
-                        $dayofWeeks = 'Wednesday';
+                        $dayofWeeks = 'Mercredi';
                       }
                       if ($dayOfWeek == 4) {
-                        $dayofWeeks = 'Thursday';
+                        $dayofWeeks = 'Jeudi';
                       }
                       if ($dayOfWeek == 5) {
-                        $dayofWeeks = 'Friday';
+                        $dayofWeeks = 'Vendredi';
                       }
                       if ($dayOfWeek == 6) {
-                        $dayofWeeks = 'Saturday';
+                        $dayofWeeks = 'Samedi';
                       }
                       if ($dayOfWeek == 0) {
-                        $dayofWeeks = 'Sunday';
+                        $dayofWeeks = 'Dimanche';
                       }
                       $configdate = explode('-', $day);
                       $dateplanning = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
                       echo "<td>$dayofWeeks <br> $dateplanning</td>";
-                      $sql =
-                        'SELECT * FROM SCHEDULE WHERE id_activity IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)';
-                      $stmt = $db->prepare($sql);
-                      $stmt->execute(['id_provider' => $_SESSION['id']]);
-                      $schedule = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                      
                       $sql =
                         'SELECT * FROM RESERVATION WHERE id_activity IN (SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider)';
                       $stmt = $db->prepare($sql);
                       $stmt->execute(['id_provider' => $_SESSION['id']]);
                       $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
                       echo '<td>';
                       for ($j = 0; $j < count($reservations); $j++) {
                         $configdate = explode('-', $reservations[$j]['date']);
@@ -888,6 +895,10 @@ include 'includes/head.php';
                         $configdate = explode('-', $reservations[$k]['date']);
                         $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
                         for ($j = 0; $j < count($reservations); $j++) {
+                          $sql = 'SELECT duration FROM ACTIVITY WHERE id = :id';
+                          $stmt = $db->prepare($sql);
+                          $stmt->execute(['id' => $reservations[$j]['id_activity']]);
+                          $duration = $stmt->fetch();
                           if (
                             $datereservation == $dateplanning &&
                             $reservations[$k]['time'] == $reservations[$j]['time']
@@ -898,7 +909,25 @@ include 'includes/head.php';
                             ) {
                               break;
                             } else {
-                              echo '<br>' . $reservations[$k]['time'] . '<br>';
+                              $time = explode(':', $reservations[$k]['time']);
+                              $time = $time[0] . 'h' . $time[1];
+
+                              $duration =intval($duration[0]);
+                              $duration = $duration * 60;
+                              $durations = gmdate("H:i", $duration);
+
+                              $time_heure = substr($time, 0, 2);
+                              $time_minutes = substr($time, 3, 2);
+                              $times = $time_heure . ':' . $time_minutes;
+                              $times = strtotime($times);
+                              $times = date('H:i', $times + $duration);
+
+                              $times = explode(':', $times);
+                              $times = $times[0] . 'h' . $times[1];
+                              
+                              echo '<br>' . $time . ' - ' . $times . '<br>' ;
+
+
                             }
                           }
                         }
