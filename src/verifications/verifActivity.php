@@ -2,6 +2,7 @@
 ob_start();
 //Suppression d'une activité------------------------------------------------------------------------
 session_start();
+
 if (!isset($_SESSION['rights']) == 2) {
   header('Location: ../index.php');
   exit();
@@ -66,7 +67,7 @@ if (isset($_GET['update'])) {
     $request = $db->prepare('UPDATE ACTIVITY SET description = :description WHERE id = :id');
     $result = $request->execute([
       ':description' => $_POST['description'],
-      ':id' => $_GET['id'],
+      ':id' => htmlspecialchars($_GET['id']),
     ]);
     if ($result) {
       $message = 'La description a bien été modifiée';
@@ -101,7 +102,7 @@ if (isset($_GET['update'])) {
 
     $delete = $db->prepare('DELETE FROM BELONG WHERE id_activity = :id_activity');
     $delete->execute([
-      ':id_activity' => $_GET['id'],
+      ':id_activity' => htmlspecialchars($_GET['id']),
     ]);
 
     $i = 0;
@@ -113,7 +114,7 @@ if (isset($_GET['update'])) {
       $category = $query->fetch(PDO::FETCH_ASSOC);
       $insert = $db->prepare('INSERT INTO BELONG (id_activity, id_category) VALUES (:id_activity, :id_category)');
       $result = $insert->execute([
-        'id_activity' => $_GET['id'],
+        'id_activity' => htmlspecialchars($_GET['id']),
         'id_category' => $category['id'],
       ]);
       if (!$result) {
@@ -132,11 +133,11 @@ if (isset($_GET['update'])) {
     $result3 = true;
     $delete = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
     $delete->execute([
-      ':id_activity' => $_GET['id'],
+      ':id_activity' => htmlspecialchars($_GET['id']),
     ]);
     $delete = $db->prepare('DELETE FROM MATERIAL_ACTIVITY WHERE id_activity = :id_activity');
     $delete->execute([
-      ':id_activity' => $_GET['id'],
+      ':id_activity' => htmlspecialchars($_GET['id']),
     ]);
 
     $providers = [];
@@ -154,7 +155,7 @@ if (isset($_GET['update'])) {
       do {
         $insert = $db->prepare('INSERT INTO ANIMATE (id_activity, id_provider) VALUES (:id_activity, :id_provider)');
         $result2 = $insert->execute([
-          'id_activity' => $_GET['id'],
+          'id_activity' => htmlspecialchars($_GET['id']),
           'id_provider' => $providers[$i],
         ]);
         $i++;
@@ -189,7 +190,7 @@ if (isset($_GET['update'])) {
             'INSERT INTO MATERIAL_ACTIVITY (id_activity, id_material, quantity) VALUES (:id_activity, :id_material, :quantity)',
           );
           $result3 = $insert->execute([
-            'id_activity' => $_GET['id'],
+            'id_activity' => htmlspecialchars($_GET['id']),
             'id_material' => $materials[$i],
             'quantity' => $_POST['quantity' . $quantity[$i]],
           ]);
@@ -219,17 +220,38 @@ if (isset($_GET['update'])) {
       exit();
     }
     $request = $db->prepare(
-      'UPDATE ACTIVITY SET duration = :duration, priceAttendee = :priceAttendee, maxAttendee = :maxAttendee, room_id = :id_room WHERE id = :id',
+      'UPDATE ACTIVITY SET duration = :duration, priceAttendee = :priceAttendee, maxAttendee = :maxAttendee, id_room = :id_room WHERE id = :id',
     );
     $result = $request->execute([
       ':duration' => $_POST['duration'],
       ':priceAttendee' => $_POST['priceAttendee'],
       ':maxAttendee' => $_POST['maxAttendee'],
-      ':id' => $_GET['id'],
+      ':id' => htmlspecialchars($_GET['id']),
       ':id_room' => $_POST['room'],
     ]);
     if ($result && $result2 && $result3) {
       $message = 'Les détails ont bien été modifiés';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=success');
+      exit();
+    } else {
+      $message = 'Une erreur est survenue';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+  } elseif ($_GET['update'] == 'title') {
+    if (isset($_POST['status'])) {
+      $status = 1;
+    } else {
+      $status = 0;
+    }
+    $request = $db->prepare('UPDATE ACTIVITY SET name = :name, status = :status WHERE id = :id');
+    $result = $request->execute([
+      ':name' => $_POST['name'],
+      ':status' => $status,
+      ':id' => htmlspecialchars($_GET['id']),
+    ]);
+    if ($result) {
+      $message = 'L\'activité a bien été modifié';
       header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=success');
       exit();
     } else {
