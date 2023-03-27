@@ -35,9 +35,15 @@ include 'includes/head.php';
     <main>
         <div class="container mb-5 text-center">
             <div class="container col-md-6">
-                <?php include 'includes/msg.php'; ?>
+                <?php if (isset($_GET['message']) && !str_contains($_GET['message'], 'Commentaire')) {
+                  include 'includes/msg.php';
+                } ?>
             </div>
-            <h1><b><?php echo $activity['name']; ?></b></h1>
+            <h1><b><?php echo $activity['name']; ?></b>
+                <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
+                  echo '<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edition-activity">Modifier</button>';
+                } ?>
+            </h1>
             <div class="row mt-5 text-white">
                 <div class="col-8" style="border-right:solid #59A859">
                     <?php if ($image0 != null) { ?>
@@ -349,7 +355,10 @@ include 'includes/head.php';
                 <hr size="5">
                 <h3>Commentaires et avis sur l'activité</h3>
                 <div class="container col-md-8">
-                    <?php include 'includes/msg.php'; ?>
+
+                    <?php if (isset($_GET['message']) && str_contains($_GET['message'], 'Commentaire')) {
+                      include 'includes/msg.php';
+                    } ?>
                     <div>
                         <form action="verifications/verifComment.php" method="POST">
                             <?php if (isset($_SESSION['siret'])) {
@@ -466,6 +475,53 @@ include 'includes/head.php';
                                 <label for="description">Description</label>
                                 <textarea name="description" class="form-control" rows="10"
                                     style="white-space: pre-line"><?php echo $activity['description']; ?></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal edition titre -->
+        <div class="modal fade popup" id="edition-activity" tabindex="-1" aria-labelledby="editionLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editionLabel">Edition de l'activité</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="verifications/verifActivity.php?update=title&id=<?php echo $id; ?>" method="post"
+                            enctype="multipart/form-data">
+                            <div class="form-group mb-3">
+                                <label for="name">Titre</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                    value="<?php echo $activity['name']; ?>">
+                                <label for="toggler">Disponibilité</label>
+                                <div class="toggler">
+                                    <input id="status" name="status" type="checkbox" value="<?= $activity[
+                                      'status'
+                                    ] ?>" <?php if ($activity['status'] == 1) {
+  echo 'checked';
+} ?>>
+                                    <label for="status">
+                                        <svg class="toggler-on" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 130.2 130.2">
+                                            <polyline class="path check" points="100.2,40.2 51.5,88.8 29.8,67.5">
+                                            </polyline>
+                                        </svg>
+                                        <svg class="toggler-off" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 130.2 130.2">
+                                            <line class="path line" x1="34.4" y1="34.4" x2="95.8" y2="95.8"></line>
+                                            <line class="path line" x1="95.8" y1="34.4" x2="34.4" y2="95.8"></line>
+                                        </svg>
+                                    </label>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
