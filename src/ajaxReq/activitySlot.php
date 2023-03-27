@@ -83,8 +83,7 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
 
       if (is_array($reponse) && !empty($reponse)) {
         if ($attendee + $reponse['attendee'] <= $slot['maxAttendee'] && $reponse['siret'] != $_SESSION['siret']) {
-
-          if(empty($checkRoom)){
+          if (empty($checkRoom)) {
             echo '<option value=' .
               $startSlotArray[$j] .
               '>' .
@@ -93,7 +92,7 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
               $endSlotArray[$j] .
               '</option>';
           }
-          
+
           foreach ($checkRoom as $room) {
             $query = $db->prepare(
               'SELECT id FROM RESERVATION WHERE date = DATE(:date) AND time >= :startHour AND time <= :endHour AND id_activity = :id',
@@ -105,7 +104,6 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
               'endHour' => $timeFormatEnd,
             ]);
             $roomDate = $query->fetch(PDO::FETCH_ASSOC);
-
 
             if (empty($roomDate) || empty($room)) {
               echo '<option value=' .
@@ -119,8 +117,7 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
           }
         }
       } elseif ($attendee <= $slot['maxAttendee']) {
-
-        if(empty($checkRoom)){
+        if (empty($checkRoom)) {
           echo '<option value=' .
             $startSlotArray[$j] .
             '>' .
@@ -129,7 +126,7 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
             $endSlotArray[$j] .
             '</option>';
         }
-        
+
         foreach ($checkRoom as $room) {
           $query = $db->prepare(
             'SELECT id FROM RESERVATION WHERE date = DATE(:date) AND time >= :startHour AND time <= :endHour AND id_activity = :id',
@@ -142,7 +139,7 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
           ]);
           $roomDate = $query->fetch(PDO::FETCH_ASSOC);
 
-          if (empty($roomDate))  {
+          if (empty($roomDate)) {
             echo '<option value=' .
               $startSlotArray[$j] .
               '>' .
