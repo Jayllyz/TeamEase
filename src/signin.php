@@ -40,7 +40,7 @@ include 'includes/db.php';
                 <?php include 'includes/msg.php'; ?>
                 <div class="mb-3">
                     <label class="form-label"><strong>n° de SIRET</strong></label>
-                    <input type="number" name="siret" placeholder="31130000800017" size="14" class="form-control is-<?= isset(
+                    <input type="number" name="siret" placeholder="Saisir le SIRET de votre entreprise" size="14" class="form-control is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'siret'
                       ? $_GET['valid']
@@ -54,7 +54,7 @@ include 'includes/db.php';
 
                 <div class="mb-3">
                     <label class="form-label"><strong>Adresse mail</strong></label>
-                    <input type="email" name="emailCompany" class="form-control is-<?= isset($_GET['valid']) &&
+                    <input type="email" name="emailCompany" placeholder="name@mail.com" class="form-control is-<?= isset($_GET['valid']) &&
                     $_GET['input'] == 'emailCompany'
                       ? $_GET['valid']
                       : '' ?>" value="<?= isset($_COOKIE['emailCompany']) ? $_COOKIE['emailCompany'] : '' ?>" required>
@@ -66,7 +66,7 @@ include 'includes/db.php';
                 </div>
                 <div class="mb-3">
                     <label class="form-label"><strong>Mot de passe</strong></label>
-                    <input type="password" name="passwordCompany" class="form-control is-<?= isset($_GET['valid']) &&
+                    <input type="password" name="passwordCompany" placeholder="Saisir votre mot de passe" class="form-control is-<?= isset($_GET['valid']) &&
                     $_GET['input'] == 'passwordCompany'
                       ? $_GET['valid']
                       : '' ?>" id="password" oninput="strengthChecker(this)" required>
@@ -85,6 +85,8 @@ include 'includes/db.php';
 
                 <div class="g-recaptcha mb-4" data-sitekey="<?= $siteKey ?>" data-callback="validCompany"></div>
 
+                <p>Déjà inscrit ? <a href="login.php">connectez-vous</a></p>
+
                 <div class="text-center">
                     <button type="submit" style="display: none" id="submitCompany" name="submit"
                         class="btn btn-lg btn-submit">Envoyer</button>
@@ -100,9 +102,8 @@ include 'includes/db.php';
                 <?php include 'includes/msg.php'; ?>
                 <div class="mb-3">
 
-
                     <label class="form-label"><strong>Nom </strong></label>
-                    <input type="text" name="name" class="form-control is-<?= isset($_GET['valid']) &&
+                    <input type="text" name="name" placeholder="Saisir votre nom" class="form-control is-<?= isset($_GET['valid']) &&
                     $_GET['input'] == 'name'
                       ? $_GET['valid']
                       : '' ?>" value="<?= isset($_COOKIE['name']) ? $_COOKIE['name'] : '' ?>" required>
@@ -117,7 +118,7 @@ include 'includes/db.php';
 
 
                     <label class="form-label"><strong>Prénom </strong></label>
-                    <input type="text" name="firstname" class="form-control is-<?= isset($_GET['valid']) &&
+                    <input type="text" name="firstname" placeholder="Saisir votre prénom" class="form-control is-<?= isset($_GET['valid']) &&
                     $_GET['input'] == 'firstname'
                       ? $_GET['valid']
                       : '' ?>" value="<?= isset($_COOKIE['firstname']) ? $_COOKIE['firstname'] : '' ?>" required>
@@ -130,7 +131,7 @@ include 'includes/db.php';
 
                 <div class="mb-3">
                     <label class="form-label"><strong>Adresse mail</strong></label>
-                    <input type="email" name="email" class="form-control is-<?= isset($_GET['valid']) &&
+                    <input type="email" name="email" placeholder="name@mail.com" class="form-control is-<?= isset($_GET['valid']) &&
                     $_GET['input'] == 'email'
                       ? $_GET['valid']
                       : '' ?>" value="<?= isset($_COOKIE['email']) ? $_COOKIE['email'] : '' ?>" required>
@@ -168,7 +169,7 @@ include 'includes/db.php';
 
                 <div class="mb-3">
                     <label class="form-label"><strong>Mot de passe</strong></label>
-                    <input type="password" name="password" class="form-control is-<?= isset($_GET['valid']) &&
+                    <input type="password" name="password" placeholder="Saisir votre mot de passe" class="form-control is-<?= isset($_GET['valid']) &&
                     $_GET['input'] == 'mdp'
                       ? $_GET['valid']
                       : '' ?>" id="passwordProvider" oninput="strengthChecker(this)" required>
@@ -187,6 +188,8 @@ include 'includes/db.php';
 
                 <div class="g-recaptcha mb-4" id="provider" data-sitekey="<?= $siteKey ?>"
                     data-callback="validProvider"></div>
+
+                <p>Déjà inscrit ? <a href="login.php">connectez-vous</a></p>
 
                 <div class="text-center">
                     <button type="submit" id="submitProvider" style="display: none" name="submit"
