@@ -53,25 +53,51 @@ include 'includes/head.php';
             <div class="container section-title rounded align-text-bottom">
                 <div class="row align-items-center">
                     <div class="col-8">
-                        <h5>Catégorie</h5>
+                        <h5>Activités les mieux notés</h5>
                     </div>
                     <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
                         <a class="btn btn-outline-light" type="submit" href="categorie.php">Voir plus</a>
                     </div>
                 </div>
             </div>
-            <br>
 
             <div class="container">
                 <div class="row">
-                    <?php for ($i = 0; $i < 4; $i++) {
-                      echo '
-          <div class="col-md col-sm-6 mb-3">
-            <div class="card">
-              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activities/placeholder.jpg" alt="placeholder"></a>
-            </div>
-          </div>';
-                    } ?>
+                    <?php
+                    $query = $db->prepare("SELECT ACTIVITY.id, ACTIVITY.name, ROUND(AVG(COMMENT.notation), 1) AS notation
+                    FROM ACTIVITY
+                    INNER JOIN RESERVATION ON ACTIVITY.id = RESERVATION.id_activity
+                    INNER JOIN COMMENT ON RESERVATION.id = COMMENT.id_reservation
+                    WHERE ACTIVITY.status = 1
+                    GROUP BY ACTIVITY.id ORDER BY notation DESC LIMIT 4;");
+                    $query->execute();
+                    $activities = $query->fetchAll(PDO::FETCH_ASSOC);
+                    $total = 4;
+                    foreach ($activities as $activity) {
+
+                      $path = 'images/activities/';
+                      $idImage = $activity['id'];
+                      include 'includes/image.php';
+                      ?>
+                    <div class="col-md col-sm-6 mb-3">
+                        <div class="card">
+                            <a href="activity.php?id=<?= $activity['id'] ?>"><img class="rounded img-fluid"
+                                    src="<?= $image0 ?>" alt="placeholder"></a>
+                        </div>
+                    </div>
+                    <?php $total = $total - 1;
+                    }
+                    if ($total != 0) {
+                      for ($i = 0; $i < $total; $i++) { ?>
+                    <div class="col-md col-sm-6 mb-3">
+                        <div class="card">
+                            <a><img class="rounded img-fluid" src="images/activities/placeholder.jpg"
+                                    alt="placeholder"></a>
+                        </div>
+                    </div>
+                    <?php }
+                    }
+                    ?>
                 </div>
             </div>
             <br>
@@ -79,7 +105,7 @@ include 'includes/head.php';
             <div class="container section-title rounded align-text-bottom">
                 <div class="row align-items-center">
                     <div class="col-8">
-                        <h5>Activités</h5>
+                        <h5>Activités populaires du moment</h5>
                     </div>
                     <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
                         <a class="btn btn-outline-light" type="submit" href="catalog.php">Voir plus</a>
@@ -89,14 +115,45 @@ include 'includes/head.php';
 
             <div class="container">
                 <div class="row">
-                    <?php for ($i = 0; $i < 4; $i++) {
-                      echo '
-          <div class="col-md col-sm-6 mb-3">
-            <div class="card">
-              <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activities/placeholder.jpg" alt="placeholder"></a>
-            </div>
-          </div>';
-                    } ?>
+                    <?php
+                    $query = $db->prepare("SELECT name, id
+                    FROM   ACTIVITY
+                    WHERE  ACTIVITY.id IN (SELECT RESERVATION.id_activity
+                                           FROM   (SELECT id_activity,
+                                                          Count(*) AS reservation_count
+                                                   FROM   RESERVATION
+                                                   GROUP  BY id_activity
+                                                   ORDER  BY reservation_count) RESERVATION)
+                    AND ACTIVITY.status = 1
+                    ORDER  BY ACTIVITY.id DESC LIMIT 4");
+                    $query->execute();
+                    $activities = $query->fetchAll(PDO::FETCH_ASSOC);
+                    $total = 4;
+                    foreach ($activities as $activity) {
+
+                      $path = 'images/activities/';
+                      $idImage = $activity['id'];
+                      include 'includes/image.php';
+                      ?>
+                    <div class="col-md col-sm-6 mb-3">
+                        <div class="card">
+                            <a href="activity.php?id=<?= $activity['id'] ?>"><img class="rounded img-fluid"
+                                    src="<?= $image0 ?>" alt="placeholder"></a>
+                        </div>
+                    </div>
+                    <?php $total = $total - 1;
+                    }
+                    if ($total != 0) {
+                      for ($i = 0; $i < $total; $i++) { ?>
+                    <div class="col-md col-sm-6 mb-3">
+                        <div class="card">
+                            <a><img class="rounded img-fluid" src="images/activities/placeholder.jpg"
+                                    alt="placeholder"></a>
+                        </div>
+                    </div>
+                    <?php }
+                    }
+                    ?>
                 </div>
             </div>
 

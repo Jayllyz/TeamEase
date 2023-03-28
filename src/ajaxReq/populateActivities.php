@@ -54,7 +54,12 @@ if ($_POST['search'] == 'none') {
 } elseif ($_POST['search'] == 'statusAsc') {
   $search = 'ORDER BY status ASC';
 }
-$query = $db->query('SELECT id FROM ACTIVITY WHERE status = 1 ' . $categoriesFilter . $searchBarInput . $search);
+if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
+  $statusQuery = 'status = 1 OR status = 0 ';
+} else {
+  $statusQuery = 'status = 1';
+}
+$query = $db->query('SELECT id FROM ACTIVITY WHERE ' . $statusQuery . $categoriesFilter . $searchBarInput . $search);
 $id = $query->fetchAll(PDO::FETCH_COLUMN);
 $countId = count($id);
 if ($countId == 0) {
@@ -65,7 +70,7 @@ if ($countId == 0) {
   for ($i = ($currentPage - 1) * 10; $i < $countId; $i++) {
 
     $query = $db->prepare(
-      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee FROM ACTIVITY WHERE id =:id',
+      'SELECT name, SUBSTRING(description, 1, 450), duration, priceAttendee, maxAttendee, status FROM ACTIVITY WHERE id =:id',
     );
     $query->execute([
       ':id' => $id[$i],
@@ -92,14 +97,30 @@ if ($countId == 0) {
         <div class="card-body col-8 p-0 row">
             <div class="col-11 card-title">
                 <h4 class="mt-2">
-                    <a href="activity.php?id=<?= $id[$i] ?>" class="text-light"><?= $activity['name'] ?></a>
+                    <a href="activity.php?id=<?= $id[$i] ?>" class="text-light"><?php
+echo $activity['name'];
+if ($activity['status'] == 0) {
+  echo '<span class="badge bg-danger ms-2">Indisponible</span>';
+} else {
+  $query = $db->prepare(
+    'SELECT ROUND(AVG(notation), 1) AS notation FROM COMMENT WHERE id_reservation IN (SELECT id FROM RESERVATION WHERE id_activity = :id)',
+  );
+  $query->execute([':id' => $id[$i]]);
+  $notation = $query->fetch(PDO::FETCH_ASSOC);
+  if ($notation['notation'] == 0) {
+    echo '<span class="badge bg-warning ms-2">Aucune note</span>';
+  } else {
+    echo '<span class="badge bg-warning ms-2">' . $notation['notation'] . '/5.0</span>';
+  }
+}
+?></a>
                 </h4>
             </div>
             <?php
             $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
             if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) { ?>
             <div class="col-1 d-flex justify-content-end pe-3">
-                <button type="button" class="btn-close btn-danger btn-sm" aria-label="Close" data-bs-toggle="modal"
+                <button type="button" class="btn-close btn-danger btn-sm me-2" aria-label="Close" data-bs-toggle="modal"
                     data-bs-target="#suppression<?= $altId ?>"></button>
             </div>
             <?php }
@@ -216,7 +237,23 @@ if ($countId == 0) {
         <div class="card-body col-8 p-0 row">
             <div class="col-11 card-title">
                 <h4 class="mt-2">
-                    <a href="activity.php?id=<?= $id[$i] ?>" class="text-light"><?= $activity['name'] ?></a>
+                    <a href="activity.php?id=<?= $id[$i] ?>" class="text-light"><?php
+echo $activity['name'];
+if ($activity['status'] == 0) {
+  echo '<span class="badge bg-danger ms-2">Indisponible</span>';
+} else {
+  $query = $db->prepare(
+    'SELECT ROUND(AVG(notation), 1) AS notation FROM COMMENT WHERE id_reservation IN (SELECT id FROM RESERVATION WHERE id_activity = :id)',
+  );
+  $query->execute([':id' => $id[$i]]);
+  $notation = $query->fetch(PDO::FETCH_ASSOC);
+  if ($notation['notation'] == 0) {
+    echo '<span class="badge bg-warning ms-2">Aucune note</span>';
+  } else {
+    echo '<span class="badge bg-warning ms-2">' . $notation['notation'] . '/5.0</span>';
+  }
+}
+?></a>
                 </h4>
             </div>
             <?php
