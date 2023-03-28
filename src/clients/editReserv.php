@@ -37,7 +37,7 @@ $idReserv = $reserv['id'];
           'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
         );
         $query->execute([
-          'id' => htmlspecialchars($_GET['id']),
+          'id' => $idActivity,
         ]);
         $activities = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -53,8 +53,8 @@ $idReserv = $reserv['id'];
                 <div class="input-group">
                     <input type="number" class="form-control" min="1" max="<?= $activities[0][
                       'maxAttendee'
-                    ] ?>" id="attendee" name="attendee"
-                        onchange="selectedDateReservation(date, <?= $idActivity ?>)" value="<?= $attendee ?>" required>
+                    ] ?>" id="attendee" name="attendee" onchange="selectedDateReservation(date, <?= $idActivity ?>)"
+                        value="<?= $attendee ?>" required>
                     <span class="input-group-text" id="priceDisplay"><?= $price * $attendee ?></span>
                     <span class="input-group-text">€</span>
                 </div>
@@ -69,7 +69,7 @@ $idReserv = $reserv['id'];
 
                 <input type="text" class="form-control" name="date" id="date"
                     onchange="selectedDateReservation(this, <?= $idActivity ?>)" required>
-                <div id="slot" style="dislay:none">
+                <div id="slot" style="display:none">
                     <label for="time" class="form-label">
                         <h4>Heure de votre créneau</h4>
                     </label>
