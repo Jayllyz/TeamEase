@@ -74,23 +74,23 @@ if (isset($_GET['check'])) {
                             <td><?= $select['email'] ?></td>
                             <td><?= $select['address'] ?></td>
                             <td><?php
-                                echo $select['rights'];
-                                echo '<br>';
-                                if ($select['rights'] == 0) {
-                                  echo 'Client/Entreprise';
-                                } elseif ($select['rights'] == 1) {
-                                  echo 'Prestataire';
-                                } elseif ($select['rights'] == -1) {
-                                  echo 'Banni';
-                                } elseif ($select['rights'] == 2) {
-                                  echo 'Admin/Together&Stronger';
-                                }
-                                ?></td>
+                            echo $select['rights'];
+                            echo '<br>';
+                            if ($select['rights'] == 0) {
+                              echo 'Client/Entreprise';
+                            } elseif ($select['rights'] == 1) {
+                              echo 'Prestataire';
+                            } elseif ($select['rights'] == -1) {
+                              echo 'Banni';
+                            } elseif ($select['rights'] == 2) {
+                              echo 'Admin/Together&Stronger';
+                            }
+                            ?></td>
                             <td>
                                 <div class="button_profil">
                                     <a href="clients/read.php?siret=<?= $select[
-                                          'siret'
-                                        ] ?>" class="btn-read btn ms-2 me-2">Consulter</a>
+                                      'siret'
+                                    ] ?>" class="btn-read btn ms-2 me-2">Consulter</a>
                                     <br>
                                     <a href="clients/update.php?siret=<?= $select['siret'] ?>&name=<?= $select[
   'companyName'
@@ -98,19 +98,18 @@ if (isset($_GET['check'])) {
                                     <br>
 
                                     <button type="button" class="btn-ban btn ms-2 me-2" data-bs-toggle="modal"
-                                        data-bs-target="#pop-up-del-<?= $select[
-                                          'siret'
-                                        ] ?>"><?= $select['rights'] != -1 ? 'Bannir' : 'Débannir' ?></button><br>
+                                        data-bs-target="#pop-up-del-<?= $select['siret'] ?>"><?= $select['rights'] != -1
+  ? 'Bannir'
+  : 'Débannir' ?></button><br>
 
 
                                     <div class="modal fade" id="pop-up-del-<?= $select['siret'] ?>">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Confirmation du <?= $select['rights'] !=
-                                                        -1
-                                                          ? 'bannissement'
-                                                          : 'débannissement' ?> de <span class="text-uppercase"><?= $select[
+                                                    <h5 class="modal-title">Confirmation du <?= $select['rights'] != -1
+                                                      ? 'bannissement'
+                                                      : 'débannissement' ?> de <span class="text-uppercase"><?= $select[
    'companyName'
  ] ?></span></h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -119,15 +118,13 @@ if (isset($_GET['check'])) {
                                                 <div class="modal-body">
                                                     Saisir le nom de l'entreprise pour confirmation
                                                     <form action="clients/ban.php?siret=<?= $select[
-                                                          'siret'
-                                                        ] ?>&name=<?= $select['companyName'] ?>&rights=<?= $select[
+                                                      'siret'
+                                                    ] ?>&name=<?= $select['companyName'] ?>&rights=<?= $select[
   'rights'
 ] ?>" method="post">
                                                         <div class="container col-md-8">
                                                             <input type="text" class="form-control" name="name"
-                                                                placeholder="<?= $select[
-                                                                  'companyName'
-                                                                ] ?>" required>
+                                                                placeholder="<?= $select['companyName'] ?>" required>
                                                         </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -139,8 +136,8 @@ if (isset($_GET['check'])) {
                                         </div>
                                     </div>
                                     <a href="clients/delete.php?siret=<?= $select[
-                                            'siret'
-                                          ] ?>" class="btn-ban btn ms-2 me-2"
+                                      'siret'
+                                    ] ?>" class="btn-ban btn ms-2 me-2"
                                         onclick="checkConfirm('Voulez vous vraiment supprimer ?')">Supprimer
                                     </a>
                                 </div>
@@ -172,13 +169,13 @@ if (isset($_GET['check'])) {
                     if ($result != null) {
                       foreach ($result as $select) { ?>
                     <?php
-                        $id_occupation = $select['id_occupation'];
-                        $req = $db->prepare('SELECT name, salary FROM OCCUPATION WHERE id = :id_occupation');
-                        $req->execute(['id_occupation' => $id_occupation]);
-                        $occupation = $req->fetchAll(PDO::FETCH_ASSOC);
-                        $select['id_occupation'] = $occupation[0]['name'];
-                        $select['salary'] = $occupation[0]['salary'];
-                        ?>
+                    $id_occupation = $select['id_occupation'];
+                    $req = $db->prepare('SELECT name, salary FROM OCCUPATION WHERE id = :id_occupation');
+                    $req->execute(['id_occupation' => $id_occupation]);
+                    $occupation = $req->fetchAll(PDO::FETCH_ASSOC);
+                    $select['id_occupation'] = $occupation[0]['name'];
+                    $select['salary'] = $occupation[0]['salary'];
+                    ?>
 
                     <tbody id="<?= $select['id'] ?>">
                         <tr>
@@ -189,42 +186,40 @@ if (isset($_GET['check'])) {
                             <td><?= $select['id_occupation'] ?></td>
                             <td><?= $select['salary'] . '€/h' ?></td>
                             <td><?php
-                                    echo $select['rights'];
-                                    echo '<br>';
-                                    if ($select['rights'] == 0) {
-                                      echo 'Client/Entreprise';
-                                    } elseif ($select['rights'] == 1) {
-                                      echo 'Prestataire';
-                                    } elseif ($select['rights'] == -1) {
-                                      echo 'Banni';
-                                    } elseif ($select['rights'] == 2) {
-                                      echo 'Admin/Together&Stronger';
-                                    }
-                                    ?></td>
+                            echo $select['rights'];
+                            echo '<br>';
+                            if ($select['rights'] == 0) {
+                              echo 'Client/Entreprise';
+                            } elseif ($select['rights'] == 1) {
+                              echo 'Prestataire';
+                            } elseif ($select['rights'] == -1) {
+                              echo 'Banni';
+                            } elseif ($select['rights'] == 2) {
+                              echo 'Admin/Together&Stronger';
+                            }
+                            ?></td>
                             <td>
                                 <div class="button_profil">
                                     <a href="provider/read.php?id=<?= $select[
-                                              'id'
-                                            ] ?>" class="btn-read btn ms-2 me-2">Consulter</a>
+                                      'id'
+                                    ] ?>" class="btn-read btn ms-2 me-2">Consulter</a>
                                     <br>
                                     <a href="provider/update.php?id=<?= $select[
-                                              'id'
-                                            ] ?>" class=" btn-update btn ms-2 me-2">Modifier</a>
+                                      'id'
+                                    ] ?>" class=" btn-update btn ms-2 me-2">Modifier</a>
                                     <br>
 
                                     <button type="button" class="btn-ban btn ms-2 me-2" data-bs-toggle="modal"
-                                        data-bs-target="#pop-up-del-<?= $select[
-                                              'id'
-                                            ] ?>"><?= $select['rights'] != -1 ? 'Bannir' : 'Débannir' ?></button><br>
+                                        data-bs-target="#pop-up-del-<?= $select['id'] ?>"><?= $select['rights'] != -1
+  ? 'Bannir'
+  : 'Débannir' ?></button><br>
                                     <div class="modal fade" id="pop-up-del-<?= $select['id'] ?>">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Confirmation du <?= $select[
-                                                              'rights'
-                                                            ] != -1
-                                                              ? 'bannissement'
-                                                              : 'débannissement' ?> de <span class="text-uppercase"><?= $select[
+                                                    <h5 class="modal-title">Confirmation du <?= $select['rights'] != -1
+                                                      ? 'bannissement'
+                                                      : 'débannissement' ?> de <span class="text-uppercase"><?= $select[
    'lastName'
  ] ?></span></h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -233,15 +228,13 @@ if (isset($_GET['check'])) {
                                                 <div class="modal-body">
                                                     Saisir le nom du prestataire pour confirmation
                                                     <form action="provider/ban.php?id=<?= $select[
-                                                              'id'
-                                                            ] ?>&name=<?= $select['lastName'] ?>&rights=<?= $select[
+                                                      'id'
+                                                    ] ?>&name=<?= $select['lastName'] ?>&rights=<?= $select[
   'rights'
 ] ?>" method="post">
                                                         <div class="container col-md-8">
                                                             <input type="text" class="form-control" name="name"
-                                                                placeholder="<?= $select[
-                                                                      'lastName'
-                                                                    ] ?>" required>
+                                                                placeholder="<?= $select['lastName'] ?>" required>
                                                         </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -252,9 +245,7 @@ if (isset($_GET['check'])) {
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="provider/delete.php?id=<?= $select[
-                                              'id'
-                                            ] ?>" class="btn-ban btn ms-2 me-2"
+                                    <a href="provider/delete.php?id=<?= $select['id'] ?>" class="btn-ban btn ms-2 me-2"
                                         onclick="checkConfirm('Voulez vous vraiment supprimer ?')">Supprimer
                                     </a>
                                 </div>
