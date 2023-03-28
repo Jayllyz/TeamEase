@@ -101,6 +101,13 @@ if ($countId == 0) {
 echo $activity['name'];
 if ($activity['status'] == 0) {
   echo '<span class="badge bg-danger ms-2">Indisponible</span>';
+} else {
+  $query = $db->prepare(
+    'SELECT ROUND(AVG(notation), 1) AS notation FROM COMMENT WHERE id_reservation IN (SELECT id FROM RESERVATION WHERE id_activity = :id)',
+  );
+  $query->execute([':id' => $id[$i]]);
+  $notation = $query->fetch(PDO::FETCH_ASSOC);
+  echo '<span class="badge bg-warning ms-2">' . $notation['notation'] . '/5.0</span>';
 }
 ?></a>
                 </h4>
@@ -230,6 +237,13 @@ if ($activity['status'] == 0) {
 echo $activity['name'];
 if ($activity['status'] == 0) {
   echo '<span class="badge bg-danger ms-2">Indisponible</span>';
+} else {
+  $query = $db->prepare(
+    'SELECT ROUND(AVG(notation), 1) AS notation FROM COMMENT WHERE id_reservation IN (SELECT id FROM RESERVATION WHERE id_activity = :id)',
+  );
+  $query->execute([':id' => $id[$i]]);
+  $notation = $query->fetch(PDO::FETCH_ASSOC);
+  echo '<span class="badge bg-warning ms-2">' . $notation['notation'] . '/5.0</span>';
 }
 ?></a>
                 </h4>
