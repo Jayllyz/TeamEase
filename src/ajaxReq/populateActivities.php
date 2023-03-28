@@ -107,7 +107,11 @@ if ($activity['status'] == 0) {
   );
   $query->execute([':id' => $id[$i]]);
   $notation = $query->fetch(PDO::FETCH_ASSOC);
-  echo '<span class="badge bg-warning ms-2">' . $notation['notation'] . '/5.0</span>';
+  if ($notation['notation'] == 0) {
+    echo '<span class="badge bg-warning ms-2">Aucune note</span>';
+  } else {
+    echo '<span class="badge bg-warning ms-2">' . $notation['notation'] . '/5.0</span>';
+  }
 }
 ?></a>
                 </h4>
@@ -243,7 +247,11 @@ if ($activity['status'] == 0) {
   );
   $query->execute([':id' => $id[$i]]);
   $notation = $query->fetch(PDO::FETCH_ASSOC);
-  echo '<span class="badge bg-warning ms-2">' . $notation['notation'] . '/5.0</span>';
+  if ($notation['notation'] == 0) {
+    echo '<span class="badge bg-warning ms-2">Aucune note</span>';
+  } else {
+    echo '<span class="badge bg-warning ms-2">' . $notation['notation'] . '/5.0</span>';
+  }
 }
 ?></a>
                 </h4>
