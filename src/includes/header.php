@@ -110,9 +110,11 @@
                               ';
                       }
                     } ?>
+                    <?php if (isset($_SESSION['email'])) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="../planning.php">Planning</a>
+                        <a class="nav-link" href="../planning.php">Planning des salles </a>
                     </li>
+                    <?php } ?>
                     <li class="nav-item">
                         <a class="nav-link" href="../aPropos.php">A propos de nous</a>
                     </li>
