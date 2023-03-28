@@ -345,3 +345,12 @@ a {
   background-color: #fff;
   font-weight: 600;
 }
+
+.card:hover {
+  transform: scale(1.05);
+  transition: 0.5s !important;
+}
+
+.card {
+  transition: 0.5s !important;
+}
