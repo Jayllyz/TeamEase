@@ -3,9 +3,6 @@
 
 <!DOCTYPE html>
 <html>
-
-
-
 <?php
 $linkCss = 'css-js/style.css';
 $linkLogo = 'images/logo.png';
@@ -20,9 +17,7 @@ include 'includes/head.php';
     </div>
     <main>
         <div class="container rounded main-text">
-
             <br>
-
 
             <div class="container section-about-us border border-2 border-secondary rounded">
                 <div>
@@ -104,7 +99,6 @@ include 'includes/head.php';
                         </p>
                     </div>
                 </div>
-
 
     </main>
     <?php include 'includes/footer.php'; ?>

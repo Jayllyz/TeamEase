@@ -1,4 +1,9 @@
-<?php session_start(); ?>
+<?php session_start(); 
+if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
+  header('location: index.php');
+  exit();
+}
+?>
 
 <?php include 'includes/db.php'; ?>
 
@@ -12,23 +17,24 @@ include 'includes/head.php';
 ?>
 
 <body>
-  <?php include 'includes/header.php'; ?>
-  <div class="container col-md-6">
-    <?php include 'includes/msg.php'; ?>
-  </div>
-  <main>
-    <div class="container rounded main-text">
+    <?php include 'includes/header.php'; ?>
+    <div class="container col-md-6">
+        <?php include 'includes/msg.php'; ?>
+    </div>
+    <main>
+        <div class="container rounded main-text">
 
 
-    <div class="container section-about-us border border-2 border-secondary rounded">
-    <div class="container rounded align-text-bottom">
-        <div class="row align-items-center">
-          <div class="col-8">
-            <h5>Planning</h5>
-          </div>
-        </div>
-      </div>
-        <table style="border: 1px solid black;" class="table text-center table-bordered table-hover" id="active">
+            <div class="container section-about-us border border-2 border-secondary rounded">
+                <div class="container rounded align-text-bottom">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h5>Planning</h5>
+                        </div>
+                    </div>
+                </div>
+                <table style="border: 1px solid black;" class="table text-center table-bordered table-hover"
+                    id="active">
                     <?php  ?>
                     <thead>
                         <tr>
@@ -43,7 +49,7 @@ include 'includes/head.php';
                         </tr>
                     </thead>
                     <tbody>
-                    <?php for ($i = 0; $i < 10; $i++) { ?>
+                        <?php for ($i = 0; $i < 10; $i++) { ?>
                         <tr>
                             <td><?= $i ?>h</td>
                             <td></td>
@@ -53,15 +59,17 @@ include 'includes/head.php';
                             <td></td>
                             <td></td>
                             <td></td>
-                        </tbody>
+                    </tbody>
                     <?php } ?>
                 </table>
 
-    </div>
-    </div>
+            </div>
+        </div>
     </main>
-  <?php include 'includes/footer.php'; ?>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <?php include 'includes/footer.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

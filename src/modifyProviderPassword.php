@@ -1,4 +1,8 @@
 <?php session_start();
+if (!isset($_SESSION['id'])) {
+  header('location: index.php');
+  exit();
+}
 include 'includes/db.php';
 $id = htmlspecialchars($_GET['id']);
 $rights = htmlspecialchars($_GET['rights']);

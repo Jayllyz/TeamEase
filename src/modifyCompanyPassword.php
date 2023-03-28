@@ -1,4 +1,8 @@
 <?php session_start();
+if(!isset($_SESSION['siret'])) {
+    header('location: profile.php');
+    exit();
+  }
 include 'includes/db.php';
 $siret = htmlspecialchars($_GET['siret']);
 $rights = htmlspecialchars($_GET['rights']);
