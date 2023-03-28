@@ -1,5 +1,5 @@
 <?php session_start();
-if(!isset($_SESSION['siret'])) {
+if (!isset($_SESSION['siret'])) {
   header('location: profile.php');
   exit();
 }

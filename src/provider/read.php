@@ -1,9 +1,9 @@
 <?php
 session_start();
-if(!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
-    header('location: ../index.php');
-    exit();
-  }
+if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
+  header('location: ../index.php');
+  exit();
+}
 include '../includes/db.php';
 $id = htmlspecialchars($_GET['id']);
 if ($_SESSION['rights'] == 2) { ?>
@@ -89,7 +89,7 @@ include '../includes/head.php';
             <tr>
                 <td><?= $select_activity['name'] ?></td>
                 <td><?= $select_activity['priceAttendee'] . '€' ?></td>
-                <td><?= $select_activity['duration'] .' mins'?></td>
+                <td><?= $select_activity['duration'] . ' mins' ?></td>
                 <td><?= $select_activity['maxAttendee'] ?></td>
             </tr>
             <?php } ?>

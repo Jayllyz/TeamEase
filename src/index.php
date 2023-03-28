@@ -1,5 +1,6 @@
 <?php session_start();
-include 'includes/db.php'; ?>
+include 'includes/db.php';
+?>
 
 <!DOCTYPE html>
 <html>
@@ -64,13 +65,13 @@ include 'includes/head.php';
             <div class="container">
                 <div class="row">
                     <?php for ($i = 0; $i < 4; $i++) {
-            echo '
+                      echo '
           <div class="col-md col-sm-6 mb-3">
             <div class="card">
               <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activities/placeholder.jpg" alt="placeholder"></a>
             </div>
           </div>';
-          } ?>
+                    } ?>
                 </div>
             </div>
             <br>
@@ -89,13 +90,13 @@ include 'includes/head.php';
             <div class="container">
                 <div class="row">
                     <?php for ($i = 0; $i < 4; $i++) {
-            echo '
+                      echo '
           <div class="col-md col-sm-6 mb-3">
             <div class="card">
               <a href="page_activite.php?activite=#"><img class="rounded img-fluid" src="images/activities/placeholder.jpg" alt="placeholder"></a>
             </div>
           </div>';
-          } ?>
+                    } ?>
                 </div>
             </div>
 

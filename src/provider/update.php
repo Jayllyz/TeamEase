@@ -1,5 +1,5 @@
 <?php session_start();
-if(!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
+if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
   header('location: ../index.php');
   exit();
 }
@@ -23,11 +23,11 @@ if ($_SESSION['rights'] == 2) { ?>
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-    $linkLogo = '../images/logo.png';
-    $linkCss = '../css-js/style.css';
-    $title = "Modification de $lastName" . ' ' . "$firstName";
-    include '../includes/head.php';
-    ?>
+$linkLogo = '../images/logo.png';
+$linkCss = '../css-js/style.css';
+$title = "Modification de $lastName" . ' ' . "$firstName";
+include '../includes/head.php';
+?>
 
 <body>
 

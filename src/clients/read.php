@@ -6,24 +6,24 @@ if ($_SESSION['rights'] == 2 && isset($_SESSION['siret'])) { ?>
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-    $linkLogo = '../images/logo.png';
-    $linkCss = '../css-js/style.css';
-    $title = 'Consultation';
-    include '../includes/head.php';
-    ?>
+$linkLogo = '../images/logo.png';
+$linkCss = '../css-js/style.css';
+$title = 'Consultation';
+include '../includes/head.php';
+?>
 
 <body>
     <?php include '../includes/header.php'; ?>
 
     <?php
-        $req = $db->prepare(
-          'SELECT companyName, email, address, confirm_signup , rights FROM COMPANY WHERE siret = :siret',
-        );
-        $req->execute([
-          'siret' => $siret,
-        ]);
-        $result = $req->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($result as $select) { ?>
+    $req = $db->prepare(
+      'SELECT companyName, email, address, confirm_signup , rights FROM COMPANY WHERE siret = :siret',
+    );
+    $req->execute([
+      'siret' => $siret,
+    ]);
+    $result = $req->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($result as $select) { ?>
 
     <h1 class="mt-4">Informations de <?= $select['companyName'] ?></h1>
     <div class="container info_user">
@@ -72,18 +72,18 @@ if ($_SESSION['rights'] == 2 && isset($_SESSION['siret'])) { ?>
             </tr>
             <?php foreach ($result as $select) { ?>
             <?php
-                            $date = explode('-', $select['date']);
-                            $date = $date[2] . '/' . $date[1] . '/' . $date[0];
-                            $select['date'] = $date;
+            $date = explode('-', $select['date']);
+            $date = $date[2] . '/' . $date[1] . '/' . $date[0];
+            $select['date'] = $date;
 
-                            $select['time'] = substr($select['time'], 0, 5);
+            $select['time'] = substr($select['time'], 0, 5);
 
-                            $req = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
-                            $req->execute([
-                              'id' => $select['id_activity'],
-                            ]);
-                            $name = $req->fetch(PDO::FETCH_ASSOC);
-                            ?>
+            $req = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
+            $req->execute([
+              'id' => $select['id_activity'],
+            ]);
+            $name = $req->fetch(PDO::FETCH_ASSOC);
+            ?>
 
             <tr>
                 <td><?= $name['name'] ?></td>
@@ -91,29 +91,29 @@ if ($_SESSION['rights'] == 2 && isset($_SESSION['siret'])) { ?>
                 <td><?= $select['time'] ?></td>
                 <td><?= $select['attendee'] ?></td>
                 <td><?php if ($select['status'] == 0) {
-                                  echo 'Pas encore réglée <svg width="46" height="46" fill="none" stroke="#df1111" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  echo 'Pas encore réglée <svg width="46" height="46" fill="none" stroke="#df1111" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M18 6 6 18"></path>
                                   <path d="m6 6 12 12"></path>
                                 </svg>';
-                                } else {
-                                  echo 'Réservation réglée <svg width="46" height="46" fill="none" stroke="#0c9234" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                } else {
+                  echo 'Réservation réglée <svg width="46" height="46" fill="none" stroke="#0c9234" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M20 6 9 17l-5-5"></path>
                                 </svg>';
-                                } ?>
+                } ?>
                 </td>
                 <td>
                     <a href="../activity.php?id=<?= $select[
-                                      'id_activity'
-                                    ] ?>" class="btn btn-primary">Voir l'activité</a>
+                      'id_activity'
+                    ] ?>" class="btn btn-primary">Voir l'activité</a>
             </tr>
             <?php } ?>
         </table>
     </div>
     <?php }
-            ?>
+    ?>
 
     <?php }
-        ?>
+    ?>
 
 
     <?php include '../includes/footer.php'; ?>
