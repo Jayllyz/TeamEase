@@ -96,6 +96,7 @@ void curlApi(char *url, char *input)
         }
     }
 
+    free(json_input);
     curl_easy_cleanup(curl);
 }
 
@@ -106,12 +107,14 @@ int main(int argc, char *argv[])
     char *input = malloc(200);
     do {
         printf("Votre question ? : \n");
-        scanf("%s", input);
+        fgets(input, 200, stdin);
+        input[strcspn(input, "\n")] = '\0';
         clean_stdin();
 
         if (input != NULL) {
             curlApi("http://localhost:80/api/api.php/activities", input);
         }
+
         free(input);
         input = malloc(200);
     } while (strcmp(input, "quitter") != 0);
