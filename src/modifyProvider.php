@@ -1,4 +1,8 @@
 <?php session_start();
+if (!isset($_SESSION['id'])) {
+  header('location: index.php');
+  exit();
+}
 include 'includes/db.php';
 $id = htmlspecialchars($_GET['id']);
 $firstName = htmlspecialchars($_GET['firstName']);
@@ -52,4 +56,3 @@ include 'includes/head.php';
 <?php } else {header('location: profile.php');
   exit();}
 ?>
-

@@ -1,5 +1,8 @@
 <?php
-
+if (!isset($_SESSION['siret'])) {
+  header('location: ../index.php');
+  exit();
+}
 require_once '../includes/db.php';
 require_once '/home/php/src/vendor/autoload.php';
 

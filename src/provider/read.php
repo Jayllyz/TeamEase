@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
+  header('location: ../index.php');
+  exit();
+}
 include '../includes/db.php';
 $id = htmlspecialchars($_GET['id']);
 if ($_SESSION['rights'] == 2) { ?>
@@ -44,58 +48,58 @@ include '../includes/head.php';
 
     foreach ($result as $select) { ?>
 
-        <h1 class="mt-auto">Informations de <?= $select['lastName'] . ' ' . $select['firstName'] ?></h1>
-        <div class="container info_user">
-            <table class="table text-center table-bordered">
+    <h1 class="mt-auto">Informations de <?= $select['lastName'] . ' ' . $select['firstName'] ?></h1>
+    <div class="container info_user">
+        <table class="table text-center table-bordered">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Métier</th>
+                <th>Salaire</th>
+                <th>Email</th>
+                <th>Status du compte</th>
+                <th>Droits</th>
+            </tr>
+            <tr>
+                <td><?= $select['lastName'] ?></td>
+                <td><?= $select['firstName'] ?></td>
+                <td><?= $select['id_occupation'] ?></td>
+                <td><?= $select['salary'] . '€/h' ?></td>
+                <td><?= $select['email'] ?></td>
+                <td><?= $select['confirm_signup'] ? 'Compte confirmé' : 'Compte non confirmé' ?></td>
+                <td><?= $select['rights'] ? 'Prestataire (1)' : 'Prestataire banni (-1)' ?></td>
+            </tr>
+        </table>
+    </div>
+
+    <?php if ($result_activity != null) { ?>
+    <h1>Activités affectées</h1>
+    <div class="container">
+        <table class="table text-center table-bordered table-hover">
+            <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Métier</th>
-                    <th>Salaire</th>
-                    <th>Email</th>
-                    <th>Status du compte</th>
-                    <th>Droits</th>
+                    <th>Prix</th>
+                    <th>Durée</th>
+                    <th>Nombre max de participants</th>
                 </tr>
-                <tr>
-                    <td><?= $select['lastName'] ?></td>
-                    <td><?= $select['firstName'] ?></td>
-                    <td><?= $select['id_occupation'] ?></td>
-                    <td><?= $select['salary'] . '€/h' ?></td>
-                    <td><?= $select['email'] ?></td>
-                    <td><?= $select['confirm_signup'] ? 'Compte confirmé' : 'Compte non confirmé' ?></td>
-                    <td><?= $select['rights'] ? 'Prestataire (1)' : 'Prestataire banni (-1)' ?></td>
-                </tr>
-            </table>
-        </div>
+            </thead>
 
-        <?php if ($result_activity != null) { ?>
-        <h1>Activités affectées</h1>
-        <div class="container">
-            <table class="table text-center table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Prix</th>
-                        <th>Durée</th>
-                        <th>Nombre max de participants</th>
-                    </tr>
-                </thead>
+            <?php foreach ($result_activity as $select_activity) { ?>
+            <tr>
+                <td><?= $select_activity['name'] ?></td>
+                <td><?= $select_activity['priceAttendee'] . '€' ?></td>
+                <td><?= $select_activity['duration'] . ' mins' ?></td>
+                <td><?= $select_activity['maxAttendee'] ?></td>
+            </tr>
+            <?php } ?>
+        </table>
+    </div>
+    <?php } ?>
 
-                <?php foreach ($result_activity as $select_activity) { ?>
-                    <tr>
-                        <td><?= $select_activity['name'] ?></td>
-                        <td><?= $select_activity['priceAttendee'] ?></td>
-                        <td><?= $select_activity['duration'] ?></td>
-                        <td><?= $select_activity['maxAttendee'] ?></td>
-                    </tr>
-                <?php } ?>
-            </table>
-        </div>
-        <?php } ?>
-
-        <div class="text-center mt-auto">
-            <a href="../admin.php?check=provider" class="btn col-1 btn-dark">Retour</a>
-        </div>
+    <div class="text-center mt-auto">
+        <a href="../admin.php?check=provider" class="btn col-1 btn-dark">Retour</a>
+    </div>
 
     <?php }
     ?>
@@ -103,6 +107,7 @@ include '../includes/head.php';
     <?php include '../includes/footer.php'; ?>
     <script src="css-js/scripts.js"></script>
 </body>
+
 </html>
 <?php } else {header('location: localhost');
   exit();} ?>

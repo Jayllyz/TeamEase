@@ -1180,3 +1180,40 @@ function getPreviousSiblings(elem) {
   }
   return siblings;
 }
+
+function populateComment(idActivity, filter) {
+  const commentContainer = document.getElementById('comment-container');
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      commentContainer.innerHTML = this.responseText;
+    }
+  };
+  xhr.open('POST', 'ajaxReq/populateActivityComments.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + idActivity + '&filter=' + filter);
+}
+
+function filterCommentDate(idActivity, element) {
+  let filter;
+  if (element.classList.contains('desc')) {
+    filter = 'dateAsc';
+  } else if (element.classList.contains('asc')) {
+    filter = 'dateDesc';
+  } else {
+    filter = 'dateDesc';
+  }
+  populateComment(idActivity, filter);
+}
+
+function filterCommentNotation(idActivity, element) {
+  let filter;
+  if (element.classList.contains('desc')) {
+    filter = 'noteAsc';
+  } else if (element.classList.contains('asc')) {
+    filter = 'noteDesc';
+  } else {
+    filter = 'noteDesc';
+  }
+  populateComment(idActivity, filter);
+}
