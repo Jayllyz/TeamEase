@@ -257,7 +257,8 @@ include 'includes/head.php';
 
         </div>
         </div>
-        <?php }?>
+        <?php }
+        ?>
 
         <div class="container section-about-us border border-2 border-secondary rounded">
             <div class="container rounded align-text-bottom">
@@ -505,17 +506,17 @@ include 'includes/head.php';
         <?php } ?>
         <?php if ($_SESSION['rights'] == 1) { ?>
         <?php
-  // PARTIE PROVIDER
-  ?>
+          // PARTIE PROVIDER
+          ?>
 
         <br>
 
         <?php
-          $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
-          $stmt = $db->prepare($sql);
-          $stmt->execute(['id' => $_SESSION['id']]);
-          $provider = $stmt->fetch();
-          ?>
+        $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
+        $stmt = $db->prepare($sql);
+        $stmt->execute(['id' => $_SESSION['id']]);
+        $provider = $stmt->fetch();
+        ?>
         <br>
         <br>
         <br>
@@ -528,35 +529,35 @@ include 'includes/head.php';
                     <br>
 
                     <?php
-                        $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
-                        $stmt = $db->prepare($sql);
-                        $stmt->execute(['id' => $_SESSION['id']]);
-                        $provider = $stmt->fetch();
-                        ?>
+                    $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute(['id' => $_SESSION['id']]);
+                    $provider = $stmt->fetch();
+                    ?>
                     <br>
                     <br>
                     <br>
 
                     <div class="text-center">
                         <?php
-                            echo 'Prénom :   ';
-                            echo $provider['firstName'];
-                            //Ne pas changer
-                            echo '<br>';
-                            echo '<br>';
-                            echo 'Nom de famille :   ';
-                            echo $provider['lastName'];
-                            //Ne pas changer
-                            echo '<br>';
-                            echo '<br>';
-                            echo 'Email :    ';
-                            echo $provider['email'];
-                            // Changer
-                            echo '<br>';
-                            echo '<br>';
-                            // Ne pas changer
-                            echo '<br>';
-                            ?>
+                        echo 'Prénom :   ';
+                        echo $provider['firstName'];
+                        //Ne pas changer
+                        echo '<br>';
+                        echo '<br>';
+                        echo 'Nom de famille :   ';
+                        echo $provider['lastName'];
+                        //Ne pas changer
+                        echo '<br>';
+                        echo '<br>';
+                        echo 'Email :    ';
+                        echo $provider['email'];
+                        // Changer
+                        echo '<br>';
+                        echo '<br>';
+                        // Ne pas changer
+                        echo '<br>';
+                        ?>
 
                         <br>
                         <button class="btn btn-success">
@@ -596,8 +597,8 @@ include 'includes/head.php';
               $id_animate[] = $animate[$i]['id_activity'];
             }
 
-  // faire une tableau avec les données
-  ?>
+          // faire une tableau avec les données
+          ?>
 
 
             <table class="table text-center table-bordered table-hover" id="active">
@@ -735,8 +736,7 @@ include 'includes/head.php';
                         $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
                         $stmt = $db->prepare($sql);
                         $stmt->execute(['id' => $reservations[$j]['id_activity']]);
-                        $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        // afficher les activités sans doublons
+                        $activities = $stmt->fetchAll(PDO::FETCH_ASSOC); // afficher les activités sans doublons
                         for ($k = 0; $k < count($reservations); $k++) {
                           $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
                           $stmt = $db->prepare($sql);
