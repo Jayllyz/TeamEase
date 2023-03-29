@@ -55,7 +55,7 @@ if ($_POST['search'] == 'none') {
   $search = 'ORDER BY status ASC';
 }
 if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
-  $statusQuery = 'status = 1 OR status = 0 ';
+  $statusQuery = 'status ';
 } else {
   $statusQuery = 'status = 1 ';
 }
