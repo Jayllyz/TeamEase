@@ -110,7 +110,7 @@
                               ';
                       }
                     } ?>
-                    <?php if (isset($_SESSION['email'])) { ?>
+                    <?php if (isset($_SESSION['email']) && $_SESSION['rights'] == 2) { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="../planning.php">Planning des salles </a>
                     </li>
