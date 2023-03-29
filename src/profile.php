@@ -257,140 +257,7 @@ include 'includes/head.php';
 
         </div>
         </div>
-
-        <div class="container section-about-us border border-2 border-secondary rounded">
-            <div class="container rounded align-text-bottom">
-                <div class="row align-items-center">
-                    <div class="col-8">
-                        <h5>Dernière Activité Terminé</h5>
-                    </div>
-                    <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a class="btn btn-read" type="submit" href="clients/reservations.php">Voir plus</a>
-                    </div>
-                </div>
-            </div>
-            <?php
-            $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
-            $stmt = $db->prepare($sql);
-            $stmt->execute([
-              'siret' => $_SESSION['siret'],
-              'status' => 1,
-            ]);
-            $reservations = $stmt->fetchAll(); // mettre les id des activités dans un tableau
-            $id_activity = [];
-            for ($i = 0; $i < count($reservations); $i++) {
-              $id_activity[] = $reservations[$i]['id_activity'];
-            }
-
-          // faire une tableau avec les données
-          ?>
-            <table class="table text-center table-bordered table-hover" id="active">
-                <thead>
-                    <tr>
-                        <?php
-                        $sql = 'SELECT name,id_room FROM ACTIVITY WHERE id = :id';
-                        $stmt = $db->prepare($sql);
-                        $stmt->execute([
-                          'id' => $id_activity[$i],
-                        ]);
-                        $activity = $stmt->fetch();
-                        $sql = 'SELECT id_location, name FROM ROOM  WHERE id = :id';
-                        $stmt = $db->prepare($sql);
-                        $stmt->execute([
-                          'id' => $activity['id_room'],
-                        ]);
-                        $room = $stmt->fetch();
-                        $sql = 'SELECT name,address FROM LOCATION WHERE id = :id';
-                        $stmt = $db->prepare($sql);
-                        $stmt->execute([
-                          'id' => $room['id_location'],
-                        ]);
-                        $location = $stmt->fetch();
-                        ?>
-                        <td><?= $activity['name'] ?></td>
-                        <td><?= $reservations[$i]['attendee'] ?></td>
-                        <td><?= $location['name'] ?> <br> <?= $location['address'] ?></td>
-                        <td><?= $room['name'] ?></td>
-                        <?php
-                        $date = explode('-', $reservations[$i]['date']);
-                        $date = $date[2] . '/' . $date[1] . '/' . $date[0];
-                        ?>
-                        <td><?= $date ?></td>
-                        <?php
-                        $reservations[$i]['time'] = explode(':', $reservations[$i]['time']);
-                        $reservations[$i]['time'] = $reservations[$i]['time'][0] . 'h' . $reservations[$i]['time'][1];
-                        ?>
-                        <td><?= $reservations[$i]['time'] ?></td>
-
-                    </tr>
-                    </tbody>
-                    <?php }
-        ?>
-            </table>
-
-                        </tr>
-                    </thead>
-                    <?php for ($i = 0; $i < count($reservations); $i++) { ?>
-                        <tbody>
-                            <tr>
-                                <?php
-                                $sql = 'SELECT name FROM ACTIVITY WHERE id = :id';
-                                $stmt = $db->prepare($sql);
-                                $stmt->execute([
-                                  'id' => $id_activity[$i],
-                                ]);
-                                $activity = $stmt->fetch();
-                                $id_location = [];
-                                $id_room = [];
-                                $sql = 'SELECT id_room FROM ACTIVITY WHERE id = :id';
-                                $stmt = $db->prepare($sql);
-                                $stmt->execute([
-                                  'id' => $id_activity[$i],
-                                ]);
-                                $id_room[] = $stmt->fetch();
-                                $sql = 'SELECT id_location, name FROM ROOM WHERE id = :id';
-                                $stmt = $db->prepare($sql);
-                                $stmt->execute(['id' => $id_room[$i]['id_room']]);
-                                $id_room = $stmt->fetch();
-                                $id_location[] = $id_room['id_location'];
-                                $sql = 'SELECT name, address FROM LOCATION WHERE id = :id';
-                                $stmt = $db->prepare($sql);
-                                $stmt->execute([
-                                  'id' => $id_location[$i],
-                                ]);
-                                $id_location = $stmt->fetch();
-                                var_dump($id_location);
-                                var_dump($id_room);
-                                var_dump($activity);
-                                exit();
-                                $date = explode('-', $reservations[$i]['date']);
-                                $date = $date[2] . '/' . $date[1] . '/' . $date[0];
-                                $time = explode(':', $reservations[$i]['time']);
-                                $time = $time[0] . 'h' . $time[1];
-                                ?>
-                                <td><?= $activity['name'] ?></td>
-                                <td><?= $reservations[$i]['attendee'] ?></td>
-                                <td><?= $date ?></td>
-                                <td><?= $time ?></td>
-                                <td><?= $id_location['name'] ?><br><?= $id_location['address'] ?></td>
-                                <td><?= $id_room['name'] ?></td>
-                                
-                                
-                            </tr>
-                        </tbody>
-                    <?php } ?>
-                </table>     
-    </div>
-  </div>
-
-  <div class="container section-about-us border border-2 border-secondary rounded">
-    <div class="container rounded align-text-bottom">
-        <div class="row align-items-center">
-          <div class="col-8">
-            <h5>Planning</h5>
-          </div>
-        </div>
-        </div>
+        <?php }?>
 
         <div class="container section-about-us border border-2 border-secondary rounded">
             <div class="container rounded align-text-bottom">
@@ -630,48 +497,48 @@ include 'includes/head.php';
                       echo '</td>';
                       echo '</tr>';
                     } ?>
-                    </tbody>
-                  </table>
-               </div>
-            </div>
-                        
-<?php } ?>
-<?php if ($_SESSION['rights'] == 1) { ?> 
-  <?php
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+        <?php } ?>
+        <?php if ($_SESSION['rights'] == 1) { ?>
+        <?php
   // PARTIE PROVIDER
   ?>
-          
-          <br>
 
-          <?php
+        <br>
+
+        <?php
           $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
           $stmt = $db->prepare($sql);
           $stmt->execute(['id' => $_SESSION['id']]);
           $provider = $stmt->fetch();
           ?>
-            <br>
-            <br>
-            <br>
+        <br>
+        <br>
+        <br>
 
-            <div class="container section-about-us border border-2 border-secondary rounded">
-                <div>
-                    <div class="row">
-                        <h1>Mes Informations</h1>
+        <div class="container section-about-us border border-2 border-secondary rounded">
+            <div>
+                <div class="row">
+                    <h1>Mes Informations</h1>
 
-                        <br>
+                    <br>
 
-                        <?php
+                    <?php
                         $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
                         $stmt = $db->prepare($sql);
                         $stmt->execute(['id' => $_SESSION['id']]);
                         $provider = $stmt->fetch();
                         ?>
-                        <br>
-                        <br>
-                        <br>
+                    <br>
+                    <br>
+                    <br>
 
-                        <div class="text-center">
-                            <?php
+                    <div class="text-center">
+                        <?php
                             echo 'Prénom :   ';
                             echo $provider['firstName'];
                             //Ne pas changer
@@ -691,23 +558,23 @@ include 'includes/head.php';
                             echo '<br>';
                             ?>
 
-                            <br>
-                            <button class="btn btn-success">
-                                <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider[
+                        <br>
+                        <button class="btn btn-success">
+                            <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider[
   'firstName'
 ] ?>&lastName=<?= $provider['lastName'] ?>&email=<?= $provider['email'] ?>&rights=<?= $provider[
   'rights'
 ] ?>" class="btn ms-2 me-2">Modifier</a>
-                            </button>
-                            <button class="btn btn-success">
-                                <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider[
+                        </button>
+                        <button class="btn btn-success">
+                            <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider[
   'rights'
 ] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
-                            </button>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         </div>
 
