@@ -125,26 +125,6 @@ if ($activity['status'] == 0) {
             </div>
             <?php }
             ?>
-            <div class="modal fade popup" id="suppression<?= $altId ?>" tabindex="-1" aria-labelledby="suppressionLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="suppressionLabel">Suppression</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body text-dark">
-                            Etes-vous sûr de supprimer cette activité de la base de donnée? Cet action est irréversible
-                            !
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <a type="button" class="btn btn-danger"
-                                href="verifications/verifActivity.php?delete=<?= $altId ?>">Supprimer</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <p> <?= $activity['SUBSTRING(description, 1, 450)'] ?></p>
             <div class="mb-0">
                 <?php for ($j = 0; $j < $countCategory; $j++) {
@@ -198,6 +178,26 @@ if ($activity['status'] == 0) {
                 }
                 ?>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade popup" id="suppression<?= $altId ?>" tabindex="-1" aria-labelledby="suppressionLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark" id="suppressionLabel">Suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-dark">
+                Etes-vous sûr de supprimer cette activité de la base de donnée? Cet action est irréversible
+                !
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <a type="button" class="btn btn-danger"
+                    href="verifications/verifActivity.php?delete=<?= $altId ?>">Supprimer</a>
             </div>
         </div>
     </div>
@@ -265,26 +265,6 @@ if ($activity['status'] == 0) {
             </div>
             <?php }
             ?>
-            <div class="modal fade popup" id="suppression<?= $altId ?>" tabindex="-1" aria-labelledby="suppressionLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-dark" id="suppressionLabel">Suppression</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body text-dark">
-                            Etes-vous sûr de supprimer cette activité de la base de donnée? Cet action est
-                            irréversible !
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <a type="button" class="btn btn-danger"
-                                href="verifications/verifActivity.php?delete=<?= $altId ?>">Supprimer</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <p><?= $activity['SUBSTRING(description, 1, 450)'] ?></p>
             <div class="mb-0">
                 <?php for ($j = 0; $j < $countCategory; $j++) {
@@ -339,6 +319,26 @@ if ($activity['status'] == 0) {
                     }
                     ?>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade popup" id="suppression<?= $altId ?>" tabindex="-1" aria-labelledby="suppressionLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark" id="suppressionLabel">Suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-dark">
+                Etes-vous sûr de supprimer cette activité de la base de donnée? Cet action est
+                irréversible !
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <a type="button" class="btn btn-danger"
+                    href="verifications/verifActivity.php?delete=<?= $altId ?>">Supprimer</a>
             </div>
         </div>
     </div>
