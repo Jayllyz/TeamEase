@@ -126,8 +126,6 @@ include 'includes/head.php';
                         <th>Heure</th>
                         <th>Localisation</th>
                         <th>Salle</th>
-                        <th>Date</th>
-                        <th>Heure</th>
                     </tr>
                 </thead>
                 <?php for ($i = 0; $i < count($reservations); $i++) { ?>
@@ -362,6 +360,10 @@ include 'includes/head.php';
                                   'id' => $id_location[$i],
                                 ]);
                                 $id_location = $stmt->fetch();
+                                var_dump($id_location);
+                                var_dump($id_room);
+                                var_dump($activity);
+                                exit;
                                 $date = explode('-', $reservations[$i]['date']);
                                 $date = $date[2] . '/' . $date[1] . '/' . $date[0];
                                 $time = explode(':', $reservations[$i]['time']);
@@ -373,6 +375,7 @@ include 'includes/head.php';
                                 <td><?= $time ?></td>
                                 <td><?= $id_location['name'] ?><br><?= $id_location['address'] ?></td>
                                 <td><?= $id_room['name'] ?></td>
+                                
                                 
                             </tr>
                         </tbody>
@@ -884,7 +887,9 @@ include 'includes/head.php';
                             ) {
                               break;
                             } else {
-                              echo '<br>' . $activity[0]['name'] . '<br>';
+                              echo '<br>';
+                              echo '<a class="nav-link" href="AbsentProvider.php?id='. $activity[0]['id'] .'&date='. $datereservation .'">' . $activity[0]['name'] .'</a>';
+                              echo '<br>';
                             }
                           }
                         }
