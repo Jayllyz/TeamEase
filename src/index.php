@@ -42,7 +42,7 @@ include 'includes/head.php';
                     </div>
                     <div class="row">
                         <div class="col-6 text-center">
-                            <a href="" class="btn btn-success" type="submit"
+                            <a href="Apropos.php" class="btn btn-success" type="submit"
                                 style="padding-right: 20px; padding-left:20px">En savoir plus</a>
                         </div>
                     </div>
@@ -56,7 +56,7 @@ include 'includes/head.php';
                         <h5>Activités les mieux notés</h5>
                     </div>
                     <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a class="btn btn-outline-light" type="submit" href="categorie.php">Voir plus</a>
+                        <a class="btn btn-outline-light" type="submit" href="catalog.php">Voir plus</a>
                     </div>
                 </div>
             </div>
