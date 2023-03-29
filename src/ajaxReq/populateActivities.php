@@ -57,7 +57,7 @@ if ($_POST['search'] == 'none') {
 if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
   $statusQuery = 'status = 1 OR status = 0 ';
 } else {
-  $statusQuery = 'status = 1';
+  $statusQuery = 'status = 1 ';
 }
 $query = $db->query('SELECT id FROM ACTIVITY WHERE ' . $statusQuery . $categoriesFilter . $searchBarInput . $search);
 $id = $query->fetchAll(PDO::FETCH_COLUMN);
