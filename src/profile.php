@@ -212,9 +212,9 @@ include 'includes/head.php';
                         </tr>
                     </thead>
                     <?php for ($i = 0; $i < count($reservations); $i++) { ?>
-                        <tbody>
-                            <tr>
-                                <?php
+                    <tbody>
+                        <tr>
+                            <?php
                                 $sql = 'SELECT name,id_room FROM ACTIVITY WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
@@ -234,44 +234,44 @@ include 'includes/head.php';
                                 ]);
                                 $location = $stmt->fetch();
                                 ?>
-                                <td><?= $activity['name'] ?></td>
-                                <td><?= $reservations[$i]['attendee'] ?></td>
-                                <td><?= $location['name'] ?> <br> <?= $location['address'] ?></td>
-                                <td><?= $room['name'] ?></td>
-                                <?php
+                            <td><?= $activity['name'] ?></td>
+                            <td><?= $reservations[$i]['attendee'] ?></td>
+                            <td><?= $location['name'] ?> <br> <?= $location['address'] ?></td>
+                            <td><?= $room['name'] ?></td>
+                            <?php
                                 $date = explode('-', $reservations[$i]['date']);
                                 $date = $date[2] . '/' . $date[1] . '/' . $date[0];
                                 ?>
-                                <td><?= $date ?></td>
-                                <?php
+                            <td><?= $date ?></td>
+                            <?php
                                 $reservations[$i]['time'] = explode(':', $reservations[$i]['time']);
                                 $reservations[$i]['time'] =
                                   $reservations[$i]['time'][0] . 'h' . $reservations[$i]['time'][1];
                                 ?>
-                                <td><?= $reservations[$i]['time'] ?></td>
-                                
-                            </tr>
-                        </tbody>
+                            <td><?= $reservations[$i]['time'] ?></td>
+
+                        </tr>
+                    </tbody>
                     <?php } ?>
                 </table>
-          <br>
-      </div>
+                <br>
+            </div>
 
-    </div>
-  </div>
-
-    <div class="container section-about-us border border-2 border-secondary rounded">
-    <div class="container rounded align-text-bottom">
-        <div class="row align-items-center">
-          <div class="col-8">
-            <h5>Dernière Activité Terminé</h5>
-          </div>
-          <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
-            <a class="btn btn-read" type="submit" href="clients/reservations.php">Voir plus</a>
-          </div>
         </div>
-      </div>
-      <?php
+        </div>
+
+        <div class="container section-about-us border border-2 border-secondary rounded">
+            <div class="container rounded align-text-bottom">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h5>Dernière Activité Terminé</h5>
+                    </div>
+                    <div class="col-4 d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a class="btn btn-read" type="submit" href="clients/reservations.php">Voir plus</a>
+                    </div>
+                </div>
+            </div>
+            <?php
       $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret and status=:status ORDER BY id DESC LIMIT 4';
       $stmt = $db->prepare($sql);
       $stmt->execute([
@@ -286,10 +286,10 @@ include 'includes/head.php';
 
           // faire une tableau avec les données
           ?>
-      <table class="table text-center table-bordered table-hover" id="active">
-                    <thead>
-                        <tr>
-                            <?php
+            <table class="table text-center table-bordered table-hover" id="active">
+                <thead>
+                    <tr>
+                        <?php
                             $sql = 'SELECT name,id_room FROM ACTIVITY WHERE id = :id';
                             $stmt = $db->prepare($sql);
                             $stmt->execute([
@@ -309,34 +309,34 @@ include 'includes/head.php';
                             ]);
                             $location = $stmt->fetch();
                             ?>
-                            <td><?= $activity['name'] ?></td>
-                            <td><?= $reservations[$i]['attendee'] ?></td>
-                            <td><?= $location['name'] ?> <br> <?= $location['address'] ?></td>
-                            <td><?= $room['name'] ?></td>
-                            <?php
+                        <td><?= $activity['name'] ?></td>
+                        <td><?= $reservations[$i]['attendee'] ?></td>
+                        <td><?= $location['name'] ?> <br> <?= $location['address'] ?></td>
+                        <td><?= $room['name'] ?></td>
+                        <?php
                             $date = explode('-', $reservations[$i]['date']);
                             $date = $date[2] . '/' . $date[1] . '/' . $date[0];
                             ?>
-                            <td><?= $date ?></td>
-                            <?php
+                        <td><?= $date ?></td>
+                        <?php
                             $reservations[$i]['time'] = explode(':', $reservations[$i]['time']);
                             $reservations[$i]['time'] =
                               $reservations[$i]['time'][0] . 'h' . $reservations[$i]['time'][1];
                             ?>
-                            <td><?= $reservations[$i]['time'] ?></td>
+                        <td><?= $reservations[$i]['time'] ?></td>
 
-                        </tr>
+                    </tr>
                     </tbody>
                     <?php }
         ?>
-                </table>
+            </table>
 
-                        </tr>
-                    </thead>
-                    <?php for ($i = 0; $i < count($reservations); $i++) { ?>
-                        <tbody>
-                            <tr>
-                                <?php
+            </tr>
+            </thead>
+            <?php for ($i = 0; $i < count($reservations); $i++) { ?>
+            <tbody>
+                <tr>
+                    <?php
                                 $sql = 'SELECT name FROM ACTIVITY WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
@@ -367,30 +367,30 @@ include 'includes/head.php';
                                 $time = explode(':', $reservations[$i]['time']);
                                 $time = $time[0] . 'h' . $time[1];
                                 ?>
-                                <td><?= $activity['name'] ?></td>
-                                <td><?= $reservations[$i]['attendee'] ?></td>
-                                <td><?= $date ?></td>
-                                <td><?= $time ?></td>
-                                <td><?= $id_location['name'] ?><br><?= $id_location['address'] ?></td>
-                                <td><?= $id_room['name'] ?></td>
-                                
-                            </tr>
-                        </tbody>
-                    <?php } ?>
-                </table>     
-    </div>
-  </div>
+                    <td><?= $activity['name'] ?></td>
+                    <td><?= $reservations[$i]['attendee'] ?></td>
+                    <td><?= $date ?></td>
+                    <td><?= $time ?></td>
+                    <td><?= $id_location['name'] ?><br><?= $id_location['address'] ?></td>
+                    <td><?= $id_room['name'] ?></td>
 
-  <div class="container section-about-us border border-2 border-secondary rounded">
-    <div class="container rounded align-text-bottom">
-        <div class="row align-items-center">
-          <div class="col-8">
-            <h5>Planning</h5>
-          </div>
+                </tr>
+            </tbody>
+            <?php } ?>
+            </table>
         </div>
-      </div>
+        </div>
 
-      <?php
+        <div class="container section-about-us border border-2 border-secondary rounded">
+            <div class="container rounded align-text-bottom">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h5>Planning</h5>
+                    </div>
+                </div>
+            </div>
+
+            <?php
       $sql = 'SELECT * FROM RESERVATION WHERE siret = :siret';
       $stmt = $db->prepare($sql);
       $stmt->execute(['siret' => $_SESSION['siret']]);
@@ -398,19 +398,19 @@ include 'includes/head.php';
       ?>
 
 
-      <table style="border: 1px solid black;"  class="table text-center table-bordered table-hover" id="active">
-                    <thead>
-                      <tr>
+            <table style="border: 1px solid black;" class="table text-center table-bordered table-hover" id="active">
+                <thead>
+                    <tr>
                         <th>Jours</th>
                         <th>Activité</th>
                         <th>L'Heure</th>
                         <th>Adresse</th>
                         <th>Salle</th>
                         <th>Nombre de participants</th>
-                      </tr>
-                    </thead>
-                  <tbody>
-                    
+                    </tr>
+                </thead>
+                <tbody>
+
                     <?php for ($i = 0; $i < 7; $i++) {
                       echo '<tr>';
                       $sql = 'SELECT count(*) FROM RESERVATION WHERE siret = :siret';
@@ -608,26 +608,26 @@ include 'includes/head.php';
                       echo '</td>';
                       echo '</tr>';
                     } ?>
-                    </tbody>
-                  </table>
-               </div>
-            </div>
-                        
-<?php } ?>
-<?php if ($_SESSION['rights'] == 1) { ?> 
-
-  <div class="container section-about-us border border-2 border-secondary rounded">
-    <div class="container rounded align-text-bottom">
-        <div class="row align-items-center">
-          <div class="col-8">
-            <h5>Vos Information</h5>
-          </div>
+                </tbody>
+            </table>
         </div>
-      </div>
-          
-          <br>
+        </div>
 
-          <?php
+        <?php } ?>
+        <?php if ($_SESSION['rights'] == 1) { ?>
+
+        <div class="container section-about-us border border-2 border-secondary rounded">
+            <div class="container rounded align-text-bottom">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h5>Vos Information</h5>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <?php
           $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
           $stmt = $db->prepare($sql);
           $stmt->execute(['id' => $_SESSION['id']]);
@@ -637,25 +637,25 @@ include 'includes/head.php';
             <br>
             <br>
 
-        <div class="container section-about-us border border-2 border-secondary rounded">
-            <div>
-                <div class="row">
-                    <h1>Mes Informations</h1>
+            <div class="container section-about-us border border-2 border-secondary rounded">
+                <div>
+                    <div class="row">
+                        <h1>Mes Informations</h1>
 
-                    <br>
+                        <br>
 
-                    <?php
+                        <?php
                     $sql = 'SELECT * FROM PROVIDER WHERE id = :id';
                     $stmt = $db->prepare($sql);
                     $stmt->execute(['id' => $_SESSION['id']]);
                     $provider = $stmt->fetch();
                     ?>
-                    <br>
-                    <br>
-                    <br>
+                        <br>
+                        <br>
+                        <br>
 
-                    <div class="text-center">
-                        <?php
+                        <div class="text-center">
+                            <?php
                         echo 'Prénom :   ';
                         echo $provider['firstName'];
                         //Ne pas changer
@@ -675,35 +675,35 @@ include 'includes/head.php';
                         echo '<br>';
                         ?>
 
-                        <br>
-                        <button class="btn btn-success">
-                            <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider[
+                            <br>
+                            <button class="btn btn-success">
+                                <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider[
   'firstName'
 ] ?>&lastName=<?= $provider['lastName'] ?>&email=<?= $provider['email'] ?>&rights=<?= $provider[
   'rights'
 ] ?>" class="btn ms-2 me-2">Modifier</a>
-                        </button>
-                        <button class="btn btn-success">
-                            <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider[
+                            </button>
+                            <button class="btn btn-success">
+                                <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider[
   'rights'
 ] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
-                        </button>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container section-about-us border border-2 border-secondary rounded">
-    <div class="container rounded align-text-bottom">
-        <div class="row align-items-center">
-          <div class="col-8">
-            <h5>Vos Activité</h5>
-          </div>
         </div>
-      </div>
-          <?php
+        </div>
+
+        <div class="container section-about-us border border-2 border-secondary rounded">
+            <div class="container rounded align-text-bottom">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h5>Vos Activité</h5>
+                    </div>
+                </div>
+            </div>
+            <?php
           $sql = 'SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider';
           $stmt = $db->prepare($sql);
           $stmt->execute(['id_provider' => $_SESSION['id']]);
@@ -715,23 +715,23 @@ include 'includes/head.php';
 
   // faire une tableau avec les données
   ?>
-                
 
-  <table class="table text-center table-bordered table-hover" id="active">
-                    <thead>
-                        <tr>
-                            <th>Activité</th>
-                            <th>Nb de participant<br> Maximun</th>
-                            <th>durée</th>
-                            <th>Prix par Participant</th>
-                            <th>Lieu</th>
-                            <th>Salle</th>
-                        </tr>
-                    </thead>
-                    <?php for ($i = 0; $i < count($animate); $i++) { ?>
-                        <tbody>
-                            <tr>
-                                <?php
+
+            <table class="table text-center table-bordered table-hover" id="active">
+                <thead>
+                    <tr>
+                        <th>Activité</th>
+                        <th>Nb de participant<br> Maximun</th>
+                        <th>durée</th>
+                        <th>Prix par Participant</th>
+                        <th>Lieu</th>
+                        <th>Salle</th>
+                    </tr>
+                </thead>
+                <?php for ($i = 0; $i < count($animate); $i++) { ?>
+                <tbody>
+                    <tr>
+                        <?php
                                 $sql = 'SELECT * FROM ACTIVITY WHERE id = :id';
                                 $stmt = $db->prepare($sql);
                                 $stmt->execute([
@@ -751,54 +751,56 @@ include 'includes/head.php';
                                 ]);
                                 $location = $stmt->fetch();
                                 ?>
-                                <td><?= $activity['name'] ?></td>
-                                <td><?= $activity['maxAttendee'] ?></td>
-                                <td><?= $activity['duration'] ?> minutes</td>
-                                <td><?= $activity['priceAttendee'] ?>€/Participant</td>
-                                <td><?= $location['name'] ?> <br> <?= $location['address'] ?> </td>
-                                <td><?= $room['name'] ?></td>
+                        <td><?= $activity['name'] ?></td>
+                        <td><?= $activity['maxAttendee'] ?></td>
+                        <td><?= $activity['duration'] ?> minutes</td>
+                        <td><?= $activity['priceAttendee'] ?>€/Participant</td>
+                        <td><?= $location['name'] ?> <br> <?= $location['address'] ?> </td>
+                        <td><?= $room['name'] ?></td>
 
-                            </tr>
-                        </tbody>
-                        <?php } ?>
-                    </table>
-                    <?php  ?>
-                    <br>
+                    </tr>
+                </tbody>
+                <?php } ?>
+            </table>
+            <?php  ?>
+            <br>
+        </div>
+
+        </div>
+        </div>
+
+        <div class="container section-about-us border border-2 border-secondary rounded">
+            <div class="container rounded align-text-bottom">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h5>Planning</h5>
+                    </div>
                 </div>
-
             </div>
-        </div>
 
-  <div class="container section-about-us border border-2 border-secondary rounded">
-    <div class="container rounded align-text-bottom">
-        <div class="row align-items-center">
-          <div class="col-8">
-            <h5>Planning</h5>
-          </div>
-        </div>
-      </div>
+            <?php
 
-      <?php
+      if(isset($animate[0]['id_activity']) && !empty($animate[0]['id_activity'])){
       $sql = 'SELECT * FROM RESERVATION WHERE id_activity = :id_activity';
       $stmt = $db->prepare($sql);
       $stmt->execute(['id_activity' => $animate[0]['id_activity']]);
-      $reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);}
       ?>
 
 
-      <table style="border: 1px solid black;"  class="table text-center table-bordered table-hover" id="active">
-                    <thead>
-                      <tr>
+            <table style="border: 1px solid black;" class="table text-center table-bordered table-hover" id="active">
+                <thead>
+                    <tr>
                         <th>Jours</th>
                         <th>Activité</th>
                         <th>L'Heure</th>
                         <th>Adresse</th>
                         <th>Salle</th>
                         <th>Nombre de participants</th>
-                      </tr>
-                    </thead>
-                  <tbody>
-                    
+                    </tr>
+                </thead>
+                <tbody>
+
                     <?php for ($i = 0; $i < 7; $i++) {
                       echo '<tr>';
                       $sql = 'SELECT id_activity FROM ANIMATE WHERE id_provider = :id_provider';
@@ -1003,11 +1005,11 @@ include 'includes/head.php';
                       echo '</td>';
                       echo '</tr>';
                     } ?>
-                    
-                    </tbody>
-                </table>
-            </div>
-<?php } ?>
+
+                </tbody>
+            </table>
+        </div>
+        <?php } ?>
 
     </main>
     <?php include 'includes/footer.php'; ?>
