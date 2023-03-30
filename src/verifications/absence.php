@@ -61,6 +61,9 @@ if (!isset($id)) {
       'company">Pour plus de detaille !</a>';
     $destination = '../login.php';
     include '../includes/mailer.php';
+
+    header('location: ../profile.php?message=Votre absence a bien été enregistrée!&type=success');
+    exit();
   }
 
   header('location: ../profile.php');
