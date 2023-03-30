@@ -69,6 +69,8 @@ if (
       'provider">Confirmation changement email !</a>';
     $destination = '../login.php';
     include '../includes/mailer.php';
+    header('location: ../index.php?message=Vous avez reçu un mail pour confirmer votre changement mail !&type=success');
+    exit();
   } else {
     $update = $db->prepare(
       'UPDATE PROVIDER SET email = :email, firstName = :firstName, rights = :rights, lastName = :lastName WHERE id = :id',

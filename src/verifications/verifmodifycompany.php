@@ -75,6 +75,8 @@ if (
       'company">Confirmation changement de mail !</a>';
     $destination = '../login.php';
     include '../includes/mailer.php';
+    header('location: ../index.php?message=Vous avez reçu un mail pour confirmer votre changement mail !&type=success');
+    exit();
   } else {
     $update = $db->prepare(
       'UPDATE COMPANY SET email = :email, companyName = :companyName, rights = :rights, address = :address WHERE siret = :siret',
