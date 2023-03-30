@@ -49,7 +49,6 @@ $destination = '../clients/reservations.php';
 require_once '../includes/estimate.php';
 require_once '../includes/mailer.php';
 
-
 $select = $db->prepare('SELECT id_activity FROM RESERVATION WHERE id = :id');
 $select->execute([
   'id' => $id_reservation,
@@ -72,8 +71,10 @@ $req->execute([
   'details' => 'Réservation de l\'activité ' . $nameActivity['name'],
 ]);
 
-if($req === false) {
-  header('Location: ../clients/reservations.php?message=Une erreur est survenue lors de la création de la facture.&type=error');
+if ($req === false) {
+  header(
+    'Location: ../clients/reservations.php?message=Une erreur est survenue lors de la création de la facture.&type=error',
+  );
   exit();
 }
 

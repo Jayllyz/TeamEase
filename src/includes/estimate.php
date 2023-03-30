@@ -2,8 +2,8 @@
 session_start();
 require_once 'db.php';
 
-if(!isset($isinvoice)){
-	$isinvoice = false;
+if (!isset($isinvoice)) {
+  $isinvoice = false;
 }
 
 $idClient = $_SESSION['siret'];
@@ -48,7 +48,6 @@ $priceAttendee = $selectActivity['priceAttendee'];
 require_once '/home/php/src/vendor/autoload.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
-
 
 $teamease = [
   'id' => 1,
@@ -218,10 +217,10 @@ p {
                 <td><?php echo $price * 0.8; ?> &euro;</td>
             </tr>
             <?php
-    $price_tva = $task['price'] * 1.2;
-    $total += $task['price'];
-    $total_tva += $price_tva;
-    ?>
+            $price_tva = $task['price'] * 1.2;
+            $total += $task['price'];
+            $total_tva += $price_tva;
+            ?>
             <?php endforeach; ?>
 
             <tr>
