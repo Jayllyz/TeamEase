@@ -31,12 +31,10 @@ $mail->CharSet = 'UTF-8';
 if (!$mail->send()) {
   echo 'Mailer Error: ' . $mail->ErrorInfo;
 } else {
-  if (isset($invoice)) {
-    header("location: $destination?message=Votre facture a bien été envoyée à votre adresse mail.&type=success");
-  } else {
+  if (!isset($invoice)) {
     header(
       "location: $destination?message=Un mail viens de vous etre envoyé pour confirmer votre compte!&type=success",
     );
+    exit();
   }
-  exit();
 }
