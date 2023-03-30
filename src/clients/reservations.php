@@ -147,9 +147,9 @@ $siret = $_SESSION['siret'];
                                 </script>
                                 <input type="hidden" name="price" value="<?= $price * 100 ?>">
                             </form>
-                            <a href="../includes/estimate.php?id=<?= $select[
-                              'id'
-                            ] ?>" class="btn-update btn ms-2 me-2">Télécharger un devis</a>
+                            <a href="../includes/estimate.php?id=<?= $select['id'] ?>"
+                                class=" btn-update btn ms-2 me-2">Télécharger un
+                                devis</a>
                             <br>
                             <a href="editReserv.php?id=<?= $select['id'] ?>"
                                 class="btn-submit btn ms-2 me-2">Modifier</a>
