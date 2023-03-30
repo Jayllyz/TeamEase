@@ -131,6 +131,48 @@ if (isset($_GET['update'])) {
   } elseif ($_GET['update'] == 'details') {
     $result2 = true;
     $result3 = true;
+
+    if ($_POST['duration'] <= 0) {
+      $message = "La durée de l'activité doit être supérieure à 0";
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+    if ($_POST['priceAttendee'] < 0) {
+      $message = "Le prix de l'activité ne peut être négatif";
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+    if ($_POST['maxAttendee'] <= 0) {
+      $message = 'Le nombre de participants maximum doit être supérieur à 0';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+    if (!isset($_POST['room'])) {
+      $message = 'Veuillez sélectionner une salle';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+
+    $query = $db->prepare(
+      'SELECT firstName, lastName, email, name FROM PROVIDER INNER JOIN OCCUPATION ON PROVIDER.id_occupation = OCCUPATION.id WHERE OCCUPATION.id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)',
+    );
+    $query->execute([
+      ':id' => htmlspecialchars($_GET['id']),
+    ]);
+    $oldProviders = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    $query = $db->prepare('SELECT name, address FROM LOCATION WHERE id IN (SELECT id_location FROM ROOM WHERE id=:id)');
+    $query->execute([
+      ':id' => htmlspecialchars($_POST['room']),
+    ]);
+    $oldLocation = $query->fetch(PDO::FETCH_ASSOC);
+
+    $query = $db->prepare('SELECT name FROM ROOM WHERE id IN (SELECT id_room FROM ACTIVITY WHERE id=:id)');
+    $query->execute([
+      ':id' => htmlspecialchars($_GET['id']),
+    ]);
+    $oldRoom = $query->fetch(PDO::FETCH_ASSOC);
+
     $delete = $db->prepare('DELETE FROM ANIMATE WHERE id_activity = :id_activity');
     $delete->execute([
       ':id_activity' => htmlspecialchars($_GET['id']),
@@ -199,26 +241,6 @@ if (isset($_GET['update'])) {
       } while ($i < $materialCount);
     }
 
-    if ($_POST['duration'] <= 0) {
-      $message = "La durée de l'activité doit être supérieure à 0";
-      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
-      exit();
-    }
-    if ($_POST['priceAttendee'] < 0) {
-      $message = "Le prix de l'activité ne peut être négatif";
-      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
-      exit();
-    }
-    if ($_POST['maxAttendee'] <= 0) {
-      $message = 'Le nombre de participants maximum doit être supérieur à 0';
-      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
-      exit();
-    }
-    if (!isset($_POST['room'])) {
-      $message = 'Veuillez sélectionner une salle';
-      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
-      exit();
-    }
     $request = $db->prepare(
       'UPDATE ACTIVITY SET duration = :duration, priceAttendee = :priceAttendee, maxAttendee = :maxAttendee, id_room = :id_room WHERE id = :id',
     );
@@ -229,7 +251,76 @@ if (isset($_GET['update'])) {
       ':id' => htmlspecialchars($_GET['id']),
       ':id_room' => $_POST['room'],
     ]);
+
+    $query = $db->prepare(
+      'SELECT firstName, lastName, email, name FROM PROVIDER INNER JOIN OCCUPATION ON PROVIDER.id_occupation = OCCUPATION.id WHERE OCCUPATION.id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)',
+    );
+    $query->execute([
+      ':id' => htmlspecialchars($_GET['id']),
+    ]);
+    $newProviders = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    $query = $db->prepare('SELECT name, address FROM LOCATION WHERE id IN (SELECT id_location FROM ROOM WHERE id=:id)');
+    $query->execute([
+      ':id' => htmlspecialchars($_POST['room']),
+    ]);
+    $newLocation = $query->fetch(PDO::FETCH_ASSOC);
+
+    $query = $db->prepare('SELECT name FROM ROOM WHERE id IN (SELECT id_room FROM ACTIVITY WHERE id=:id)');
+    $query->execute([
+      ':id' => htmlspecialchars($_GET['id']),
+    ]);
+    $newRoom = $query->fetch(PDO::FETCH_ASSOC);
+
+    if ($oldLocation === $newLocation && $oldRoom === $newRoom) {
+      $modifiedLocation = '';
+    } else {
+      $modifiedLocation =
+        "L'adresse du lieu de l'activité a été modifiée.<br>Voici la nouvelle adresse: <br>" .
+        $newLocation['name'] .
+        ' ' .
+        $newLocation['address'] .
+        ' dans la salle ' .
+        $newRoom['name'] .
+        '<br>';
+    }
+    if ($oldProviders === $newProviders) {
+      $modifiedProviders = '';
+    } else {
+      if ($newProviders == null) {
+        $modifiedProviders = 'Les prestataires ont été désaffecté de cette activité.<br>';
+      } else {
+        $modifiedProviders = 'Voici la nouvelle liste des prestataires: <br>';
+        foreach ($newProviders as $provider) {
+          $modifiedProviders .=
+            '- ' . $provider['firstName'] . ' ' . $provider['lastName'] . ', ' . $provider['name'] . '<br>';
+        }
+      }
+    }
     if ($result && $result2 && $result3) {
+      $query = $db->prepare(
+        'SELECT email FROM COMPANY WHERE siret IN (SELECT siret FROM RESERVATION WHERE id_activity = :id)',
+      );
+      $query->execute([
+        ':id' => htmlspecialchars($_GET['id']),
+      ]);
+      $companyEmails = $query->fetchAll(PDO::FETCH_ASSOC);
+
+      foreach ($companyEmails as $companyEmail) {
+        $email = $companyEmail['email'];
+        $subject = 'Information modification des activités';
+        $msgHTML =
+          'Bonjour,<br><br>
+        Des modifications ont été apportées aux activités auxquel vous êtes inscrit.<br>
+        Voici les détails des modifications:<br>' .
+          $modifiedLocation .
+          '<br>' .
+          $modifiedProviders .
+          '<br>
+          Cordialement,<br>
+          L\'équipe de TeamEase';
+        include '../includes/mailer.php';
+      }
       $message = 'Les détails ont bien été modifiés';
       header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=success');
       exit();
