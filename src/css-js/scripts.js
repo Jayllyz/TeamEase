@@ -341,6 +341,16 @@ function deleteJob(id) {
 
 function addMaterial(element) {
   const body = element.parentElement.parentElement.querySelector('tbody');
+  const lastRow = body.lastElementChild;
+  const lastTd = lastRow.lastElementChild;
+  const button = lastTd.querySelector('button');
+  const id = button.getAttribute('data-material-id');
+  const newId = parseInt(id) + 1;
+
+  ajaxAddMaterial(body, newId);
+}
+
+function ajaxAddMaterial(body, id) {
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
@@ -349,7 +359,7 @@ function addMaterial(element) {
   };
   xhr.open('POST', 'ajaxReq/materialInput.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('type=stock');
+  xhr.send('type=stock&id=' + id);
 }
 
 function updateMaterial(element, idMaterial) {

@@ -30,11 +30,4 @@ $mail->Body = $msgHTML;
 $mail->CharSet = 'UTF-8';
 if (!$mail->send()) {
   echo 'Mailer Error: ' . $mail->ErrorInfo;
-} else {
-  if (!isset($invoice)) {
-    header(
-      "location: $destination?message=Un mail viens de vous etre envoyé pour confirmer votre compte!&type=success",
-    );
-    exit();
-  }
 }

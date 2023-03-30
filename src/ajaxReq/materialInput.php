@@ -2,30 +2,27 @@
 include '../includes/db.php';
 
 if ($_POST['type'] == 'stock') {
-
-  $query = $db->prepare('SELECT id FROM MATERIAL ORDER BY id ASC LIMIT 1');
-  $query->execute();
-  $id = $query->fetch(PDO::FETCH_COLUMN) + 1;
-  ?>
-
-    <tr>
-        <th scope="row">
-            <input type="text" class="form-control" id="name" placeholder="Nom">
-        </th>
-        <td>
-            <input type="number" class="form-control" id="quantity" placeholder="Quantité">
-        </td>
-        <td>
-            <input type="number" class="form-control" id="used" value="0" disabled>
-        </td>
-        <td>
-            <input type="number" class="form-control" id="available" value="0" disabled>
-        </td>
-        <td>
-            <button type="button" class="btn btn-primary" onclick="updateMaterial(this,<?php echo $id; ?>)">Modifer</button>
-            <button type="button" class="btn btn-danger" onclick="deleteMaterial(this,<?php echo $id; ?>)">Supprimer</button>
-        </td>
-    </tr>
+  $id = $_POST['id']; ?>
+<tr>
+    <th scope="row">
+        <input type="text" class="form-control" id="name" placeholder="Nom">
+    </th>
+    <td>
+        <input type="number" class="form-control" id="quantity" placeholder="Quantité">
+    </td>
+    <td>
+        <input type="number" class="form-control" id="used" value="0" disabled>
+    </td>
+    <td>
+        <input type="number" class="form-control" id="available" value="0" disabled>
+    </td>
+    <td>
+        <button type="button" class="btn btn-primary" data-material-id="<?= $id ?>"
+            onclick="updateMaterial(this,<?= $id ?>)">Modifer</button>
+        <button type="button" class="btn btn-danger" data-material-id="<?= $id ?>"
+            onclick="deleteMaterial(this,<?= $id ?>)">Supprimer</button>
+    </td>
+</tr>
 
 <?php
 } elseif ($_POST['type'] == 'location') { ?>

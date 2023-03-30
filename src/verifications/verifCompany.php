@@ -121,8 +121,9 @@ if (
       $email .
       '&type=' .
       'company">Confirmation !</a>';
-    $destination = '../login.php';
     include '../includes/mailer.php';
+    header('location: ../login.php?message=Votre inscription à été confirmé !&type=success&valid=valid');
+    exit();
   } else {
     header(
       'location: ../signin.php?message=Les mots de passes ne sont pas identiques !&type=danger&valid=invalid&input=conf_mdp',
