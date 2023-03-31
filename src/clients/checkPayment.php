@@ -44,7 +44,6 @@ $isinvoice = true;
 $msgHTML = '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
             <p class="display-2">Merci d\'avoir choisi Together&Stronger pour votre séminaire, toute l\'équipe espère que vous avez apprécié votre expérience parmi nous.<br></p>
             <p class="display-2">Vous trouverez ci-dessous la facture de votre réservation.<br></p>';
-$destination = '../clients/reservations.php';
 
 require_once '../includes/estimate.php';
 require_once '../includes/mailer.php';

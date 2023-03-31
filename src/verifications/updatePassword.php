@@ -63,8 +63,9 @@ if ($result) {
     '&company=' .
     $company .
     '">cliquez ici</a></p>';
-  $destination = '../login.php';
   include '../includes/mailer.php';
+  header('location: ../login.php?message=Un email vous a été envoyé !&type=success&input=email&valid=valid');
+  exit();
 } else {
   header('location: ../lostPassword.php?message=Cet email n\'existe pas !&type=danger&input=email&valid=invalid');
   exit();
