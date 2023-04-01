@@ -16,7 +16,7 @@ RUN apk add --update linux-headers \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && apk add --no-cache certbot \
-    && certbot certonly --webroot --webroot-path=/var/www/html -d togetherandstronger.site --email antonydavid945@gmail.com \
+    && sudo certbot --nginx \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-dev
 
