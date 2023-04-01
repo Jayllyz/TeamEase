@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile.dev
+    container_name: php
+    restart: always
+    image: php
+    tty: true
+    working_dir: /home/php/src
+    entrypoint: php
+    volumes:
+      - .:/home/php/
+      - /home/php/src/vendor/
+    ports:
+      - '${PHP_PORT}:${PHP_PORT}'
+    env_file: .env
+    command: -S 0.0.0.0:${PHP_PORT}
+
+  mysql:
+    container_name: mysql
+    image: mysql
+    restart: always
+    build:
+      context: docker/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      env_file: .env
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./logs:/var/log/mysql
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    expose:
+      - '${MYSQL_PORT}'
+
+  adminer:
+    container_name: adminer
+    image: adminer:latest
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+      ADMINER_DESIGN: arcs-material
+    ports:
+      - '${ADMINER_PORT}:${ADMINER_PORT}'
