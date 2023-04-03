@@ -1,23 +1,50 @@
-version: '3.8'
+version: '3'
 
 services:
+  nginx:
+    depends_on:
+      - php
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile.dev
+    container_name: nginx
+    tty: true
+    stdin_open: true
+    env_file: .env
+    working_dir: ${PHP_USER_HOME_DIRECTORY}
+    restart: always
+    volumes:
+      - ./docker/nginx/dev:/etc/nginx/conf.d
+      - ./src:${PHP_USER_HOME_DIRECTORY}
+      - /home/php/vendor
+    ports:
+      - 8000:${PHP_PORT}
+    command: [nginx-debug, '-g', 'daemon off;']
+
   php:
+    depends_on:
+      - mysql
     build:
       context: docker/php
       dockerfile: Dockerfile.dev
+      args:
+        PHP_USER_NAME: $PHP_USER_NAME
+        PHP_USER_IDENTIFIER: $PHP_USER_IDENTIFIER
+        PHP_USER_SHELL: $PHP_USER_SHELL
+        PHP_USER_HOME_DIRECTORY: $PHP_USER_HOME_DIRECTORY
     container_name: php
     restart: always
     image: php
     tty: true
-    working_dir: /home/php/src
-    entrypoint: php
-    volumes:
-      - .:/home/php/
-      - /home/php/src/vendor/
-    ports:
-      - '${PHP_PORT}:${PHP_PORT}'
     env_file: .env
-    command: -S 0.0.0.0:${PHP_PORT}
+    stdin_open: true
+    working_dir: ${PHP_USER_HOME_DIRECTORY}
+    user: php
+    volumes:
+      - ./src:${PHP_USER_HOME_DIRECTORY}
+      - /home/php/vendor
+    ports:
+      - ${PHP_PORT}:${PHP_PORT}
 
   mysql:
     container_name: mysql
@@ -28,7 +55,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      env_file: .env
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./logs:/var/log/mysql

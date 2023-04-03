@@ -7,6 +7,8 @@ COPY nginx.conf /etc/conf.d/default.conf
 COPY composer.json .
 COPY composer.lock .
 
+RUN apk add --no-cache certbot
+
 RUN apk add --update linux-headers \
     && apk add --no-cache $PHPIZE_DEPS \
     && apk add --no-cache php-openssl \
@@ -15,8 +17,6 @@ RUN apk add --update linux-headers \
     && docker-php-ext-install -j$(nproc) pdo pdo_mysql gd \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
-    && apk add --no-cache certbot \
-    && sudo certbot --nginx \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-dev
 
