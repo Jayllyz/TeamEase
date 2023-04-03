@@ -20,7 +20,6 @@ RUN apk add --update linux-headers \
     && composer install \
     && rm -rf /var/cache/apk/*
 
-# create user php and group php
 RUN addgroup -g $PHP_USER_IDENTIFIER $PHP_USER_NAME \
     && adduser -D -u $PHP_USER_IDENTIFIER -G $PHP_USER_NAME -h $PHP_USER_HOME_DIRECTORY -s $PHP_USER_SHELL $PHP_USER_NAME \
     && chown -R $PHP_USER_NAME:$PHP_USER_NAME $PHP_USER_HOME_DIRECTORY \

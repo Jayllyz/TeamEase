@@ -1,13 +1,12 @@
-FROM php:8.0-alpine3.16
+FROM php:fpm-alpine
 
-WORKDIR /home/php/src
-
-COPY nginx.conf /etc/conf.d/default.conf
+ARG PHP_USER_NAME=php
+ARG PHP_USER_IDENTIFIER=1000
+ARG PHP_USER_SHELL=/bin/bash
+ARG PHP_USER_HOME_DIRECTORY=/home/php
 
 COPY composer.json .
 COPY composer.lock .
-
-RUN apk add --no-cache certbot
 
 RUN apk add --update linux-headers \
     && apk add --no-cache $PHPIZE_DEPS \
@@ -18,10 +17,19 @@ RUN apk add --update linux-headers \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer install --no-dev
+    && composer install --no-dev \
+    && rm -rf /usr/local/bin/composer \
+    && rm -rf /root/.composer \
+    && rm -rf /var/cache/apk/*
+
+RUN addgroup -g $PHP_USER_IDENTIFIER $PHP_USER_NAME \
+    && adduser -D -u $PHP_USER_IDENTIFIER -G $PHP_USER_NAME -h $PHP_USER_HOME_DIRECTORY -s $PHP_USER_SHELL $PHP_USER_NAME \
+    && chown -R $PHP_USER_NAME:$PHP_USER_NAME $PHP_USER_HOME_DIRECTORY \
+    && chmod -R 755 $PHP_USER_HOME_DIRECTORY
+
+USER $PHP_USER_NAME
+
+WORKDIR $PHP_USER_HOME_DIRECTORY
 
 EXPOSE 80
-EXPOSE 443
 EXPOSE 9000
-
-CMD ["nginx", "-g", "daemon off;"]
