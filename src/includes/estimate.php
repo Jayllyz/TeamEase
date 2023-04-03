@@ -45,7 +45,7 @@ $activityName = $selectActivity['name'];
 $activityDescription = $selectActivity['description'];
 $priceAttendee = $selectActivity['priceAttendee'];
 
-require_once '/home/php/src/vendor/autoload.php';
+require_once '/home/php/vendor/autoload.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
 

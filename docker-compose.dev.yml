@@ -34,7 +34,6 @@ services:
         PHP_USER_HOME_DIRECTORY: $PHP_USER_HOME_DIRECTORY
     container_name: php
     restart: always
-    image: php
     tty: true
     env_file: .env
     stdin_open: true
@@ -48,7 +47,6 @@ services:
 
   mysql:
     container_name: mysql
-    image: mysql
     restart: always
     build:
       context: docker/mysql

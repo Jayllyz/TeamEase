@@ -139,5 +139,4 @@
             </div>
         </div>
     </nav>
-    <script src="css-js/js/searchBar.js"></script>
 </div>

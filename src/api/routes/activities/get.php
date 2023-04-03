@@ -2,10 +2,10 @@
 
 ob_start();
 
-require_once '/home/php/src/api/libraries/response.php';
-require_once '/home/php/src/api/libraries/body.php';
-include '/home/php/src/api/entities/activities/get.php';
-include '/home/php/src/api/libraries/function.php';
+require_once '/home/php/api/libraries/response.php';
+require_once '/home/php/api/libraries/body.php';
+include '/home/php/api/entities/activities/get.php';
+include '/home/php/api/libraries/function.php';
 
 try {
   $body = getBody();
