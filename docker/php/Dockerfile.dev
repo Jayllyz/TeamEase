@@ -1,9 +1,11 @@
-FROM php:fpm-alpine
+FROM php:8.0-fpm-alpine
 
 ARG PHP_USER_NAME=php
 ARG PHP_USER_IDENTIFIER=1000
 ARG PHP_USER_SHELL=/bin/bash
 ARG PHP_USER_HOME_DIRECTORY=/home/php
+
+USER root
 
 COPY composer.json .
 COPY composer.lock .
