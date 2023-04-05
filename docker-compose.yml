@@ -42,8 +42,6 @@ services:
     volumes:
       - ./src:${PHP_USER_HOME_DIRECTORY}
       - /home/php/vendor
-    ports:
-      - ${PHP_PORT}:${PHP_PORT}
 
   mysql:
     container_name: mysql
