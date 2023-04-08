@@ -230,15 +230,16 @@ function selectOccupation(id) {
     provider.remove();
   }
 
+  console.log(selected);
+
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       providerContainer.innerHTML += xhr.responseText;
     }
   };
-  xhr.open('POST', 'ajaxReq/providerDropdown.php');
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('occupation=' + selected);
+  xhr.open('GET', 'ajaxReq/providerDropdown.php?occupation=' + selected);
+  xhr.send();
 }
 
 function selectProvider(id) {
