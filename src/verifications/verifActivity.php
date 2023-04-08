@@ -153,6 +153,44 @@ if (isset($_GET['update'])) {
       exit();
     }
 
+    $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id_activity');
+    $query->execute([
+      ':id_activity' => htmlspecialchars($_GET['id']),
+    ]);
+    $days = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    $providers = [];
+    $providersCount = 0;
+
+    foreach ($_POST as $key => $value) {
+      if (preg_match('/^provider(\d+)$/', $key, $matches)) {
+        $provider_id = $matches[1];
+        $providers[] = $provider_id;
+        $providersCount++;
+      }
+    }
+    if ($providersCount != 0) {
+      foreach ($providers as $provider) {
+        $query = $db->prepare('SELECT day FROM AVAILABILITY WHERE id_provider = :id_provider');
+        $query->execute([
+          ':id_provider' => $provider,
+        ]);
+        $days = $query->fetchAll(PDO::FETCH_ASSOC);
+        $available;
+        foreach ($days as $day) {
+          if (in_array($day['day'], $days)) {
+            $available = true;
+          }
+        }
+      }
+    }
+
+    if (!$available) {
+      $message = 'Les jours de disponibilité ne correspondent pas à ceux des intervenants';
+      header('location:../activity.php?id=' . $_GET['id'] . '&message=' . $message . '&type=danger');
+      exit();
+    }
+
     $query = $db->prepare(
       'SELECT firstName, lastName, email, name FROM PROVIDER INNER JOIN OCCUPATION ON PROVIDER.id_occupation = OCCUPATION.id WHERE OCCUPATION.id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)',
     );
@@ -181,28 +219,6 @@ if (isset($_GET['update'])) {
     $delete->execute([
       ':id_activity' => htmlspecialchars($_GET['id']),
     ]);
-
-    $providers = [];
-    $providersCount = 0;
-
-    foreach ($_POST as $key => $value) {
-      if (preg_match('/^provider(\d+)$/', $key, $matches)) {
-        $provider_id = $matches[1];
-        $providers[] = $provider_id;
-        $providersCount++;
-      }
-    }
-    if ($providersCount != 0) {
-      $i = 0;
-      do {
-        $insert = $db->prepare('INSERT INTO ANIMATE (id_activity, id_provider) VALUES (:id_activity, :id_provider)');
-        $result2 = $insert->execute([
-          'id_activity' => htmlspecialchars($_GET['id']),
-          'id_provider' => $providers[$i],
-        ]);
-        $i++;
-      } while ($i < $providersCount);
-    }
 
     $materials = [];
     $materialCount = 0;

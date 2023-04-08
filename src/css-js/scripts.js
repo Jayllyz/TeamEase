@@ -230,8 +230,6 @@ function selectOccupation(id) {
     provider.remove();
   }
 
-  console.log(selected);
-
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
@@ -258,8 +256,18 @@ function selectProvider(id) {
 function providerList(id, type) {
   const form = document.getElementById('activity-form');
   if (type == 'delete') {
-    const providerInput = document.getElementById('provider' + id);
-    providerInput.remove();
+    if (id != null) {
+      const providerInput = document.getElementById('provider' + id);
+      providerInput.remove();
+    } else {
+      const providerContainer = document.getElementById('provider-container');
+      const lastLine = providerContainer.lastElementChild;
+      const btnGroup = lastLine.querySelector('.btn-group');
+      const btn = btnGroup.querySelector('.provider-dropdown');
+      if (btn != null) {
+        btn.remove();
+      }
+    }
   } else if (type == 'add') {
     const providerInput = document.createElement('input');
     providerInput.type = 'hidden';

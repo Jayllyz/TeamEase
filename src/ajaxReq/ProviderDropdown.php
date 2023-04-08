@@ -18,7 +18,8 @@ $query->execute([
 ]);
 $providers = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<button type="button" class="btn btn-secondary dropdown-toggle mx-2" data-bs-toggle="dropdown" aria-expanded="false">
+<button type="button" class="btn btn-secondary dropdown-toggle mx-2 provider-dropdown" data-bs-toggle="dropdown"
+    aria-expanded="false">
     Prestataires
 </button>
 <ul class="dropdown-menu">
