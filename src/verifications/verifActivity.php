@@ -435,6 +435,39 @@ if (!isset($_POST['day'])) {
   exit();
 }
 
+$providers = [];
+$providersCount = 0;
+
+foreach ($_POST as $key => $value) {
+  if (preg_match('/^provider(\d+)$/', $key, $matches)) {
+    $provider_id = $matches[1];
+    $providers[] = $provider_id;
+    $providersCount++;
+  }
+}
+
+if ($providersCount != 0) {
+  foreach ($providers as $provider) {
+    $query = $db->prepare('SELECT day FROM AVAILABILITY WHERE id_provider = :id_provider');
+    $query->execute([
+      ':id_provider' => $provider,
+    ]);
+    $days = $query->fetchAll(PDO::FETCH_ASSOC);
+    $available;
+    foreach ($days as $day) {
+      if (in_array($day['day'], $_POST['day'])) {
+        $available = true;
+      }
+    }
+  }
+}
+
+if (!$available) {
+  $message = 'Les jours de disponibilité ne correspondent pas à ceux des intervenants';
+  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
+  exit();
+}
+
 $request = $db->prepare(
   'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee, status, id_room) 
   VALUES (:name, :description, :duration, :priceAttendee, :maxAttendee, :status, :id_room)',
@@ -507,16 +540,6 @@ do {
   $i++;
 } while ($i < count($belong));
 
-$providers = [];
-$providersCount = 0;
-
-foreach ($_POST as $key => $value) {
-  if (preg_match('/^provider(\d+)$/', $key, $matches)) {
-    $provider_id = $matches[1];
-    $providers[] = $provider_id;
-    $providersCount++;
-  }
-}
 if ($providersCount != 0) {
   $i = 0;
   do {

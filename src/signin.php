@@ -104,7 +104,7 @@ include 'includes/db.php';
                 <?php include 'includes/msg.php'; ?>
                 <div class="mb-3">
 
-                    <label class="form-label"><strong>Nom </strong></label>
+                    <label class="form-label"><strong>Nom</strong></label>
                     <input type="text" name="name" placeholder="Saisir votre nom" class="form-control is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'name'
@@ -120,7 +120,7 @@ include 'includes/db.php';
                 <div class="mb-3">
 
 
-                    <label class="form-label"><strong>Prénom </strong></label>
+                    <label class="form-label"><strong>Prénom</strong></label>
                     <input type="text" name="firstname" placeholder="Saisir votre prénom" class="form-control is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'firstname'
@@ -190,6 +190,32 @@ include 'includes/db.php';
                         required>
                     <label class="form-label">Voir mon mot de passe</label>
                     <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription(this)">
+                </div>
+                <div class="mb-3">
+                    <label for="form-label"><strong>Vos disponibilités</strong></label>
+                    <div class="row mt-2">
+                        <input type="checkbox" class="btn btn-check" name="day[]" value="monday" id="monday"
+                            autocomplete="off">
+                        <label class="btn btn-outline-success col me-2 mb-3" for="monday">Lundi</label>
+                        <input type="checkbox" class="btn btn-check" name="day[]" value="tuesday" id="tuesday"
+                            autocomplete="off">
+                        <label class="btn btn-outline-success col me-2 mb-3" for="tuesday">Mardi</label>
+                        <input type="checkbox" class="btn btn-check" name="day[]" value="wednesday" id="wednesday"
+                            autocomplete="off">
+                        <label class="btn btn-outline-success col me-2 mb-3" for="wednesday">Mercredi</label>
+                        <input type="checkbox" class="btn btn-check" name="day[]" value="thursday" id="thursday"
+                            autocomplete="off">
+                        <label class="btn btn-outline-success col me-2 mb-3" for="thursday">Jeudi</label>
+                        <input type="checkbox" class="btn btn-check" name="day[]" value="friday" id="friday"
+                            autocomplete="off">
+                        <label class="btn btn-outline-success col me-2 mb-3" for="friday">Vendredi</label>
+                        <input type="checkbox" class="btn btn-check" name="day[]" value="saturday" id="saturday"
+                            autocomplete="off">
+                        <label class="btn btn-outline-success col me-2 mb-3" for="saturday">Samedi</label>
+                        <input type="checkbox" class="btn btn-check" name="day[]" value="sunday" id="sunday"
+                            autocomplete="off">
+                        <label class="btn btn-outline-success col me-2 mb-3" for="sunday">Dimanche</label>
+                    </div>
                 </div>
 
                 <div class="g-recaptcha mb-4" id="provider" data-sitekey="<?= $siteKey ?>"

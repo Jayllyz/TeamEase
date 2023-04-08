@@ -229,15 +229,16 @@ function selectOccupation(id) {
     providerList(providerId, 'delete');
     provider.remove();
   }
-  let xhr = new XMLHttpRequest();
-  xhr.open('GET', 'ajaxReq/providerDropdown.php?occupation=' + selected, true);
 
+  let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       providerContainer.innerHTML += xhr.responseText;
     }
   };
-  xhr.send();
+  xhr.open('POST', 'ajaxReq/providerDropdown.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('occupation=' + selected);
 }
 
 function selectProvider(id) {
