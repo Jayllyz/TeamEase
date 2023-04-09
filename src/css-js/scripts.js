@@ -1064,6 +1064,20 @@ function selectedDateReservation(element, idActivity) {
   }
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('day=' + dayOfWeek + '&id=' + idActivity + '&date=' + dateString + '&attendee=' + attendees);
+
+  let xhr2 = new XMLHttpRequest();
+  xhr2.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById('present-provider').innerHTML = this.responseText;
+    }
+  };
+  if (document.getElementById('editForm') != null) {
+    xhr2.open('POST', '../ajaxReq/presentProvider.php', true);
+  } else {
+    xhr2.open('POST', 'ajaxReq/presentProvider.php', true);
+  }
+  xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr2.send('id=' + idActivity + '&day=' + dayOfWeek);
 }
 
 jQuery(function ($) {
@@ -1236,8 +1250,4 @@ function filterCommentNotation(idActivity, element) {
     filter = 'noteDesc';
   }
   populateComment(idActivity, filter);
-}
-
-function selectSlot(element) {
-  console.log(element.value);
 }

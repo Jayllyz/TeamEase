@@ -69,6 +69,10 @@ include 'includes/head.php';
                 </div>
                 <input type="hidden" name="price" id="price" value="<?= $price ?>">
 
+                <div class="mt-4 mb-4" id="present-provider">
+
+                </div>
+
                 <div class="g-recaptcha mb-4 mt-4" id="captcha" data-sitekey="<?= $siteKey ?>"
                     data-callback="validCaptcha"></div>
 
