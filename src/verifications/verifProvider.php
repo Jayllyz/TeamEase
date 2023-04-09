@@ -5,6 +5,7 @@ $email = $_POST['email'];
 $job = $_POST['job'];
 $password = $_POST['password'];
 $conf_password = $_POST['conf_password'];
+$days = $_POST['day'];
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
   header('location: ../signin.php?message=Email invalide !&valid=invalid&input=email&check=provider');
@@ -20,6 +21,13 @@ if (isset($lastName) && !strlen($lastName) > 0) {
 
 if (isset($firstName) && !strlen($firstName) > 0) {
   header('location: ../signin.php?message=Le prenom est invalide !&valid=invalid&input=firstname&check=provider');
+  exit();
+}
+
+if (!isset($day)) {
+  header(
+    'location: ../signin.php?message=Veuillez indiquer vos disponibilités !&valid=invalid&input=day&check=provider',
+  );
   exit();
 }
 
@@ -72,7 +80,8 @@ if (
   !empty($password) &&
   !empty($conf_password) &&
   !empty($firstName) &&
-  !empty($job)
+  !empty($job) &&
+  !empty($days)
 ) {
   if ($password == $conf_password) {
     $req = $db->prepare(
@@ -90,6 +99,14 @@ if (
       'token' => $token,
       'password' => hash('sha512', $password),
     ]);
+
+    foreach ($days as $day) {
+      $req = $db->prepare('INSERT INTO AVAILABILITY (id_provider, day) VALUES (:id_provider, :day)');
+      $req->execute([
+        'id_provider' => $db->lastInsertId(),
+        'day' => $day,
+      ]);
+    }
 
     $subject = 'Confirmation de votre inscription';
     $msgHTML =
