@@ -14,12 +14,12 @@ $checkParticipants = $checkParticipants->fetchAll(PDO::FETCH_ASSOC);
 foreach ($checkParticipants as $id) {
   $req = $db->prepare('DELETE FROM ATTENDEE WHERE id = :id');
   $req->execute([
-    'id' => $id,
+    'id' => $id['id_attendee'],
   ]);
 
   $req = $db->prepare('DELETE FROM RESERVED WHERE id_attendee = :id');
   $req->execute([
-    'id' => $id,
+    'id' => $id['id_attendee'],
   ]);
 }
 
@@ -50,3 +50,6 @@ for ($i = 0; $i < $attendee * 3; $i += 3) {
     'id_reservation' => $idReserv,
   ]);
 }
+
+echo 'La liste des participants a bien été mise à jour';
+exit();

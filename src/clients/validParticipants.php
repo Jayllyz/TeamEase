@@ -25,15 +25,14 @@ $idReserv = $reserv['id'];
     <?php include '../includes/header.php'; ?>
     <main>
         <h1 style="margin-top: 1rem; margin-bottom: 1rem;"><?= $title ?></h1>
-        <div class="container col-md-6">
-            <?php include '../includes/msg.php'; ?>
-        </div>
 
         <form method="POST" onsubmit="fillParticipants(<?= $idReserv ?>)">
             <div class="container col-md-6" id="form">
                 <label for="participants" class="form-label"><strong>Merci de suivre la syntaxe suivante :</strong>
                     NOM; PRENOM; MAIL;</label>
-                <textarea class="form-control" id="participants" name="participants" rows="5" required></textarea>
+                <textarea class="form-control mb-6" id="participants" name="participants" rows="5" required></textarea>
+
+                <label class="mb-2">Pour procéder à une modification, veuillez ressaisir toute la liste.</label>
 
                 <input type="hidden" name="attendees" id="attendees" value="<?= $attendee ?>">
 
