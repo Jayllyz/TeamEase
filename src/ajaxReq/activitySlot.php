@@ -71,7 +71,7 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
       $timeFormat = $startSlotArray[$j] . ':00';
       $timeFormatEnd = $endSlotArray[$j] . ':00';
 
-      $checkRoom = $db->prepare('SELECT id FROM ACTIVITY WHERE id_room = :id_room AND id != :id ');
+      $checkRoom = $db->prepare('SELECT id FROM ACTIVITY WHERE id_room = :id_room AND id != :id');
       $checkRoom->execute(['id_room' => $id_room, 'id' => $_POST['id']]);
       $checkRoom = $checkRoom->fetchAll(PDO::FETCH_ASSOC);
 
@@ -81,9 +81,48 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
       $query->execute(['id' => $_POST['id'], 'date' => $date, 'startHour' => $timeFormat]);
       $reponse = $query->fetch(PDO::FETCH_ASSOC);
 
+      $query = $db->prepare(
+        'SELECT id FROM PROVIDER WHERE id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)',
+      );
+      $query->execute(['id' => $idActivity]);
+      $providers = $query->fetch(PDO::FETCH_ASSOC);
+
+      $isOccupied = 0;
+
+      foreach ($providers as $provider) {
+        $query = $db->prepare(
+          'SELECT RESERVATION.id FROM RESERVATION INNER JOIN ANIMATE ON RESERVATION.id_activity = ANIMATE.id_activity WHERE RESERVATION.date = :date AND ANIMATE.id_provider = :provider;',
+        );
+        $query->execute(['date' => $date, 'provider' => $providers['id']]);
+        $hasReservation = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($hasReservation) {
+          $query = $db->prepare('SELECT id, id_activity FROM RESERVATION WHERE date = DATE(:date)');
+          $query->execute(['date' => $date]);
+          $reservations = $query->fetchAll(PDO::FETCH_ASSOC);
+
+          foreach ($reservations as $reservation) {
+            $query = $db->prepare('SELECT
+              IF(TIME(:start) BETWEEN time AND ADDTIME(time, (SELECT SEC_TO_TIME((duration+30)*60) FROM ACTIVITY WHERE id=:idActivity)) AND TIME(:end) BETWEEN time AND ADDTIME(time, (SELECT SEC_TO_TIME((duration+30)*60) FROM ACTIVITY WHERE id=:idActivity)), 1, 0) AS inside1,
+              IF(time BETWEEN TIME(:start) AND TIME(:end), 1, 0) AS inside2 FROM RESERVATION WHERE id = :id;');
+            $query->execute([
+              'start' => $startSlotArray[$j],
+              'end' => $endSlotArray[$j],
+              'idActivity' => $reservation['id_activity'],
+              'id' => $reservation['id'],
+            ]);
+            $inside = $query->fetch(PDO::FETCH_ASSOC);
+
+            if ($inside['inside1'] == 1 || $inside['inside2'] == 1) {
+              $isOccupied = 1;
+            }
+          }
+        }
+      }
+
       if (is_array($reponse) && !empty($reponse)) {
         if ($attendee + $reponse['attendee'] <= $slot['maxAttendee'] && $reponse['siret'] != $_SESSION['siret']) {
-          if (empty($checkRoom)) {
+          if (empty($checkRoom) && $isOccupied == 0) {
             echo '<option value=' .
               $startSlotArray[$j] .
               '>' .
@@ -105,7 +144,7 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
             ]);
             $roomDate = $query->fetch(PDO::FETCH_ASSOC);
 
-            if (empty($roomDate) || empty($room)) {
+            if ((empty($roomDate) || empty($room)) && $isOccupied == 0) {
               echo '<option value=' .
                 $startSlotArray[$j] .
                 '>' .
@@ -117,7 +156,8 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
           }
         }
       } elseif ($attendee <= $slot['maxAttendee']) {
-        if (empty($checkRoom)) {
+        var_dump($isOccupied);
+        if (empty($checkRoom) && $isOccupied == 0) {
           echo '<option value=' .
             $startSlotArray[$j] .
             '>' .
@@ -139,7 +179,7 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
           ]);
           $roomDate = $query->fetch(PDO::FETCH_ASSOC);
 
-          if (empty($roomDate)) {
+          if (empty($roomDate) && $isOccupied == 0) {
             echo '<option value=' .
               $startSlotArray[$j] .
               '>' .
@@ -152,4 +192,13 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
       }
     }
   }
-} ?>
+  $query = $db->prepare(
+    'SELECT PROVIDER.firstName, PROVIDER.lastName, OCCUPATION.name FROM PROVIDER INNER JOIN AVAILABILITY ON PROVIDER.id = AVAILABILITY.id_provider INNER JOIN OCCUPATION ON PROVIDER.id_occupation = OCCUPATION.id WHERE AVAILABILITY.day = :day AND PROVIDER.id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)',
+  );
+  $query->execute([
+    'id' => $idActivity,
+    'day' => $day,
+  ]);
+  $providers = $query->fetchAll(PDO::FETCH_ASSOC);
+}
+?>

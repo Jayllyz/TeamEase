@@ -1237,3 +1237,7 @@ function filterCommentNotation(idActivity, element) {
   }
   populateComment(idActivity, filter);
 }
+
+function selectSlot(element) {
+  console.log(element.value);
+}
