@@ -35,14 +35,13 @@ $siret = $_SESSION['siret'];
         ]);
         $result = $req->fetchAll(PDO::FETCH_ASSOC);
 
-
-        if(empty($result)) {
+        if (empty($result)) {
           echo '<div class="container col-md-6">
           <h2 class="text-center">Vous n\'avez pas encore réservé d\'activité</h2>
-          </div>';}
+          </div>';
+        }
 
-          if(!empty($result)) {
-        ?>
+        if (!empty($result)) { ?>
 
 
         <div class="container info_user">
@@ -175,7 +174,8 @@ $siret = $_SESSION['siret'];
                 <?php } ?>
             </table>
         </div>
-        <?php } ?>
+        <?php }
+        ?>
     </main>
     <?php include '../includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
