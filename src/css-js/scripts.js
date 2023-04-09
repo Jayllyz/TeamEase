@@ -1227,3 +1227,17 @@ function filterCommentNotation(idActivity, element) {
   }
   populateComment(idActivity, filter);
 }
+
+function fillParticipants(idReserv) {
+  const participants = document.getElementById('participants').value;
+  const attendees = document.getElementById('attendees').value;
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      return;
+    }
+  };
+  xhr.open('POST', '../ajaxReq/fillParticipants.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('idReserv=' + idReserv + '&participants=' + participants + '&attendees=' + attendees);
+}

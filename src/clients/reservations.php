@@ -34,6 +34,14 @@ $siret = $_SESSION['siret'];
           'siret' => $siret,
         ]);
         $result = $req->fetchAll(PDO::FETCH_ASSOC);
+
+
+        if(empty($result)) {
+          echo '<div class="container col-md-6">
+          <h2 class="text-center">Vous n\'avez pas encore réservé d\'activité</h2>
+          </div>';}
+
+          if(!empty($result)) {
         ?>
 
 
@@ -138,6 +146,10 @@ $siret = $_SESSION['siret'];
                         ?>
 
                         <div class="button_profil">
+                            <a href="validParticipants.php?id=<?= $select['id'] ?>"
+                                class="btn-update btn ms-2 me-2">Saisir
+                                les participants</a>
+                            <br>
                             <form action="checkPayment.php?id=<?= $select['id'] ?>" class="mb-4" method="POST">
                                 <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                     data-key="<?= $stripePublicKey ?>" data-amount="<?= $price * 100 ?>"
@@ -163,6 +175,7 @@ $siret = $_SESSION['siret'];
                 <?php } ?>
             </table>
         </div>
+        <?php } ?>
     </main>
     <?php include '../includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
