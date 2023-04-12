@@ -1,8 +1,8 @@
 ## PR Description
 
-**Brief description of what this pull request accomplishes.**
+copilot:summary
 
-**Link to relevant issue if applicable.**
+copilot:walkthrough
 
 ## PR Type
 
