@@ -22,6 +22,13 @@ if (isPath('auth/logout')) {
   }
 }
 
+if (isPath('company')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/company/get.php';
+    die();
+  }
+}
+
 if (isPath('activities')) {
   if (isGetMethod()) {
     require_once __DIR__ . '/routes/activities/get.php';

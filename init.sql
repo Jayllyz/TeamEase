@@ -10,6 +10,7 @@ CREATE TABLE COMPANY
   password VARCHAR(255) NOT NULL,
   rights INT NOT NULL,
   token VARCHAR(255),
+  authToken VARCHAR(60),
   confirm_signup INT NOT NULL DEFAULT 0,
   PRIMARY KEY (siret)
 );

@@ -2,7 +2,7 @@
 
 function isLoggedIn($token) {
 
-    require_once __DIR__ . '/home/php/src/includes/db.php';
+    require_once '/home/php/src/includes/db.php';
 
     $getCompany = $db->prepare('SELECT * FROM COMPANY WHERE authToken = :token');
 
