@@ -6,6 +6,8 @@ require_once '/home/php/src/api/libraries/response.php';
 require_once '/home/php/src/api/libraries/body.php';
 include '/home/php/src/api/entities/activities/get.php';
 include '/home/php/src/api/libraries/function.php';
+require_once '/home/php/src/api/libraries/header.php';
+require_once '/home/php/src/api/entities/company/isLoggedIn.php';
 
 try {
   $body = getBody();

@@ -7,6 +7,21 @@ require_once __DIR__ . '/libraries/path.php';
 require_once __DIR__ . '/libraries/method.php';
 require_once __DIR__ . '/libraries/response.php';
 
+
+if(isPath('auth/login')) {
+  if(isPostMethod()) {
+    require_once __DIR__ . '/routes/auth/login.php';
+    die();
+  }
+}
+
+if (isPath('auth/logout')) {
+  if (isPostMethod()) {
+    require_once __DIR__ . '/routes/auth/logout.php';
+    die();
+  }
+}
+
 if (isPath('activities')) {
   if (isGetMethod()) {
     require_once __DIR__ . '/routes/activities/get.php';
@@ -14,11 +29,6 @@ if (isPath('activities')) {
   }
 }
 
-// if (isPath('users/:user')) {
-//   if (isDeleteMethod()) {
-//     require_once __DIR__ . '/routes/users/delete.php';
-//     die();
-//   }
 
 echo jsonResponse(
   404,
