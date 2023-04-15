@@ -1,11 +1,12 @@
 <?php
 
-function getAuthorizationHeader() {
-    $headers = getallheaders();
+function getAuthorizationHeader()
+{
+  $headers = getallheaders();
 
-    if (!isset($headers['Authorization'])) {
-        return null;
-    }
+  if (!isset($headers['Authorization'])) {
+    return null;
+  }
 
-    return $headers['Authorization'];
+  return $headers['Authorization'];
 }
