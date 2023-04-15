@@ -7,8 +7,15 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 
+
+import com.roxstudio.utils.CUrl;
+
 public class Dashboard {
     public static void main(String[] args) {
+        CUrl curl = new CUrl("http://localhost/api/api.php/activities/allActivities");
+        String response = curl.exec(CUrl.UTF8, null);
+        System.out.println(response);
+
         DefaultPieDataset dataset = new DefaultPieDataset();
         dataset.setValue("Category 1", 43.2);
         dataset.setValue("Category 2", 27.9);

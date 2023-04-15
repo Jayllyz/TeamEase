@@ -47,17 +47,3 @@ services:
       ADMINER_DESIGN: arcs-material
     ports:
       - '${ADMINER_PORT}:${ADMINER_PORT}'
-
-  dashboard:
-    build:
-      context: docker/java
-      dockerfile: Dockerfile
-    container_name: dashboard
-    restart: always
-    tty: true
-    volumes:
-      - ./src/dashboard:/home/java/src/dashboard
-      - ./libs:/home/java/libs
-    ports:
-      - '${DASHBOARD_PORT}:${DASHBOARD_PORT}'
-  # command: javac /src/dashboard/Dashboard.java && java Dashboard
