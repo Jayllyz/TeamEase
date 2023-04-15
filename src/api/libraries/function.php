@@ -567,4 +567,46 @@ function checkAllQuestionWhatParameters($parameters)
   );
   exit();
 }
+
+function getReservationWithToken($token)
+{
+  include '/home/php/src/includes/db.php';
+
+  $getSiret = $db->prepare('SELECT siret FROM COMPANY WHERE authToken = :token');
+  $getSiret->execute(['token' => $token]);
+  $siret = $getSiret->fetch();
+
+  $getAllReservation = $db->prepare('SELECT * FROM RESERVATION WHERE siret = :siret');
+  $getAllReservation->execute(['siret' => $siret['siret']]);
+  $reservations = $getAllReservation->fetchAll(PDO::FETCH_ASSOC);
+
+  return $reservations;
+}
+
+function getAll($table)
+{
+  include '/home/php/src/includes/db.php';
+
+  if ($table === 'activity') {
+    $query = $db->query('SELECT * FROM ACTIVITY');
+    $activities = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $activities;
+  }
+
+  if ($table === 'activityPublic') {
+    $query = $db->query('SELECT * FROM ACTIVITY WHERE status = 1');
+    $activities = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $activities;
+  }
+
+  if ($table === 'provider') {
+    $query = $db->query('SELECT * FROM PROVIDER');
+    $providers = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $providers;
+  }
+}
+
 ?>
