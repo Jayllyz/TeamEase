@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   nginx:
@@ -17,9 +17,12 @@ services:
       - ./docker/nginx/prod:/etc/nginx/conf.d
       - ./src:${PHP_USER_HOME_DIRECTORY}
       - /home/php/vendor
+      - /etc/letsencrypt
+      - ./docker/nginx/entrypoint.sh:/bin/entrypoint.sh
     ports:
-      - 80:${PHP_PORT}
-    command: [nginx, '-g', 'daemon off;']
+      - '80:80'
+      - '443:443'
+    entrypoint: /bin/sh -c "/bin/entrypoint.sh"
 
   php:
     depends_on:
