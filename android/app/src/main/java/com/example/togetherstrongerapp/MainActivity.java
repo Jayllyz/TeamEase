@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -43,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
         this.reservation = findViewById(R.id.reservation);
 
         SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
+
+        Intent intentNFC;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            intentNFC = new Intent(Settings.ACTION_NFC_SETTINGS);
+        } else {
+            intentNFC = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+        }
+        startActivity(intentNFC);
 
         if(preferences.getBoolean("connected", true)){
             connected = true;
