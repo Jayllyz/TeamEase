@@ -7,9 +7,8 @@ require_once __DIR__ . '/libraries/path.php';
 require_once __DIR__ . '/libraries/method.php';
 require_once __DIR__ . '/libraries/response.php';
 
-
-if(isPath('auth/login')) {
-  if(isPostMethod()) {
+if (isPath('auth/login')) {
+  if (isPostMethod()) {
     require_once __DIR__ . '/routes/auth/login.php';
     die();
   }
@@ -29,6 +28,13 @@ if (isPath('company')) {
   }
 }
 
+if (isPath('activities/allActivities')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/activities/getAllActivities.php';
+    die();
+  }
+}
+
 if (isPath('activities')) {
   if (isGetMethod()) {
     require_once __DIR__ . '/routes/activities/get.php';
@@ -36,6 +42,12 @@ if (isPath('activities')) {
   }
 }
 
+if (isPath('provider')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/provider/get.php';
+    die();
+  }
+}
 
 echo jsonResponse(
   404,

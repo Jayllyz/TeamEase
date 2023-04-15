@@ -1,20 +1,20 @@
 <?php
 
-function isLoggedIn($token) {
+function isLoggedIn($token)
+{
+  require_once '/home/php/src/includes/db.php';
 
-    require_once '/home/php/src/includes/db.php';
+  $getCompany = $db->prepare('SELECT * FROM COMPANY WHERE authToken = :token');
 
-    $getCompany = $db->prepare('SELECT * FROM COMPANY WHERE authToken = :token');
+  $getCompany->execute([
+    ':token' => $token,
+  ]);
 
-    $getCompany->execute(array(
-        ':token' => $token
-    ));
+  $company = $getCompany->fetch(PDO::FETCH_ASSOC);
 
-    $company = $getCompany->fetch(PDO::FETCH_ASSOC);
+  if (!$company) {
+    return false;
+  }
 
-    if(!$company) {
-        return false;
-    }
-
-    return true;
+  return true;
 }
