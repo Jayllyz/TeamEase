@@ -607,6 +607,15 @@ function getAll($table)
 
     return $providers;
   }
+
+  if ($table === 'countActivityByMonth') {
+    $query = $db->query(
+      'SELECT COUNT(id) as count, DATE_FORMAT(date, \'%Y-%m\') AS date FROM RESERVATION GROUP BY date ORDER BY date',
+    );
+    $countActivityByDate = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $countActivityByDate;
+  }
 }
 
 ?>

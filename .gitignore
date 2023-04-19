@@ -20,3 +20,4 @@ android/captures
 .externalNativeBuild
 .cxx
 local.properties
+src/dashboard/dashboard/Admin.java

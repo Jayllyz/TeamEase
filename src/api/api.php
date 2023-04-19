@@ -35,6 +35,13 @@ if (isPath('activities/allActivities')) {
   }
 }
 
+if (isPath('activities/countActivitiesByMonth')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/activities/getActivitiesCountByMonth.php';
+    die();
+  }
+}
+
 if (isPath('activities')) {
   if (isGetMethod()) {
     require_once __DIR__ . '/routes/activities/get.php';
