@@ -21,6 +21,20 @@ if (isPath('auth/logout')) {
   }
 }
 
+if (isPath('company/paid')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/company/getCompanyPaid.php';
+    die();
+  }
+}
+
+if (isPath('company/topPaid')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/company/getTopCompanyPaid.php';
+    die();
+  }
+}
+
 if (isPath('company')) {
   if (isGetMethod()) {
     require_once __DIR__ . '/routes/company/get.php';

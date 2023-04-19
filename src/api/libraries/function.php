@@ -616,6 +616,24 @@ function getAll($table)
 
     return $countActivityByDate;
   }
+
+  if ($table === 'companyPaid') {
+    $query = $db->query(
+      'SELECT SUM(amount) as amount, COMPANY.companyName FROM INVOICE INNER JOIN RESERVATION ON RESERVATION.id = INVOICE.id_reservation INNER JOIN COMPANY ON RESERVATION.siret = COMPANY.siret GROUP BY companyName',
+    );
+    $companyPaid = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $companyPaid;
+  }
+
+  if ($table === 'topCompanyPaid') {
+    $query = $db->query(
+      'SELECT SUM(amount) as amount, COMPANY.companyName FROM INVOICE INNER JOIN RESERVATION ON RESERVATION.id = INVOICE.id_reservation INNER JOIN COMPANY ON RESERVATION.siret = COMPANY.siret GROUP BY companyName ORDER BY amount DESC LIMIT 5',
+    );
+    $topCompanyPaid = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $topCompanyPaid;
+  }
 }
 
 ?>

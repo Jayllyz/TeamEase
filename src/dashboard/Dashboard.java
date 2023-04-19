@@ -1,28 +1,21 @@
 package dashboard;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Scanner;
-import java.awt.BasicStroke;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -64,20 +57,20 @@ public class Dashboard {
             date[i] = arr.getJSONObject(i).getString("date");
             series.add(i, count);
         }
-        XYDataset dataset = new XYSeriesCollection(series);
+        XYDataset reservationPerMonth = new XYSeriesCollection(series);
 
-        JFreeChart chart = ChartFactory.createXYLineChart(
+        JFreeChart chartReservationPerMonth = ChartFactory.createXYLineChart(
             "Nombre de réservations par mois",
             "Mois",
             "Nombre de reservations",
-            dataset,
+            reservationPerMonth,
             PlotOrientation.VERTICAL,
             true,
             true,
             false
         );
 
-        XYPlot plot = chart.getXYPlot();
+        XYPlot plot = chartReservationPerMonth.getXYPlot();
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
         plot.setRenderer(new org.jfree.chart.renderer.xy.XYLineAndShapeRenderer());
@@ -89,36 +82,74 @@ public class Dashboard {
         yAxis.setTickUnit(new NumberTickUnit(1));
         plot.setRangeAxis(yAxis);
 
-        ChartPanel chartPanel = new ChartPanel(chart);
-        JFrame frame = new JFrame("Line Chart");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-        frame.add(chartPanel, BorderLayout.CENTER);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+        ChartPanel chartPanelReservationPerMonth = new ChartPanel(chartReservationPerMonth);
 
+        DefaultCategoryDataset companySpending = new DefaultCategoryDataset();
 
+        curl = new CUrl("http://localhost/api/api.php/company/topPaid");
+        headersSent = new HashMap<String, String>();
+        headersSent.put("Authorization", token);
+        curl.headers(headersSent);
+        response = curl.exec(CUrl.UTF8, null);
+
+        obj = new JSONObject(response);
+        arr = obj.getJSONArray("data");
+        for (int i = 0; i < arr.length(); i++)
+        {
+            int count = arr.getJSONObject(i).getInt("amount");
+            String company = arr.getJSONObject(i).getString("companyName");
+            companySpending.addValue(count, "Entreprise", company + "(" + count + "€)");
+        }
+
+        JFreeChart chartCompanySpending = ChartFactory.createBarChart(
+            "Dépenses par entreprise",
+            "Entreprises",
+            "Montants",
+            companySpending,
+            org.jfree.chart.plot.PlotOrientation.VERTICAL,
+            true,
+            true,
+            false
+        );
     
-    //     DefaultPieDataset dataset = new DefaultPieDataset();
-    //     dataset.setValue("Category 1", 43.2);
-    //     dataset.setValue("Category 2", 27.9);
-    //     dataset.setValue("Category 3", 79.5);
+        chartCompanySpending.getCategoryPlot().getRenderer().setSeriesPaint(0, new Color(128, 128, 255));
 
-    //     JFreeChart chart = ChartFactory.createPieChart(
-    //         "Dashboard",
-    //         dataset,
-    //         true,
-    //         true,
-    //         false
-    //     );
+        ChartPanel chartPanelCompanySpending = new ChartPanel(chartCompanySpending);
 
-    //     ChartPanel chartPanel = new ChartPanel(chart);
+        DefaultPieDataset topCompanySpending = new DefaultPieDataset();
+        
+        curl = new CUrl("http://localhost/api/api.php/company/topPaid");
+        headersSent = new HashMap<String, String>();
+        headersSent.put("Authorization", token);
+        curl.headers(headersSent);
+        response = curl.exec(CUrl.UTF8, null);
 
-    //     JFrame frame = new JFrame("Dashboard");
-    //     frame.getContentPane().add(chartPanel, BorderLayout.CENTER);
-    //     frame.setSize(500, 500);
-    //     frame.setVisible(true);
-    // }
+        obj = new JSONObject(response);
+        arr = obj.getJSONArray("data");
+        for (int i = 0; i < arr.length(); i++)
+        {
+            int amount = arr.getJSONObject(i).getInt("amount");
+            String company = arr.getJSONObject(i).getString("companyName");
+            topCompanySpending.setValue(company + "(" + amount + "€)", amount);
+        }
+
+        JFreeChart chartTopCompanySpending = ChartFactory.createPieChart(
+            "Les 5 entreprises ayant le plus dépensé",
+            topCompanySpending,
+            false,
+            true,
+            false
+        );
+
+        ChartPanel chartPanelTopCompanySpending = new ChartPanel(chartTopCompanySpending);
+
+        JFrame mainFrame = new JFrame("Dashboard");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setLayout(new GridLayout(2, 2));
+        mainFrame.add(chartPanelCompanySpending);
+        mainFrame.add(chartPanelTopCompanySpending);
+        mainFrame.add(chartPanelReservationPerMonth);
+        mainFrame.setSize(1000, 800);
+        mainFrame.setVisible(true);
+    }
 }
