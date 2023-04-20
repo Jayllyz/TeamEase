@@ -17,12 +17,16 @@ services:
       - ./docker/nginx/prod:/etc/nginx/conf.d
       - ./src:${PHP_USER_HOME_DIRECTORY}
       - /home/php/vendor
-      - /etc/letsencrypt
-      - ./docker/nginx/entrypoint.sh:/bin/entrypoint.sh
+      - ./ssl:/etc/letsencrypt/live/togetherandstronger.site
     ports:
       - '80:80'
       - '443:443'
-    entrypoint: /bin/sh -c "/bin/entrypoint.sh"
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./src:${PHP_USER_HOME_DIRECTORY}:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
   php:
     depends_on:
