@@ -4,13 +4,16 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.JFrame;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.SymbolAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -53,7 +56,7 @@ public class Dashboard {
         for (int i = 0; i < arr.length(); i++)
         {
             int count = arr.getJSONObject(i).getInt("count");
-            date[i] = arr.getJSONObject(i).getString("date");
+            date[i] = arr.getJSONObject(i).getString("newDate");
             series.add(i, count);
         }
         XYDataset reservationPerMonth = new XYSeriesCollection(series);
@@ -83,9 +86,36 @@ public class Dashboard {
 
         ChartPanel chartPanelReservationPerMonth = new ChartPanel(chartReservationPerMonth);
 
+        DefaultPieDataset topActivity = new DefaultPieDataset();
+        
+        curl = new CUrl("http://localhost/api/api.php/activities/topActivities");
+        headersSent = new HashMap<String, String>();
+        headersSent.put("Authorization", token);
+        curl.headers(headersSent);
+        response = curl.exec(CUrl.UTF8, null);
+
+        obj = new JSONObject(response);
+        arr = obj.getJSONArray("data");
+        for (int i = 0; i < arr.length(); i++)
+        {
+            int count = arr.getJSONObject(i).getInt("count");
+            String activity = arr.getJSONObject(i).getString("name");
+            topActivity.setValue(activity + "(" + count + ")", count);
+        }
+
+        JFreeChart chartTopActivity = ChartFactory.createPieChart(
+            "Les 10 activitiés les plus réservées",
+            topActivity,
+            false,
+            true,
+            false
+        );
+
+        ChartPanel chartPanelTopActivity = new ChartPanel(chartTopActivity);
+
         DefaultCategoryDataset companySpending = new DefaultCategoryDataset();
 
-        curl = new CUrl("http://localhost/api/api.php/company/topPaid");
+        curl = new CUrl("http://localhost/api/api.php/company/paid");
         headersSent = new HashMap<String, String>();
         headersSent.put("Authorization", token);
         curl.headers(headersSent);
@@ -106,12 +136,12 @@ public class Dashboard {
             "Montants",
             companySpending,
             org.jfree.chart.plot.PlotOrientation.VERTICAL,
-            true,
+            false,
             true,
             false
         );
     
-        chartCompanySpending.getCategoryPlot().getRenderer().setSeriesPaint(0, new Color(128, 128, 255));
+        chartCompanySpending.getCategoryPlot().getRenderer().setSeriesPaint(0, new Color(80, 80, 200));
 
         ChartPanel chartPanelCompanySpending = new ChartPanel(chartCompanySpending);
 
@@ -142,13 +172,81 @@ public class Dashboard {
 
         ChartPanel chartPanelTopCompanySpending = new ChartPanel(chartTopCompanySpending);
 
+        DefaultCategoryDataset providerActivity = new DefaultCategoryDataset();
+
+        curl = new CUrl("http://localhost/api/api.php/provider/animate");
+        headersSent = new HashMap<String, String>();
+        headersSent.put("Authorization", token);
+        curl.headers(headersSent);
+        response = curl.exec(CUrl.UTF8, null);
+
+        obj = new JSONObject(response);
+        arr = obj.getJSONArray("data");
+        for (int i = 0; i < arr.length(); i++)
+        {
+            int count = arr.getJSONObject(i).getInt("count");
+            String firstName = arr.getJSONObject(i).getString("firstName");
+            String lastName = arr.getJSONObject(i).getString("lastName");
+            providerActivity.addValue(count, "Prestataire", firstName + " " + lastName + "(" + count + ")");
+        }
+
+        JFreeChart chartProviderActivity = ChartFactory.createBarChart(
+            "Nombre d'activités par prestataire",
+            "Prestataires",
+            "Nombre d'activités",
+            providerActivity,
+            org.jfree.chart.plot.PlotOrientation.VERTICAL,
+            false,
+            true,
+            false
+        );
+
+        CategoryPlot plot2 = chartProviderActivity.getCategoryPlot();
+        NumberAxis rangeAxis = (NumberAxis) plot2.getRangeAxis();
+        rangeAxis.setTickUnit(new NumberTickUnit(1));
+    
+        chartProviderActivity.getCategoryPlot().getRenderer().setSeriesPaint(0, new Color(200,80, 80));
+
+        ChartPanel chartPanelProviderActivity = new ChartPanel(chartProviderActivity);
+
+        DefaultPieDataset topProvider = new DefaultPieDataset();
+        
+        curl = new CUrl("http://localhost/api/api.php/provider/topAnimate");
+        headersSent = new HashMap<String, String>();
+        headersSent.put("Authorization", token);
+        curl.headers(headersSent);
+        response = curl.exec(CUrl.UTF8, null);
+
+        obj = new JSONObject(response);
+        arr = obj.getJSONArray("data");
+        for (int i = 0; i < arr.length(); i++)
+        {
+            int count = arr.getJSONObject(i).getInt("count");
+            String firstName = arr.getJSONObject(i).getString("firstName");
+            String lastName = arr.getJSONObject(i).getString("lastName");
+            topProvider.setValue(firstName + " " + lastName + "(" + count + ")", count);
+        }
+
+        JFreeChart chartTopProvider = ChartFactory.createPieChart(
+            "Les 5 prestataires ayant le plus d'activités",
+            topProvider,
+            false,
+            true,
+            false
+        );
+
+        ChartPanel chartPanelTopProvider = new ChartPanel(chartTopProvider);
+
         JFrame mainFrame = new JFrame("Dashboard");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setLayout(new GridLayout(2, 2));
+        mainFrame.setLayout(new GridLayout(3, 2));
         mainFrame.add(chartPanelCompanySpending);
         mainFrame.add(chartPanelTopCompanySpending);
+        mainFrame.add(chartPanelProviderActivity);
+        mainFrame.add(chartPanelTopProvider);
         mainFrame.add(chartPanelReservationPerMonth);
-        mainFrame.setSize(1000, 800);
+        mainFrame.add(chartPanelTopActivity);
+        mainFrame.setSize(1500, 800);
         mainFrame.setVisible(true);
     }
 }
