@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   nginx:
@@ -6,7 +6,7 @@ services:
       - php
     build:
       context: docker/nginx
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: nginx
     tty: true
     stdin_open: true
@@ -14,26 +14,19 @@ services:
     working_dir: ${PHP_USER_HOME_DIRECTORY}
     restart: always
     volumes:
-      - ./docker/nginx/prod:/etc/nginx/conf.d
+      - ./docker/nginx/dev:/etc/nginx/conf.d
       - ./src:${PHP_USER_HOME_DIRECTORY}
       - /home/php/vendor
-      - ./ssl:/etc/letsencrypt/live/togetherandstronger.site
     ports:
-      - '80:80'
-      - '443:443'
-
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./src:${PHP_USER_HOME_DIRECTORY}:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+      - 8000:${PHP_PORT}
+    command: [nginx-debug, '-g', 'daemon off;']
 
   php:
     depends_on:
       - mysql
     build:
       context: docker/php
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         PHP_USER_NAME: $PHP_USER_NAME
         PHP_USER_IDENTIFIER: $PHP_USER_IDENTIFIER
@@ -49,6 +42,8 @@ services:
     volumes:
       - ./src:${PHP_USER_HOME_DIRECTORY}
       - /home/php/vendor
+    ports:
+      - ${PHP_PORT}:${PHP_PORT}
 
   mysql:
     container_name: mysql

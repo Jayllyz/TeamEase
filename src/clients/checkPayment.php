@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/db.php';
-require_once '/home/php/src/vendor/autoload.php';
+require_once '/home/php/vendor/autoload.php';
 
 $secret = $_ENV['STRIPE_SECRET'];
 

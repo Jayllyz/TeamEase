@@ -4,7 +4,7 @@ data
 logs
 src/images/activities
 src/vendor
-
+src/.ash_history
 *.iml
 .gradle
 android/local.properties

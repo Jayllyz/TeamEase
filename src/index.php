@@ -19,7 +19,6 @@ include 'includes/head.php';
     <main>
         <div class="container rounded main-text">
             <br>
-
             <div class="container section-about-us border border-2 border-secondary rounded">
                 <div>
                     <div class="row">
