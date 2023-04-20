@@ -56,9 +56,30 @@ if (isPath('activities/countActivitiesByMonth')) {
   }
 }
 
+if (isPath('activities/topActivities')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/activities/getTopActivities.php';
+    die();
+  }
+}
+
 if (isPath('activities')) {
   if (isGetMethod()) {
     require_once __DIR__ . '/routes/activities/get.php';
+    die();
+  }
+}
+
+if (isPath('provider/animate')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/provider/getAnimate.php';
+    die();
+  }
+}
+
+if (isPath('provider/topAnimate')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/provider/getTopAnimate.php';
     die();
   }
 }

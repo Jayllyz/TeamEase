@@ -610,11 +610,20 @@ function getAll($table)
 
   if ($table === 'countActivityByMonth') {
     $query = $db->query(
-      'SELECT COUNT(id) as count, DATE_FORMAT(date, \'%Y-%m\') AS date FROM RESERVATION GROUP BY date ORDER BY date',
+      'SELECT COUNT(id) as count, DATE_FORMAT(date, \'%Y-%m\') AS newDate FROM RESERVATION GROUP BY newDate ORDER BY newDate ASC',
     );
     $countActivityByDate = $query->fetchAll(PDO::FETCH_ASSOC);
 
     return $countActivityByDate;
+  }
+
+  if ($table === 'topActivity') {
+    $query = $db->query(
+      'SELECT ACTIVITY.name, COUNT(RESERVATION.id) AS count FROM RESERVATION INNER JOIN ACTIVITY ON RESERVATION.id_activity = ACTIVITY.id GROUP BY ACTIVITY.name ORDER BY count DESC LIMIT 10',
+    );
+    $topActivity = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $topActivity;
   }
 
   if ($table === 'companyPaid') {
@@ -633,6 +642,24 @@ function getAll($table)
     $topCompanyPaid = $query->fetchAll(PDO::FETCH_ASSOC);
 
     return $topCompanyPaid;
+  }
+
+  if ($table === 'providerActivity') {
+    $query = $db->query(
+      'SELECT PROVIDER.firstName, PROVIDER.lastName, COUNT(id_provider) as count FROM PROVIDER INNER JOIN HISTORY ON PROVIDER.id = HISTORY.id_provider GROUP BY id_provider',
+    );
+    $providerActivity = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $providerActivity;
+  }
+
+  if ($table === 'topProviderActivity') {
+    $query = $db->query(
+      'SELECT PROVIDER.firstName, PROVIDER.lastName, COUNT(id_provider) as count FROM PROVIDER INNER JOIN HISTORY ON PROVIDER.id = HISTORY.id_provider GROUP BY id_provider ORDER BY count DESC LIMIT 5',
+    );
+    $topProviderActivity = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $topProviderActivity;
   }
 }
 
