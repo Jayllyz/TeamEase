@@ -255,19 +255,65 @@ include 'includes/head.php';
                     <h2 class="text-center mb-3">Prestataires</h2>
                     <ul class="text-center no-dot" style="padding:0">
                         <?php
-                        $query = $db->prepare(
-                          'SELECT firstName, lastName FROM PROVIDER WHERE id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id)',
-                        );
+                        $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id');
                         $query->execute([
                           ':id' => $id,
                         ]);
-                        $providers = $query->fetchAll(PDO::FETCH_ASSOC);
-                        if (empty($providers)) {
-                          echo '<p class="text-center fs-3">Aucun prestataire</p>';
-                        } else {
-                          foreach ($providers as $provider) {
-                            echo '<li class="fs-3">' . $provider['firstName'] . ' ' . $provider['lastName'] . '</li>';
+                        $animated = false;
+                        $days = $query->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($days as $day) {
+                          $query = $db->prepare(
+                            'SELECT firstName, lastName, name FROM PROVIDER INNER JOIN OCCUPATION ON PROVIDER.id_occupation = OCCUPATION.id AND PROVIDER.id IN (SELECT id_provider FROM ANIMATE WHERE id_activity = :id) AND PROVIDER.id IN (SELECT id_provider FROM AVAILABILITY WHERE day = :day)',
+                          );
+                          $query->execute([
+                            ':day' => $day['day'],
+                            ':id' => $id,
+                          ]);
+                          switch ($day['day']) {
+                            case 'monday':
+                              $day['day'] = 'Lundi';
+                              break;
+                            case 'tuesday':
+                              $day['day'] = 'Mardi';
+                              break;
+                            case 'wednesday':
+                              $day['day'] = 'Mercredi';
+                              break;
+                            case 'thursday':
+                              $day['day'] = 'Jeudi';
+                              break;
+                            case 'friday':
+                              $day['day'] = 'Vendredi';
+                              break;
+                            case 'saturday':
+                              $day['day'] = 'Samedi';
+                              break;
+                            case 'sunday':
+                              $day['day'] = 'Dimanche';
+                              break;
                           }
+                          $providers = $query->fetchAll(PDO::FETCH_ASSOC);
+                          if (!empty($providers)) {
+                            $animated = true;
+                            echo '<p class="fs-4 mb-1 fw-bolder">' . $day['day'] . '</p>';
+                            echo '<p class="fs-5 mb-2">';
+                            foreach ($providers as $provider) {
+                              echo $provider['firstName'] .
+                                ' ' .
+                                $provider['lastName'] .
+                                ' (' .
+                                $provider['name'] .
+                                ')';
+                              if ($provider != end($providers)) {
+                                echo ', ';
+                              } else {
+                                echo '</p>';
+                              }
+                            }
+                          }
+                        }
+                        if (!$animated) {
+                          echo '<p class="text-center fs-3">Aucun prestataire</p>';
                         }
                         ?>
                     </ul>
@@ -310,8 +356,8 @@ include 'includes/head.php';
                         ]);
                         $location = $query->fetch(PDO::FETCH_ASSOC);
                         ?>
-                        <p class="text-center fs-3 mb-0"><?= $location['locationName'] ?></p>
-                        <p class="text-center fs-5 mb-0"><?= $location['address'] ?></p>
+                        <p class="text-center fs-4 mb-0"><?= $location['locationName'] ?>, <?= $location['address'] ?>
+                        </p>
                         <?php
                         if ($location['roomName'] != 'none') { ?>
                         <p class="text-center fs-3 mb-0"><?= $location['roomName'] ?></p>

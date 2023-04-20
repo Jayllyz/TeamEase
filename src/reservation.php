@@ -64,10 +64,14 @@ include 'includes/head.php';
                     <label for="time" class="form-label">
                         <h4>Heure de votre créneau</h4>
                     </label>
-                    <select class="form-control" name="slot" id="container-slot">
+                    <select class="form-control" name="slot" id="container-slot" onchange="selectSlot(this)">
                     </select>
                 </div>
                 <input type="hidden" name="price" id="price" value="<?= $price ?>">
+
+                <div class="mt-4 mb-4" id="present-provider">
+
+                </div>
 
                 <div class="g-recaptcha mb-4 mt-4" id="captcha" data-sitekey="<?= $siteKey ?>"
                     data-callback="validCaptcha"></div>

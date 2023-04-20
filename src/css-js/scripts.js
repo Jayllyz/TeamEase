@@ -229,14 +229,14 @@ function selectOccupation(id) {
     providerList(providerId, 'delete');
     provider.remove();
   }
-  let xhr = new XMLHttpRequest();
-  xhr.open('GET', 'ajaxReq/providerDropdown.php?occupation=' + selected, true);
 
+  let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       providerContainer.innerHTML += xhr.responseText;
     }
   };
+  xhr.open('GET', 'ajaxReq/providerDropdown.php?occupation=' + selected);
   xhr.send();
 }
 
@@ -256,8 +256,18 @@ function selectProvider(id) {
 function providerList(id, type) {
   const form = document.getElementById('activity-form');
   if (type == 'delete') {
-    const providerInput = document.getElementById('provider' + id);
-    providerInput.remove();
+    if (id != null) {
+      const providerInput = document.getElementById('provider' + id);
+      providerInput.remove();
+    } else {
+      const providerContainer = document.getElementById('provider-container');
+      const lastLine = providerContainer.lastElementChild;
+      const btnGroup = lastLine.querySelector('.btn-group');
+      const btn = btnGroup.querySelector('.provider-dropdown');
+      if (btn != null) {
+        btn.remove();
+      }
+    }
   } else if (type == 'add') {
     const providerInput = document.createElement('input');
     providerInput.type = 'hidden';
@@ -1054,6 +1064,20 @@ function selectedDateReservation(element, idActivity) {
   }
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('day=' + dayOfWeek + '&id=' + idActivity + '&date=' + dateString + '&attendee=' + attendees);
+
+  let xhr2 = new XMLHttpRequest();
+  xhr2.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById('present-provider').innerHTML = this.responseText;
+    }
+  };
+  if (document.getElementById('editForm') != null) {
+    xhr2.open('POST', '../ajaxReq/presentProvider.php', true);
+  } else {
+    xhr2.open('POST', 'ajaxReq/presentProvider.php', true);
+  }
+  xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr2.send('id=' + idActivity + '&day=' + dayOfWeek);
 }
 
 jQuery(function ($) {
@@ -1226,4 +1250,18 @@ function filterCommentNotation(idActivity, element) {
     filter = 'noteDesc';
   }
   populateComment(idActivity, filter);
+}
+
+function fillParticipants(idReserv) {
+  const participants = document.getElementById('participants').value;
+  const attendees = document.getElementById('attendees').value;
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      alert(this.responseText);
+    }
+  };
+  xhr.open('POST', '../ajaxReq/fillParticipants.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('idReserv=' + idReserv + '&participants=' + participants + '&attendees=' + attendees);
 }

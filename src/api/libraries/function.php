@@ -567,4 +567,73 @@ function checkAllQuestionWhatParameters($parameters)
   );
   exit();
 }
+
+function getReservationWithToken($token)
+{
+  include '/home/php/src/includes/db.php';
+
+  $getSiret = $db->prepare('SELECT siret FROM COMPANY WHERE authToken = :token');
+  $getSiret->execute(['token' => $token]);
+  $siret = $getSiret->fetch();
+
+  $getAllReservation = $db->prepare('SELECT * FROM RESERVATION WHERE siret = :siret');
+  $getAllReservation->execute(['siret' => $siret['siret']]);
+  $reservations = $getAllReservation->fetchAll(PDO::FETCH_ASSOC);
+
+  return $reservations;
+}
+
+function getAll($table)
+{
+  include '/home/php/src/includes/db.php';
+
+  if ($table === 'activity') {
+    $query = $db->query('SELECT * FROM ACTIVITY');
+    $activities = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $activities;
+  }
+
+  if ($table === 'activityPublic') {
+    $query = $db->query('SELECT * FROM ACTIVITY WHERE status = 1');
+    $activities = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $activities;
+  }
+
+  if ($table === 'provider') {
+    $query = $db->query('SELECT * FROM PROVIDER');
+    $providers = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $providers;
+  }
+
+  if ($table === 'countActivityByMonth') {
+    $query = $db->query(
+      'SELECT COUNT(id) as count, DATE_FORMAT(date, \'%Y-%m\') AS date FROM RESERVATION GROUP BY date ORDER BY date',
+    );
+    $countActivityByDate = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $countActivityByDate;
+  }
+
+  if ($table === 'companyPaid') {
+    $query = $db->query(
+      'SELECT SUM(amount) as amount, COMPANY.companyName FROM INVOICE INNER JOIN RESERVATION ON RESERVATION.id = INVOICE.id_reservation INNER JOIN COMPANY ON RESERVATION.siret = COMPANY.siret GROUP BY companyName',
+    );
+    $companyPaid = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $companyPaid;
+  }
+
+  if ($table === 'topCompanyPaid') {
+    $query = $db->query(
+      'SELECT SUM(amount) as amount, COMPANY.companyName FROM INVOICE INNER JOIN RESERVATION ON RESERVATION.id = INVOICE.id_reservation INNER JOIN COMPANY ON RESERVATION.siret = COMPANY.siret GROUP BY companyName ORDER BY amount DESC LIMIT 5',
+    );
+    $topCompanyPaid = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $topCompanyPaid;
+  }
+}
+
 ?>

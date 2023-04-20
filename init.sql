@@ -10,6 +10,7 @@ CREATE TABLE COMPANY
   password VARCHAR(255) NOT NULL,
   rights INT NOT NULL,
   token VARCHAR(255),
+  authToken VARCHAR(60),
   confirm_signup INT NOT NULL DEFAULT 0,
   PRIMARY KEY (siret)
 );
@@ -102,6 +103,23 @@ CREATE TABLE MATERIAL_ROOM
   id_room INT NOT NULL,
   FOREIGN KEY (id_material) REFERENCES MATERIAL(id) ON DELETE CASCADE,
   FOREIGN KEY (id_room) REFERENCES ROOM(id) ON DELETE CASCADE
+);
+
+CREATE TABLE AVAILABILITY
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  day VARCHAR(255) NOT NULL,
+  id_provider INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_provider) REFERENCES PROVIDER(id) ON DELETE CASCADE
+);
+
+CREATE TABLE HISTORY
+(
+  id INT NOT NULL,
+  id_provider INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_provider) REFERENCES PROVIDER(id)
 );
 
 CREATE TABLE ACTIVITY
@@ -241,8 +259,13 @@ INSERT INTO ROOM(name, id_location) VALUES ('Salle 1', 1);
 INSERT INTO ROOM(name, id_location) VALUES ('Salle 2', 2);
 INSERT INTO ROOM(name, id_location) VALUES ('Salle 3', 2);
 
-INSERT INTO ACTIVITY(maxAttendee, duration, priceAttendee, name, description, id_room, status) VALUES (10, 60, 10, 'Escape Game', 'Escape Game', 1, 1);
-INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('Monday', '10:00:00', '18:00:00', 1);
-INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('Wednesday', '09:00:00', '22:00:00', 1);
+INSERT INTO ACTIVITY (maxAttendee, duration, priceAttendee, name, description, id_room, status) VALUES (10, 60, 10, 'Escape Game', 'Escape Game', 1, 1);
+INSERT INTO ACTIVITY (maxAttendee, duration, priceAttendee, name, description, id_room, status) VALUES (10, 60, 20, 'Yoga Class', 'Join our yoga class and improve your flexibility and mindfulness.', 1, 1);
+INSERT INTO ACTIVITY (maxAttendee, duration, priceAttendee, name, description, id_room, status) VALUES (20, 90, 30, 'Cooking Workshop', 'Learn how to make delicious dishes with our experienced chefs.', 2, 1);
+INSERT INTO ACTIVITY (maxAttendee, duration, priceAttendee, name, description, id_room, status) VALUES (15, 120, 25, 'Painting Session', 'Unleash your creativity with our guided painting session.', 3, 1);
+INSERT INTO ACTIVITY (maxAttendee, duration, priceAttendee, name, description, id_room, status) VALUES (8, 45, 15, 'Fitness Bootcamp', 'Get fit and strong with our intense workout program.', 2, 1);
+
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('monday', '10:00:00', '18:00:00', 1);
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('wednesday', '09:00:00', '22:00:00', 1);
 INSERT INTO BELONG(id_activity, id_category) VALUES (1, 1);
 INSERT INTO BELONG(id_activity, id_category) VALUES (1, 3);
