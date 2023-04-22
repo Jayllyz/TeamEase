@@ -19,7 +19,7 @@ services:
       - /home/php/vendor
     ports:
       - 8000:${PHP_PORT}
-    command: [nginx-debug, '-g', 'daemon off;']
+    command: [nginx, '-g', 'daemon off;']
 
   php:
     depends_on:
