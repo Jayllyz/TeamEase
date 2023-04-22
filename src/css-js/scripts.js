@@ -1030,7 +1030,13 @@ function selectRoom(element) {
 }
 
 function selectedDateReservation(element, idActivity) {
-  let dateString = element.value;
+  if (typeof element === 'string' || element instanceof String) {
+    let dateString = document.getElementById(element).value;
+    console.log('yes');
+  } else {
+    let dateString = element.value;
+    console.log('no');
+  }
   dateString = dateString.replaceAll('/', '-');
   dateString = dateString.split('-').reverse().join('-');
   const date = new Date(dateString);

@@ -114,14 +114,6 @@ CREATE TABLE AVAILABILITY
   FOREIGN KEY (id_provider) REFERENCES PROVIDER(id) ON DELETE CASCADE
 );
 
-CREATE TABLE HISTORY
-(
-  id INT NOT NULL,
-  id_provider INT NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (id_provider) REFERENCES PROVIDER(id)
-);
-
 CREATE TABLE ACTIVITY
 (
   id INT NOT NULL AUTO_INCREMENT,
@@ -278,5 +270,9 @@ INSERT INTO ACTIVITY (maxAttendee, duration, priceAttendee, name, description, i
 
 INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('monday', '10:00:00', '18:00:00', 1);
 INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('wednesday', '09:00:00', '22:00:00', 1);
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('friday', '10:00:00', '18:00:00', 2);
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('saturday', '10:00:00', '18:00:00', 2);
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('sunday', '10:00:00', '18:00:00', 3);
+INSERT INTO SCHEDULE(day, startHour, endHour, id_activity) VALUES ('monday', '10:00:00', '18:00:00', 3);
 INSERT INTO BELONG(id_activity, id_category) VALUES (1, 1);
 INSERT INTO BELONG(id_activity, id_category) VALUES (1, 3);
