@@ -22,12 +22,6 @@ services:
       - '80:80'
       - '443:443'
 
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./src:${PHP_USER_HOME_DIRECTORY}:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
-
   php:
     depends_on:
       - mysql
