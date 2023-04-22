@@ -1030,13 +1030,15 @@ function selectRoom(element) {
 }
 
 function selectedDateReservation(element, idActivity) {
-  if (typeof element === 'string' || element instanceof String) {
-    let dateString = document.getElementById(element).value;
-    console.log('yes');
-  } else {
-    let dateString = element.value;
-    console.log('no');
-  }
+  console.log(element);
+  console.log(idActivity);
+  let DateString;
+
+  dateString = element.value;
+
+  console.log('------------------');
+  console.log(dateString);
+
   dateString = dateString.replaceAll('/', '-');
   dateString = dateString.split('-').reverse().join('-');
   const date = new Date(dateString);
@@ -1047,6 +1049,7 @@ function selectedDateReservation(element, idActivity) {
   let attendees = document.getElementById('attendee').value;
   let price = document.getElementById('price').value;
   let priceDisplay = document.getElementById('priceDisplay');
+  console.log(priceDisplay);
   priceDisplay.innerHTML = price * attendees;
 
   let xhr = new XMLHttpRequest();

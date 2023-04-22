@@ -30,22 +30,20 @@ include '../includes/head.php';
         <h1 class="mt-4">Mon panier</h1>
 
         <?php if ($cart) { ?>
-        <?php 
-         foreach ($cart as $item) {
-            
-              $query = $db->prepare(
-                'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
-                );
-              $query->execute([
-                'id' => $item['id_activity'],
-              ]);
-              $activity = $query->fetch(PDO::FETCH_ASSOC);
-              $idActivity = $item['id_activity'];
-              $name = $activity['name'];
-              $price = $activity['priceAttendee'];
-              var_dump($activity);
+        <?php foreach ($cart as $item) {
 
-              ?>
+          $query = $db->prepare(
+            'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
+          );
+          $query->execute([
+            'id' => $item['id_activity'],
+          ]);
+          $activity = $query->fetch(PDO::FETCH_ASSOC);
+          $idActivity = $item['id_activity'];
+          $name = $activity['name'];
+          $price = $activity['priceAttendee'];
+          var_dump($activity);
+          ?>
 
 
         <h3><?php echo $activity['name']; ?></h3>
@@ -70,13 +68,13 @@ include '../includes/head.php';
                             <h4>Nombre de participants</h4>
                         </label>
 
-                        <?php $elementDate = "date-" . $idActivity; ?>
+                        <?php $elementDate = 'date' . $idActivity; ?>
 
                         <input type="number" class="form-control" min="1" max="<?= $activity[
-                      'maxAttendee'
-                    ] ?>" id="attendee" name="attendee"
-                            oninput="selectedDateReservation(<?= $elementDate ?>, <?= $idActivity ?>)" required>
-
+                          'maxAttendee'
+                        ] ?>" id="attendee" name="attendee"
+                            onchange="selectedDateReservation(<?= $elementDate ?>, <?= $idActivity ?>)" required>
+                        <span class="input-group-text" id="priceDisplay">0.00</span>
 
                         <label for="<?= $elementDate ?>" class="form-label">
                             <h4>Date de votre réservation</h4>
@@ -114,8 +112,7 @@ include '../includes/head.php';
 
 
         <?php
-        }
-        ?>
+        } ?>
 
 
 
