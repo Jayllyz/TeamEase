@@ -5,6 +5,9 @@ ARG PHP_USER_IDENTIFIER=1000
 ARG PHP_USER_SHELL=/bin/bash
 ARG PHP_USER_HOME_DIRECTORY=/home/php
 
+COPY composer.json .
+COPY composer.lock .
+
 RUN apk add sudo \
     && echo "$PHP_USER_NAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -28,9 +31,7 @@ USER $PHP_USER_NAME
 
 RUN rm -rf /home/php/vendor
 
-COPY composer.json .
-COPY composer.lock .
-
 RUN sudo composer install --no-dev
 
 EXPOSE 9000
+EXPOSE 80
