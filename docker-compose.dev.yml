@@ -16,7 +16,6 @@ services:
     volumes:
       - ./docker/nginx/dev:/etc/nginx/conf.d
       - ./src:${PHP_USER_HOME_DIRECTORY}
-      - /home/php/vendor
     ports:
       - 8000:${PHP_PORT}
     command: [nginx, '-g', 'daemon off;']
@@ -41,7 +40,6 @@ services:
     user: php
     volumes:
       - ./src:${PHP_USER_HOME_DIRECTORY}
-      - /home/php/vendor
     ports:
       - ${PHP_PORT}:${PHP_PORT}
 

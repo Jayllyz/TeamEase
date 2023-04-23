@@ -64,7 +64,7 @@ include 'includes/head.php';
                     <label for="time" class="form-label">
                         <h4>Heure de votre créneau</h4>
                     </label>
-                    <select class="form-control" name="slot" id="container-slot" onchange="selectSlot(this)">
+                    <select class="form-control" name="slot" id="container-slot">
                     </select>
                 </div>
                 <input type="hidden" name="price" id="price" value="<?= $price ?>">
