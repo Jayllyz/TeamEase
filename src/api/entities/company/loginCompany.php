@@ -1,9 +1,7 @@
 <?php
 
-function loginCompany($email, $password)
+function loginCompany($email, $password, $db)
 {
-  require_once '/home/php/src/includes/db.php';
-
   $getCompany = $db->prepare('SELECT * FROM COMPANY WHERE EMAIL = :email AND password = :password');
 
   $getCompany->execute([

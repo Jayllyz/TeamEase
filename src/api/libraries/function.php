@@ -570,7 +570,7 @@ function checkAllQuestionWhatParameters($parameters)
 
 function getReservationWithToken($token)
 {
-  include '/home/php/src/includes/db.php';
+  include '/home/php/includes/db.php';
 
   $getSiret = $db->prepare('SELECT siret FROM COMPANY WHERE authToken = :token');
   $getSiret->execute(['token' => $token]);
@@ -585,7 +585,7 @@ function getReservationWithToken($token)
 
 function getAll($table)
 {
-  include '/home/php/src/includes/db.php';
+  include '/home/php/includes/db.php';
 
   if ($table === 'activity') {
     $query = $db->query('SELECT * FROM ACTIVITY');

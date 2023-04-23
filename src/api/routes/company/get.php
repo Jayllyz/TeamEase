@@ -2,11 +2,11 @@
 
 ob_start();
 
-require_once '/home/php/src/api/libraries/response.php';
-require_once '/home/php/src/api/libraries/body.php';
-require_once '/home/php/src/api/libraries/function.php';
-require_once '/home/php/src/api/libraries/header.php';
-require_once '/home/php/src/api/entities/company/isLoggedIn.php';
+require_once '/home/php/api/libraries/response.php';
+require_once '/home/php/api/libraries/body.php';
+require_once '/home/php/api/libraries/function.php';
+require_once '/home/php/api/libraries/header.php';
+require_once '/home/php/api/entities/company/isLoggedIn.php';
 
 try {
   $token = getAuthorizationHeader();

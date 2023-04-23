@@ -2,7 +2,7 @@
 
 function isLoggedInAdmin($token)
 {
-  require_once '/home/php/src/includes/db.php';
+  require_once '/home/php/includes/db.php';
 
   $query = $db->query('SELECT authToken FROM COMPANY WHERE siret=12345678901234');
 
