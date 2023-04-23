@@ -64,10 +64,6 @@ foreach($ids as $id ){
           'id_reservation' => $id['id'],
         ]);
       
-        if ($result) {
-          header('Location: ../activity.php?&id=' . $idActivity . '&message=Réservation bien enregistré!&type=success');
-          exit();
-        }
       } else {
         header('Location: ../reservation.php?&id=' . $idActivity . '&message=Erreur lors de la réservation!&type=danger');
         exit();
@@ -77,3 +73,9 @@ foreach($ids as $id ){
     header('Location: ../index.php?&message=Vous devez être connecté pour réserver!&type=danger');
     exit();
 }
+
+header('Location: ../reservation.php?&id=' . $idActivity . '&message=Votre réservation a bien été prise en compte!&type=success');
+
+$clearCart = $db->prepare('DELETE FROM CART WHERE siret = :siret');
+$clearCart->execute(['siret' => $siret]);
+exit();

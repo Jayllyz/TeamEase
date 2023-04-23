@@ -70,7 +70,8 @@ include '../includes/head.php';
                         <div class="col-sm-6">
                             <div class="input-group">
                                 <input type="number" class="form-control" min="1" max="<?= $activity['maxAttendee'] ?>"
-                                    id="<?= $attendeeId ?>" name="<?= $attendeeId ?>" required>
+                                    id="<?= $attendeeId ?>" name="<?= $attendeeId ?>"
+                                    onchange="selectedDateReservation(<?=  $dateId ?>, <?= $idActivity ?>)" required>
                                 <span class="input-group-text" id="<?= $pricedisplayId ?>">0.00</span>
                                 <span class="input-group-text">€</span>
                             </div>

@@ -1,3 +1,4 @@
+<?php require_once '/home/php/includes/db.php';?>
 <div class="container-fluid headerBar">
     <div class="row">
         <div class="col-4 col-md-1"></div>
@@ -17,6 +18,18 @@
                 </div>
             </form>
 
+            <?php
+            $cartNotEmpty = false;
+            if(isset($_SESSION['siret'])) {
+                $checkCart = $db->prepare('SELECT * FROM CART WHERE siret = :siret');
+                $checkCart->execute([
+                    'siret' => $_SESSION['siret']
+                ]);
+                $cart = $checkCart->fetchAll(PDO::FETCH_ASSOC);
+                if(count($cart) > 0) 
+                    $cartNotEmpty = true;
+            }?>
+
             <div class="row">
                 <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
                   echo 'href="../clients/reservations.php">Mes reservations</a>';
@@ -30,7 +43,12 @@
    echo '<a class="btn btn-secondary col col-2 mx-3 mt-3" href="/profile.php">Mon profil</a>';
  } else {
    echo 'href="signin.php">S\'inscrire</a>';
- } ?> </div>
+ }
+ if($cartNotEmpty) {
+     echo '<a class="btn btn-secondary col col-2 mx-3 mt-3" href="../cart/cart.php">Mon panier</a>';
+ }
+ 
+ ?> </div>
             </div>
         </div>
     </div>
