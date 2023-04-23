@@ -2,16 +2,20 @@
 
 ob_start();
 
-require_once '/home/php/src/api/libraries/body.php';
-require_once '/home/php/src/api/libraries/response.php';
-require_once '/home/php/src/api/entities/company/loginCompany.php';
+require_once '/home/php/api/libraries/body.php';
+require_once '/home/php/api/libraries/response.php';
+require_once '/home/php/api/entities/company/loginCompany.php';
+require_once '/home/php/api/entities/company/getRights.php';
 
 try {
   $body = getBody();
   $email = $body['email'];
   $password = $body['password'];
 
-  $token = loginCompany($email, $password);
+  require_once '/home/php/includes/db.php';
+
+  $token = loginCompany($email, $password, $db);
+  $rights = getRights($email, $password, $db);
 
   if (!$token) {
     echo jsonResponse(
@@ -32,6 +36,9 @@ try {
     [
       'success' => true,
       'token' => $token,
+      'data' => [
+        'rights' => $rights,
+      ],
     ],
   );
 } catch (Exception $e) {

@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
         clean_stdin();
 
         if (input != NULL) {
-            curlApi("http://localhost:80/api/api.php/activities", input);
+            curlApi("https://togetherandstronger.site/api/api.php/activities", input);
         }
 
         free(input);

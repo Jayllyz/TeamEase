@@ -15,13 +15,19 @@ public class TopCompanySpending {
     public static JFreeChart getChart(String token){
         DefaultPieDataset topCompanySpending = new DefaultPieDataset();
         
-        CUrl curl = new CUrl("http://localhost/api/api.php/company/topPaid");
+        CUrl curl = new CUrl("http://localhost:8000/api/api.php/company/topPaid");
         Map<String, String> headersSent = new HashMap<String, String>();
         headersSent.put("Authorization", token);
         curl.headers(headersSent);
         String response = curl.exec(CUrl.UTF8, null);
 
         JSONObject obj = new JSONObject(response);
+
+        Boolean success = obj.getBoolean("success");
+        if(success == false){
+            return null;
+        }
+        
         JSONArray arr = obj.getJSONArray("data");
         for (int i = 0; i < arr.length(); i++)
         {
