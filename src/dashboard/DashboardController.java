@@ -2,8 +2,12 @@ package dashboard;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
 
 public class DashboardController {
+
+    @FXML
+    private AnchorPane showChart;
 
     @FXML
     void btnCompanySpeding(ActionEvent event) {
@@ -34,4 +38,5 @@ public class DashboardController {
     void btnTopProvider(ActionEvent event) {
 
     }
+
 }

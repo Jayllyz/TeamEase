@@ -4,17 +4,17 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<SplitPane dividerPositions="0.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19">
+<SplitPane dividerPositions="0.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="831.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.DashboardController">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="423.0" prefWidth="250.0">
          <children>
-            <Button layoutX="10.0" layoutY="36.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="155.0" text="Les réservation par mois" textAlignment="CENTER" wrapText="true" />
-            <Button layoutX="10.0" layoutY="92.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="155.0" text="Les 10 activitités les plus populaires" textAlignment="CENTER" wrapText="true" />
-            <Button layoutX="10.0" layoutY="147.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="155.0" text="Les dépenses des entreprises" textAlignment="CENTER" wrapText="true" />
-            <Button layoutX="10.0" layoutY="260.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="155.0" text="Les activités des prestataires" textAlignment="CENTER" wrapText="true" />
-            <Button layoutX="10.0" layoutY="204.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="155.0" text="Les 5 entreprises qui dépense le plus" textAlignment="CENTER" wrapText="true" />
-            <Button layoutX="10.0" layoutY="315.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="155.0" text="Les 5 prestataires les plus actifs" textAlignment="CENTER" wrapText="true" />
+            <Button layoutX="27.0" layoutY="36.0" mnemonicParsing="false" onAction="#btnReservationPerMonth" prefHeight="46.0" prefWidth="190.0" text="Les réservation par mois" textAlignment="CENTER" wrapText="true" />
+            <Button layoutX="27.0" layoutY="119.0" mnemonicParsing="false" onAction="#btnTopActivity" prefHeight="46.0" prefWidth="190.0" text="Les 10 activitités les plus populaires" textAlignment="CENTER" wrapText="true" />
+            <Button layoutX="27.0" layoutY="200.0" mnemonicParsing="false" onAction="#btnCompanySpeding" prefHeight="46.0" prefWidth="190.0" text="Les dépenses des entreprises" textAlignment="CENTER" wrapText="true" />
+            <Button layoutX="27.0" layoutY="279.0" mnemonicParsing="false" onAction="#btnProviderActivity" prefHeight="46.0" prefWidth="190.0" text="Les activités des prestataires" textAlignment="CENTER" wrapText="true" />
+            <Button layoutX="28.0" layoutY="359.0" mnemonicParsing="false" onAction="#btnTopCompany" prefHeight="46.0" prefWidth="190.0" text="Les 5 entreprises qui dépense le plus" textAlignment="CENTER" wrapText="true" />
+            <Button layoutX="27.0" layoutY="438.0" mnemonicParsing="false" onAction="#btnTopProvider" prefHeight="46.0" prefWidth="190.0" text="Les 5 prestataires les plus actifs" textAlignment="CENTER" wrapText="true" />
          </children></AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+    <AnchorPane fx:id="showChart" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
   </items>
 </SplitPane>
