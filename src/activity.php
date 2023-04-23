@@ -104,6 +104,9 @@ include 'includes/head.php';
                                 $id .
                                 '" class="btn btn-primary">Réserver</a>
                             ';
+                              echo '<a href="cart/addCart.php?id=' .
+                                $id .
+                                '" class="btn btn-primary mt-2">Ajouter au panier</a>';
                             } elseif (!isset($_SESSION['email'])) {
                               echo '<a href="login.php" class="btn btn-primary">Se connecter</a>
                             ';

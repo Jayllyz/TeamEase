@@ -8,6 +8,9 @@ ARG PHP_USER_HOME_DIRECTORY=/home/php
 COPY composer.json .
 COPY composer.lock .
 
+RUN apk add sudo \
+    && echo "$PHP_USER_NAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 RUN apk add --update linux-headers \
     && apk add --no-cache $PHPIZE_DEPS \
     && apk add --no-cache php-openssl \
@@ -17,9 +20,6 @@ RUN apk add --update linux-headers \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer install --no-dev \
-    && rm -rf /usr/local/bin/composer \
-    && rm -rf /root/.composer \
     && rm -rf /var/cache/apk/*
 
 RUN addgroup -g $PHP_USER_IDENTIFIER $PHP_USER_NAME \
@@ -29,6 +29,9 @@ RUN addgroup -g $PHP_USER_IDENTIFIER $PHP_USER_NAME \
 
 USER $PHP_USER_NAME
 
-WORKDIR $PHP_USER_HOME_DIRECTORY
+RUN rm -rf /home/php/vendor
+
+RUN sudo composer install --no-dev
 
 EXPOSE 9000
+EXPOSE 80

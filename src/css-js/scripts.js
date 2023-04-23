@@ -1030,34 +1030,63 @@ function selectRoom(element) {
 }
 
 function selectedDateReservation(element, idActivity) {
-  let dateString = element.value;
+  let DateString;
+  const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  if (element.value != undefined) {
+    dateString = element.value;
+  }
+  if (dateString == undefined) dateString = '';
   dateString = dateString.replaceAll('/', '-');
   dateString = dateString.split('-').reverse().join('-');
   const date = new Date(dateString);
-  const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   const dayOfWeek = daysOfWeek[date.getDay()];
   dateString = dateString.replaceAll('-', '/');
 
-  let attendees = document.getElementById('attendee').value;
-  let price = document.getElementById('price').value;
-  let priceDisplay = document.getElementById('priceDisplay');
+  let attendees;
+  let price;
+  let priceDisplay;
+
+  if (
+    document.getElementById('attendee') != undefined &&
+    document.getElementById('price') != undefined &&
+    document.getElementById('priceDisplay') != undefined
+  ) {
+    attendees = document.getElementById('attendee').value;
+    price = document.getElementById('price').value;
+    priceDisplay = document.getElementById('priceDisplay');
+  } else {
+    attendees = document.getElementById('attendee' + idActivity).value;
+    price = document.getElementById('price' + idActivity).value;
+    priceDisplay = document.getElementById('priceDisplay' + idActivity);
+  }
   priceDisplay.innerHTML = price * attendees;
 
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       if (this.responseText === '' && dateString !== '') {
-        document.getElementById('ifempty').innerHTML = 'Aucun créneau disponible';
-        document.getElementById('ifempty').style.display = 'block';
-        document.getElementById('slot').style.display = 'none';
+        if (document.getElementById('container-slot') != undefined) {
+          document.getElementById('ifempty').innerHTML = 'Aucun créneau disponible';
+          document.getElementById('ifempty').style.display = 'block';
+          document.getElementById('slot').style.display = 'none';
+        } else {
+          document.getElementById('ifempty' + idActivity).innerHTML = 'Aucun créneau disponible';
+          document.getElementById('ifempty' + idActivity).style.display = 'block';
+          document.getElementById('slot' + idActivity).style.display = 'none';
+        }
         return;
       }
-      document.getElementById('ifempty').style.display = 'none';
-      document.getElementById('container-slot').innerHTML = this.responseText;
-      document.getElementById('slot').style.display = 'block';
+      if (document.getElementById('container-slot') != undefined) {
+        document.getElementById('ifempty').style.display = 'none';
+        document.getElementById('container-slot').innerHTML = this.responseText;
+        document.getElementById('slot').style.display = 'block';
+      } else {
+        document.getElementById('container-slot' + idActivity).innerHTML = this.responseText;
+        document.getElementById('slot' + idActivity).style.display = 'block';
+      }
     }
   };
-  if (document.getElementById('editForm') != null) {
+  if (document.getElementById('editForm') != null || document.getElementById('cartTitle') != null) {
     xhr.open('POST', '../ajaxReq/activitySlot.php', true);
   } else {
     xhr.open('POST', 'ajaxReq/activitySlot.php', true);
@@ -1068,10 +1097,17 @@ function selectedDateReservation(element, idActivity) {
   let xhr2 = new XMLHttpRequest();
   xhr2.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById('present-provider').innerHTML = this.responseText;
+      console.log(this.responseText);
+      if (this.responseText !== '<h4>Animateurs disponibles</h4>') {
+        if (document.getElementById('present-provider') != undefined) {
+          document.getElementById('present-provider').innerHTML = this.responseText;
+        } else {
+          document.getElementById('present-provider' + idActivity).innerHTML = this.responseText;
+        }
+      }
     }
   };
-  if (document.getElementById('editForm') != null) {
+  if (document.getElementById('editForm') != null || document.getElementById('cartTitle') != null) {
     xhr2.open('POST', '../ajaxReq/presentProvider.php', true);
   } else {
     xhr2.open('POST', 'ajaxReq/presentProvider.php', true);
@@ -1119,9 +1155,15 @@ jQuery(function ($) {
 });
 
 function disabledDays(date) {
+  let inputId = $(this).attr('id');
   let dayOfWeek = date.getDay();
   let day = [];
-  let div = document.getElementById('date').parentElement;
+  let div;
+  if (document.getElementById('date') != null) {
+    div = document.getElementById('date').parentElement;
+  } else {
+    div = document.getElementById(inputId).parentElement;
+  }
 
   if (div.querySelector('.sunday') != null) {
     day.push(true);
@@ -1162,6 +1204,10 @@ function disabledDays(date) {
 }
 
 $('#date').datepicker({
+  beforeShowDay: disabledDays,
+});
+
+$('.input-date').datepicker({
   beforeShowDay: disabledDays,
 });
 
@@ -1264,4 +1310,16 @@ function fillParticipants(idReserv) {
   xhr.open('POST', '../ajaxReq/fillParticipants.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('idReserv=' + idReserv + '&participants=' + participants + '&attendees=' + attendees);
+}
+
+function validCart(siret) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      alert(this.responseText);
+    }
+  };
+  xhr.open('POST', '../ajaxReq/validCart.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('siret=' + siret);
 }

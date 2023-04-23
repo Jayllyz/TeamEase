@@ -5,6 +5,7 @@ logs
 src/images/activities
 src/vendor
 src/.ash_history
+src/.composer
 *.iml
 .gradle
 android/local.properties
