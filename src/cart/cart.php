@@ -12,8 +12,7 @@ $cart = $cart->fetchAll(PDO::FETCH_ASSOC);
 
 $idString = '';
 foreach ($cart as $item) {
-
-    $idString .= $item['id_activity'] . ',';
+  $idString .= $item['id_activity'] . ',';
 }
 $idString = substr($idString, 0, -1);
 ?>
@@ -42,18 +41,17 @@ include '../includes/head.php';
             <?php if ($cart) { ?>
             <?php foreach ($cart as $item) {
 
-          $query = $db->prepare(
-            'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
-          );
-          $query->execute([
-            'id' => $item['id_activity'],
-          ]);
-          $activity = $query->fetch(PDO::FETCH_ASSOC);
-          $idActivity = $item['id_activity'];
-          $name = $activity['name'];
-          $price = $activity['priceAttendee'];
-          
-          ?>
+              $query = $db->prepare(
+                'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
+              );
+              $query->execute([
+                'id' => $item['id_activity'],
+              ]);
+              $activity = $query->fetch(PDO::FETCH_ASSOC);
+              $idActivity = $item['id_activity'];
+              $name = $activity['name'];
+              $price = $activity['priceAttendee'];
+              ?>
 
             <div class="row align-items-center">
                 <div class="col-sm-3">
@@ -64,14 +62,14 @@ include '../includes/head.php';
                         <label for="attendee">
                             <h4>Nombre de participants</h4>
                         </label>
-                        <?php $attendeeId = "attendee" . $idActivity; ?>
-                        <?php $dateId = "date" . $idActivity; ?>
-                        <?php $pricedisplayId = "priceDisplay" . $idActivity; ?>
+                        <?php $attendeeId = 'attendee' . $idActivity; ?>
+                        <?php $dateId = 'date' . $idActivity; ?>
+                        <?php $pricedisplayId = 'priceDisplay' . $idActivity; ?>
                         <div class="col-sm-6">
                             <div class="input-group">
                                 <input type="number" class="form-control" min="1" max="<?= $activity['maxAttendee'] ?>"
                                     id="<?= $attendeeId ?>" name="<?= $attendeeId ?>"
-                                    onchange="selectedDateReservation(<?=  $dateId ?>, <?= $idActivity ?>)" required>
+                                    onchange="selectedDateReservation(<?= $dateId ?>, <?= $idActivity ?>)" required>
                                 <span class="input-group-text" id="<?= $pricedisplayId ?>">0.00</span>
                                 <span class="input-group-text">€</span>
                             </div>
@@ -82,25 +80,25 @@ include '../includes/head.php';
                             <h4>Date</h4>
                         </label>
 
-                        <input type="text" class="form-control input-date" name="<?= $dateId?>" id="<?= $dateId ?>"
+                        <input type="text" class="form-control input-date" name="<?= $dateId ?>" id="<?= $dateId ?>"
                             onchange="selectedDateReservation(this, <?= $idActivity ?>)" required>
 
-                        <?php $slotId = "slot" . $idActivity; ?>
-                        <?php $emptyId = "empty" . $idActivity; ?>
+                        <?php $slotId = 'slot' . $idActivity; ?>
+                        <?php $emptyId = 'empty' . $idActivity; ?>
 
                         <p id="<?= $emptyId ?>" style="display: none;" class="mt-2"></p>
                         <div id="<?= $slotId ?>" style="display:none">
                             <label for="time" class="form-label">
                                 <h4>Heure de votre créneau</h4>
                             </label>
-                            <?php $containerId = "container-slot" . $idActivity; ?>
+                            <?php $containerId = 'container-slot' . $idActivity; ?>
                             <select class="form-control" name="<?= $containerId ?>" id="<?= $containerId ?>">
                             </select>
                         </div>
-                        <?php $priceId = "price" . $idActivity; ?>
+                        <?php $priceId = 'price' . $idActivity; ?>
                         <input type="hidden" name="<?= $priceId ?>" id="<?= $priceId ?>" value="<?= $price ?>">
 
-                        <?php $providerId = "present-provider" . $idActivity; ?>
+                        <?php $providerId = 'present-provider' . $idActivity; ?>
                         <div class="mt-4 mb-4" id="<?= $providerId ?>"></div>
                     </div>
 
@@ -108,7 +106,7 @@ include '../includes/head.php';
             </div>
 
             <?php
-        } ?>
+            } ?>
 
             <button type="submit" class="btn btn-primary" name="submit" onclick="valid()">Valider</button>
             <button type="submit" class="btn btn-secondary" name="submit" onclick="estimate()">Générer un devis</button>

@@ -19,38 +19,38 @@ $nameClient = $selectClient['companyName'];
 $mailClient = $selectClient['email'];
 $addressClient = $selectClient['address'];
 
-$tasks = array();
-$ids = array();
+$tasks = [];
+$ids = [];
 
-foreach($_POST as $key => $value) {
-    if(strpos($key, 'attendee') === 0) {
-      $id = substr($key, strlen('attendee'));
-      if(!in_array($id, $ids)) {
-        $ids[] = $id;
-      }
+foreach ($_POST as $key => $value) {
+  if (strpos($key, 'attendee') === 0) {
+    $id = substr($key, strlen('attendee'));
+    if (!in_array($id, $ids)) {
+      $ids[] = $id;
     }
   }
-  
-  $i = 0;
-  foreach($ids as $id ){
-    $req = $db->prepare('SELECT * FROM ACTIVITY WHERE id = :id');
-    $req->execute([
-      'id' => $id,
-    ]);
-    $selectActivity = $req->fetch(PDO::FETCH_ASSOC);
-    
-    $activityName = $selectActivity['name'];
-    $price = $_POST['price'.$id];
-    $attendeeActivity = $_POST['attendee'.$id];
+}
 
-    $tasks[$i] = [
-      'id' => $id,
-      'name' => $activityName,
-      'attendee' => $attendeeActivity,
-      'price' => $price,
-    ];
-    $i++;
-  }
+$i = 0;
+foreach ($ids as $id) {
+  $req = $db->prepare('SELECT * FROM ACTIVITY WHERE id = :id');
+  $req->execute([
+    'id' => $id,
+  ]);
+  $selectActivity = $req->fetch(PDO::FETCH_ASSOC);
+
+  $activityName = $selectActivity['name'];
+  $price = $_POST['price' . $id];
+  $attendeeActivity = $_POST['attendee' . $id];
+
+  $tasks[$i] = [
+    'id' => $id,
+    'name' => $activityName,
+    'attendee' => $attendeeActivity,
+    'price' => $price,
+  ];
+  $i++;
+}
 
 require_once '/home/php/vendor/autoload.php';
 
@@ -192,20 +192,23 @@ p {
 
         <tbody>
             $total = 0;
-            <?php foreach ($tasks as $task): 
-                $unitPrice = ($task['price'] * $task['attendee']);
-                ?>
+            <?php
+            foreach ($tasks as $task):
+              $unitPrice = $task['price'] * $task['attendee']; ?>
             <tr>
                 <td><?php echo $task['name']; ?></td>
                 <td><?php echo $task['attendee']; ?></td>
-                <td><?php echo $task['price'] ?> &euro;</td>
+                <td><?php echo $task['price']; ?> &euro;</td>
                 <td><?php echo $unitPrice; ?> &euro;</td>
             </tr>
             <?php
-            $total = ($total + $unitPrice);
+            $total = $total + $unitPrice;
             $HT = $total;
             ?>
-            <?php endforeach; $total *= 1.2;?>
+            <?php
+            endforeach;
+            $total *= 1.2;
+            ?>
 
 
             <tr>
@@ -218,15 +221,15 @@ p {
             <tr>
                 <td colspan="2" class="no-border"></td>
                 <td style="text-align: center;" rowspan="3"><strong>Total:</strong></td>
-                <td>HT : <?php echo $HT ?> &euro;</td>
+                <td>HT : <?php echo $HT; ?> &euro;</td>
             </tr>
             <tr>
                 <td colspan="2" class="no-border"></td>
-                <td>TVA : <?php echo $total - $HT ?> &euro;</td>
+                <td>TVA : <?php echo $total - $HT; ?> &euro;</td>
             </tr>
             <tr>
                 <td colspan="2" class="no-border"></td>
-                <td>TTC : <?php echo $total ?> &euro;</td>
+                <td>TTC : <?php echo $total; ?> &euro;</td>
             </tr>
         </tbody>
     </table>
