@@ -19,10 +19,11 @@ public class ProviderActivity {
     public static JFreeChart getChart(String token){
         DefaultCategoryDataset providerActivity = new DefaultCategoryDataset();
 
-        CUrl curl = new CUrl("http://localhost:8000/api/api.php/provider/animate");
+        CUrl curl = new CUrl("https://togetherandstronger.site/api/api.php/provider/animate");
         Map<String, String> headersSent = new HashMap<String, String>();
         headersSent.put("Authorization", token);
         curl.headers(headersSent);
+        curl.insecure();
         String response = curl.exec(CUrl.UTF8, null);
 
         JSONObject obj = new JSONObject(response);

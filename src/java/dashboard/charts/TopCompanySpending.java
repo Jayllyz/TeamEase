@@ -15,10 +15,11 @@ public class TopCompanySpending {
     public static JFreeChart getChart(String token){
         DefaultPieDataset topCompanySpending = new DefaultPieDataset();
         
-        CUrl curl = new CUrl("http://localhost:8000/api/api.php/company/topPaid");
+        CUrl curl = new CUrl("https://togetherandstronger.site/api/api.php/company/topPaid");
         Map<String, String> headersSent = new HashMap<String, String>();
         headersSent.put("Authorization", token);
         curl.headers(headersSent);
+        curl.insecure();
         String response = curl.exec(CUrl.UTF8, null);
 
         JSONObject obj = new JSONObject(response);

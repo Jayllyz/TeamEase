@@ -22,10 +22,11 @@ import com.roxstudio.utils.CUrl;
 public class ReservationPerMonth {
     public static JFreeChart getChart(String token){
         XYSeries series = new XYSeries("Quantité de réservations");
-        CUrl curl = new CUrl("http://localhost:8000/api/api.php/activities/countActivitiesByMonth");
+        CUrl curl = new CUrl("https://togetherandstronger.site/api/api.php/activities/countActivitiesByMonth");
         Map<String, String> headersSent = new HashMap<String, String>();
         headersSent.put("Authorization", token);
         curl.headers(headersSent);
+        curl.insecure();
         String response = curl.exec(CUrl.UTF8, null);
         
         JSONObject obj = new JSONObject(response);
