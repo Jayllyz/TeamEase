@@ -39,32 +39,37 @@ include '../includes/head.php';
         <form method="POST" id="formCart">
 
             <?php if ($cart) { ?>
-            <?php foreach ($cart as $item) {
-
-              $query = $db->prepare(
-                'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
-              );
-              $query->execute([
-                'id' => $item['id_activity'],
-              ]);
-              $activity = $query->fetch(PDO::FETCH_ASSOC);
-              $idActivity = $item['id_activity'];
-              $name = $activity['name'];
-              $price = $activity['priceAttendee'];
-              ?>
-
             <div class="container">
-                <div class="row">
+                <?php
+                $i = 0;
+                $startDiv = 0;
+                foreach ($cart as $item) {
 
-                    <div class="col-sm-2">
-                        <h3><?php echo $activity['name']; ?></h3>
-                    </div>
+                  $query = $db->prepare(
+                    'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
+                  );
+                  $query->execute([
+                    'id' => $item['id_activity'],
+                  ]);
+                  $activity = $query->fetch(PDO::FETCH_ASSOC);
+                  $idActivity = $item['id_activity'];
+                  $name = $activity['name'];
+                  $price = $activity['priceAttendee'];
+                  ?>
 
+                <?php if ($i % 3 === 0) {
+                  $startDiv = 0;
+                  echo '<div class="row">';
+                } ?>
+                <div class="card col-4 me-3">
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            <?php echo $activity['name']; ?>
+                        </h3>
+                        <hr size="5">
+                        <div class="form-group">
 
-                    <div class="form-group col">
-                        <div class="row">
-
-                            <div class="col-sm-4">
+                            <div>
                                 <label for="attendee">
                                     <h4>Nombre de participants</h4>
                                 </label>
@@ -82,8 +87,7 @@ include '../includes/head.php';
                                 </div>
                             </div>
 
-
-                            <div class="col-sm-4">
+                            <div>
                                 <div style="display:none" class="<?= $activity['day'] ?>"> </div>
                                 <label for="date">
                                     <h4>Date</h4>
@@ -93,9 +97,7 @@ include '../includes/head.php';
                                     required>
                             </div>
 
-
-
-                            <div class="col-sm-4">
+                            <div>
                                 <?php $slotId = 'slot' . $idActivity; ?>
                                 <?php $emptyId = 'empty' . $idActivity; ?>
 
@@ -115,21 +117,24 @@ include '../includes/head.php';
                                 <?php $providerId = 'present-provider' . $idActivity; ?>
                                 <div class="mt-4 mb-4" id="<?= $providerId ?>"></div>
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
+                <?php if ($startDiv === 3) {
+                  echo '</div>';
+                } ?>
 
+                <?php $i += 1;
+                }
+                ?>
+            </div>
 
-
-                <?php
-            } ?>
-
-                <button type="submit" class="btn btn-primary" name="submit" onclick="valid()">Valider</button>
+            <div class="d-flex justify-content-center mt-5">
+                <button type="submit" class="btn btn-primary me-3" name="submit" onclick="valid()">Valider</button>
                 <button type="submit" class="btn btn-secondary" name="submit" onclick="estimate()">Générer un
                     devis</button>
+            </div>
+
         </form>
 
 
