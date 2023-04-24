@@ -34,6 +34,7 @@ include '../includes/head.php';
     </div>
     <main>
         <h1 class="mt-4" id="cartTitle">Mon panier</h1>
+
         <div id="idList" style="display:none;"><?= $idString ?></div>
 
         <form method="POST" id="formCart">
@@ -144,6 +145,14 @@ include '../includes/head.php';
             </div>
 
         </form>
+        <div class="container align text-center mt-4" style="font-size: 20px; outline: 1px solid #D3D3D3;">
+            Le règlement des réservations se fait ultérieurement dans "Mes réservations". Toute réservation peut
+            être
+            annulée ou modifier avant la date. <br> Merci de remplir la liste des participants pour chacune de vos
+            réservations
+            pour
+            aider nos équipes.
+        </div>
 
 
         <?php } else { ?>

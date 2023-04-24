@@ -32,7 +32,6 @@ include 'includes/head.php';
         $activities = $query->fetchAll(PDO::FETCH_ASSOC);
         $idActivity = htmlspecialchars($_GET['id']);
         $price = $activities[0]['priceAttendee'];
-        var_dump($activities);
         ?>
         <form action="verifications/reservation.php?id=<?= $idActivity ?>&price=<?= $price ?>"
             onsubmit="return validateForm(this.name)" method="POST">
@@ -85,6 +84,14 @@ include 'includes/head.php';
                 </div>
             </div>
         </form>
+        <div class="container align text-center mt-4" style="font-size: 20px; outline: 1px solid #D3D3D3;">
+            Le règlement des réservations se fait ultérieurement dans "Mes réservations". Toute réservation peut
+            être
+            annulée ou modifier avant la date. <br> Merci de remplir la liste des participants pour chacune de vos
+            réservations
+            pour
+            aider nos équipes.
+        </div>
     </main>
     <script src="css-js/scripts.js"></script>
     <script>

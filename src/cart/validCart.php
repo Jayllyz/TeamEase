@@ -35,9 +35,7 @@ if (isset($_SESSION['siret'])) {
     $response = $req->fetch(PDO::FETCH_ASSOC);
 
     if ($response) {
-      header(
-        'Location: ../reservation.php?&id=' . $idActivity . '&message=Vous avez déjà réservé ce créneau!&type=danger',
-      );
+      header('Location: ..cart.php?message=Vous avez déjà réservé ce créneau!&type=danger');
       exit();
     }
 
@@ -66,7 +64,7 @@ if (isset($_SESSION['siret'])) {
         'id_reservation' => $id['id'],
       ]);
     } else {
-      header('Location: ../reservation.php?&id=' . $idActivity . '&message=Erreur lors de la réservation!&type=danger');
+      header('Location: cart.php?message=Erreur lors de la réservation!&type=danger');
       exit();
     }
   }
@@ -75,11 +73,7 @@ if (isset($_SESSION['siret'])) {
   exit();
 }
 
-header(
-  'Location: ../reservation.php?&id=' .
-    $idActivity .
-    '&message=Votre réservation a bien été prise en compte!&type=success',
-);
+header('Location: ../clients/reservations.php.php?message=Votre panier a bien été prise en compte!&type=success');
 
 $clearCart = $db->prepare('DELETE FROM CART WHERE siret = :siret');
 $clearCart->execute(['siret' => $siret]);
