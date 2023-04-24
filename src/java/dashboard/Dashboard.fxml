@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="973.0" styleClass="background" stylesheets="@css/dashboard.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.DashboardController">
+   <children>
+      <VBox prefHeight="601.0" prefWidth="302.0" style="-fx-background-color: #157347;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane prefHeight="122.0" prefWidth="302.0">
+               <children>
+                  <ImageView fitHeight="93.0" fitWidth="112.0" layoutX="25.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@css/logoDashboard.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="129.0" layoutY="47.0" text="TeamEase" textFill="WHITE">
+                     <font>
+                        <Font name="Segoe UI Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button fx:id="btnReservationPerMonth" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleClicks" prefHeight="56.0" prefWidth="304.0" stylesheets="@css/dashboard.css" text="Les réservations par mois" textFill="WHITE">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnPopularActivity" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleClicks" prefHeight="56.0" prefWidth="304.0" stylesheets="@css/dashboard.css" text="Les activitités populaires" textFill="WHITE">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnCompanySpending" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleClicks" prefHeight="56.0" prefWidth="304.0" stylesheets="@css/dashboard.css" text="Les dépenses des entreprises" textFill="WHITE">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnTopCompany" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleClicks" prefHeight="56.0" prefWidth="304.0" stylesheets="@css/dashboard.css" text="Les entreprises les plus dépensières" textFill="WHITE">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnProviderActivity" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleClicks" prefHeight="56.0" prefWidth="304.0" stylesheets="@css/dashboard.css" text="Les activitités des prestataires" textFill="WHITE">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnTopProvider" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleClicks" prefHeight="56.0" prefWidth="304.0" stylesheets="@css/dashboard.css" text="Les prestataires les plus actif" textFill="WHITE">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+      <Pane fx:id="chartPane" layoutX="313.0" layoutY="14.0" prefHeight="573.0" prefWidth="650.0" styleClass="backgroundChart" stylesheets="@css/dashboard.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="313.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="14.0" />
+      <Pane layoutY="470.0" prefHeight="70.0" prefWidth="302.0" AnchorPane.bottomAnchor="0.0">
+         <children>
+            <Button fx:id="btnExit" alignment="BASELINE_LEFT" layoutX="-1.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="56.0" prefWidth="304.0" styleClass="btnExit" stylesheets="@css/dashboard.css" text="Quitter" textFill="WHITE">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+               <font>
+                  <Font name="Segoe UI" size="16.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" iconName="SIGN_OUT" />
+               </graphic>
+            </Button>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
