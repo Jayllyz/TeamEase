@@ -51,20 +51,27 @@ include '../includes/head.php';
                   $query->execute([
                     'id' => $item['id_activity'],
                   ]);
-                  $activity = $query->fetch(PDO::FETCH_ASSOC);
+                  $activity = $query->fetchAll(PDO::FETCH_ASSOC);
                   $idActivity = $item['id_activity'];
-                  $name = $activity['name'];
-                  $price = $activity['priceAttendee'];
+                  $name = $activity[0]['name'];
+                  $price = $activity[0]['priceAttendee'];
+                  $maxAttendee = $activity[0]['maxAttendee'];
                   ?>
 
                 <?php if ($i % 3 === 0) {
                   $startDiv = 0;
-                  echo '<div class="row">';
+                  echo '<div class="row d-flex justify-content-center">';
                 } ?>
                 <div class="card col-4 me-3">
                     <div class="card-body">
-                        <h3 class="card-title">
-                            <?php echo $activity['name']; ?>
+                        <h3 class="card-title row">
+                            <div class="col-10">
+                                <?php echo $activity[0]['name']; ?>
+                            </div>
+                            <div class="col-2 d-flex justify-content-end pe-3">
+                                <button type="button" class="btn-close btn-danger me-2" id="<?= $idActivity ?>"
+                                    onclick="rmCart(this)"></button>
+                            </div>
                         </h3>
                         <hr size="5">
                         <div class="form-group">
@@ -78,17 +85,23 @@ include '../includes/head.php';
                                 <?php $pricedisplayId = 'priceDisplay' . $idActivity; ?>
 
                                 <div class="input-group">
-                                    <input type="number" class="form-control" min="1"
-                                        max="<?= $activity['maxAttendee'] ?>" id="<?= $attendeeId ?>"
-                                        name="<?= $attendeeId ?>"
+                                    <input type="number" class="form-control" min="1" max="<?= $maxAttendee ?>"
+                                        id="<?= $attendeeId ?>" name="<?= $attendeeId ?>"
                                         onchange="selectedDateReservation(<?= $dateId ?>, <?= $idActivity ?>)" required>
                                     <span class="input-group-text" id="<?= $pricedisplayId ?>">0.00</span>
                                     <span class="input-group-text">€</span>
                                 </div>
+                                <div id="priceHelp" class="form-text mb-2"><?= $price .
+                                  ' € par personne | ' .
+                                  $maxAttendee .
+                                  ' places disponibles' ?></div>
                             </div>
 
                             <div>
-                                <div style="display:none" class="<?= $activity['day'] ?>"> </div>
+                                <?php foreach ($activity as $day) { ?>
+                                <div style="display:none" class="<?= $day['day'] ?>">
+                                </div>
+                                <?php } ?>
                                 <label for="date">
                                     <h4>Date</h4>
                                 </label>
@@ -161,6 +174,21 @@ include '../includes/head.php';
     function estimate() {
         form.action = "estimate.php";
         form.submit();
+    }
+
+    function rmCart(button) {
+        let id = button.id;
+
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert(this.responseText);
+                location.reload();
+            }
+        };
+        xhr.open('POST', '../ajaxReq/rmCart.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('id=' + id);
     }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

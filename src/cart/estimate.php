@@ -242,7 +242,7 @@ $content = ob_get_clean();
 try {
   $pdf = new Html2Pdf('p', 'A4', 'fr');
   $pdf->writeHTML($content);
-  $pdf->output('Devis.pdf');
+  $pdf->output('Devis.pdf', 'D');
   $pdf->clean();
 } catch (Html2PdfException $e) {
   $pdf->clean();
