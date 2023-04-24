@@ -34,83 +34,125 @@ include '../includes/head.php';
     </div>
     <main>
         <h1 class="mt-4" id="cartTitle">Mon panier</h1>
+
         <div id="idList" style="display:none;"><?= $idString ?></div>
 
         <form method="POST" id="formCart">
 
             <?php if ($cart) { ?>
-            <?php foreach ($cart as $item) {
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <?php foreach ($cart as $item) {
 
-              $query = $db->prepare(
-                'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
-              );
-              $query->execute([
-                'id' => $item['id_activity'],
-              ]);
-              $activity = $query->fetch(PDO::FETCH_ASSOC);
-              $idActivity = $item['id_activity'];
-              $name = $activity['name'];
-              $price = $activity['priceAttendee'];
-              ?>
+                      $query = $db->prepare(
+                        'SELECT ACTIVITY.*, SCHEDULE.startHour, SCHEDULE.endHour, SCHEDULE.day FROM ACTIVITY INNER JOIN SCHEDULE ON ACTIVITY.id = SCHEDULE.id_activity WHERE ACTIVITY.id = :id',
+                      );
+                      $query->execute([
+                        'id' => $item['id_activity'],
+                      ]);
+                      $activity = $query->fetchAll(PDO::FETCH_ASSOC);
+                      $idActivity = $item['id_activity'];
+                      $name = $activity[0]['name'];
+                      $price = $activity[0]['priceAttendee'];
+                      $maxAttendee = $activity[0]['maxAttendee'];
+                      ?>
+                    <div class="col-4 p-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title row">
+                                    <div class="col-10">
+                                        <?php echo $activity[0]['name']; ?>
+                                    </div>
+                                    <div class="col-2 d-flex justify-content-end pe-3">
+                                        <button type="button" class="btn-close btn-danger me-2" id="<?= $idActivity ?>"
+                                            onclick="rmCart(this)"></button>
+                                    </div>
+                                </h3>
+                                <hr size="5">
+                                <div class="form-group">
 
-            <div class="row align-items-center">
-                <div class="col-sm-3">
-                    <h3><?php echo $activity['name']; ?></h3>
-                </div>
-                <div class="col-sm-9">
-                    <div class="form-group">
-                        <label for="attendee">
-                            <h4>Nombre de participants</h4>
-                        </label>
-                        <?php $attendeeId = 'attendee' . $idActivity; ?>
-                        <?php $dateId = 'date' . $idActivity; ?>
-                        <?php $pricedisplayId = 'priceDisplay' . $idActivity; ?>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <input type="number" class="form-control" min="1" max="<?= $activity['maxAttendee'] ?>"
-                                    id="<?= $attendeeId ?>" name="<?= $attendeeId ?>"
-                                    onchange="selectedDateReservation(<?= $dateId ?>, <?= $idActivity ?>)" required>
-                                <span class="input-group-text" id="<?= $pricedisplayId ?>">0.00</span>
-                                <span class="input-group-text">€</span>
+                                    <div>
+                                        <label for="attendee">
+                                            <h4>Nombre de participants</h4>
+                                        </label>
+                                        <?php $attendeeId = 'attendee' . $idActivity; ?>
+                                        <?php $dateId = 'date' . $idActivity; ?>
+                                        <?php $pricedisplayId = 'priceDisplay' . $idActivity; ?>
+
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" min="1" max="<?= $maxAttendee ?>"
+                                                id="<?= $attendeeId ?>" name="<?= $attendeeId ?>"
+                                                onchange="selectedDateReservation(<?= $dateId ?>, <?= $idActivity ?>)"
+                                                required>
+                                            <span class="input-group-text" id="<?= $pricedisplayId ?>">0.00</span>
+                                            <span class="input-group-text">€</span>
+                                        </div>
+                                        <div id="priceHelp" class="form-text mb-2"><?= $price .
+                                          ' € par personne | ' .
+                                          $maxAttendee .
+                                          ' places disponibles' ?></div>
+                                    </div>
+
+                                    <div>
+                                        <?php foreach ($activity as $day) { ?>
+                                        <div style="display:none" class="<?= $day['day'] ?>">
+                                        </div>
+                                        <?php } ?>
+                                        <label for="date">
+                                            <h4>Date</h4>
+                                        </label>
+                                        <input type="text" class="form-control input-date" name="<?= $dateId ?>"
+                                            id="<?= $dateId ?>"
+                                            onchange="selectedDateReservation(this, <?= $idActivity ?>)" required>
+                                    </div>
+
+                                    <div>
+                                        <?php $slotId = 'slot' . $idActivity; ?>
+                                        <?php $emptyId = 'empty' . $idActivity; ?>
+
+                                        <p id="<?= $emptyId ?>" style="display: none;" class="mt-2"></p>
+                                        <div id="<?= $slotId ?>" style="display:none">
+                                            <label for="time" class="form-label">
+                                                <h4>Heure de votre créneau</h4>
+                                            </label>
+                                            <?php $containerId = 'container-slot' . $idActivity; ?>
+                                            <select class="form-control" name="<?= $containerId ?>"
+                                                id="<?= $containerId ?>">
+                                            </select>
+                                        </div>
+
+                                        <?php $priceId = 'price' . $idActivity; ?>
+                                        <input type="hidden" name="<?= $priceId ?>" id="<?= $priceId ?>"
+                                            value="<?= $price ?>">
+
+                                        <?php $providerId = 'present-provider' . $idActivity; ?>
+                                        <div class="mt-4 mb-4" id="<?= $providerId ?>"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div style="display:none" class="<?= $activity['day'] ?>"> </div>
-                        <label for="date">
-                            <h4>Date</h4>
-                        </label>
-
-                        <input type="text" class="form-control input-date" name="<?= $dateId ?>" id="<?= $dateId ?>"
-                            onchange="selectedDateReservation(this, <?= $idActivity ?>)" required>
-
-                        <?php $slotId = 'slot' . $idActivity; ?>
-                        <?php $emptyId = 'empty' . $idActivity; ?>
-
-                        <p id="<?= $emptyId ?>" style="display: none;" class="mt-2"></p>
-                        <div id="<?= $slotId ?>" style="display:none">
-                            <label for="time" class="form-label">
-                                <h4>Heure de votre créneau</h4>
-                            </label>
-                            <?php $containerId = 'container-slot' . $idActivity; ?>
-                            <select class="form-control" name="<?= $containerId ?>" id="<?= $containerId ?>">
-                            </select>
-                        </div>
-                        <?php $priceId = 'price' . $idActivity; ?>
-                        <input type="hidden" name="<?= $priceId ?>" id="<?= $priceId ?>" value="<?= $price ?>">
-
-                        <?php $providerId = 'present-provider' . $idActivity; ?>
-                        <div class="mt-4 mb-4" id="<?= $providerId ?>"></div>
                     </div>
 
+                    <?php
+                    } ?>
                 </div>
             </div>
 
-            <?php
-            } ?>
+            <div class="d-flex justify-content-center mt-5">
+                <button type="submit" class="btn btn-primary me-3" name="submit" onclick="valid()">Valider</button>
+                <button type="submit" class="btn btn-secondary" name="submit" onclick="estimate()">Générer un
+                    devis</button>
+            </div>
 
-            <button type="submit" class="btn btn-primary" name="submit" onclick="valid()">Valider</button>
-            <button type="submit" class="btn btn-secondary" name="submit" onclick="estimate()">Générer un devis</button>
         </form>
+        <div class="container align text-center mt-4" style="font-size: 20px; outline: 1px solid #D3D3D3;">
+            Le règlement des réservations se fait ultérieurement dans "Mes réservations". Toute réservation peut
+            être
+            annulée ou modifier avant la date. <br> Merci de remplir la liste des participants pour chacune de vos
+            réservations
+            pour
+            aider nos équipes.
+        </div>
 
 
         <?php } else { ?>
@@ -129,7 +171,6 @@ include '../includes/head.php';
     form = document.getElementById("formCart");
 
     function valid() {
-        form.action = "save_for_later.php";
         form.action = "validCart.php";
         form.submit();
     }
@@ -137,6 +178,21 @@ include '../includes/head.php';
     function estimate() {
         form.action = "estimate.php";
         form.submit();
+    }
+
+    function rmCart(button) {
+        let id = button.id;
+
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert(this.responseText);
+                location.reload();
+            }
+        };
+        xhr.open('POST', '../ajaxReq/rmCart.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('id=' + id);
     }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

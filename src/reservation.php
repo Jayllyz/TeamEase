@@ -48,7 +48,10 @@ include 'includes/head.php';
                     <span class="input-group-text" id="priceDisplay">0.00</span>
                     <span class="input-group-text">€</span>
                 </div>
-                <div id="priceHelp" class="form-text"><?= $price . ' € par personne' ?></div>
+                <div id="priceHelp" class="form-text mb-2"><?= $price .
+                  ' € par personne | ' .
+                  $activities[0]['maxAttendee'] .
+                  ' places disponibles' ?></div>
                 <label for="date" class="form-label">
                     <h4>Date de votre réservation</h4>
                 </label>
@@ -81,6 +84,14 @@ include 'includes/head.php';
                 </div>
             </div>
         </form>
+        <div class="container align text-center mt-4" style="font-size: 20px; outline: 1px solid #D3D3D3;">
+            Le règlement des réservations se fait ultérieurement dans "Mes réservations". Toute réservation peut
+            être
+            annulée ou modifier avant la date. <br> Merci de remplir la liste des participants pour chacune de vos
+            réservations
+            pour
+            aider nos équipes.
+        </div>
     </main>
     <script src="css-js/scripts.js"></script>
     <script>
