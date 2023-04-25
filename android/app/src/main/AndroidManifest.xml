@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Login" />
-        <activity android:name=".Reservation" />
+        <activity android:name=".ReservationActivity" />
     </application>
 
 </manifest>
