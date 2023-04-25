@@ -21,6 +21,20 @@ if (isPath('auth/logout')) {
   }
 }
 
+if (isPath('company/paid')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/company/getCompanyPaid.php';
+    die();
+  }
+}
+
+if (isPath('company/topPaid')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/company/getTopCompanyPaid.php';
+    die();
+  }
+}
+
 if (isPath('company')) {
   if (isGetMethod()) {
     require_once __DIR__ . '/routes/company/get.php';
@@ -35,9 +49,37 @@ if (isPath('activities/allActivities')) {
   }
 }
 
+if (isPath('activities/countActivitiesByMonth')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/activities/getActivitiesCountByMonth.php';
+    die();
+  }
+}
+
+if (isPath('activities/topActivities')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/activities/getTopActivities.php';
+    die();
+  }
+}
+
 if (isPath('activities')) {
   if (isGetMethod()) {
     require_once __DIR__ . '/routes/activities/get.php';
+    die();
+  }
+}
+
+if (isPath('provider/animate')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/provider/getAnimate.php';
+    die();
+  }
+}
+
+if (isPath('provider/topAnimate')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/provider/getTopAnimate.php';
     die();
   }
 }

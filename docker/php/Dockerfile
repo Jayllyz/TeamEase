@@ -1,8 +1,15 @@
-FROM php:8.0-alpine3.16
+FROM php:fpm-alpine
 
-WORKDIR /home/php/src
+ARG PHP_USER_NAME=php
+ARG PHP_USER_IDENTIFIER=1000
+ARG PHP_USER_SHELL=/bin/bash
+ARG PHP_USER_HOME_DIRECTORY=/home/php
 
-COPY . .
+COPY composer.json .
+COPY composer.lock .
+
+RUN apk add sudo \
+    && echo "$PHP_USER_NAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 RUN apk add --update linux-headers \
     && apk add --no-cache $PHPIZE_DEPS \
@@ -13,5 +20,18 @@ RUN apk add --update linux-headers \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer install
+    && rm -rf /var/cache/apk/*
 
+RUN addgroup -g $PHP_USER_IDENTIFIER $PHP_USER_NAME \
+    && adduser -D -u $PHP_USER_IDENTIFIER -G $PHP_USER_NAME -h $PHP_USER_HOME_DIRECTORY -s $PHP_USER_SHELL $PHP_USER_NAME \
+    && chown -R $PHP_USER_NAME:$PHP_USER_NAME $PHP_USER_HOME_DIRECTORY \
+    && chmod -R 755 $PHP_USER_HOME_DIRECTORY
+
+USER $PHP_USER_NAME
+
+RUN rm -rf /home/php/vendor
+
+RUN sudo composer install --no-dev
+
+EXPOSE 9000
+EXPOSE 80

@@ -570,7 +570,7 @@ function checkAllQuestionWhatParameters($parameters)
 
 function getReservationWithToken($token)
 {
-  include '/home/php/src/includes/db.php';
+  include '/home/php/includes/db.php';
 
   $getSiret = $db->prepare('SELECT siret FROM COMPANY WHERE authToken = :token');
   $getSiret->execute(['token' => $token]);
@@ -587,7 +587,7 @@ function getReservationWithToken($token)
 
 function getAll($table)
 {
-  include '/home/php/src/includes/db.php';
+  include '/home/php/includes/db.php';
 
   if ($table === 'activity') {
     $query = $db->query('SELECT * FROM ACTIVITY');
@@ -608,6 +608,60 @@ function getAll($table)
     $providers = $query->fetchAll(PDO::FETCH_ASSOC);
 
     return $providers;
+  }
+
+  if ($table === 'countActivityByMonth') {
+    $query = $db->query(
+      'SELECT COUNT(id) as count, DATE_FORMAT(date, \'%Y-%m\') AS newDate FROM RESERVATION GROUP BY newDate ORDER BY newDate ASC',
+    );
+    $countActivityByDate = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $countActivityByDate;
+  }
+
+  if ($table === 'topActivity') {
+    $query = $db->query(
+      'SELECT ACTIVITY.name, COUNT(RESERVATION.id) AS count FROM RESERVATION INNER JOIN ACTIVITY ON RESERVATION.id_activity = ACTIVITY.id GROUP BY ACTIVITY.name ORDER BY count DESC LIMIT 10',
+    );
+    $topActivity = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $topActivity;
+  }
+
+  if ($table === 'companyPaid') {
+    $query = $db->query(
+      'SELECT SUM(amount) as amount, COMPANY.companyName FROM INVOICE INNER JOIN RESERVATION ON RESERVATION.id = INVOICE.id_reservation INNER JOIN COMPANY ON RESERVATION.siret = COMPANY.siret GROUP BY companyName',
+    );
+    $companyPaid = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $companyPaid;
+  }
+
+  if ($table === 'topCompanyPaid') {
+    $query = $db->query(
+      'SELECT SUM(amount) as amount, COMPANY.companyName FROM INVOICE INNER JOIN RESERVATION ON RESERVATION.id = INVOICE.id_reservation INNER JOIN COMPANY ON RESERVATION.siret = COMPANY.siret GROUP BY companyName ORDER BY amount DESC LIMIT 5',
+    );
+    $topCompanyPaid = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $topCompanyPaid;
+  }
+
+  if ($table === 'providerActivity') {
+    $query = $db->query(
+      'SELECT PROVIDER.firstName, PROVIDER.lastName, COUNT(id_provider) as count FROM PROVIDER INNER JOIN HISTORY ON PROVIDER.id = HISTORY.id_provider GROUP BY id_provider',
+    );
+    $providerActivity = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $providerActivity;
+  }
+
+  if ($table === 'topProviderActivity') {
+    $query = $db->query(
+      'SELECT PROVIDER.firstName, PROVIDER.lastName, COUNT(id_provider) as count FROM PROVIDER INNER JOIN HISTORY ON PROVIDER.id = HISTORY.id_provider GROUP BY id_provider ORDER BY count DESC LIMIT 5',
+    );
+    $topProviderActivity = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $topProviderActivity;
   }
 }
 

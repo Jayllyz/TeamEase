@@ -2,9 +2,9 @@
 
 ob_start();
 
-require_once '/home/php/src/api/libraries/header.php';
-require_once '/home/php/src/api/libraries/response.php';
-require_once '/home/php/src/api/entities/company/logoutCompany.php';
+require_once '/home/php/api/libraries/header.php';
+require_once '/home/php/api/libraries/response.php';
+require_once '/home/php/api/entities/company/logoutCompany.php';
 
 try {
   $token = getAuthorizationHeader();

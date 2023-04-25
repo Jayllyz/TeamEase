@@ -1,34 +1,57 @@
 version: '3.8'
 
 services:
+  nginx:
+    depends_on:
+      - php
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    tty: true
+    stdin_open: true
+    env_file: .env
+    working_dir: ${PHP_USER_HOME_DIRECTORY}
+    restart: always
+    volumes:
+      - ./docker/nginx/prod:/etc/nginx/conf.d
+      - ./src:${PHP_USER_HOME_DIRECTORY}
+      - /home/php/vendor
+      - ./ssl:/etc/letsencrypt/live/togetherandstronger.site
+    ports:
+      - '80:80'
+      - '443:443'
+
   php:
+    depends_on:
+      - mysql
     build:
       context: docker/php
       dockerfile: Dockerfile
+      args:
+        PHP_USER_NAME: $PHP_USER_NAME
+        PHP_USER_IDENTIFIER: $PHP_USER_IDENTIFIER
+        PHP_USER_SHELL: $PHP_USER_SHELL
+        PHP_USER_HOME_DIRECTORY: $PHP_USER_HOME_DIRECTORY
     container_name: php
     restart: always
-    image: php
     tty: true
-    working_dir: /home/php/src
-    entrypoint: php
-    volumes:
-      - .:/home/php/
-      - /home/php/src/vendor/
-    ports:
-      - '${PHP_PORT}:${PHP_PORT}'
     env_file: .env
-    command: -S 0.0.0.0:${PHP_PORT}
+    stdin_open: true
+    working_dir: ${PHP_USER_HOME_DIRECTORY}
+    user: php
+    volumes:
+      - ./src:${PHP_USER_HOME_DIRECTORY}
+      - /home/php/vendor
 
   mysql:
     container_name: mysql
-    image: mysql
     restart: always
     build:
       context: docker/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      env_file: .env
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./logs:/var/log/mysql
