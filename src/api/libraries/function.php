@@ -577,7 +577,7 @@ function getReservationWithToken($token)
   $siret = $getSiret->fetch();
 
   $getAllReservation = $db->prepare(
-    'SELECT RESERVATION.*, maxAttendee, duration, priceAttendee, ACTIVITY.name as nameActivity, description, ROOM.name as nameRoom, address, LOCATION.name as city FROM RESERVATION INNER JOIN ACTIVITY ON RESERVATION.id_activity = ACTIVITY.id INNER JOIN ROOM ON ROOM.id = ACTIVITY.id_room INNER JOIN LOCATION ON ROOM.id_location = LOCATION.id WHERE RESERVATION.id = :siret',
+    'SELECT RESERVATION.*, maxAttendee, duration, priceAttendee, ACTIVITY.name as nameActivity, description, ROOM.name as nameRoom, address, LOCATION.name as city FROM RESERVATION INNER JOIN ACTIVITY ON RESERVATION.id_activity = ACTIVITY.id INNER JOIN ROOM ON ROOM.id = ACTIVITY.id_room INNER JOIN LOCATION ON ROOM.id_location = LOCATION.id WHERE RESERVATION.siret = :siret',
   );
   $getAllReservation->execute(['siret' => $siret['siret']]);
   $reservations = $getAllReservation->fetchAll(PDO::FETCH_ASSOC);
