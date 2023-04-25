@@ -38,11 +38,11 @@ include '../includes/head.php';
             $nfc = $query->fetch(PDO::FETCH_COLUMN);
 
             if ($nfc === '0') {
-            $query = $db->prepare('UPDATE COMPANY SET nfc = 1 WHERE siret = :siret');
-            $query->execute(['siret' => $_SESSION['siret']]);
-            echo '<div class="container"><div class="alert alert-success" role="alert">Votre compte a bien été activé !</div></div>';
+              $query = $db->prepare('UPDATE COMPANY SET nfc = 1 WHERE siret = :siret');
+              $query->execute(['siret' => $_SESSION['siret']]);
+              echo '<div class="container"><div class="alert alert-success" role="alert">Votre compte a bien été activé !</div></div>';
             } else {
-            echo '<div class="container"><div class="alert alert-danger" role="alert">Votre compte est déjà activé !</div></div>';
+              echo '<div class="container"><div class="alert alert-danger" role="alert">Votre compte est déjà activé !</div></div>';
             }
             ?>
 
