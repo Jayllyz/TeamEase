@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
@@ -42,14 +41,13 @@ public class ReservationAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.activity_reserv_item, null);
         }
 
-        TextView name = view.findViewById(R.id.name);
+        TextView name = view.findViewById(R.id.nameActivity);
         TextView date = view.findViewById(R.id.date);
         TextView duration = view.findViewById(R.id.duration);
         TextView hour = view.findViewById(R.id.heure);
         TextView nameRoom = view.findViewById(R.id.nameRoom);
         TextView address = view.findViewById(R.id.address);
         TextView city = view.findViewById(R.id.city);
-
 
         Reservation current = (Reservation)getItem(i);
 
@@ -60,7 +58,6 @@ public class ReservationAdapter extends BaseAdapter {
         nameRoom.setText(current.getNameRoom());
         address.setText(current.getAddress());
         city.setText(current.getCity());
-
 
         return view;
     }

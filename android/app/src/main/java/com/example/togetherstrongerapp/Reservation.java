@@ -1,7 +1,5 @@
 package com.example.togetherstrongerapp;
 
-import java.sql.Time;
-import java.util.Date;
 
 public class Reservation {
     private String name, address, city, nameRoom;
@@ -56,7 +54,7 @@ public class Reservation {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = String.valueOf(date);
     }
 
@@ -64,7 +62,7 @@ public class Reservation {
         return timeStart;
     }
 
-    public void setTimeStart(Time timeStart) {
+    public void setTimeStart(String timeStart) {
         this.timeStart = String.valueOf(timeStart);
     }
 
@@ -72,7 +70,7 @@ public class Reservation {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(String duration) {
         this.duration = String.valueOf(duration);
     }
 }

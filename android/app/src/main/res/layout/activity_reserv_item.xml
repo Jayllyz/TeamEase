@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,37 +19,34 @@
         android:textSize="3mm"
         android:id="@+id/address"
         />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Ville"
-        android:textSize="3mm"
         android:id="@+id/city"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ville"
+        android:textSize="3mm" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Date"
-        android:textSize="3mm"
         android:id="@+id/date"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textSize="3mm" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Heure"
-        android:textSize="3mm"
         android:id="@+id/heure"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Heure"
+        android:textSize="3mm" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Durée"
-        android:textSize="3mm"
         android:id="@+id/duration"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Durée"
+        android:textSize="3mm" />
 
     <TextView
         android:layout_width="match_parent"
@@ -59,7 +55,5 @@
         android:textSize="3mm"
         android:id="@+id/nameRoom"
         />
-
-
 
 </LinearLayout>

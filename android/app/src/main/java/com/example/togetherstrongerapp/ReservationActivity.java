@@ -27,48 +27,35 @@ import java.util.List;
 import java.util.Map;
 
 public class ReservationActivity extends AppCompatActivity {
+
     private ListView list;
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_reservation);
+    private List<Reservation> reservations;
 
-            list = findViewById(R.id.list);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_reservation);
 
-            SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
-            String token = preferences.getString("token", "");
+        list = findViewById(R.id.list);
 
-            ReservationAdapter adapter = new ReservationAdapter(getReservations(token), this);
-            list.setAdapter(adapter);
-        }
+        SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
+        String token = preferences.getString("token", "");
 
-    public List<Reservation> getReservations(String token){
+        reservations = new ArrayList<>();
+        ReservationAdapter adapter = new ReservationAdapter(reservations, this);
+        list.setAdapter(adapter);
 
-        List<Reservation> reservations = new ArrayList<>();
+        getReservations(token);
+    }
+
+    public void getReservations(String token){
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://togetherandstronger.site/api/api.php/company";
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                try {
-                    JSONObject json = new JSONObject(response);
-
-                    JSONArray jsonReserv = json.getJSONArray("data");
-
-                    for (int i = 0; i < jsonReserv.length(); i++) {
-                        JSONObject current = jsonReserv.getJSONObject(i);
-                        Toast.makeText(ReservationActivity.this, current.toString(), Toast.LENGTH_LONG).show();
-                        Reservation reservation = new Reservation(current.getString("nameActivity"),
-                                current.getString("address"), current.getString("city"),
-                                current.getString("nameRoom"), current.getString("date"),
-                                current.getString("time"), current.getString("duration"));
-
-                        reservations.add(reservation);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                processResponse(response);
+                updateList();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -84,7 +71,32 @@ public class ReservationActivity extends AppCompatActivity {
             }
         };
         queue.add(request);
-        Toast.makeText(ReservationActivity.this, reservations.toString(), Toast.LENGTH_LONG).show();
-        return reservations;
+    }
+
+    private void processResponse(String response) {
+        try {
+            JSONObject json = new JSONObject(response);
+
+            JSONArray jsonReserv = json.getJSONArray("data");
+
+            for (int i = 0; i < jsonReserv.length(); i++) {
+                JSONObject current = jsonReserv.getJSONObject(i);
+
+                Reservation reservation = new Reservation(current.getString("nameActivity"),
+                        current.getString("address"), current.getString("city"),
+                        current.getString("nameRoom"), current.getString("date"),
+                        current.getString("time"), current.getString("duration"));
+                reservations.add(reservation);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateList() {
+        ReservationAdapter adapter = new ReservationAdapter(reservations, this);
+        list.setAdapter(adapter);
     }
 }
+

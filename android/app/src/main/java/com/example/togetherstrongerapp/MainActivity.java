@@ -27,11 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
     private Button connect, reservation;
     private ListView catalog;
-
-    public String token;
+    private String token;
     private boolean connected = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,14 +52,32 @@ public class MainActivity extends AppCompatActivity {
             this.connect.setText("Déconnexion");
         }
 
-        ActivityAdapter adapter = new ActivityAdapter(getActivities(token), this);
-        catalog.setAdapter(adapter);
+        getActivities(token, new ActivitiesCallback() {
+            @Override
+            public void onActivitiesReceived(List<Activity> activities, String response) throws JSONException {
+                JSONObject json = new JSONObject(response);
+                JSONArray jsonActivities = json.getJSONArray("data");
+
+                for (int i = 0; i < jsonActivities.length(); i++) {
+                    JSONObject jsonActivity = jsonActivities.getJSONObject(i);
+                    Activity activity = new Activity(
+                            jsonActivity.getString("name"),
+                            jsonActivity.getString("description"),
+                            Integer.parseInt(jsonActivity.getString("maxAttendee")),
+                            Integer.parseInt(jsonActivity.getString("duration")),
+                            Integer.parseInt(jsonActivity.getString("priceAttendee")));
+                    activities.add(activity);
+                }
+
+                ActivityAdapter adapter = new ActivityAdapter(activities, MainActivity.this);
+                catalog.setAdapter(adapter);
+            }
+        });
 
         this.connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
-                Toast.makeText(MainActivity.this, valueOf(connected), Toast.LENGTH_SHORT).show();
                 if (!connected) {
                     Intent intent = new Intent(MainActivity.this, Login.class);
                     startActivity(intent);
@@ -83,29 +102,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public List<Activity> getActivities(String token){
+    public interface ActivitiesCallback {
+        void onActivitiesReceived(List<Activity> activities, String response) throws JSONException;
+    }
+
+
+    public void getActivities(String token, ActivitiesCallback callback){
 
         List<Activity> activities = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://togetherandstronger.site/api/api.php/company";
+        String url = "https://togetherandstronger.site/api/api.php/activities/allActivities";
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONObject json = new JSONObject(response);
-                    JSONArray jsonActivities = json.getJSONArray("data");
-                    for (int i = 0; i < jsonActivities.length(); i++) {
-                        JSONObject jsonActivity = jsonActivities.getJSONObject(i);
-                        Activity activity = new Activity(
-                                jsonActivity.getString("name"),
-                                jsonActivity.getString("description"),
-                                Integer.parseInt(jsonActivity.getString("maxAttendee")),
-                                Integer.parseInt(jsonActivity.getString("duration")),
-                                Integer.parseInt(jsonActivity.getString("priceAttendee")));
-                        activities.add(activity);
-                    }
+                    callback.onActivitiesReceived(activities, response);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }
         }, new Response.ErrorListener() {
@@ -115,6 +128,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         queue.add(request);
-        return activities;
     }
+
 }
