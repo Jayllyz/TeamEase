@@ -49,7 +49,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
                 RequestQueue queue = Volley.newRequestQueue(Login.this);
-                String url = "http://10.0.2.2/api/api.php/auth/login";
+                String url = "https://togetherandstronger.site/api/api.php/auth/login";
                 JSONObject jsonBody = new JSONObject();
                 try {
                     jsonBody.put("email", email);
@@ -68,7 +68,7 @@ public class Login extends AppCompatActivity {
                                 connected.edit().putString("token", response.getString("token")).apply();
                                 Toast.makeText(Login.this, valueOf(connected), Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(Login.this, "Connexion échouée", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, response.toString(), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -83,6 +83,9 @@ public class Login extends AppCompatActivity {
 
                 queue.add(request);
                 Intent intent = new Intent(Login.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 startActivity(intent);
             }
         });

@@ -34,6 +34,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private Button connect, reservation;
     private ListView catalog;
+
+    public String token;
     private boolean connected = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
 
-        Intent intentNFC;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            intentNFC = new Intent(Settings.ACTION_NFC_SETTINGS);
-        } else {
-            intentNFC = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-        }
-        startActivity(intentNFC);
-
         if(preferences.getBoolean("connected", true)){
             connected = true;
+            this.token = getSharedPreferences("connected", MODE_PRIVATE).getString("token", "");
         }
         if (connected) {
             this.connect.setText("Déconnexion");
         }
 
-        ActivityAdapter adapter = new ActivityAdapter(getActivities("all"), this);
+        ActivityAdapter adapter = new ActivityAdapter(getActivities(token), this);
         catalog.setAdapter(adapter);
 
         this.connect.setOnClickListener(new View.OnClickListener() {
