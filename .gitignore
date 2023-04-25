@@ -6,6 +6,7 @@ src/images/activities
 src/vendor
 src/.ash_history
 src/.composer
+src/java/bin
 *.iml
 .gradle
 android/local.properties
