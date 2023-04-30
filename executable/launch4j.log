@@ -1,0 +1,20 @@
+
+
+Version:	3.50
+CmdLine:	E:\Projet\TeamEase\executable\Dashboard.exe --l4j-debug
+JNI:		No
+WOW64:		Yes
+Working dir:	E:\Projet\TeamEase\executable\.
+Requires JDK:	No
+Requires 64-Bit: No
+Java min ver:	
+Java max ver:	
+Substitute:	JAVA_HOME = C:\Program Files\Java\jdk-19
+Substitute:	PATH = C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\oraclexe\app\oracle\product\11.2.0\server\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\dotnet\;C:\Program Files\PuTTY\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Tailscale\;C:\Program Files\Java\jdk-19\bin;C:\Users\Simon\AppData\Local\Microsoft\WindowsApps;C:\Users\Simon\AppData\Local\Programs\Microsoft VS Code\bin;C:\MAMP\bin\mysql\bin;C:\Users\Simon\AppData\Local\GitHubDesktop\bin;C:\Program Files\heroku\bin;C:\Program Files\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;C:\Users\Simon\AppData\Roaming\npm;C:\Users\Simon\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\Simon\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Java\jdk-19\bin
+JRE paths:	C:\Program Files\Java\jdk-19;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\oraclexe\app\oracle\product\11.2.0\server\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\dotnet\;C:\Program Files\PuTTY\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Tailscale\;C:\Program Files\Java\jdk-19\bin;C:\Users\Simon\AppData\Local\Microsoft\WindowsApps;C:\Users\Simon\AppData\Local\Programs\Microsoft VS Code\bin;C:\MAMP\bin\mysql\bin;C:\Users\Simon\AppData\Local\GitHubDesktop\bin;C:\Program Files\heroku\bin;C:\Program Files\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;C:\Users\Simon\AppData\Roaming\npm;C:\Users\Simon\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\Simon\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Java\jdk-19\bin
+Check launcher:	C:\Program Files\Java\jdk-19\bin\javaw.exe (OK)
+Version string: 1.019.000_002 / 64-Bit (OK)
+Launcher:	C:\Program Files\Java\jdk-19\bin\javaw.exe
+Launcher args:	--module-path "C:/Program Files/Java/javafx-sdk-17.0.7/lib" --add-modules javafx.controls,javafx.fxml,javafx.graphics -jar "E:\Projet\TeamEase\executable\Dashboard.exe"
+Args length:	168/32768 chars
+Exit code:	0

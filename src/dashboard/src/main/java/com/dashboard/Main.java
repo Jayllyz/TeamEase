@@ -21,6 +21,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("Connexion");
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
