@@ -6,5 +6,12 @@
   "lang-material-management": "Material management",
   "lang-occupation-management": "Occupation management",
   "lang-room-planning": "Room planning",
-  "lang-about-us": "About us"
+  "lang-about-us": "About us",
+  "lang-search": "Search",
+  "lang-login": "Log in",
+  "lang-register": "Register",
+  "lang-logout": "Log out",
+  "lang-profile": "My profile",
+  "lang-reservations": "My reservations",
+  "lang-cart": "My cart"
 }

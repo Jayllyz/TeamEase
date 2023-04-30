@@ -1391,6 +1391,10 @@ function languageChange(language) {
           if (element != null) {
             element.innerHTML = data[key];
           }
+          if (key[0] == 'lang-search') {
+            element = document.getElementsByClassName(key)[1];
+            element.placeholder = 'Search an activity';
+          }
         });
       });
   }

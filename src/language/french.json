@@ -6,5 +6,12 @@
   "lang-material-management": "Gestion du matériel",
   "lang-occupation-management": "Gestion des métiers",
   "lang-room-planning": "Planning des salles",
-  "lang-about-us": "A propos de nous"
+  "lang-about-us": "A propos de nous",
+  "lang-search": "Rechercher",
+  "lang-login": "Se connecter",
+  "lang-register": "S'inscrire",
+  "lang-logout": "Se déconnecter",
+  "lang-profile": "Mon profil",
+  "lang-reservations": "Mes réservations",
+  "lang-cart": "Mon panier"
 }
