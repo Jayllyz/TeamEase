@@ -253,7 +253,7 @@ INSERT INTO OCCUPATION (name, salary) VALUES ('Animateur', 200);
 INSERT INTO OCCUPATION (name, salary) VALUES ('Game Master', 200);
 INSERT INTO OCCUPATION (name, salary) VALUES ('Coach sportif', 300);
 
-INSERT INTO PROVIDER (firstName, lastName, password, rights, email, id_occupation, token, confirm_signup) VALUES ('Jean', 'Dupont', sha2('Respons11', 512), 1, 'test@domaine.com', 1, '', 1);
+INSERT INTO PROVIDER (firstName, lastName, password, rights, email, id_occupation, token, confirm_signup) VALUES ('Jean', 'Dupont', sha2('Respons11', 512), 1, 'jean@gmail.com', 1, '', 1);
 
 INSERT INTO LOCATION (name, address) VALUES ('Paris', '24 rue test');
 INSERT INTO LOCATION (name, address) VALUES ('Lyon', '24 rue test');

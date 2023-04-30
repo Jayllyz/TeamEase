@@ -1323,3 +1323,57 @@ function validCart(siret) {
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('siret=' + siret);
 }
+
+function changeAvailability(element, day) {
+  if (element.classList.contains('bg-primary')) {
+    element.classList.remove('bg-primary');
+    element.classList.add('bg-secondary');
+  } else {
+    element.classList.remove('bg-secondary');
+    element.classList.add('bg-primary');
+  }
+
+  let saveButton = document.getElementById('saveAvailability');
+  saveButton.style.display = 'inline';
+
+  let days = JSON.parse(localStorage.getItem('days'));
+  if (days == null) {
+    days = [];
+    days.push(day);
+  } else if (days.includes(day)) {
+    days.splice(days.indexOf(day), 1);
+    if (days.length == 0) {
+      days = null;
+      saveButton.style.display = 'none';
+    }
+  } else {
+    days.push(day);
+  }
+  localStorage.setItem('days', JSON.stringify(days));
+
+  window.addEventListener('beforeunload', function () {
+    localStorage.removeItem('days');
+  });
+}
+
+function saveAvailability(button) {
+  days = JSON.parse(localStorage.getItem('days'));
+
+  let confirmed = confirm(
+    'Attention, votre participation dans les activités sur les jours modifiés seront supprimées.'
+  );
+  if (!confirmed) {
+    return;
+  }
+
+  button.style.display = 'none';
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+    }
+  };
+  xhr.open('POST', '../verifications/verifChangeAvailability.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('days=' + days);
+}
