@@ -1387,7 +1387,10 @@ function languageChange(language) {
       .then((response) => response.json())
       .then((data) => {
         Object.keys(data).forEach((key) => {
-          document.getElementsByClassName(key)[0].innerHTML = data[key];
+          element = document.getElementsByClassName(key)[0];
+          if (element != null) {
+            element.innerHTML = data[key];
+          }
         });
       });
   }
