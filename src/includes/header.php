@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-4 col-md-1"></div>
         <div class="col-4 col-md-1 d-flex justify-content-center">
-            <a href="index.php"><img src="<?= $linkLogo ?>" alt="TeamEase" class="img-fluid"></a>
+            <a href="/index.php"><img src="<?= $linkLogo ?>" alt="TeamEase" class="img-fluid"></a>
         </div>
 
         <div class="col-12 col-md-9">
@@ -34,18 +34,18 @@
 
             <div class="row">
                 <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php if (isset($_SESSION['siret'])) {
-                  echo 'href="../clients/reservations.php">Mes reservations</a>';
+                  echo 'href="/clients/reservations.php">Mes reservations</a>';
                 } elseif (!isset($_SESSION['id'])) {
-                  echo 'href="login.php">Se connecter</a>';
+                  echo 'href="/login.php">Se connecter</a>';
                 } ?> <a class="btn btn-secondary col col-2 mx-3 mt-3" <?php
  if (isset($_SESSION['siret']) || isset($_SESSION['id'])) {
-   echo 'href="../logout.php">Se deconnecter</a>';
+   echo 'href="/logout.php">Se deconnecter</a>';
    echo '<a class="btn btn-secondary col col-2 mx-3 mt-3" href="/profile.php">Mon profil</a>';
  } else {
-   echo 'href="signin.php">S\'inscrire</a>';
+   echo 'href="/signin.php">S\'inscrire</a>';
  }
  if ($cartNotEmpty) {
-   echo '<a class="btn btn-secondary col col-2 mx-3 mt-3" href="../cart/cart.php">Mon panier</a>';
+   echo '<a class="btn btn-secondary col col-2 mx-3 mt-3" href="/cart/cart.php">Mon panier</a>';
  }
  ?> </div>
             </div>
@@ -63,10 +63,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../index.php">Accueil</a>
+                        <a class="nav-link active" aria-current="page" href="/index.php">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../catalog.php">Catalogue d'activités</a>
+                        <a class="nav-link" href="/catalog.php">Catalogue d'activités</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -77,7 +77,7 @@
                             <?php
                             $query = $db->query('SELECT name, id FROM CATEGORY');
                             while ($category = $query->fetch(PDO::FETCH_ASSOC)) {
-                              echo '<li><a class="dropdown-item" href="../catalog.php?category=' .
+                              echo '<li><a class="dropdown-item" href="/catalog.php?category=' .
                                 $category['id'] .
                                 '">' .
                                 $category['name'] .
@@ -90,7 +90,7 @@
                       if ($_SESSION['rights'] == 2) {
                         echo '
                             <li class="nav-item">
-                                <a class="nav-link" href="../location.php">Gestion des locaux</a>
+                                <a class="nav-link" href="/location.php">Gestion des locaux</a>
                             </li>
                             '; ?>
                     <li class="nav-item dropdown">
@@ -102,7 +102,7 @@
                             <?php
                             $query = $db->query('SELECT id, name FROM LOCATION');
                             while ($location = $query->fetch()) {
-                              echo '<li><a class="dropdown-item" href="../material.php?location=' .
+                              echo '<li><a class="dropdown-item" href="/material.php?location=' .
                                 $location['id'] .
                                 '">' .
                                 $location['name'] .
@@ -110,7 +110,7 @@
                             }
                             ?>
                             <hr>
-                            <li><a class="dropdown-item" href="../material.php?location=stock">Stock de matériel</a>
+                            <li><a class="dropdown-item" href="/material.php?location=stock">Stock de matériel</a>
                             </li>
                         </ul>
                     </li>
@@ -122,23 +122,23 @@
                       if ($_SESSION['rights'] == 2) {
                         echo '
                               <li class="nav-item">
-                                  <a class="nav-link" href="job.php">Gestion des métiers</a>
+                                  <a class="nav-link" href="/job.php">Gestion des métiers</a>
                               </li>
                               ';
                       }
                     } ?>
                     <?php if (isset($_SESSION['email']) && $_SESSION['rights'] == 2) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="../planning.php">Planning des salles </a>
+                        <a class="nav-link" href="/planning.php">Planning des salles </a>
                     </li>
                     <?php } ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="../aPropos.php">A propos de nous</a>
+                        <a class="nav-link" href="/aPropos.php">A propos de nous</a>
                     </li>
                     <li class="nav-item">
                         <?php if (isset($_SESSION['siret']) && $_SESSION['rights'] == 2) { ?>
 
-                        <a href="admin.php" class="logo_admin">
+                        <a href="/admin.php" class="logo_admin">
                             <svg viewBox="0 0 24 24" width="24" height="24" fill="black" id="logo_admin">
                                 <path d="M0 0 H24 V24 H0 V0 z" style="fill:none;"></path>
                                 <path
@@ -156,4 +156,5 @@
             </div>
         </div>
     </nav>
-</div>
+    <script src="/css-js/js/searchBar.js"></script>
+</div>'
