@@ -1377,3 +1377,22 @@ function saveAvailability(button) {
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('days=' + days);
 }
+
+function languageChange(language) {
+  if (language == null) {
+    language = 'en';
+  }
+  if (language == 'en') {
+    fetch('../../language/english.json')
+      .then((response) => response.json())
+      .then((data) => {
+        Object.keys(data).forEach((key) => {
+          document.getElementsByClassName(key)[0].innerHTML = data[key];
+        });
+      });
+  }
+}
+
+window.onload = function () {
+  languageChange(localStorage.getItem('language'));
+};

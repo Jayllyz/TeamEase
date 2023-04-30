@@ -63,15 +63,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/index.php">Accueil</a>
+                        <a class="nav-link active lang-home" aria-current="page" href="/index.php">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/catalog.php">Catalogue d'activités</a>
+                        <a class="nav-link lang-catalog" href="/catalog.php">Catalogue d'activités</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link dropdown-toggle lang-categories" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            Categorie d'activités
+                            Catégorie d'activités
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <?php
@@ -90,12 +90,12 @@
                       if ($_SESSION['rights'] == 2) {
                         echo '
                             <li class="nav-item">
-                                <a class="nav-link" href="/location.php">Gestion des locaux</a>
+                                <a class="nav-link lang-facility-management" href="/location.php">Gestion des locaux</a>
                             </li>
                             '; ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle lang-material-management" href="#" id="navbarDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Gestion du matériel
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -122,18 +122,18 @@
                       if ($_SESSION['rights'] == 2) {
                         echo '
                               <li class="nav-item">
-                                  <a class="nav-link" href="/job.php">Gestion des métiers</a>
+                                  <a class="nav-link lang-occupation-management" href="/job.php">Gestion des métiers</a>
                               </li>
                               ';
                       }
                     } ?>
                     <?php if (isset($_SESSION['email']) && $_SESSION['rights'] == 2) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/planning.php">Planning des salles </a>
+                        <a class="nav-link lang-room-planning" href="/planning.php">Planning des salles </a>
                     </li>
                     <?php } ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/aPropos.php">A propos de nous</a>
+                        <a class="nav-link lang-about-us" href="/aPropos.php">A propos de nous</a>
                     </li>
                     <li class="nav-item">
                         <?php if (isset($_SESSION['siret']) && $_SESSION['rights'] == 2) { ?>
@@ -157,4 +157,4 @@
         </div>
     </nav>
     <script src="/css-js/js/searchBar.js"></script>
-</div>'
+</div>
