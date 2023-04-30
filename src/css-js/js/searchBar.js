@@ -1,5 +1,5 @@
 function searchBar(search) {
-  let url = 'ajaxReq/suggestion.php';
+  let url = '/ajaxReq/suggestion.php';
 
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {

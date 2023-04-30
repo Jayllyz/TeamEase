@@ -156,4 +156,5 @@
             </div>
         </div>
     </nav>
-</div>
+    <script src="../css-js/js/searchBar.js"></script>
+</div>'
