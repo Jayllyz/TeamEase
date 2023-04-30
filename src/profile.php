@@ -3,9 +3,6 @@
 
 <!DOCTYPE html>
 <html>
-
-
-
 <?php
 if (!isset($_SESSION['rights'])) {
   header('Location: login.php');
@@ -539,38 +536,61 @@ include 'includes/head.php';
                     <br>
 
                     <div class="text-center">
+                        <div class="fs-2 my-3">
+                            Nom : <?= $provider['firstName'] . ' ' . $provider['lastName'] ?>
+                        </div>
+                        <div class="fs-3 my-3">
+                            Email : <?= $provider['email'] ?>
+                        </div>
                         <?php
-                        echo 'Prénom :   ';
-                        echo $provider['firstName'];
-                        //Ne pas changer
-                        echo '<br>';
-                        echo '<br>';
-                        echo 'Nom de famille :   ';
-                        echo $provider['lastName'];
-                        //Ne pas changer
-                        echo '<br>';
-                        echo '<br>';
-                        echo 'Email :    ';
-                        echo $provider['email'];
-                        // Changer
-                        echo '<br>';
-                        echo '<br>';
-                        // Ne pas changer
-                        echo '<br>';
+                        $query = $db->prepare('SELECT day FROM AVAILABILITY WHERE id_provider = :id_provider');
+                        $query->execute(['id_provider' => $_SESSION['id']]);
+                        $days = $query->fetchAll(PDO::FETCH_ASSOC);
                         ?>
+                        <div>
 
-                        <br>
-                        <button class="btn btn-success">
-                            <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider[
+                            <div class="fs-3 my-3">
+                                Disponibilités :
+                            </div>
+                            <div class="fs-5 my-3 row">
+                                <?php
+                                $dayOfWeek = [
+                                  'monday',
+                                  'tuesday',
+                                  'wednesday',
+                                  'thursday',
+                                  'friday',
+                                  'saturday',
+                                  'sunday',
+                                ];
+                                $frenchDay = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+                                for ($k = 0; $k < count($frenchDay); $k++) {
+                                  if (in_array($dayOfWeek[$k], array_column($days, 'day'))) { ?>
+                                <div class="card bg-primary text-white fs-6 text-center col mx-2"
+                                    onclick="changeAvailability(this, <?= $k ?>)">
+                                    <div class="card-body"><?= $frenchDay[$k] ?></div>
+                                </div>
+                                <?php } else { ?>
+                                <div class="card bg-secondary text-white fs-6 text-center col mx-2"
+                                    onclick="changeAvailability(this, <?= $k ?>)">
+                                    <div class="card-body"><?= $frenchDay[$k] ?></div>
+                                </div>
+                                <?php }
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <a href="modifyProvider.php?id=<?= $_SESSION['id'] ?>&firstName=<?= $provider[
   'firstName'
 ] ?>&lastName=<?= $provider['lastName'] ?>&email=<?= $provider['email'] ?>&rights=<?= $provider[
   'rights'
-] ?>" class="btn ms-2 me-2">Modifier</a>
-                        </button>
-                        <button class="btn btn-success">
-                            <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider[
+] ?>" class="btn btn-success p-3">Modifier</a>
+                        <a href="modifyProviderPassword.php?id=<?= $_SESSION['id'] ?>&rights=<?= $provider[
   'rights'
-] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
+] ?>" class="btn btn-success p-3">Modifier son mot de passe</a>
+                        <button class="btn btn-success p-3" id="saveAvailability" style="display:none"
+                            onclick="saveAvailability(this)">
+                            Sauvegarder les nouvelles disponibilités
                         </button>
                     </div>
                 </div>
@@ -911,6 +931,7 @@ include 'includes/head.php';
 
     </main>
     <?php include 'includes/footer.php'; ?>
+    <script src="css-js/scripts.js?"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
