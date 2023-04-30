@@ -8,6 +8,8 @@ android/app/build
 android/.idea
 src/.ash_history
 src/.composer
+src/dashboard/target/
+src/dashboard/.idea/
 *.iml
 .gradle
 android/local.properties
