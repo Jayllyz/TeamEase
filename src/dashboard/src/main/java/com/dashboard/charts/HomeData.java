@@ -31,7 +31,7 @@ public class HomeData {
     }
 
     public static int getCompanyNumber(String token){
-        CUrl curl = new CUrl("https://togetherandstronger.site/api/api.php/activities/countAllActivities");
+        CUrl curl = new CUrl("https://togetherandstronger.site/api/api.php/activities/countAllCompany");
         Map<String, String> headersSent = new HashMap<String, String>();
         headersSent.put("Authorization", token);
         curl.headers(headersSent);
@@ -53,7 +53,7 @@ public class HomeData {
     }
 
     public static int getReservationNumber(String token){
-        CUrl curl = new CUrl("https://togetherandstronger.site/api/api.php/activities/countAllActivities");
+        CUrl curl = new CUrl("https://togetherandstronger.site/api/api.php/activities/countAllReservation");
         Map<String, String> headersSent = new HashMap<String, String>();
         headersSent.put("Authorization", token);
         curl.headers(headersSent);
