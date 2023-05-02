@@ -149,13 +149,15 @@ $siret = $_SESSION['siret'];
                                 class="btn-update btn ms-2 me-2">Saisir
                                 les participants</a>
                             <br>
-                            <form action="checkPayment.php?id=<?= $select['id'] ?>" class="mb-4" method="POST">
+                            <form action="checkPayment.php?id=<?= $select['id'] ?>"
+                                class="mb-4 btn-update btn ms-2 me-2"
+                                style="color: #eee; background-color: green !important;" method="POST">
 
-                                <input type="submit" value="Payer votre réservation" class="btn-update btn ms-2 me-2"
-                                    style="color: #eee; background-color: green !important;"
-                                    data-key="<?= $stripePublicKey ?>" data-amount="<?= $price * 100 ?>"
-                                    data-locale="auto" data-currency="eur" data-name="<?= $name['name'] ?>"
-                                    data-description="Paiement de la réservation" data-image="../images/logo.png" />
+                                <input type="submit" value="Payer votre réservation" data-key="<?= $stripePublicKey ?>"
+                                    style="background-color: transparent; border: none; outline: none; color: white;"
+                                    data-amount="<?= $price * 100 ?>" data-locale="auto" data-currency="eur"
+                                    data-name="<?= $name['name'] ?>" data-description="Paiement de la réservation"
+                                    data-image="../images/logo.png" />
 
                                 <script src="https://checkout.stripe.com/checkout.js"></script>
                                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.js"></script>
