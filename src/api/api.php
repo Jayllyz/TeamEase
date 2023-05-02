@@ -112,6 +112,20 @@ if (isPath('activities/countAllReservation')) {
   }
 }
 
+if (isPath('user/getReservationUsers/:id')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/user/getReservationUsers.php';
+    die();
+  }
+}
+
+if (isPath('user/getUserActivities')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/user/getUserActivities.php';
+    die();
+  }
+}
+
 echo jsonResponse(
   404,
   [],
