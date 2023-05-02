@@ -150,11 +150,36 @@ $siret = $_SESSION['siret'];
                                 les participants</a>
                             <br>
                             <form action="checkPayment.php?id=<?= $select['id'] ?>" class="mb-4" method="POST">
-                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+
+                                <input type="submit" value="Payer votre réservation" class="btn-update btn ms-2 me-2"
+                                    style="color: #eee; background-color: green !important;"
                                     data-key="<?= $stripePublicKey ?>" data-amount="<?= $price * 100 ?>"
-                                    data-name="<?= $name['name'] ?>" data-description="Paiement de la réservation"
-                                    data-image="../images/logo.png" data-locale="auto" data-currency="eur"
-                                    data-label="Payer votre réservation">
+                                    data-locale="auto" data-currency="eur" data-name="<?= $name['name'] ?>"
+                                    data-description="Paiement de la réservation" data-image="../images/logo.png" />
+
+                                <script src="https://checkout.stripe.com/v3/checkout.js"></script>
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+                                <script>
+                                $(document).ready(function() {
+                                    $(':submit').on('click', function(event) {
+                                        event.preventDefault();
+
+                                        var $button = $(this),
+                                            $form = $button.parents('form');
+
+                                        var opts = $.extend({}, $button.data(), {
+                                            token: function(result) {
+                                                $form.append($('<script>').attr({
+                                                    type: 'hidden',
+                                                    name: 'stripeToken',
+                                                    value: result.id
+                                                })).submit();
+                                            }
+                                        });
+
+                                        StripeCheckout.open(opts);
+                                    });
+                                });
                                 </script>
                                 <input type="hidden" name="price" value="<?= $price * 100 ?>">
                             </form>
