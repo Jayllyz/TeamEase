@@ -100,7 +100,7 @@ if (isPath('activities/countAllActivities')) {
 
 if (isPath('company/countAllCompany')) {
   if (isGetMethod()) {
-    require_once __DIR__ . '/routes/company/getCountAllCompanies.php';
+    require_once __DIR__ . '/routes/company/getCountAllCompany.php';
     die();
   }
 }
