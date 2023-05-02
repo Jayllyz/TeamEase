@@ -2,9 +2,11 @@ package com.dashboard;
 
 import javafx.event.ActionEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.fxml.FXMLLoader;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.fx.ChartViewer;
 
@@ -50,7 +52,20 @@ public class DashboardController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+            Pane home = loader.load();
+            chartPane.getChildren().add(home);
+
+            home.prefWidthProperty().bind(chartPane.widthProperty());
+            home.prefHeightProperty().bind(chartPane.heightProperty());
+
+            HomeController homeController = loader.getController();
+            homeController.setToken(token);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setToken(String token) {

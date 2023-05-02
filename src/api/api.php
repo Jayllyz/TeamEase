@@ -91,6 +91,27 @@ if (isPath('provider')) {
   }
 }
 
+if (isPath('activities/countAllActivities')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/activities/getCountAllActivities.php';
+    die();
+  }
+}
+
+if (isPath('company/countAllCompany')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/company/getCountAllCompanies.php';
+    die();
+  }
+}
+
+if (isPath('activities/countAllReservation')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/activities/getCountAllReservation.php';
+    die();
+  }
+}
+
 echo jsonResponse(
   404,
   [],
