@@ -12,6 +12,20 @@ try {
 
   $body = getBody();
 
+  $isAdmin = isLoggedInAdmin($token);
+
+  if (!$isAdmin) {
+    echo jsonResponse(
+      404,
+      [],
+      [
+        'success' => false,
+        'message' => 'Not logged as Admin',
+      ],
+    );
+    return;
+  }
+
   $activities = getAll('countAllActivity');
 
   if (!$activities) {
