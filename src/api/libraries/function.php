@@ -663,6 +663,27 @@ function getAll($table)
 
     return $topProviderActivity;
   }
+
+  if ($table === 'countAllActivity') {
+    $query = $db->query('SELECT COUNT(id) as count FROM ACTIVITY');
+    $countAllActivity = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $countAllActivity;
+  }
+
+  if ($table === 'countAllCompany') {
+    $query = $db->query('SELECT COUNT(siret) as count FROM COMPANY');
+    $countAllCompany = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $countAllCompany;
+  }
+
+  if ($table === 'countAllReservations') {
+    $query = $db->query('SELECT COUNT(id) as count FROM RESERVATION');
+    $countAllReservations = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $countAllReservations;
+  }
 }
 
 ?>

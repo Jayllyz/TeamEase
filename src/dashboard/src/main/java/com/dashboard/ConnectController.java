@@ -63,6 +63,7 @@ public class ConnectController implements Initializable{
                     Scene scene = new Scene(root);
                     Stage stage = (Stage) btnConnect.getScene().getWindow();
                     stage.setTitle("Dashboard");
+                    stage.setResizable(true);
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {
