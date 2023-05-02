@@ -157,8 +157,8 @@ $siret = $_SESSION['siret'];
                                     data-locale="auto" data-currency="eur" data-name="<?= $name['name'] ?>"
                                     data-description="Paiement de la réservation" data-image="../images/logo.png" />
 
-                                <script src="https://checkout.stripe.com/v3/checkout.js"></script>
-                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+                                <script src="https://checkout.stripe.com/checkout.js"></script>
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.js"></script>
                                 <script>
                                 $(document).ready(function() {
                                     $(':submit').on('click', function(event) {
@@ -169,11 +169,17 @@ $siret = $_SESSION['siret'];
 
                                         var opts = $.extend({}, $button.data(), {
                                             token: function(result) {
-                                                $form.append($('<script>').attr({
+                                                $form.append($('<input>').attr({
                                                     type: 'hidden',
                                                     name: 'stripeToken',
                                                     value: result.id
+                                                })).append($('<input>').attr({
+                                                    type: 'hidden',
+                                                    name: 'stripeEmail',
+                                                    value: result.email
                                                 })).submit();
+
+
                                             }
                                         });
 
