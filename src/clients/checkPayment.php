@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once '../includes/db.php';
 require_once '/home/php/vendor/autoload.php';
 
@@ -33,6 +35,11 @@ $id_reservation = htmlspecialchars($_GET['id']);
 $req = $db->prepare('UPDATE RESERVATION SET status = 1 WHERE id = :id');
 $req->execute([
   'id' => $id_reservation,
+]);
+
+$req = $db->prepare('UPDATE COMPANY SET loyalty = loyalty + 1 WHERE siret = :siret');
+$req->execute([
+  'siret' => $_SESSION['siret'],
 ]);
 
 if ($req === false) {
