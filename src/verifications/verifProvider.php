@@ -110,8 +110,7 @@ if (
 
     $subject = 'Confirmation de votre inscription';
     $msgHTML =
-      '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
-                <p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
+      '<p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
       <a href="localhost/includes/confRegistration.php?' .
       'token=' .
       $token .
