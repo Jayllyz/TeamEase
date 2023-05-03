@@ -128,7 +128,7 @@ $siret = $_SESSION['siret'];
                     } else {
                       echo 'Réservation réglée';
                     } ?></td>
-                    <td class="align-middle"><?php if ($select['status'] == 0) { ?>
+                    <td class="align-middle">
                         <?php
                         $req = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
                         $req->execute([
@@ -160,6 +160,7 @@ $siret = $_SESSION['siret'];
                                             class="bi bi-gear-fill"></i></a>
                                 </div>
                             </div>
+                            <?php if ($select['status'] == 0) { ?>
                             <div class="row mb-2 d-flex justify-content-center">
                                 <div class="col-4">
                                     <form action="checkPayment.php?id=<?= $select['id'] ?>"
@@ -209,14 +210,13 @@ $siret = $_SESSION['siret'];
                                         <input type="hidden" name="price" value="<?= $price * 100 ?>">
                                     </form>
                                 </div>
+                                <?php } ?>
                                 <div class="col-4">
                                     <a href="cancel.php?id=<?= $select['id'] ?>" class="btn-ban btn btn-lg"><i
                                             class="bi bi-trash3-fill"></i></a>
                                 </div>
                             </div>
-                            <?php } else {echo '<svg width="46" height="46" fill="none" stroke="#0c9234" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <path d="M20 6 9 17l-5-5"></path>
-</svg>';} ?>
+
                     </td>
                 </tr>
                 <?php } ?>
