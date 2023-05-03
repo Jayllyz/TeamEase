@@ -64,8 +64,8 @@ if (
 
     $subject = 'Confirmation de changement de mail';
     $msgHTML =
-      '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
-                  <p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre changement de mail :<br></p>
+      '<h1>Confirmation de changement de mail</h1>
+        <p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre changement de mail :<br></p>
         <a href="localhost/includes/confemail.php?' .
       'token=' .
       $token .

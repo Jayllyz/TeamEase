@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 
 require_once '../includes/db.php';
@@ -92,5 +93,4 @@ header(
   'Location: ../clients/reservations.php?message=Votre paiement a bien été effectué, vous allez recevoir votre facture par mail.&type=success',
 );
 exit();
-
 ?>

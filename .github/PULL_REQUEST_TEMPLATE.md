@@ -2,8 +2,6 @@
 
 copilot:summary
 
-copilot:walkthrough
-
 ## PR Type
 
 **What kind of change does this PR introduce?** <!-- (Check one with "x") -->

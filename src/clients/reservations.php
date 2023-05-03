@@ -45,7 +45,7 @@ $siret = $_SESSION['siret'];
 
 
         <div class="container info_user">
-            <table class="table text-center table-bordered table-hover">
+            <table class="table text-center table-bordered table-hover" style="border-color:black">
                 <tr>
                     <th>Nom de l'activité</th>
                     <th>Date</th>
@@ -71,7 +71,7 @@ $siret = $_SESSION['siret'];
                 ?>
 
                 <tr>
-                    <td><?php
+                    <td class="align-middle"><?php
                     $req = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
                     $req->execute([
                       'id' => $select['id_activity'],
@@ -81,9 +81,9 @@ $siret = $_SESSION['siret'];
                       echo $name['name'];
                     }
                     ?></td>
-                    <td><?= $date ?></td>
+                    <td class="align-middle"><?= $date ?></td>
 
-                    <td><?php
+                    <td class="align-middle"><?php
                     $req = $db->prepare('SELECT duration FROM ACTIVITY WHERE id = :id');
                     $req->execute([
                       'id' => $select['id_activity'],
@@ -102,8 +102,8 @@ $siret = $_SESSION['siret'];
 
 
 
-                    <td><?= $select['attendee'] ?></td>
-                    <td>
+                    <td class="align-middle"><?= $select['attendee'] ?></td>
+                    <td class="align-middle">
                         <?
                       $req = $db->prepare('SELECT id, id_location FROM ROOM WHERE id = :id');
                       $req->execute([
@@ -120,7 +120,7 @@ $siret = $_SESSION['siret'];
                       echo 'Salle : ' . $resultRoom['id'];
                     ?>
                     </td>
-                    <td><?php if ($select['status'] == 0) {
+                    <td class="align-middle"><?php if ($select['status'] == 0) {
                       echo 'Pas encore réglée <svg width="46" height="46" fill="none" stroke="#df1111" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path d="M18 6 6 18"></path>
                       <path d="m6 6 12 12"></path>
@@ -128,7 +128,7 @@ $siret = $_SESSION['siret'];
                     } else {
                       echo 'Réservation réglée';
                     } ?></td>
-                    <td><?php if ($select['status'] == 0) { ?>
+                    <td class="align-middle">
                         <?php
                         $req = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
                         $req->execute([
@@ -155,30 +155,78 @@ $siret = $_SESSION['siret'];
                         ?>
 
                         <div class="button_profil">
-                            <a href="validParticipants.php?id=<?= $select['id'] ?>"
-                                class="btn-update btn ms-2 me-2">Saisir
-                                les participants</a>
-                            <br>
-                            <form action="checkPayment.php?id=<?= $select['id'] ?>" class="mb-4" method="POST">
-                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                    data-key="<?= $stripePublicKey ?>" data-amount="<?= $price * 100 ?>"
-                                    data-name="<?= $name['name'] ?>" data-description="Paiement de la réservation"
-                                    data-image="../images/logo.png" data-locale="auto" data-currency="eur"
-                                    data-label="Payer votre réservation">
-                                </script>
-                                <input type="hidden" name="price" value="<?= $price * 100 ?>">
-                            </form>
-                            <a href="../includes/estimate.php?id=<?= $select['id'] ?>"
-                                class=" btn-update btn ms-2 me-2">Télécharger un
-                                devis</a>
-                            <br>
-                            <a href="editReserv.php?id=<?= $select['id'] ?>"
-                                class="btn-submit btn ms-2 me-2">Modifier</a>
-                            <br>
-                            <a href="cancel.php?id=<?= $select['id'] ?>" class="btn-ban btn ms-2 me-2">Annuler</a>
-                            <?php } else {echo '<svg width="46" height="46" fill="none" stroke="#0c9234" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <path d="M20 6 9 17l-5-5"></path>
-</svg>';} ?>
+                            <div class="row mb-2">
+                                <div class="col-4">
+                                    <a href="validParticipants.php?id=<?= $select['id'] ?>"
+                                        class="btn-update btn btn-lg"><i class="bi bi-person-fill-add"></i></a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="../includes/estimate.php?id=<?= $select['id'] ?>"
+                                        class=" btn-update btn btn-lg"><i
+                                            class="bi bi-file-earmark-arrow-down-fill"></i></a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="editReserv.php?id=<?= $select['id'] ?>" class="btn-submit btn btn-lg"><i
+                                            class="bi bi-gear-fill"></i></a>
+                                </div>
+                            </div>
+                            <?php if ($select['status'] == 0) { ?>
+                            <div class="row mb-2 d-flex justify-content-center">
+                                <div class="col-4">
+                                    <form action="checkPayment.php?id=<?= $select['id'] ?>"
+                                        class="mb-4 btn-update btn btn-lg"
+                                        style="color: #eee; background-color: green !important;" method="POST">
+
+                                        <button type="submit" class="p-0" data-key="<?= $stripePublicKey ?>"
+                                            style="background-color: transparent; border: none; outline: none; color: white;"
+                                            data-amount="<?= $price * 100 ?>" data-locale="auto" data-currency="eur"
+                                            data-name="<?= $name['name'] ?>"
+                                            data-description="Paiement de la réservation"
+                                            data-image="../images/logo.png">
+                                            <i class="bi bi-currency-euro"></i>
+                                        </button>
+
+                                        <script src="https://checkout.stripe.com/checkout.js"></script>
+                                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.js">
+                                        </script>
+                                        <script>
+                                        $(document).ready(function() {
+                                            $(':submit').on('click', function(event) {
+                                                event.preventDefault();
+
+                                                var $button = $(this),
+                                                    $form = $button.parents('form');
+
+                                                var opts = $.extend({}, $button.data(), {
+                                                    token: function(result) {
+                                                        $form.append($('<input>').attr({
+                                                            type: 'hidden',
+                                                            name: 'stripeToken',
+                                                            value: result.id
+                                                        })).append($('<input>').attr({
+                                                            type: 'hidden',
+                                                            name: 'stripeEmail',
+                                                            value: result.email
+                                                        })).submit();
+
+
+                                                    }
+                                                });
+
+                                                StripeCheckout.open(opts);
+                                            });
+                                        });
+                                        </script>
+                                        <input type="hidden" name="price" value="<?= $price * 100 ?>">
+                                    </form>
+                                </div>
+                                <?php } ?>
+                                <div class="col-4">
+                                    <a href="cancel.php?id=<?= $select['id'] ?>" class="btn-ban btn btn-lg"><i
+                                            class="bi bi-trash3-fill"></i></a>
+                                </div>
+                            </div>
+
                     </td>
                 </tr>
                 <?php } ?>

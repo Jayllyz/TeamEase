@@ -55,7 +55,7 @@ if ($result) {
   $subject = 'Réinitialisation du mot de passe';
   $mailMsg = 'Modifier votre mot de passe';
   $msgHTML =
-    '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
+    '<p>Bonjour,</p>
     <p class="display-2">Pour réinitialiser votre mot de passe, veuillez <a href="localhost/includes/changePassword.php?email=' .
     $email .
     '&token=' .

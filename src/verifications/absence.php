@@ -47,18 +47,17 @@ if (!isset($id)) {
 
     $subject = 'Annulation d\'une activité';
     $msgHTML =
-      '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
-                <p class="display-2">Bonjour nous vous envoyons ce message pour vous informer que votre activité du ' .
+      '<p class="display-2">Bonjour nous vous envoyons ce mail pour vous informer que votre activité du ' .
       $date .
       '
-                 ne sera pas disponible pour raison ' .
+                 ne sera pas disponible pour la raison suivante : ' .
       $raison .
       ':<br></p>
       <a href="localhost/includes/confemail.php?
       email=' .
       $email .
       '&type=' .
-      'company">Pour plus de detaille !</a>';
+      'company">Pour plus de details !</a>';
     $destination = '../login.php';
     include '../includes/mailer.php';
 

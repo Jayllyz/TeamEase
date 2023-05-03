@@ -72,10 +72,6 @@ footer {
   position: relative;
 }
 
-.btn-submit {
-  background-color: rgb(251, 157, 98) !important;
-}
-
 .button_profil {
   display: flex;
   flex-direction: column;
@@ -93,6 +89,10 @@ footer {
   background-color: #255c15 !important;
 }
 
+.btn-submit {
+  background-color: rgb(251, 157, 98) !important;
+}
+
 .btn-read {
   background-color: #089f58 !important;
 }
@@ -108,9 +108,11 @@ footer {
 
 .btn-read,
 .btn-update,
-.btn-ban {
+.btn-ban,
+.btn-submit {
   transition: 0.5s !important;
 }
+
 .btn-read:hover {
   background-color: #014927 !important;
   transform: scale(1.1);
@@ -123,6 +125,12 @@ footer {
 }
 .btn-update:hover {
   background-color: #00093f !important;
+  transform: scale(1.1);
+  transition: 0.5s !important;
+}
+
+.btn-submit:hover {
+  background-color: #fba07e !important;
   transform: scale(1.1);
   transition: 0.5s !important;
 }
