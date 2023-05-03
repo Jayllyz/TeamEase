@@ -34,13 +34,25 @@ for ($i = 0; $i < $attendee * 3; $i += 3) {
   $idAttendee = $req->fetch(PDO::FETCH_ASSOC);
 
   if (!$idAttendee) {
-    $req = $db->prepare('INSERT INTO ATTENDEE (lastName, firstName, email) VALUES (:lastName, :firstName, :email)');
+    $password = bin2hex(random_bytes(5));
+    $req = $db->prepare(
+      'INSERT INTO ATTENDEE (lastName, firstName, email, password) VALUES (:lastName, :firstName, :email, :password)',
+    );
     $req->execute([
       'lastName' => $array[$i],
       'firstName' => $array[$i + 1],
       'email' => $array[$i + 2],
+      'password' => hash('sha512', $password),
     ]);
   }
+
+  $email = $array[$i + 2];
+  $subject = 'Votre compte utilisateur TeamEase';
+  $msgHTML =
+    '<p class="display-2">Bienvenue chez Together&Stronger. Votre compte a été créé, vous pouvez vous connecter à votre compte sur mobile avec votre email et le mot de passe suivant :<br></p>' .
+    $password;
+
+  include '../includes/mailer.php';
 
   $req = $db->prepare(
     'SELECT id FROM ATTENDEE WHERE lastName = :lastName AND firstName = :firstName AND email = :email',
