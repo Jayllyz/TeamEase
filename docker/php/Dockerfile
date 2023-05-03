@@ -7,6 +7,7 @@ ARG PHP_USER_HOME_DIRECTORY=/home/php
 
 COPY composer.json .
 COPY composer.lock .
+COPY cron.php /home/cron.php
 
 RUN apk add sudo \
     && echo "$PHP_USER_NAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
