@@ -41,18 +41,22 @@ if ($req === false) {
 }
 
 $isinvoice = true;
-$msgHTML = '<img src="localhost/images/logo.png" class="logo float-left m-2 h-75 me-4" width="95" alt="Logo">
-            <p class="display-2">Merci d\'avoir choisi Together&Stronger pour votre séminaire, toute l\'équipe espère que vous avez apprécié votre expérience parmi nous.<br></p>
+$msgHTML = '<p class="display-2">Merci d\'avoir choisi Together&Stronger pour votre séminaire, toute l\'équipe espère que vous avez apprécié votre expérience parmi nous.<br></p>
             <p class="display-2">Vous trouverez ci-dessous la facture de votre réservation.<br></p>';
 
 require_once '../includes/estimate.php';
 require_once '../includes/mailer.php';
 
-$select = $db->prepare('SELECT id_activity FROM RESERVATION WHERE id = :id');
+$select = $db->prepare('SELECT id_activity,siret FROM RESERVATION WHERE id = :id');
 $select->execute([
   'id' => $id_reservation,
 ]);
 $idActivity = $select->fetch(PDO::FETCH_ASSOC);
+
+$removeNFC = $db->prepare('UPDATE COMPANY SET nfc = 0 WHERE siret = :siret');
+$removeNFC->execute([
+  'siret' => $idActivity['siret'],
+]);
 
 $select = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
 $select->execute([
