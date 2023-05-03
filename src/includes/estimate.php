@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (!isset($_SESSION['siret'])) {
+  session_start();
+}
 require_once 'db.php';
 
 if (!isset($isinvoice)) {
@@ -18,6 +20,7 @@ $selectClient = $req->fetch(PDO::FETCH_ASSOC);
 $nameClient = $selectClient['companyName'];
 $mailClient = $selectClient['email'];
 $addressClient = $selectClient['address'];
+$loyaltyClient = $selectClient['loyalty'];
 
 $req = $db->prepare('SELECT * FROM RESERVATION WHERE id = :id');
 $req->execute([
@@ -223,6 +226,27 @@ p {
             ?>
             <?php endforeach; ?>
 
+            <?php if ($loyaltyClient >= 10) {
+              $loyaltyReduc; ?>
+            <tr>
+                <td><?php if ($loyaltyClient >= 10 && $loyaltyClient < 20) {
+                  echo 'Fidélité tier 1 (5%)';
+                  $loyaltyReduc = $price * 0.05;
+                } elseif ($loyaltyClient >= 20 && $loyaltyClient < 30) {
+                  echo 'Fidélité tier 2 (7%)';
+                  $loyaltyReduc = $price * 0.07;
+                } elseif ($loyaltyClient >= 30) {
+                  echo 'Fidélité tier 3 (10%)';
+                  $loyaltyReduc = $price * 0.1;
+                } ?>
+                </td>
+                <td></td>
+                <td></td>
+                <td> - <?php echo $loyaltyReduc; ?> &euro;</td>
+            </tr>
+            <?php
+            } ?>
+
             <tr>
                 <td style="padding-top: 50px;"></td>
                 <td></td>
@@ -241,7 +265,7 @@ p {
             </tr>
             <tr>
                 <td colspan="2" class="no-border"></td>
-                <td>TTC : <?php echo $price; ?> &euro;</td>
+                <td>TTC : <?php echo $price - $loyaltyReduc; ?> &euro;</td>
             </tr>
         </tbody>
     </table>

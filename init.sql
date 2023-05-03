@@ -11,6 +11,8 @@ CREATE TABLE COMPANY
   rights INT NOT NULL,
   token VARCHAR(255),
   authToken VARCHAR(60),
+  nfc INT NOT NULL DEFAULT 0,
+  loyalty INT NOT NULL DEFAULT 0,
   confirm_signup INT NOT NULL DEFAULT 0,
   PRIMARY KEY (siret)
 );
