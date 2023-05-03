@@ -142,6 +142,16 @@ $siret = $_SESSION['siret'];
                         ]);
                         $price = $req->fetch(PDO::FETCH_ASSOC);
                         $price = $price['amount'] * $select['attendee'];
+
+                        $req = $db->prepare('SELECT nfc FROM COMPANY WHERE siret = :siret');
+                        $req->execute([
+                          'siret' => $siret,
+                        ]);
+                        $nfc = $req->fetch(PDO::FETCH_ASSOC);
+
+                        if ($nfc['nfc'] === 1) {
+                          $price = $price * 0.9;
+                        }
                         ?>
 
                         <div class="button_profil">

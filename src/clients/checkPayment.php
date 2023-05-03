@@ -1,5 +1,7 @@
 <?php
 ob_start();
+session_start();
+
 require_once '../includes/db.php';
 require_once '/home/php/vendor/autoload.php';
 
@@ -36,25 +38,33 @@ $req->execute([
   'id' => $id_reservation,
 ]);
 
+$req = $db->prepare('UPDATE COMPANY SET loyalty = loyalty + 1 WHERE siret = :siret');
+$req->execute([
+  'siret' => $_SESSION['siret'],
+]);
+
 if ($req === false) {
   header('Location: ../clients/reservations.php?message=Une erreur est survenue lors du paiement.&type=error');
   exit();
 }
 
 $isinvoice = true;
-$msgHTML = '<h1 class="display-1">Together&Stronger</h1>
-            <p class="display-2">Merci d\'avoir choisi Together&Stronger pour votre séminaire, toute l\'équipe espère que vous avez apprécié votre expérience parmi nous.<br></p>
+$msgHTML = '<p class="display-2">Merci d\'avoir choisi Together&Stronger pour votre séminaire, toute l\'équipe espère que vous avez apprécié votre expérience parmi nous.<br></p>
             <p class="display-2">Vous trouverez ci-dessous la facture de votre réservation.<br></p>';
 
 require_once '../includes/estimate.php';
 require_once '../includes/mailer.php';
-var_dump($mail->send());
 
-$select = $db->prepare('SELECT id_activity FROM RESERVATION WHERE id = :id');
+$select = $db->prepare('SELECT id_activity,siret FROM RESERVATION WHERE id = :id');
 $select->execute([
   'id' => $id_reservation,
 ]);
 $idActivity = $select->fetch(PDO::FETCH_ASSOC);
+
+$removeNFC = $db->prepare('UPDATE COMPANY SET nfc = 0 WHERE siret = :siret');
+$removeNFC->execute([
+  'siret' => $idActivity['siret'],
+]);
 
 $select = $db->prepare('SELECT name FROM ACTIVITY WHERE id = :id');
 $select->execute([
@@ -83,5 +93,4 @@ header(
   'Location: ../clients/reservations.php?message=Votre paiement a bien été effectué, vous allez recevoir votre facture par mail.&type=success',
 );
 exit();
-
 ?>

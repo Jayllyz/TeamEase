@@ -43,6 +43,7 @@ services:
     volumes:
       - ./src:${PHP_USER_HOME_DIRECTORY}
       - /home/php/vendor
+      - ./docker/php/crontab:/etc/crontab
 
   mysql:
     container_name: mysql

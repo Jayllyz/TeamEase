@@ -27,12 +27,20 @@ $array = explode(';', $participants);
 $array = array_values($array);
 
 for ($i = 0; $i < $attendee * 3; $i += 3) {
-  $req = $db->prepare('INSERT INTO ATTENDEE (lastName, firstName, email) VALUES (:lastName, :firstName, :email)');
+  $req = $db->prepare('SELECT id FROM ATTENDEE WHERE email = :email');
   $req->execute([
-    'lastName' => $array[$i],
-    'firstName' => $array[$i + 1],
     'email' => $array[$i + 2],
   ]);
+  $idAttendee = $req->fetch(PDO::FETCH_ASSOC);
+
+  if (!$idAttendee) {
+    $req = $db->prepare('INSERT INTO ATTENDEE (lastName, firstName, email) VALUES (:lastName, :firstName, :email)');
+    $req->execute([
+      'lastName' => $array[$i],
+      'firstName' => $array[$i + 1],
+      'email' => $array[$i + 2],
+    ]);
+  }
 
   $req = $db->prepare(
     'SELECT id FROM ATTENDEE WHERE lastName = :lastName AND firstName = :firstName AND email = :email',

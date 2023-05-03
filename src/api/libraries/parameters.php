@@ -5,8 +5,6 @@ function getParametersForRoute(string $route): array
   $path = $_SERVER['REQUEST_URI'];
   $pathSeparatorPattern = '#/#';
 
-  $path = str_replace('/api/api.php', '', $path);
-
   $routeParts = preg_split($pathSeparatorPattern, trim($route, '/'));
   $pathParts = preg_split($pathSeparatorPattern, trim($path, '/'));
 

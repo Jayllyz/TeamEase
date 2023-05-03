@@ -686,4 +686,33 @@ function getAll($table)
   }
 }
 
+function getReservationUsers()
+{
+  include '/home/php/includes/db.php';
+  require_once '/home/php/api/libraries/parameters.php';
+
+  $id = getParametersForRoute('/api/api.php/user/getReservationUsers/:id');
+
+  $query = $db->prepare(
+    'SELECT firstName, lastName, email FROM ATTENDEE INNER JOIN RESERVED ON RESERVED.id_attendee = ATTENDEE.id WHERE RESERVED.id_reservation = :id',
+  );
+  $query->execute(['id' => $id['id']]);
+  $users = $query->fetchAll(PDO::FETCH_ASSOC);
+
+  return $users;
+}
+
+function getUserActivities($token)
+{
+  include '/home/php/includes/db.php';
+
+  $query = $db->prepare(
+    'SELECT RESERVED.id_reservation, ACTIVITY.name FROM ATTENDEE INNER JOIN RESERVED ON ATTENDEE.id = RESERVED.id_attendee INNER JOIN RESERVATION ON RESERVED.id_reservation = RESERVATION.id INNER JOIN ACTIVITY ON RESERVATION.id_activity = ACTIVITY.id WHERE token = :token',
+  );
+  $query->execute(['token' => $token]);
+  $reservations = $query->fetchAll(PDO::FETCH_ASSOC);
+
+  return $reservations;
+}
+
 ?>
