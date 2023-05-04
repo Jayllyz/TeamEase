@@ -283,9 +283,10 @@ try {
     if ($isMAIL === true) {
       $invoice = $pdf->output('Facture.pdf', 'S');
     } else {
-      $path = '/home/php/invoices/';
+      $path = '/var/invoices/';
       if (!file_exists($path)) {
-        mkdir($path, 0777, true);
+        shell_exec('sudo mkdir ' . $path);
+        shell_exec('sudo chmod 777 ' . $path);
       }
       $filename = 'Facture_' . $idReservation . '.pdf';
       $invoice = $pdf->output($path . $filename, 'F');
