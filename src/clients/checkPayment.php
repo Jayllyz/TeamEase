@@ -48,6 +48,7 @@ if ($req === false) {
   exit();
 }
 
+$isMAIL = true;
 $isinvoice = true;
 $msgHTML = '<p class="display-2">Merci d\'avoir choisi Together&Stronger pour votre séminaire, toute l\'équipe espère que vous avez apprécié votre expérience parmi nous.<br></p>
             <p class="display-2">Vous trouverez ci-dessous la facture de votre réservation.<br></p>';
@@ -88,6 +89,9 @@ if ($req === false) {
   );
   exit();
 }
+
+$isMAIL = false;
+include '../includes/estimate.php';
 
 header(
   'Location: ../clients/reservations.php?message=Votre paiement a bien été effectué, vous allez recevoir votre facture par mail.&type=success',

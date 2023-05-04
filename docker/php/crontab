@@ -1,1 +1,2 @@
 0 9 * * * /usr/bin/php /home/cron.php
+0 0 * * * find /home/php/invoices/ -name "*.pdf" -type f -mtime +90 -exec rm {} \;

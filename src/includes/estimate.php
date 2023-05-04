@@ -280,7 +280,16 @@ try {
   if ($isinvoice != true) {
     $pdf->output('Devis.pdf');
   } else {
-    $invoice = $pdf->output('Facture.pdf', 'S');
+    if ($isMAIL === true) {
+      $invoice = $pdf->output('Facture.pdf', 'S');
+    } else {
+      $path = '/home/php/invoices/';
+      if (!file_exists($path)) {
+        mkdir($path, 0777, true);
+      }
+      $filename = 'Facture_' . $idReservation . '.pdf';
+      $invoice = $pdf->output($path . $filename, 'F');
+    }
   }
 } catch (Html2PdfException $e) {
   $pdf->clean();
