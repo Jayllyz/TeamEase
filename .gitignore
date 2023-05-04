@@ -25,3 +25,4 @@ android/captures
 .externalNativeBuild
 .cxx
 local.properties
+src/invoices

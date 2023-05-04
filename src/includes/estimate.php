@@ -168,6 +168,9 @@ p {
     <page_footer>
         <hr />
         <p>Fait a Paris, le <?php echo date('d/m/y'); ?></p>
+        <?php if ($isinvoice != true) { ?>
+        </p>Devis valable 90 jours</p>
+        <?php } ?>
         <p>Signature du particulier, suivie de la mension manuscrite "bon pour accord".</p>
         <p>&nbsp;</p>
     </page_footer>
@@ -280,7 +283,17 @@ try {
   if ($isinvoice != true) {
     $pdf->output('Devis.pdf');
   } else {
-    $invoice = $pdf->output('Facture.pdf', 'S');
+    if ($isMAIL === true) {
+      $invoice = $pdf->output('Facture.pdf', 'S');
+    } else {
+      $path = '/var/invoices/';
+      if (!file_exists($path)) {
+        shell_exec('sudo mkdir ' . $path);
+        shell_exec('sudo chmod 777 ' . $path);
+      }
+      $filename = 'Facture_' . $idReservation . '.pdf';
+      $invoice = $pdf->output($path . $filename, 'F');
+    }
   }
 } catch (Html2PdfException $e) {
   $pdf->clean();
