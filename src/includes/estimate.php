@@ -168,6 +168,9 @@ p {
     <page_footer>
         <hr />
         <p>Fait a Paris, le <?php echo date('d/m/y'); ?></p>
+        <?php if ($isinvoice != true) { ?>
+        </p>Devis valable 90 jours</p>
+        <?php } ?>
         <p>Signature du particulier, suivie de la mension manuscrite "bon pour accord".</p>
         <p>&nbsp;</p>
     </page_footer>
