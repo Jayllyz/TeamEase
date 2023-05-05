@@ -8,11 +8,11 @@ if (!isset($_SESSION['rights']) || $_SESSION['rights'] != 2) {
 <!DOCTYPE html>
 <html>
 <?php
-  $linkCss = 'css-js/style.css';
-  $linkLogo = 'images/logo.png';
-  $title = 'Gestion des salles et sites d\'activités';
-  include 'includes/head.php';
-  ?>
+$linkCss = 'css-js/style.css';
+$linkLogo = 'images/logo.png';
+$title = 'Gestion des salles et sites d\'activités';
+include 'includes/head.php';
+?>
 
 <body>
     <?php include 'includes/header.php'; ?>
