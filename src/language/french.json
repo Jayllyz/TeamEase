@@ -57,5 +57,13 @@
   "lang-reservation-number-participant": "Nombre de participants",
   "lang-reservation-date": "Date",
   "lang-reservation-time": "Heure de votre créneau",
-  "lang-reservations-CGU": "Le règlement des réservations se fait ultérieurement dans \"Mes réservations\". Toute réservation peut être annulée ou modifier avant la date. <br> Merci de remplir la liste des participants pour chacune de vos réservations pour aider nos équipes."
+  "lang-reservations-CGU": "Le règlement des réservations se fait ultérieurement dans \"Mes réservations\". Toute réservation peut être annulée ou modifier avant la date. <br> Merci de remplir la liste des participants pour chacune de vos réservations pour aider nos équipes.",
+
+  "lang-title-catalog": "Catalogue des activités",
+  "lang-catalog-add-activity": "Ajouter une activité",
+  "lang-catalog-filter-name": "Nom",
+  "lang-catalog-filter-duration": "Durée",
+  "lang-catalog-filter-price": "Prix",
+  "lang-catalog-filter-attendee": "Nombre de participants",
+  "lang-catalog-filter-status": "Status"
 }

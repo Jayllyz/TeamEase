@@ -315,15 +315,12 @@ function editJob() {
   const name = document.getElementById('edit-job-name').value;
   const salary = document.getElementById('edit-job-salary').value;
 
-  console.log(id);
-
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       if (xhr.responseText == 'success') {
         alert('Le métier a bien été modifié');
       }
-      console.log(xhr.responseText);
     }
   };
   xhr.open('POST', '../job/editJob.php', true);
@@ -699,7 +696,6 @@ function filterCategory(page, element) {
       categories.push(id);
     }
     localStorage.setItem('category', JSON.stringify(categories));
-    console.log(localStorage.getItem('category'));
     element.classList = 'btn btn-success col-2 m-2';
   } else if (element.classList == 'btn btn-success col-2 m-2') {
     let categories = JSON.parse(localStorage.getItem('category'));
@@ -711,7 +707,6 @@ function filterCategory(page, element) {
       }
     });
     localStorage.setItem('category', JSON.stringify(categories));
-    console.log(localStorage.getItem('category'));
     element.classList = 'btn btn-danger col-2 m-2';
   } else if (element.classList == 'btn btn-danger col-2 m-2') {
     let categories = JSON.parse(localStorage.getItem('category'));
@@ -726,7 +721,6 @@ function filterCategory(page, element) {
       return category != 0;
     });
     localStorage.setItem('category', JSON.stringify(categories));
-    console.log(localStorage.getItem('category'));
     element.classList = 'btn btn-outline-success col-2 m-2';
   }
   populateActivity(page);
@@ -874,7 +868,6 @@ function addLocation(element) {
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        console.log(this.responseText);
         if (this.responseText == 'success') {
           visuallyAddLocation(nameLocation, addressLocation);
           alert('Le site a bien été ajouté');
@@ -1097,7 +1090,6 @@ function selectedDateReservation(element, idActivity) {
   let xhr2 = new XMLHttpRequest();
   xhr2.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
       if (this.responseText !== '<h4>Animateurs disponibles</h4>') {
         if (document.getElementById('present-provider') != undefined) {
           document.getElementById('present-provider').innerHTML = this.responseText;
@@ -1380,25 +1372,34 @@ function saveAvailability(button) {
 
 function languageChange(language) {
   if (language == null) {
-    language = 'en';
+    language = 'fr';
+  }
+  let languageFile;
+  if (language == 'fr') {
+    languageFile = fetch('../../language/french.json');
+    localStorage.setItem('language', 'fr');
+    document.getElementById('languageSelecter').innerHTML = 'FR';
   }
   if (language == 'en') {
-    fetch('../../language/english.json')
-      .then((response) => response.json())
-      .then((data) => {
-        Object.keys(data).forEach((key) => {
-          if (document.getElementsByClassName(key)[0] == null) {
-            return;
-          }
-          element = document.getElementsByClassName(key)[0];
-          if (key.includes('lang-placeholder')) {
-            element.placeholder = data[key];
-          } else if (element != null) {
-            element.innerHTML = data[key];
-          }
-        });
-      });
+    languageFile = fetch('../../language/english.json');
+    localStorage.setItem('language', 'en');
+    document.getElementById('languageSelecter').innerHTML = 'EN';
   }
+  languageFile
+    .then((response) => response.json())
+    .then((data) => {
+      Object.keys(data).forEach((key) => {
+        if (document.getElementsByClassName(key)[0] == null) {
+          return;
+        }
+        element = document.getElementsByClassName(key)[0];
+        if (key.includes('lang-placeholder')) {
+          element.placeholder = data[key];
+        } else if (element != null) {
+          element.innerHTML = data[key];
+        }
+      });
+    });
 }
 
 window.onload = function () {

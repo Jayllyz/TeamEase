@@ -153,6 +153,22 @@
 
                     <?php } ?>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="languageSelecter" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        FR
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            <div class="dropdown-item" onclick="languageChange('fr')">FR</div>
+                        </li>
+                        <li>
+                            <div class="dropdown-item" onclick="languageChange('en')">EN</div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            </li>
             </ul>
         </div>
     </div>

@@ -56,5 +56,13 @@
   "lang-reservation-number-participant": "Number of participants",
   "lang-reservation-date": "Date",
   "lang-reservation-time": "Time of your slot",
-  "lang-reservations-CGU": "Reservation payment is made later in \"My reservations\". Any reservation can be cancelled or modified before the date. <br> Please fill in the list of participants for each of your reservations to help our teams."
+  "lang-reservations-CGU": "Reservation payment is made later in \"My reservations\". Any reservation can be cancelled or modified before the date. <br> Please fill in the list of participants for each of your reservations to help our teams.",
+
+  "lang-title-catalog": "Activity Catalog",
+  "lang-catalog-add-activity": "Add Activity",
+  "lang-catalog-filter-name": "Name",
+  "lang-catalog-filter-duration": "Duration",
+  "lang-catalog-filter-price": "Price",
+  "lang-catalog-filter-attendee": "Number of Participants",
+  "lang-catalog-filter-status": "Status"
 }
