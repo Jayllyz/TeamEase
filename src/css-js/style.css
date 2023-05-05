@@ -14,7 +14,7 @@ html {
 }
 
 body {
-  background: #f5f6f7 !important;
+  background: #ececec;
   transition: 0.5s;
   display: flex;
   flex-direction: column;
@@ -32,7 +32,7 @@ h1 {
 
 .main-text {
   padding: 20px;
-  background: #f5f6f7 !important;
+  background: #ececec;
   color: black;
 }
 

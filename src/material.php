@@ -102,7 +102,7 @@ if (isset($_GET['location']) && $_GET['location'] != 'stock') {
                 $query->execute([':id' => $id]);
                 $rooms = $query->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($rooms as $room) { ?>
-                <hr>
+                <hr size="5">
                 <div class="my-5 room" id="<?php echo $room['id']; ?>">
                     <h5>Matériel de <?php echo $room['name']; ?></h5>
                     <table class="table">

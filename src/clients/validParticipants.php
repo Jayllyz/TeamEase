@@ -27,7 +27,7 @@ $idReserv = $reserv['id'];
         <h1 style="margin-top: 1rem; margin-bottom: 1rem;"><?= $title ?></h1>
 
         <form method="POST" onsubmit="fillParticipants(<?= $idReserv ?>)">
-            <div class="container col-md-6" id="form">
+            <div class="container col-md-6 border border-2 border-secondary rounded" id="form">
                 <label for="participants" class="form-label"><strong>Merci de suivre la syntaxe suivante :</strong>
                     NOM; PRENOM; MAIL;</label>
                 <textarea class="form-control mb-6" id="participants" name="participants" rows="5" required></textarea>
@@ -43,7 +43,9 @@ $idReserv = $reserv['id'];
         </form>
     </main>
     <script src="../css-js/scripts.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
     <?php include '../includes/footer.php'; ?>
 </body>
 

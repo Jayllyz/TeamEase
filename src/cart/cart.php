@@ -157,7 +157,7 @@ include '../includes/head.php';
 
         <?php } else { ?>
         <div class="container col-md-6">
-            <div class="alert alert-warning" role="alert">
+            <div class="alert alert-warning border border-2 border-secondary rounded" role="alert">
                 Votre panier est vide
             </div>
         </div>

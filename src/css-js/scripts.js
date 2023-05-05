@@ -351,11 +351,16 @@ function deleteJob(id) {
 
 function addMaterial(element) {
   const body = element.parentElement.parentElement.querySelector('tbody');
-  const lastRow = body.lastElementChild;
-  const lastTd = lastRow.lastElementChild;
-  const button = lastTd.querySelector('button');
-  const id = button.getAttribute('data-material-id');
-  const newId = parseInt(id) + 1;
+  let newId;
+  if (!body.lastElementChild == null) {
+    const lastRow = body.lastElementChild;
+    const lastTd = lastRow.lastElementChild;
+    const button = lastTd.querySelector('button');
+    const id = button.getAttribute('data-material-id');
+    newId = parseInt(id) + 1;
+  } else {
+    newId = 0;
+  }
 
   ajaxAddMaterial(body, newId);
 }
