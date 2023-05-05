@@ -13,6 +13,17 @@ $linkLogo = 'images/logo.png';
 $title = 'Catalogue des activités';
 include 'includes/head.php';
 ?>
+<script>
+		function openPopupprofile() {
+			var choix = confirm("Voulez-vous valider votre choix ?");
+			if (choix == true) {
+
+			} else {
+                event.preventDefault();
+
+			}
+		}
+	</script>
 
 <body>
     <?php include 'includes/header.php'; ?>
@@ -80,6 +91,13 @@ include 'includes/head.php';
                             <a href="modifyCompanyPassword.php?siret=<?= $company['siret'] ?>&rights=<?= $company[
   'rights'
 ] ?>" class="btn ms-2 me-2">Modifier son mot de passe</a>
+                        </button>
+                        <br>
+                        <br>
+                        <button class="btn btn-danger" onclick="openPopupprofile()">
+                            <a href="verifications/deleteCompany.php?siret=<?= $company[
+                              'siret'
+                            ] ?>" class="btn ms-2 me-2">Supprimer mon compte</a>
                         </button>
                     </div>
                 </div>
@@ -591,6 +609,13 @@ include 'includes/head.php';
                         <button class="btn btn-success p-3" id="saveAvailability" style="display:none"
                             onclick="saveAvailability(this)">
                             Sauvegarder les nouvelles disponibilités
+                        </button>
+                        <br>
+                        <br>
+                        <button class="btn btn-danger" onclick="openPopupprofile()">
+                            <a href="verifications/deleteProvider.php?id=<?= $provider[
+                              'id'
+                            ] ?>" class="btn ms-2 me-2">Supprimer mon compte</a>
                         </button>
                     </div>
                 </div>

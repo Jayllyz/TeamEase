@@ -2,7 +2,7 @@
 include '../includes/db.php';
 $id = htmlspecialchars($_GET['id']);
 
-if (!isset($id)) {
+if (!isset($id) || empty($id)) {
   header('location: ../index.php');
   exit();
 } else {
