@@ -5,7 +5,7 @@ include 'includes/db.php';
 <!DOCTYPE html>
 <html>
 <?php
-$linkCss = 'css-js/style.css';
+$linkCss = 'css-js/style.css?' . time();
 $linkLogo = 'images/logo.png';
 $title = 'Accueil';
 include 'includes/head.php';

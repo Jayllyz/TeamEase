@@ -14,7 +14,7 @@ html {
 }
 
 body {
-  background: beige;
+  background: #f5f6f7 !important;
   transition: 0.5s;
   display: flex;
   flex-direction: column;
@@ -32,7 +32,7 @@ h1 {
 
 .main-text {
   padding: 20px;
-  background: beige;
+  background: #f5f6f7 !important;
   color: black;
 }
 
