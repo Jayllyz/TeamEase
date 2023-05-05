@@ -73,8 +73,21 @@ if (isset($_SESSION['siret'])) {
   exit();
 }
 
-header('Location: ../clients/reservations.php.php?message=Votre panier a bien été prise en compte!&type=success');
+$totalPrice = 0;
+
+foreach ($_POST as $key => $value) {
+  if (strpos($key, 'price') === 0) {
+    $totalPrice += $value * $_POST['attendee' . substr($key, strlen('price'))];
+  }
+}
+
+if ($_GET['pay'] === 'true') {
+  header('Location: cart.php?amount=' . $totalPrice);
+  exit();
+}
 
 $clearCart = $db->prepare('DELETE FROM CART WHERE siret = :siret');
 $clearCart->execute(['siret' => $siret]);
+
+header('Location: ../clients/reservations.php?message=Votre panier a bien été prise en compte!&type=success');
 exit();
