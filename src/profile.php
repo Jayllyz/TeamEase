@@ -95,7 +95,9 @@ include 'includes/head.php';
                         <br>
                         <br>
                         <button class="btn btn-danger" onclick="openPopupprofile()">
-                            <a href="verifications/deleteCompany.php?siret=<?= $company['siret']  ?>" class="btn ms-2 me-2">Supprimer mon compte</a>
+                            <a href="verifications/deleteCompany.php?siret=<?= $company[
+                              'siret'
+                            ] ?>" class="btn ms-2 me-2">Supprimer mon compte</a>
                         </button>
                     </div>
                 </div>
@@ -611,7 +613,9 @@ include 'includes/head.php';
                         <br>
                         <br>
                         <button class="btn btn-danger" onclick="openPopupprofile()">
-                            <a href="verifications/deleteProvider.php?id=<?= $provider['id']  ?>" class="btn ms-2 me-2">Supprimer mon compte</a>
+                            <a href="verifications/deleteProvider.php?id=<?= $provider[
+                              'id'
+                            ] ?>" class="btn ms-2 me-2">Supprimer mon compte</a>
                         </button>
                     </div>
                 </div>
