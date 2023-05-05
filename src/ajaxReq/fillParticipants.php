@@ -1,8 +1,8 @@
 <?php
 require_once '../includes/db.php';
 
-$idReserv = $_POST['idReserv'];
-$attendee = (int) $_POST['attendees'];
+$idReserv = htmlspecialchars($_POST['idReserv']);
+$attendee = htmlspecialchars((int) $_POST['attendees']);
 $participants = $_POST['participants'];
 
 $checkParticipants = $db->prepare('SELECT id_attendee FROM RESERVED WHERE id_reservation = :id');
@@ -29,7 +29,7 @@ $array = array_values($array);
 for ($i = 0; $i < $attendee * 3; $i += 3) {
   $req = $db->prepare('SELECT id FROM ATTENDEE WHERE email = :email');
   $req->execute([
-    'email' => $array[$i + 2],
+    'email' => htmlspecialchars($array[$i + 2]),
   ]);
   $idAttendee = $req->fetch(PDO::FETCH_ASSOC);
 
@@ -39,9 +39,9 @@ for ($i = 0; $i < $attendee * 3; $i += 3) {
       'INSERT INTO ATTENDEE (lastName, firstName, email, password) VALUES (:lastName, :firstName, :email, :password)',
     );
     $req->execute([
-      'lastName' => $array[$i],
-      'firstName' => $array[$i + 1],
-      'email' => $array[$i + 2],
+      'lastName' => htmlspecialchars($array[$i]),
+      'firstName' => htmlspecialchars($array[$i + 1]),
+      'email' => htmlspecialchars($array[$i + 2]),
       'password' => hash('sha512', $password),
     ]);
   }
@@ -58,9 +58,9 @@ for ($i = 0; $i < $attendee * 3; $i += 3) {
     'SELECT id FROM ATTENDEE WHERE lastName = :lastName AND firstName = :firstName AND email = :email',
   );
   $req->execute([
-    'lastName' => $array[$i],
-    'firstName' => $array[$i + 1],
-    'email' => $array[$i + 2],
+    'lastName' => htmlspecialchars($array[$i]),
+    'firstName' => htmlspecialchars($array[$i + 1]),
+    'email' => htmlspecialchars($array[$i + 2]),
   ]);
   $idAttendee = $req->fetch(PDO::FETCH_ASSOC);
 
