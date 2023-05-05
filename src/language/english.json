@@ -7,6 +7,7 @@
   "lang-occupation-management": "Occupation management",
   "lang-room-planning": "Room planning",
   "lang-about-us": "About us",
+  "lang-search": "Search",
   "lang-placeholder-search": "Search",
   "lang-login": "Log in",
   "lang-register": "Register",
@@ -15,6 +16,7 @@
   "lang-reservations": "My reservations",
   "lang-cart": "My cart",
 
+  "lang-title-signin": "Sign in",
   "lang-signin-company": "Company",
   "lang-signin-provider": "Provider",
 
@@ -48,5 +50,11 @@
   "lang-signin-saturday": "Saturday",
   "lang-signin-sunday": "Sunday",
   "lang-signin-already-registered2": "Already registered? <a href=\"login.php\">Log in</a>",
-  "lang-signin-submit2": "Submit"
+  "lang-signin-submit2": "Submit",
+
+  "lang-title-reservation": "Reservation",
+  "lang-reservation-number-participant": "Number of participants",
+  "lang-reservation-date": "Date",
+  "lang-reservation-time": "Time of your slot",
+  "lang-reservations-CGU": "Reservation payment is made later in \"My reservations\". Any reservation can be cancelled or modified before the date. <br> Please fill in the list of participants for each of your reservations to help our teams."
 }

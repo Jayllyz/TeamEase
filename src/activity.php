@@ -23,7 +23,7 @@ $title = $activity['name'];
 include 'includes/head.php';
 ?>
 
-<body onload="populateComment(<?= $activity['id'] ?>)">
+<body value="<?= $activity['id'] ?>">
     <?php include 'includes/header.php'; ?>
     <div class="container col-md-6">
         <?php

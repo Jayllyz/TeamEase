@@ -15,10 +15,10 @@ include 'includes/head.php';
 include 'includes/db.php';
 ?>
 
-<body onload="checkRadio('jsCheckRadio', 'forms')">
+<body>
     <?php include 'includes/header.php'; ?>
     <main>
-        <h1 style="margin-top: 1rem; margin-bottom: 1rem;">Inscription</h1>
+        <h1 style="margin-top: 1rem; margin-bottom: 1rem;" class="lang-title-signin">Inscription</h1>
 
         <div class="d-flex justify-content-center container ">
             <p id="jsCheckRadio" style="display: none;"><?= $check ?></p>

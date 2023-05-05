@@ -1387,6 +1387,9 @@ function languageChange(language) {
       .then((response) => response.json())
       .then((data) => {
         Object.keys(data).forEach((key) => {
+          if (document.getElementsByClassName(key)[0] == null) {
+            return;
+          }
           element = document.getElementsByClassName(key)[0];
           if (key.includes('lang-placeholder')) {
             element.placeholder = data[key];
@@ -1399,5 +1402,25 @@ function languageChange(language) {
 }
 
 window.onload = function () {
+  if (window.location.href.indexOf('catalog.php') > -1) {
+    populate = document.body.getAttribute('value');
+    populateActivity(populate);
+  }
+  if (window.location.href.indexOf('activity.php') > -1) {
+    activityId = document.body.getAttribute('value');
+    populateComment(activityId);
+  }
+  if (window.location.href.indexOf('admin.php') > -1) {
+    checkRadio('jsCheckRadio', 'back');
+  }
+  if (window.location.href.indexOf('job.php') > -1) {
+    getJob();
+  }
+  if (window.location.href.indexOf('location.php') > -1) {
+    populateLocation();
+  }
+  if (window.location.href.indexOf('signin.php') > -1) {
+    checkRadio('jsCheckRadio', 'forms');
+  }
   languageChange(localStorage.getItem('language'));
 };

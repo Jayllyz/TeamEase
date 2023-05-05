@@ -15,7 +15,7 @@
                     <div class="absolute" id="suggestions"></div>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-outline-secondary btn-lg" type="submit">Rechercher</button>
+                    <button class="btn btn-outline-secondary btn-lg lang-search" type="submit">Rechercher</button>
                 </div>
             </form>
 

@@ -24,7 +24,7 @@ if (isset($_GET['category'])) {
 }
 ?>
 
-<body onload="populateActivity(<?php echo $populate; ?>)">
+<body value=<?= $populate ?>>
     <?php include 'includes/header.php'; ?>
     <main>
         <div class="container">

@@ -7,6 +7,7 @@
   "lang-occupation-management": "Gestion des métiers",
   "lang-room-planning": "Planning des salles",
   "lang-about-us": "A propos de nous",
+  "lang-search": "Rechercher",
   "lang-placeholder-search": "Rechercher",
   "lang-login": "Se connecter",
   "lang-register": "S'inscrire",
@@ -15,6 +16,7 @@
   "lang-reservations": "Mes réservations",
   "lang-cart": "Mon panier",
 
+  "lang-title-signin": "Inscription",
   "lang-signin-company": "Entreprise",
   "lang-signin-provider": "Prestataire",
 
@@ -49,5 +51,11 @@
   "lang-signin-saturday": "Samedi",
   "lang-signin-sunday": "Dimanche",
   "lang-signin-already-registered2": "Déjà inscrit ? <a href=\"login.php\">Connectez-vous</a>",
-  "lang-signin-submit2": "Envoyer"
+  "lang-signin-submit2": "Envoyer",
+
+  "lang-title-reservation": "Réservation",
+  "lang-reservation-number-participant": "Nombre de participants",
+  "lang-reservation-date": "Date",
+  "lang-reservation-time": "Heure de votre créneau",
+  "lang-reservations-CGU": "Le règlement des réservations se fait ultérieurement dans \"Mes réservations\". Toute réservation peut être annulée ou modifier avant la date. <br> Merci de remplir la liste des participants pour chacune de vos réservations pour aider nos équipes."
 }
