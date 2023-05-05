@@ -1388,12 +1388,10 @@ function languageChange(language) {
       .then((data) => {
         Object.keys(data).forEach((key) => {
           element = document.getElementsByClassName(key)[0];
-          if (element != null) {
+          if (key.includes('lang-placeholder')) {
+            element.placeholder = data[key];
+          } else if (element != null) {
             element.innerHTML = data[key];
-          }
-          if (key[0] == 'lang-search') {
-            element = document.getElementsByClassName(key)[1];
-            element.placeholder = 'Search an activity';
           }
         });
       });

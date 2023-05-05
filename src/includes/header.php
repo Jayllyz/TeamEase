@@ -9,8 +9,9 @@
         <div class="col-12 col-md-9">
             <form class="d-flex" method="GET" action="catalog.php">
                 <div class="col-8 me-2">
-                    <input id="search" class="form-control form-control-lg me-3 lang-search" name="search" type="search"
-                        oninput="searchBar(this.value)" placeholder="Rechercher une activité" aria-label="Search">
+                    <input id="search" class="form-control form-control-lg me-3 lang-placeholder-search" name="search"
+                        type="search" oninput="searchBar(this.value)" placeholder="Rechercher une activité"
+                        aria-label="Search">
                     <div class="absolute" id="suggestions"></div>
                 </div>
                 <div class="col-2">

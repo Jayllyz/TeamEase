@@ -25,11 +25,11 @@ include 'includes/db.php';
             <div class="radio-inputs">
                 <label class="radio">
                     <input type="radio" name="radio" id="radioCompany" onchange="changeSignForm()">
-                    <span class="name">Entreprise</span>
+                    <span class="name lang-signin-company">Entreprise</span>
                 </label>
                 <label class="radio">
                     <input type="radio" name="radio" id="provider-check" onchange="changeSignForm()">
-                    <span class="name">Prestataire</span>
+                    <span class="name lang-signin-provider">Prestataire</span>
                 </label>
             </div>
         </div>
@@ -39,8 +39,8 @@ include 'includes/db.php';
                 action="verifications/verifSignin.php" method="post" enctype="multipart/form-data">
                 <?php include 'includes/msg.php'; ?>
                 <div class="mb-3">
-                    <label class="form-label"><strong>n° de SIRET</strong></label>
-                    <input type="number" name="siret" placeholder="Saisir le SIRET de votre entreprise" size="14" class="form-control is-<?= isset(
+                    <label class="form-label"><strong class="lang-number-siret">n° de SIRET</strong></label>
+                    <input type="number" name="siret" placeholder="Saisir le SIRET de votre entreprise" size="14" class="form-control lang-placeholder-siret is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'siret'
                       ? $_GET['valid']
@@ -53,7 +53,7 @@ include 'includes/db.php';
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label"><strong>Adresse mail</strong></label>
+                    <label class="form-label"><strong class="lang-signin-email-company">Adresse mail</strong></label>
                     <input type="email" name="emailCompany" placeholder="name@mail.com" class="form-control is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'emailCompany'
@@ -66,32 +66,34 @@ include 'includes/db.php';
                     <?php } ?>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label"><strong>Mot de passe</strong></label>
-                    <input type="password" name="passwordCompany" placeholder="Saisir votre mot de passe" class="form-control is-<?= isset(
+                    <label class="form-label"><strong class="lang-signin-password-company">Mot de passe</strong></label>
+                    <input type="password" name="passwordCompany" placeholder="Saisir votre mot de passe" class="form-control lang-placeholder-password-company is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'passwordCompany'
                       ? $_GET['valid']
                       : '' ?>" id="password" oninput="strengthChecker(this)" required>
                     <div id="strength-bar"></div>
                     <p id="msg"></p>
-                    <label class="form-label">Voir mon mot de passe</label>
+                    <label class="form-label lang-signin-see-password1-company">Voir mon mot de passe</label>
                     <input type="checkbox" class="form-check-input" onClick="viewPasswordInscription(this)">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label"><strong>Confirmation du mot de passe</strong></label>
+                    <label class="form-label"><strong class="lang-signin-confirm-password-company">Confirmation du mot
+                            de
+                            passe</strong></label>
                     <input type="password" name="conf_password" class="form-control" id="conf_Password_inscription"
                         required>
-                    <label class="form-label">Voir mon mot de passe</label>
+                    <label class="form-label lang-signin-see-password2-company">Voir mon mot de passe</label>
                     <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription(this)">
                 </div>
 
                 <div class="g-recaptcha mb-4" data-sitekey="<?= $siteKey ?>" data-callback="validCompany"></div>
 
-                <p>Déjà inscrit ? <a href="login.php">connectez-vous</a></p>
+                <p class="lang-signin-already-registered1">Déjà inscrit ? <a href="login.php">Connectez-vous</a></p>
 
                 <div class="text-center">
                     <button type="submit" style="display: none" id="submitCompany" name="submit"
-                        class="btn btn-lg btn-submit">Envoyer</button>
+                        class="btn btn-lg btn-submit lang-signin-submit">Envoyer</button>
                 </div>
             </form>
         </div>
@@ -104,8 +106,8 @@ include 'includes/db.php';
                 <?php include 'includes/msg.php'; ?>
                 <div class="mb-3">
 
-                    <label class="form-label"><strong>Nom</strong></label>
-                    <input type="text" name="name" placeholder="Saisir votre nom" class="form-control is-<?= isset(
+                    <label class="form-label"><strong class="lang-signin-lastName">Nom</strong></label>
+                    <input type="text" name="name" placeholder="Saisir votre nom" class="form-control lang-placeholder-name is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'name'
                       ? $_GET['valid']
@@ -120,8 +122,8 @@ include 'includes/db.php';
                 <div class="mb-3">
 
 
-                    <label class="form-label"><strong>Prénom</strong></label>
-                    <input type="text" name="firstname" placeholder="Saisir votre prénom" class="form-control is-<?= isset(
+                    <label class="form-label"><strong class="lang-signin-firstName">Prénom</strong></label>
+                    <input type="text" name="firstname" placeholder="Saisir votre prénom" class="form-control lang-placeholder-firstName is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'firstname'
                       ? $_GET['valid']
@@ -134,7 +136,7 @@ include 'includes/db.php';
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label"><strong>Adresse mail</strong></label>
+                    <label class="form-label"><strong class="lang-signin-email-provider">Adresse mail</strong></label>
                     <input type="email" name="email" placeholder="name@mail.com" class="form-control is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'email'
@@ -148,7 +150,8 @@ include 'includes/db.php';
                 </div>
 
                 <div class="mb-3">
-                    <label class="custom-select" for="selectjob"><strong>Métier</strong></label>
+                    <label class="custom-select" for="selectjob"><strong
+                            class="lang-signin-occupation">Métier</strong></label>
                     <select class="form-select is-<?= isset($_GET['valid']) && $_GET['input'] == 'job'
                       ? $_GET['valid']
                       : '' ?>" value="<?= isset($_COOKIE['job'])
@@ -173,59 +176,68 @@ include 'includes/db.php';
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label"><strong>Mot de passe</strong></label>
-                    <input type="password" name="password" placeholder="Saisir votre mot de passe" class="form-control is-<?= isset(
+                    <label class="form-label"><strong class="lang-signin-password-provider">Mot de
+                            passe</strong></label>
+                    <input type="password" name="password" placeholder="Saisir votre mot de passe" class="form-control lang-placeholder-password-provider is-<?= isset(
                       $_GET['valid'],
                     ) && $_GET['input'] == 'mdp'
                       ? $_GET['valid']
                       : '' ?>" id="passwordProvider" oninput="strengthChecker(this)" required>
                     <div id="strength-bar-provider"></div>
                     <p id="msg-provider"></p>
-                    <label class="form-label">Voir mon mot de passe</label>
+                    <label class="form-label lang-signin-see-password1-provider">Voir mon mot de passe</label>
                     <input type="checkbox" class="form-check-input" onClick="viewPasswordInscription(this)">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label"><strong>Confirmation du mot de passe</strong></label>
+                    <label class="form-label"><strong class="lang-signin-confirm-password-provider">Confirmation du mot
+                            de passe</strong></label>
                     <input type="password" name="conf_password" class="form-control" id="conf_Password_inscription"
                         required>
-                    <label class="form-label">Voir mon mot de passe</label>
+                    <label class="form-label lang-signin-see-password2-provider">Voir mon mot de passe</label>
                     <input type="checkbox" class="form-check-input" onClick="viewConfPasswordInscription(this)">
                 </div>
                 <div class="mb-3">
-                    <label for="form-label"><strong>Vos disponibilités</strong></label>
+                    <label for="form-label"><strong class="lang-signin-availability">Vos disponibilités</strong></label>
                     <div class="row mt-2">
                         <input type="checkbox" class="btn btn-check" name="day[]" value="monday" id="monday"
                             autocomplete="off">
-                        <label class="btn btn-outline-success col me-2 mb-3" for="monday">Lundi</label>
+                        <label class="btn btn-outline-success col me-2 mb-3 lang-signin-monday"
+                            for="monday">Lundi</label>
                         <input type="checkbox" class="btn btn-check" name="day[]" value="tuesday" id="tuesday"
                             autocomplete="off">
-                        <label class="btn btn-outline-success col me-2 mb-3" for="tuesday">Mardi</label>
+                        <label class="btn btn-outline-success col me-2 mb-3 lang-signin-tuesday"
+                            for="tuesday">Mardi</label>
                         <input type="checkbox" class="btn btn-check" name="day[]" value="wednesday" id="wednesday"
                             autocomplete="off">
-                        <label class="btn btn-outline-success col me-2 mb-3" for="wednesday">Mercredi</label>
+                        <label class="btn btn-outline-success col me-2 mb-3 lang-signin-wednesday"
+                            for="wednesday">Mercredi</label>
                         <input type="checkbox" class="btn btn-check" name="day[]" value="thursday" id="thursday"
                             autocomplete="off">
-                        <label class="btn btn-outline-success col me-2 mb-3" for="thursday">Jeudi</label>
+                        <label class="btn btn-outline-success col me-2 mb-3 lang-signin-thursday"
+                            for="thursday">Jeudi</label>
                         <input type="checkbox" class="btn btn-check" name="day[]" value="friday" id="friday"
                             autocomplete="off">
-                        <label class="btn btn-outline-success col me-2 mb-3" for="friday">Vendredi</label>
+                        <label class="btn btn-outline-success col me-2 mb-3 lang-signin-friday"
+                            for="friday">Vendredi</label>
                         <input type="checkbox" class="btn btn-check" name="day[]" value="saturday" id="saturday"
                             autocomplete="off">
-                        <label class="btn btn-outline-success col me-2 mb-3" for="saturday">Samedi</label>
+                        <label class="btn btn-outline-success col me-2 mb-3 lang-signin-saturday"
+                            for="saturday">Samedi</label>
                         <input type="checkbox" class="btn btn-check" name="day[]" value="sunday" id="sunday"
                             autocomplete="off">
-                        <label class="btn btn-outline-success col me-2 mb-3" for="sunday">Dimanche</label>
+                        <label class="btn btn-outline-success col me-2 mb-3 lang-signin-sunday"
+                            for="sunday">Dimanche</label>
                     </div>
                 </div>
 
                 <div class="g-recaptcha mb-4" id="provider" data-sitekey="<?= $siteKey ?>"
                     data-callback="validProvider"></div>
 
-                <p>Déjà inscrit ? <a href="login.php">connectez-vous</a></p>
+                <p class="lang-signin-already-registered2">Déjà inscrit ? <a href="login.php">connectez-vous</a></p>
 
                 <div class="text-center">
                     <button type="submit" id="submitProvider" style="display: none" name="submit"
-                        class="btn btn-lg btn-submit">Envoyer</button>
+                        class="btn btn-lg btn-submit lang-signin-submit2">Envoyer</button>
                 </div>
             </form>
         </div>
