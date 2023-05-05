@@ -53,6 +53,7 @@ if ($getReservation['status'] === 1) {
     $getReservation['date'] .
     ' a bien été annulée.</p>
   <p>Vous allez être remboursé dans les plus brefs délais à hauteur de 90%.</p>
+  <p>Veuillez saisir votre RIB <a href="https://togetherandstronger.site/refound.php">ici</a> : </p> 
   <p>Cordialement,</p>
   <p>Together&Stronger</p>';
 
