@@ -23,7 +23,11 @@ $linkLogo = '../images/logo.png';
 $linkCss = '../css-js/style.css';
 $title = 'Vos réservations';
 $siret = $_SESSION['siret'];
+$stripePublicKey = $_ENV['STRIPE_PUBLIC'];
 include '../includes/head.php';
+if (isset($_GET['amount'])) {
+  $amount = $_GET['amount'];
+}
 ?>
 
 <body>
@@ -33,6 +37,62 @@ include '../includes/head.php';
         <?php include '../includes/msg.php'; ?>
     </div>
     <main>
+        <?php if (isset($_GET['amount'])) { ?>
+
+        <div class="container col-md-6 ">
+            <?php
+            echo '<h1 class="mt-4">Réglement de votre panier</h1>';
+            echo '<h2 class="mt-4 d-flex justify-content-center mb-4">Montant total : ' . $amount . '€</h2>';
+            ?>
+
+            <div class="row d-flex justify-content-center">
+                <form action="validPayment.php" class="mb-4 col-2 btn-update btn btn-lg"
+                    style="color: #eee; background-color: green !important;" method="POST">
+                    <button type="submit" class="p-0" data-key="<?= $stripePublicKey ?>"
+                        style="background-color: transparent; border: none; outline: none; color: white;"
+                        data-amount="<?= $amount * 100 ?>" data-locale="auto" data-currency="eur" data-name="Panier"
+                        data-description="Paiement du panier" data-image="../images/logo.png">
+                        <i class="bi bi-currency-euro"></i>
+                    </button>
+
+
+                    <script src="https://checkout.stripe.com/checkout.js"></script>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.js">
+                    </script>
+                    <script>
+                    $(document).ready(function() {
+                        $(':submit').on('click', function(event) {
+                            event.preventDefault();
+
+                            var $button = $(this),
+                                $form = $button.parents('form');
+
+                            var opts = $.extend({}, $button.data(), {
+                                token: function(result) {
+                                    $form.append($('<input>').attr({
+                                        type: 'hidden',
+                                        name: 'stripeToken',
+                                        value: result.id
+                                    })).append($('<input>').attr({
+                                        type: 'hidden',
+                                        name: 'stripeEmail',
+                                        value: result.email
+                                    })).submit();
+
+
+                                }
+                            });
+
+                            StripeCheckout.open(opts);
+                        });
+                    });
+                    </script>
+                    <input type="hidden" name="price" value="<?= $amount * 100 ?>">
+                </form>
+            </div>
+        </div>
+
+        <?php } else { ?>
         <h1 class="mt-4" id="cartTitle">Mon panier</h1>
 
         <div id="idList" style="display:none;"><?= $idString ?></div>
@@ -140,11 +200,15 @@ include '../includes/head.php';
 
             <div class="d-flex justify-content-center mt-5">
                 <button type="submit" class="btn btn-primary me-3" name="submit" onclick="valid()">Valider</button>
+                <button type="submit" class="btn btn-primary me-3" name="submit" onclick="pay()">Valider et
+                    payer</button>
                 <button type="submit" class="btn btn-secondary" name="submit" onclick="estimate()">Générer un
                     devis</button>
             </div>
 
         </form>
+
+
         <div class="container align text-center mt-4" style="font-size: 20px; outline: 1px solid #D3D3D3;">
             Le règlement des réservations se fait ultérieurement dans "Mes réservations". Toute réservation peut
             être
@@ -155,6 +219,8 @@ include '../includes/head.php';
         </div>
 
 
+
+
         <?php } else { ?>
         <div class="container col-md-6">
             <div class="alert alert-warning" role="alert">
@@ -163,6 +229,7 @@ include '../includes/head.php';
         </div>
         <?php } ?>
 
+        <?php } ?>
 
     </main>
     <?php include '../includes/footer.php'; ?>
@@ -172,6 +239,11 @@ include '../includes/head.php';
 
     function valid() {
         form.action = "validCart.php";
+        form.submit();
+    }
+
+    function pay() {
+        form.action = "validCart.php?pay=true";
         form.submit();
     }
 
