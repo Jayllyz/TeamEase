@@ -117,7 +117,7 @@ if ($activity['status'] == 0) {
                 </h4>
             </div>
             <?php
-            $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
+            $altId = str_replace(' ', '-', $id[$i]);
             if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) { ?>
             <div class="col-1 d-flex justify-content-end pe-3">
                 <button type="button" class="btn-close btn-danger btn-sm me-2" aria-label="Close" data-bs-toggle="modal"
@@ -257,7 +257,7 @@ if ($activity['status'] == 0) {
                 </h4>
             </div>
             <?php
-            $altId = str_replace(' ', '-', $id[$i]); //On remplace les espaces par des . pcq sinon ca passe pas en id pour les modals/popup
+            $altId = str_replace(' ', '-', $id[$i]);
             if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) { ?>
             <div class="col-1 d-flex justify-content-end pe-3">
                 <button type="button" class="btn-close btn-danger btn-sm" aria-label="Close" data-bs-toggle="modal"
@@ -420,3 +420,4 @@ $totalPage = ceil($totalPage);
             } ?>
         </ul>
     </nav>
+</div>

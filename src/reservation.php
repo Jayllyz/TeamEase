@@ -18,7 +18,7 @@ include 'includes/head.php';
 <body>
     <?php include 'includes/header.php'; ?>
     <main>
-        <h1 style="margin-top: 1rem; margin-bottom: 1rem;">Reservation</h1>
+        <h1 style="margin-top: 1rem; margin-bottom: 1rem;" class="lang-title-reservation">Reservation</h1>
         <div class="container col-md-6">
             <?php include 'includes/msg.php'; ?>
         </div>
@@ -37,7 +37,7 @@ include 'includes/head.php';
             onsubmit="return validateForm(this.name)" method="POST">
             <div class="container col-md-3" id="form">
                 <label for="attendee" class="form-label">
-                    <h4>Nombre de participants</h4>
+                    <h4 class="lang-reservation-number-participant">Nombre de participants</h4>
                 </label>
                 <div class="input-group">
                     <input type="number" class="form-control" min="1" max="<?= $activities[0][
@@ -53,7 +53,7 @@ include 'includes/head.php';
                   $activities[0]['maxAttendee'] .
                   ' places disponibles' ?></div>
                 <label for="date" class="form-label">
-                    <h4>Date de votre réservation</h4>
+                    <h4 class="lang-reservation-date">Date de votre réservation</h4>
                 </label>
                 <?php foreach ($activities as $activity) { ?>
                 <div style="display:none" class="<?= $activity['day'] ?>">
@@ -65,7 +65,7 @@ include 'includes/head.php';
                 <p id="ifempty" style="display: none;" class="mt-2"></p>
                 <div id="slot" style="display:none">
                     <label for="time" class="form-label">
-                        <h4>Heure de votre créneau</h4>
+                        <h4 class="lang-reservation-time">Heure de votre créneau</h4>
                     </label>
                     <select class="form-control" name="slot" id="container-slot">
                     </select>
@@ -84,7 +84,8 @@ include 'includes/head.php';
                 </div>
             </div>
         </form>
-        <div class="container align text-center mt-4" style="font-size: 20px; outline: 1px solid #D3D3D3;">
+        <div class="container align text-center mt-4 lang-reservations-CGU"
+            style="font-size: 20px; outline: 1px solid #D3D3D3;">
             Le règlement des réservations se fait ultérieurement dans "Mes réservations". Toute réservation peut
             être
             annulée ou modifier avant la date. <br> Merci de remplir la liste des participants pour chacune de vos

@@ -24,13 +24,13 @@ if (isset($_GET['category'])) {
 }
 ?>
 
-<body onload="populateActivity(<?php echo $populate; ?>)">
+<body value=<?= $populate ?>>
     <?php include 'includes/header.php'; ?>
     <main>
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="text-center">Catalogue des activités</h1>
+                    <h1 class="text-center lang-title-catalog">Catalogue des activités</h1>
                 </div>
             </div>
             <br>
@@ -38,7 +38,7 @@ if (isset($_GET['category'])) {
                 <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
                   echo '
           <div class="text-center">
-          <a href="addActivityPage.php" class="btn btn-secondary">Ajouter une activité</a>
+          <a href="addActivityPage.php" class="btn btn-secondary lang-catalog-add-activity">Ajouter une activité</a>
           </div>';
                 } ?>
             </div>
@@ -58,16 +58,17 @@ if (isset($_GET['category'])) {
             </div>
             <hr size="5">
             <div class="row">
-                <button class="btn btn-primary col mx-2" onclick="filterName(<?php echo $page; ?>, this)"
-                    id="name">Nom</button>
-                <button class="btn btn-primary col mx-2" onclick="filterDuration(<?php echo $page; ?>, this)"
-                    id="duration">Durée</button>
-                <button class="btn btn-primary col mx-2" onclick="filterPrice(<?php echo $page; ?>, this)"
-                    id="price">Prix</button>
-                <button class="btn btn-primary col mx-2" onclick="filterMaxAttendee(<?php echo $page; ?>, this)"
-                    id="maxAttendee">Nombre de participants</button>
+                <button class="btn btn-primary col mx-2 lang-catalog-filter-name"
+                    onclick="filterName(<?php echo $page; ?>, this)" id="name">Nom</button>
+                <button class="btn btn-primary col mx-2 lang-catalog-filter-duration"
+                    onclick="filterDuration(<?php echo $page; ?>, this)" id="duration">Durée</button>
+                <button class="btn btn-primary col mx-2 lang-catalog-filter-price"
+                    onclick="filterPrice(<?php echo $page; ?>, this)" id="price">Prix</button>
+                <button class="btn btn-primary col mx-2 lang-catalog-filter-attendee"
+                    onclick="filterMaxAttendee(<?php echo $page; ?>, this)" id="maxAttendee">Nombre de
+                    participants</button>
                 <?php if (isset($_SESSION['rights']) && $_SESSION['rights'] == 2) {
-                  echo '<button class="btn btn-primary col mx-2" onclick="filterStatus(';
+                  echo '<button class="btn btn-primary col mx-2 lang-catalog-filter-status" onclick="filterStatus(';
                   echo $page;
                   echo ', this)" id="status">Status</button>';
                 } ?>

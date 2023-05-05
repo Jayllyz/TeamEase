@@ -20,7 +20,7 @@ if (isset($_GET['check'])) {
 }
 ?>
 
-<body onload="checkRadio('jsCheckRadio', 'back')">
+<body>
     <?php include 'includes/header.php'; ?>
     <script src="css-js/scripts.js"></script>
     <main>
