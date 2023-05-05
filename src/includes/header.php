@@ -72,7 +72,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle lang-categories" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Catégorie d'activités
+                        Catégories d'activités
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <?php
