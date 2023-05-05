@@ -30,10 +30,6 @@ if (isset($_GET['check'])) {
 
         <h1>Liste des Clients</h1>
         <div class="container">
-            <div id="logs">
-                <a href="#" class="btn mb-4 logs">Consulter les logs</a>
-                <a href="#" class="btn ms-4 mb-4 exportData">Exporter les données</a>
-            </div>
 
             <div class="d-flex justify-content-center container ">
                 <p id="jsCheckRadio" style="display: none;"><?= $check ?></p>
@@ -50,7 +46,8 @@ if (isset($_GET['check'])) {
             </div>
 
             <div id="table-company">
-                <table class="table text-center table-bordered table-hover" id="table-company">
+                <table class="table text-center table-bordered table-hover" id="table-company"
+                    style="border-color:black">
                     <thead>
                         <tr>
                             <th>SIRET</th>
@@ -150,7 +147,7 @@ if (isset($_GET['check'])) {
             </div>
 
             <div id="table-provider" style="display: none;">
-                <table class="table text-center table-bordered table-hover" id="active">
+                <table class="table text-center table-bordered table-hover" id="active" style="border-color:black">
                     <thead>
                         <tr>
                             <th>id</th>

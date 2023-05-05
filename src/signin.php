@@ -20,7 +20,7 @@ include 'includes/db.php';
     <main>
         <h1 style="margin-top: 1rem; margin-bottom: 1rem;">Inscription</h1>
 
-        <div class="d-flex justify-content-center container ">
+        <div class="d-flex justify-content-center container">
             <p id="jsCheckRadio" style="display: none;"><?= $check ?></p>
             <div class="radio-inputs">
                 <label class="radio">
@@ -35,7 +35,8 @@ include 'includes/db.php';
         </div>
 
         <div class="formulaire" id="forms-company">
-            <form name="signin" onsubmit="return validateForm(this.name)" id="form" class="container col-md-4"
+            <form name="signin" onsubmit="return validateForm(this.name)" id="form"
+                class="container col-md-4 border border-2 border-secondary rounded"
                 action="verifications/verifSignin.php" method="post" enctype="multipart/form-data">
                 <?php include 'includes/msg.php'; ?>
                 <div class="mb-3">
@@ -99,7 +100,8 @@ include 'includes/db.php';
 
 
         <div class="formulaire" id="forms-provider" style="display: none;">
-            <form name="signin" onsubmit="return validateForm(this.name)" id="form" class="container col-md-4"
+            <form name="signin" onsubmit="return validateForm(this.name)" id="form"
+                class="container col-md-4 border border-2 border-secondary rounded"
                 action="verifications/verifSignin.php" method="post" enctype="multipart/form-data">
                 <?php include 'includes/msg.php'; ?>
                 <div class="mb-3">

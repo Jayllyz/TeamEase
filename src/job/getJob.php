@@ -5,7 +5,7 @@ $req = $db->prepare('SELECT id, name, salary FROM OCCUPATION');
 $req->execute();
 $result = $req->fetchAll(PDO::FETCH_ASSOC);
 
-echo '<table class="table text-center table-bordered table-hover">';
+echo '<table class="table text-center table-bordered table-hover" style="border-color:black">';
 echo '<thead>';
 echo '<tr>';
 echo '<th>Nom</th>';

@@ -65,6 +65,9 @@ if (isset($_POST['submit'])) {
         $login = $_POST['login'];
         header('location: ../index.php?message=Vous êtes connecté&type=success');
         exit();
+      } else {
+        header('location: ../login.php?message=Vous avez été banni&type=danger');
+        exit();
       }
     }
   } else {
@@ -91,6 +94,9 @@ if (isset($_POST['submit'])) {
           setcookie('email', $_POST['login'], time() + 3600);
           $login = $_POST['login'];
           header('location: ../index.php?message=Vous êtes connecté&type=success');
+          exit();
+        } else {
+          header('location: ../login.php?message=Vous avez été banni&type=danger');
           exit();
         }
       }

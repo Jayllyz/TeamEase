@@ -17,30 +17,31 @@ include 'includes/head.php';
               include 'includes/msg.php';
             } ?>
         </div>
-        <form name="connexion" onsubmit="return validateForm(this.name)" action="verifications/verifLogin.php" method="post">
-            <div class="container col-md-4" id="form">
+        <form name="connexion" onsubmit="return validateForm(this.name)" action="verifications/verifLogin.php"
+            method="post">
+            <div class="container col-md-4 border border-2 border-secondary rounded" id="form">
                 <div class="mb-3">
                     <label for="login" class="form-label"><strong>Email</strong></label>
                     <input type="email" class="form-control is-<?= isset($_GET['valid']) && $_GET['input'] == 'email'
                       ? $_GET['valid']
                       : '' ?>" name="login" value="<?= isset($_COOKIE['email']) ? $_COOKIE['email'] : '' ?>" required>
-                    
+
                     <?php if (isset($_GET['valid'])) { ?>
-                        <div class="<?= $_GET['valid'] ?>-feedback">
-                            <?= $_GET['message'] ?>
-                        </div>
+                    <div class="<?= $_GET['valid'] ?>-feedback">
+                        <?= $_GET['message'] ?>
+                    </div>
                     <?php } ?>
                 </div>
                 <label for="password" class="form-label"><strong>Mot de passe</strong></label>
                 <input type="password" class="form-control is-<?= isset($_GET['valid']) && $_GET['input'] == 'password'
                   ? $_GET['valid']
                   : '' ?>" name="password" id="password" required>
-                  
-                    <?php if (isset($_GET['valid'])) { ?>
-                        <div class="<?= $_GET['valid'] ?>-feedback">
-                            <?= $_GET['message'] ?>
-                        </div>
-                    <?php } ?>
+
+                <?php if (isset($_GET['valid'])) { ?>
+                <div class="<?= $_GET['valid'] ?>-feedback">
+                    <?= $_GET['message'] ?>
+                </div>
+                <?php } ?>
                 <label class="form-label">Voir mon mot de passe</label>
                 <input type="checkbox" class="form-check-input" onClick="viewPassword()">
                 <div class="mb-3">
