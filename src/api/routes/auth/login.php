@@ -6,6 +6,7 @@ require_once '/home/php/api/libraries/body.php';
 require_once '/home/php/api/libraries/response.php';
 require_once '/home/php/api/entities/company/loginCompany.php';
 require_once '/home/php/api/entities/company/getRights.php';
+require_once '/home/php/api/entities/company/loginAttendee.php';
 
 try {
   $body = getBody();
@@ -15,6 +16,9 @@ try {
   require_once '/home/php/includes/db.php';
 
   $token = loginCompany($email, $password, $db);
+  if (!$token) {
+    $token = loginAttendee($email, $password, $db);
+  }
   $rights = getRights($email, $password, $db);
 
   if (!$token) {

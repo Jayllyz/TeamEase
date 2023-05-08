@@ -27,6 +27,10 @@ $array = explode(';', $participants);
 $array = array_values($array);
 
 for ($i = 0; $i < $attendee * 3; $i += 3) {
+  $array[$i] = trim($array[$i]);
+  $array[$i + 1] = trim($array[$i + 1]);
+  $array[$i + 2] = trim($array[$i + 2]);
+
   $req = $db->prepare('SELECT id FROM ATTENDEE WHERE email = :email');
   $req->execute([
     'email' => htmlspecialchars($array[$i + 2]),
@@ -49,7 +53,7 @@ for ($i = 0; $i < $attendee * 3; $i += 3) {
   $email = $array[$i + 2];
   $subject = 'Votre compte utilisateur TeamEase';
   $msgHTML =
-    '<p class="display-2">Bienvenue chez Together&Stronger. Votre compte a été créé, vous pouvez vous connecter à votre compte sur mobile avec votre email et le mot de passe suivant :<br></p>' .
+    '<p>Bienvenue chez Together&Stronger. Votre compte a été créé, vous pouvez vous connecter à votre compte sur mobile avec votre email et le mot de passe suivant :<br></p>' .
     $password;
 
   include '../includes/mailer.php';
