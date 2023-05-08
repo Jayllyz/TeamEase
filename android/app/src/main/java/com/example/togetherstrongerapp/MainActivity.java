@@ -17,6 +17,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.android.volley.VolleyError;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
                                 SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
                                 connected.edit().putBoolean("connected", true).apply();
                                 connected.edit().putString("token", response.getString("token")).apply();
+
+                                JSONObject data = response.getJSONObject("data");
+                                boolean rights = data.getBoolean("rights");
+
+                                if(!rights){
+                                    connected.edit().putBoolean("attendee", true).apply();
+                                }
                             } else {
                                 Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                             }

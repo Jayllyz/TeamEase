@@ -706,10 +706,14 @@ function getUserActivities($token)
 {
   include '/home/php/includes/db.php';
 
+  $getId = $db->prepare('SELECT id FROM ATTENDEE WHERE token = :token');
+  $getId->execute(['token' => $token]);
+  $id = $getId->fetch();
+
   $query = $db->prepare(
-    'SELECT RESERVED.id_reservation, ACTIVITY.name FROM ATTENDEE INNER JOIN RESERVED ON ATTENDEE.id = RESERVED.id_attendee INNER JOIN RESERVATION ON RESERVED.id_reservation = RESERVATION.id INNER JOIN ACTIVITY ON RESERVATION.id_activity = ACTIVITY.id WHERE token = :token',
+    'SELECT RESERVATION.*, maxAttendee, duration, priceAttendee, ACTIVITY.name as nameActivity, description, ROOM.name as nameRoom, address, LOCATION.name as city FROM RESERVATION INNER JOIN ACTIVITY ON RESERVATION.id_activity = ACTIVITY.id INNER JOIN ROOM ON ROOM.id = ACTIVITY.id_room INNER JOIN LOCATION ON ROOM.id_location = LOCATION.id INNER JOIN RESERVED ON RESERVED.id_reservation ON RESERVATION.id WHERE RESERVED.id_attendee = :id',
   );
-  $query->execute(['token' => $token]);
+  $query->execute(['id' => $id]);
   $reservations = $query->fetchAll(PDO::FETCH_ASSOC);
 
   return $reservations;

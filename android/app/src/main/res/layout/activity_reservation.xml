@@ -12,6 +12,15 @@
         android:layout_gravity="center"
         />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deconnexion"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/design_default_color_error"
+        android:id="@+id/logout"
+        />
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

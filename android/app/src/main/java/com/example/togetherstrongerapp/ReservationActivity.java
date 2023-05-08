@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import java.util.Map;
 public class ReservationActivity extends AppCompatActivity {
 
     private ListView list;
+    private Button logout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class ReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservation);
 
         this.list = findViewById(R.id.list);
+        this.logout = findViewById(R.id.logout);
 
         SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
         String token = preferences.getString("token", "");
@@ -72,6 +75,18 @@ public class ReservationActivity extends AppCompatActivity {
                 });
             }
         });
+
+        this.logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.apply();
+                Intent intent = new Intent(ReservationActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void startChatRoom(String name) {
@@ -90,7 +105,17 @@ public class ReservationActivity extends AppCompatActivity {
 
         List<Reservation> reservations = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://togetherandstronger.site/api/api.php/company";
+
+        SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
+        Boolean attendee = preferences.getBoolean("attendee", false);
+
+        String url;
+        if(attendee){
+            Toast.makeText(this, "attendee", Toast.LENGTH_SHORT).show();
+            url = "https://togetherandstronger.site/api/api.php/user/getUserActivities";
+        } else {
+            url = "https://togetherandstronger.site/api/api.php/company";
+        }
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
