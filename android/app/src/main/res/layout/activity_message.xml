@@ -7,24 +7,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mes réservations"
+        android:text="Nom"
         android:textSize="4mm"
-        android:layout_gravity="center"
-        />
+        android:id="@+id/name"
+    />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deconnexion"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/design_default_color_error"
-        android:id="@+id/logout"
-        />
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list"
-        />
+        android:text="Message"
+        android:textSize="3mm"
+        android:id="@+id/message"
+    />
 
 </LinearLayout>
