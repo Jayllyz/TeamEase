@@ -1,6 +1,5 @@
 package com.example.togetherstrongerapp;
 
-import static java.lang.String.valueOf;
 
 import androidx.appcompat.app.AppCompatActivity;
 
