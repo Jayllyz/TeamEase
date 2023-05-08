@@ -711,9 +711,9 @@ function getUserActivities($token)
   $id = $getId->fetch();
 
   $query = $db->prepare(
-    'SELECT RESERVATION.*, maxAttendee, duration, priceAttendee, ACTIVITY.name as nameActivity, description, ROOM.name as nameRoom, address, LOCATION.name as city FROM RESERVATION INNER JOIN ACTIVITY ON RESERVATION.id_activity = ACTIVITY.id INNER JOIN ROOM ON ROOM.id = ACTIVITY.id_room INNER JOIN LOCATION ON ROOM.id_location = LOCATION.id INNER JOIN RESERVED ON RESERVED.id_reservation ON RESERVATION.id WHERE RESERVED.id_attendee = :id',
+    'SELECT RESERVATION.*, maxAttendee, duration, priceAttendee, ACTIVITY.name as nameActivity, description, ROOM.name as nameRoom, address, LOCATION.name as city FROM RESERVATION INNER JOIN ACTIVITY ON RESERVATION.id_activity = ACTIVITY.id INNER JOIN ROOM ON ROOM.id = ACTIVITY.id_room INNER JOIN LOCATION ON ROOM.id_location = LOCATION.id INNER JOIN RESERVED ON RESERVED.id_reservation = RESERVATION.id WHERE RESERVED.id_attendee = :id',
   );
-  $query->execute(['id' => $id]);
+  $query->execute(['id' => $id['id']]);
   $reservations = $query->fetchAll(PDO::FETCH_ASSOC);
 
   return $reservations;
