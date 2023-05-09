@@ -47,6 +47,14 @@ public class ChatRoom extends AppCompatActivity {
         nameChatRoom.setText(name);
 
         MessageAdapter adapter = new MessageAdapter(getChat(), getApplicationContext());
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Toast.makeText(getApplicationContext(), "Refresh", Toast.LENGTH_LONG).show();
+//                chatMessages.setAdapter(adapter);
+//            }
+//        }, 500);
         this.chatMessages.setAdapter(adapter);
     }
 
@@ -66,16 +74,17 @@ public class ChatRoom extends AppCompatActivity {
                 try {
                     JSONObject json = new JSONObject(response);
 
-                    Toast.makeText(ChatRoom.this, "Response: " + response, Toast.LENGTH_LONG).show();
                     JSONArray jsonChat = json.getJSONArray("data");
 
                     for (int i = 0; i < jsonChat.length(); i++) {
                         JSONObject current = jsonChat.getJSONObject(i);
 
+                        Log.d("testing", current.toString());
+
                         Message message = new Message(
                                 current.getString("firstName"),
                                 current.getString("lastName"),
-                                current.getString("message"),
+                                current.getString("content"),
                                 current.getString("date")
                         );
 
