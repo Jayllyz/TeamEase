@@ -126,6 +126,20 @@ if (isPath('user/getUserActivities')) {
   }
 }
 
+if (isPath('chat/getChat/:id')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/chat/getChat.php';
+    die();
+  }
+}
+
+if (isPath('chat/sendMessage/:id')) {
+  if (isPostMethod()) {
+    require_once __DIR__ . '/routes/chat/sendMessage.php';
+    die();
+  }
+}
+
 echo jsonResponse(
   404,
   [],
