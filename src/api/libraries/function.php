@@ -719,4 +719,37 @@ function getUserActivities($token)
   return $reservations;
 }
 
-?>
+function getMessages()
+{
+  include '/home/php/includes/db.php';
+  require_once '/home/php/api/libraries/parameters.php';
+
+  $id = getParametersForRoute('/api/api.php/chat/getChat/:id');
+
+  $query = $db->prepare(
+    'SELECT IF(DATE(MESSAGE.date) = CURDATE(), DATE_FORMAT(MESSAGE.date, \'%H:%i\'), DATE_FORMAT(MESSAGE.date, \'%m-%d\')) AS date, ATTENDEE.firstName, ATTENDEE.lastName FROM MESSAGE INNER JOIN ATTENDEE ON MESSAGE.id_attendee = ATTENDEE.id WHERE id_reservation = :id ORDER BY date ASC',
+  );
+  $query->execute(['id' => $id['id']]);
+  $messages = $query->fetchAll(PDO::FETCH_ASSOC);
+
+  return $messages;
+}
+
+function sendMessage($message, $token)
+{
+  include '/home/php/includes/db.php';
+  require_once '/home/php/api/libraries/parameters.php';
+
+  $id = getParametersForRoute('/api/api.php/chat/sendMessage/:id');
+
+  $query = $db->prepare(
+    'INSERT INTO MESSAGE (id_attendee, id_reservation, content, date) VALUES ((SELECT id FROM ATTENDEE WHERE token = :token), :id_reservation, :message, now())',
+  );
+  $query->execute([
+    'token' => $token,
+    'id_reservation' => $id['id'],
+    'message' => $message,
+  ]);
+
+  return true;
+}
