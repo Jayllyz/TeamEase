@@ -52,14 +52,13 @@ public class ChatRoom extends AppCompatActivity {
 
     public List<Message> getChat(){
         List<Message> chat = new ArrayList<>();
+        RequestQueue queue = Volley.newRequestQueue(this);
 
         SharedPreferences preferences = getSharedPreferences("chatRoom", MODE_PRIVATE);
         SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
         int id = preferences.getInt("id", 0);
         String token = connected.getString("token", "");
         String url = "https://togetherandstronger.site/api/api.php/chat/getChat/" + id;
-
-        Log.d("URL", url);
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -95,8 +94,7 @@ public class ChatRoom extends AppCompatActivity {
             public void onErrorResponse(VolleyError error){
                 Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        })
-        {
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -105,6 +103,7 @@ public class ChatRoom extends AppCompatActivity {
             }
         };
 
+        queue.add(request);
         return chat;
     }
 }
