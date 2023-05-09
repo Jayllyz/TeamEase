@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,7 +24,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatRoom extends AppCompatActivity {
 
@@ -50,8 +54,12 @@ public class ChatRoom extends AppCompatActivity {
         List<Message> chat = new ArrayList<>();
 
         SharedPreferences preferences = getSharedPreferences("chatRoom", MODE_PRIVATE);
+        SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
         int id = preferences.getInt("id", 0);
+        String token = connected.getString("token", "");
         String url = "https://togetherandstronger.site/api/api.php/chat/getChat/" + id;
+
+        Log.d("URL", url);
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -61,7 +69,6 @@ public class ChatRoom extends AppCompatActivity {
 
                     Toast.makeText(ChatRoom.this, "Response: " + response, Toast.LENGTH_LONG).show();
                     JSONArray jsonChat = json.getJSONArray("data");
-                    System.out.println(jsonChat);
 
                     for (int i = 0; i < jsonChat.length(); i++) {
                         JSONObject current = jsonChat.getJSONObject(i);
@@ -88,7 +95,15 @@ public class ChatRoom extends AppCompatActivity {
             public void onErrorResponse(VolleyError error){
                 Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", token);
+                return params;
+            }
+        };
 
         return chat;
     }
