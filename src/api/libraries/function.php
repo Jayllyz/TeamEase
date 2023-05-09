@@ -727,7 +727,7 @@ function getMessages()
   $id = getParametersForRoute('/api/api.php/chat/getChat/:id');
 
   $query = $db->prepare(
-    'SELECT IF(DATE(MESSAGE.date) = CURDATE(), DATE_FORMAT(MESSAGE.date, \'%H:%i\'), DATE_FORMAT(MESSAGE.date, \'%m-%d\')) AS date, ATTENDEE.firstName, ATTENDEE.lastName FROM MESSAGE INNER JOIN ATTENDEE ON MESSAGE.id_attendee = ATTENDEE.id WHERE id_reservation = :id ORDER BY date ASC',
+    'SELECT IF(DATE(MESSAGE.date) = CURDATE(), DATE_FORMAT(MESSAGE.date, \'%H:%i\'), DATE_FORMAT(MESSAGE.date, \'%m-%d\')) AS date, MESSAGE.content, ATTENDEE.firstName, ATTENDEE.lastName FROM MESSAGE INNER JOIN ATTENDEE ON MESSAGE.id_attendee = ATTENDEE.id WHERE id_reservation = :id ORDER BY date ASC',
   );
   $query->execute(['id' => $id['id']]);
   $messages = $query->fetchAll(PDO::FETCH_ASSOC);
