@@ -1,19 +1,29 @@
 package com.example.togetherstrongerapp;
 
 public class Message {
-    String name, message;
+    String firstName, lastName, message, date;
 
-    public Message(String name, String message) {
-        this.name = name;
+    public Message(String firstName, String lastName, String message, String date) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.message = message;
+        this.date = date;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMessage() {
@@ -22,5 +32,13 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

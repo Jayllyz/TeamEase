@@ -1,10 +1,9 @@
 package com.example.togetherstrongerapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -57,10 +56,16 @@ public class ReservationActivity extends AppCompatActivity {
                 for (int i = 0; i < jsonReserv.length(); i++) {
                     JSONObject current = jsonReserv.getJSONObject(i);
 
-                    Reservation reservation = new Reservation(current.getString("nameActivity"),
-                            current.getString("address"), current.getString("city"),
-                            current.getString("nameRoom"), current.getString("date"),
-                            current.getString("time"), current.getString("duration"));
+                    Reservation reservation = new Reservation(
+                            current.getInt("id_activity"),
+                            current.getString("nameActivity"),
+                            current.getString("address"),
+                            current.getString("city"),
+                            current.getString("nameRoom"),
+                            current.getString("date"),
+                            current.getString("time"),
+                            current.getString("duration")
+                    );
                     reservations.add(reservation);
                 }
 
@@ -70,6 +75,8 @@ public class ReservationActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Reservation selected = reservations.get(i);
+                        SharedPreferences chatRoom = getSharedPreferences("chatRoom", MODE_PRIVATE);
+                        chatRoom.edit().putInt("id", selected.getId()).apply();
                         startChatRoom(selected.getName());
                     }
                 });
@@ -90,10 +97,9 @@ public class ReservationActivity extends AppCompatActivity {
     }
 
     private void startChatRoom(String name) {
-        setContentView(R.layout.activity_chat_room);
-        TextView nameChatRoom;
-        nameChatRoom = findViewById(R.id.nameChatRoom);
-        nameChatRoom.setText(name);
+        Intent intent = new Intent(ReservationActivity.this, ChatRoom.class);
+        intent.putExtra("name", name);
+        startActivity(intent);
     }
 
 
@@ -111,7 +117,6 @@ public class ReservationActivity extends AppCompatActivity {
 
         String url;
         if(attendee){
-            Toast.makeText(this, "attendee", Toast.LENGTH_SHORT).show();
             url = "https://togetherandstronger.site/api/api.php/user/getUserActivities";
         } else {
             url = "https://togetherandstronger.site/api/api.php/company";

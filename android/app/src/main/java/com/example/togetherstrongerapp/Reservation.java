@@ -2,12 +2,11 @@ package com.example.togetherstrongerapp;
 
 
 public class Reservation {
-    private String name, address, city, nameRoom;
-    private String date;
-    private String timeStart;
-    private String duration;
+    private String name, address, city, nameRoom, date, timeStart, duration;
+    private int id;
 
-    public Reservation(String name, String address, String city, String nameRoom, String date, String timeStart, String duration) {
+    public Reservation(int id, String name, String address, String city, String nameRoom, String date, String timeStart, String duration) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.city = city;
@@ -17,7 +16,13 @@ public class Reservation {
         this.duration = duration;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id){
+        this.id = id;
+    }
     public String getName() {
         return name;
     }
