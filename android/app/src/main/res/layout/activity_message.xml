@@ -9,8 +9,24 @@
         android:layout_height="wrap_content"
         android:text="Nom"
         android:textSize="4mm"
-        android:id="@+id/name"
+        android:id="@+id/lastName"
     />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prenom"
+        android:textSize="4mm"
+        android:id="@+id/firstName"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HEURE"
+        android:textSize="4mm"
+        android:id="@+id/date"
+        />
 
     <TextView
         android:layout_width="wrap_content"

@@ -12,6 +12,12 @@ import java.util.List;
 public class MessageAdapter extends BaseAdapter {
     private List<Message> chatMessages;
     private Context context;
+
+    public MessageAdapter(List<Message> chatMessages, Context context) {
+        this.chatMessages = chatMessages;
+        this.context = context;
+    }
+
     @Override
     public int getCount() {
         return this.chatMessages.size();
@@ -34,13 +40,17 @@ public class MessageAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.activity_message, null);
         }
 
-        TextView name = view.findViewById(R.id.name);
+        TextView firstName = view.findViewById(R.id.firstName);
+        TextView lastName = view.findViewById(R.id.lastName);
         TextView message = view.findViewById(R.id.message);
+        TextView date = view.findViewById(R.id.date);
 
         Message current = (Message)getItem(i);
 
-        name.setText(current.getName());
+        firstName.setText(current.getFirstName());
+        lastName.setText(current.getLastName());
         message.setText(current.getMessage());
+        date.setText(current.getDate());
 
         return view;
     }
