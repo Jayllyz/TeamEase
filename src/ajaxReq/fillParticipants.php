@@ -11,16 +11,18 @@ $checkParticipants->execute([
 ]);
 $checkParticipants = $checkParticipants->fetchAll(PDO::FETCH_ASSOC);
 
-foreach ($checkParticipants as $id) {
-  $req = $db->prepare('DELETE FROM ATTENDEE WHERE id = :id');
-  $req->execute([
-    'id' => $id['id_attendee'],
-  ]);
+if (!empty($checkParticipants)) {
+  foreach ($checkParticipants as $id) {
+    $req = $db->prepare('DELETE FROM ATTENDEE WHERE id = :id');
+    $req->execute([
+      'id' => $id['id_attendee'],
+    ]);
 
-  $req = $db->prepare('DELETE FROM RESERVED WHERE id_attendee = :id');
-  $req->execute([
-    'id' => $id['id_attendee'],
-  ]);
+    $req = $db->prepare('DELETE FROM RESERVED WHERE id_attendee = :id');
+    $req->execute([
+      'id' => $id['id_attendee'],
+    ]);
+  }
 }
 
 $array = explode(';', $participants);
@@ -36,6 +38,7 @@ for ($i = 0; $i < $attendee * 3; $i += 3) {
     'email' => htmlspecialchars($array[$i + 2]),
   ]);
   $idAttendee = $req->fetch(PDO::FETCH_ASSOC);
+  $password = '';
 
   if (!$idAttendee) {
     $password = bin2hex(random_bytes(5));
@@ -56,7 +59,7 @@ for ($i = 0; $i < $attendee * 3; $i += 3) {
     '<p>Bienvenue chez Together&Stronger. Votre compte a été créé, vous pouvez vous connecter à votre compte sur mobile avec votre email et le mot de passe suivant :<br></p>' .
     $password;
 
-  include '../includes/mailer.php';
+  // include '../includes/mailer.php';
 
   $req = $db->prepare(
     'SELECT id FROM ATTENDEE WHERE lastName = :lastName AND firstName = :firstName AND email = :email',

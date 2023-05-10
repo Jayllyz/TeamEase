@@ -21,8 +21,7 @@ $attendee = $reserv['attendee'];
 $idReserv = $reserv['id'];
 ?>
 
-<body>
-    <div id="idReserv"><?= $idReserv ?></div>
+<body value=<?= $idReserv ?>>
     <?php include '../includes/header.php'; ?> <main>
         <h1 style="margin-top: 1rem; margin-bottom: 1rem;"><?= $title ?></h1>
 
