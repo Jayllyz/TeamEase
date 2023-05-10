@@ -11,7 +11,6 @@ try {
   $token = getAuthorizationHeader();
 
   $body = getBody();
-  $message = $body['message'];
 
   $logged = isLoggedIn($token);
 
@@ -27,15 +26,15 @@ try {
     return;
   }
 
-  $result = sendMessage($message, $token);
+  $attendance = validateAttendance($token);
 
-  if (!$result) {
+  if (!$attendance) {
     echo jsonResponse(
       404,
       [],
       [
         'success' => false,
-        'message' => 'No messages found',
+        'message' => 'No attendance found',
       ],
     );
 
@@ -47,8 +46,8 @@ try {
     [],
     [
       'success' => true,
-      'message' => 'Found result',
-      'data' => $result,
+      'message' => 'Found attendance',
+      'data' => $attendance,
     ],
   );
 } catch (Exception $e) {
