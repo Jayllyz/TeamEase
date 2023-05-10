@@ -2,6 +2,7 @@ package com.example.togetherstrongerapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -94,6 +96,8 @@ public class ReservationActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        getAttendance();
     }
 
     private void startChatRoom(String name) {
@@ -102,6 +106,42 @@ public class ReservationActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void getAttendance(){
+        RequestQueue queue = Volley.newRequestQueue(ReservationActivity.this);
+        SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
+        String url = "https://togetherandstronger.site/api/api.php/user/getAttendance";
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject json = new JSONObject(response.toString());
+                    JSONObject data = json.getJSONObject("data");
+                    String firstName = data.getString("firstName");
+                    String lastName = data.getString("lastName");
+                    int reservationId = data.getInt("id_activity");
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Toast.makeText(ReservationActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                String token = connected.getString("token", "");
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", token);
+                return params;
+            }
+        };
+
+        queue.add(request);
+    }
 
     public interface ReservationsCallback {
         void onReservationsReceived(List<Reservation> reservations, String response) throws JSONException;
