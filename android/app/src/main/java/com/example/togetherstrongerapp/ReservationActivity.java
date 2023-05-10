@@ -1,8 +1,8 @@
 package com.example.togetherstrongerapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,16 +10,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -110,15 +109,53 @@ public class ReservationActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(ReservationActivity.this);
         SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
         String url = "https://togetherandstronger.site/api/api.php/user/getAttendance";
+
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONObject json = new JSONObject(response.toString());
+                    JSONObject json = new JSONObject(response);
                     JSONObject data = json.getJSONObject("data");
-                    String firstName = data.getString("firstName");
-                    String lastName = data.getString("lastName");
-                    int reservationId = data.getInt("id_activity");
+                    int reservationId = data.getInt("id");
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ReservationActivity.this);
+                    builder.setTitle("Confirmation présence");
+                    builder.setMessage("Confirmer votre présence !");
+                    builder.setPositiveButton("Je suis là !", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            RequestQueue queue = Volley.newRequestQueue(ReservationActivity.this);
+
+                            SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
+
+                            String url = "https://togetherandstronger.site/api/api.php/user/validateAttendance/" + reservationId;
+
+                            StringRequest request =  new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Toast.makeText(ReservationActivity.this, "Présence confirmé", Toast.LENGTH_LONG).show();
+                                }
+                            }, new Response.ErrorListener(){
+                                @Override
+                                public void onErrorResponse(VolleyError error){
+                                    Toast.makeText(ReservationActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }) {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    String token = connected.getString("token", "");
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    params.put("Authorization", token);
+                                    return params;
+                                }
+                            };
+                            queue.add(request);
+                        }
+
+
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
 
                 } catch (JSONException e) {
@@ -193,5 +230,7 @@ public class ReservationActivity extends AppCompatActivity {
         };
         queue.add(request);
     }
+
+
 }
 
