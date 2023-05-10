@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 if(!rights){
                                     connected.edit().putBoolean("attendee", true).apply();
+                                    connected.edit().putString("firstName", data.getString("firstName")).apply();
+                                    connected.edit().putString("lastName", data.getString("lastName")).apply();
                                 }
                             } else {
                                 Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
@@ -92,11 +95,18 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 queue.add(request);
-                Intent intent = new Intent(MainActivity.this, ReservationActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                startActivity(intent);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, ReservationActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        startActivity(intent);
+                    }
+                }, 200);
             }
         });
     }

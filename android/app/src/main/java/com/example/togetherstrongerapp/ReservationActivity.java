@@ -7,13 +7,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -40,8 +43,8 @@ public class ReservationActivity extends AppCompatActivity {
         this.list = findViewById(R.id.list);
         this.logout = findViewById(R.id.logout);
 
-        SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
-        String token = preferences.getString("token", "");
+        SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
+        String token = connected.getString("token", "");
 
         getReservations(token, new ReservationsCallback() {
             @Override
@@ -83,8 +86,8 @@ public class ReservationActivity extends AppCompatActivity {
         this.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences preferences = getSharedPreferences("connected", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
+                SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
+                SharedPreferences.Editor editor = connected.edit();
                 editor.clear();
                 editor.apply();
                 Intent intent = new Intent(ReservationActivity.this, MainActivity.class);
@@ -130,6 +133,14 @@ public class ReservationActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if (error instanceof ServerError && error.networkResponse != null && error.networkResponse.statusCode == 404) {
+                    SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = connected.edit();
+                    editor.clear();
+                    editor.apply();
+                    Intent intent = new Intent(ReservationActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
                 error.printStackTrace();
             }
         }) {

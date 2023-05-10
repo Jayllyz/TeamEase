@@ -13,24 +13,38 @@
         android:layout_gravity="center"
         />
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ListView
             android:id="@+id/chatMessages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/sendMessage"
+            android:layout_marginBottom="2dp" />
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Votre message"
-            android:layout_weight="1"
-            android:id="@+id/message"
-            />
-    </LinearLayout>
+            android:id="@+id/sendMessage"
+            android:layout_alignParentBottom="true">
+
+            <EditText
+                android:id="@+id/messageInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Votre message"
+                android:layout_weight="1"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Envoyer"
+                android:layout_weight="0"
+                android:id="@+id/send"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>
