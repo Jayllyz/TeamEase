@@ -22,8 +22,8 @@ $idReserv = $reserv['id'];
 ?>
 
 <body>
-    <?php include '../includes/header.php'; ?>
-    <main>
+    <div id="idReserv"><?= $idReserv ?></div>
+    <?php include '../includes/header.php'; ?> <main>
         <h1 style="margin-top: 1rem; margin-bottom: 1rem;"><?= $title ?></h1>
 
         <form method="POST" onsubmit="fillParticipants(<?= $idReserv ?>)">
@@ -41,6 +41,12 @@ $idReserv = $reserv['id'];
                 </div>
             </div>
         </form>
+
+        <h2 class="mt-5 text-center">Liste des participants</h2>
+
+        <div id="tableParticipants"></div>
+
+
     </main>
     <script src="../css-js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

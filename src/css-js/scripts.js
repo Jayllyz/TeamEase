@@ -1296,17 +1296,33 @@ function filterCommentNotation(idActivity, element) {
 }
 
 function fillParticipants(idReserv) {
+  console.log('fillParticipants');
   const participants = document.getElementById('participants').value;
   const attendees = document.getElementById('attendees').value;
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       alert(this.responseText);
+      reloadParticipantTable(idReserv);
     }
   };
   xhr.open('POST', '../ajaxReq/fillParticipants.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('idReserv=' + idReserv + '&participants=' + participants + '&attendees=' + attendees);
+}
+
+function reloadParticipantTable(idReserv) {
+  let div = document.getElementById('tableParticipants');
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      div.innerHTML += this.responseText;
+    }
+  };
+  xhr.open('POST', '../ajaxReq/participantsTable.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('idReserv=' + idReserv);
 }
 
 function validCart(siret) {
@@ -1427,6 +1443,10 @@ window.onload = function () {
   }
   if (window.location.href.indexOf('signin.php') > -1) {
     checkRadio('jsCheckRadio', 'forms');
+  }
+  if (window.location.href.indexOf('validParticipants.php') > -1) {
+    const idReserv = document.getElementById('idReserv').innerHTML;
+    reloadParticipantTable(idReserv);
   }
   languageChange(localStorage.getItem('language'));
 };
