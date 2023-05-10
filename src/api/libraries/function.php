@@ -751,5 +751,9 @@ function sendMessage($message, $token)
     'message' => $message,
   ]);
 
-  return true;
+  $query = $db->prepare('SELECT firstName, lastName FROM ATTENDEE WHERE token = :token');
+  $query->execute(['token' => $token]);
+  $user = $query->fetch(PDO::FETCH_ASSOC);
+
+  return $user;
 }
