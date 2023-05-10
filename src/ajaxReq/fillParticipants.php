@@ -59,7 +59,7 @@ for ($i = 0; $i < $attendee * 3; $i += 3) {
     '<p>Bienvenue chez Together&Stronger. Votre compte a été créé, vous pouvez vous connecter à votre compte sur mobile avec votre email et le mot de passe suivant :<br></p>' .
     $password;
 
-  // include '../includes/mailer.php';
+  include '../includes/mailer.php';
 
   $req = $db->prepare(
     'SELECT id FROM ATTENDEE WHERE lastName = :lastName AND firstName = :firstName AND email = :email',
