@@ -100,10 +100,16 @@ if (
       'password' => hash('sha512', $password),
     ]);
 
+    $req = $db->prepare('SELECT id FROM PROVIDER WHERE email = :email');
+    $req->execute([
+      'email' => $email,
+    ]);
+    $idProvider = $req->fetch();
+
     foreach ($days as $day) {
       $req = $db->prepare('INSERT INTO AVAILABILITY (id_provider, day) VALUES (:id_provider, :day)');
       $req->execute([
-        'id_provider' => $db->lastInsertId(),
+        'id_provider' => $idProvider['id'],
         'day' => $day,
       ]);
     }
