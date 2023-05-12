@@ -169,7 +169,7 @@ p {
         <hr />
         <p>Fait a Paris, le <?php echo date('d/m/y'); ?></p>
         <?php if ($isinvoice != true) { ?>
-        </p>Devis valable 90 jours</p>
+        <p>Devis valable 90 jours</p>
         <?php } ?>
         <p>Signature du particulier, suivie de la mension manuscrite "bon pour accord".</p>
         <p>&nbsp;</p>
@@ -229,8 +229,9 @@ p {
             ?>
             <?php endforeach; ?>
 
-            <?php if ($loyaltyClient >= 10) {
-              $loyaltyReduc; ?>
+            <?php
+            $loyaltyReduc = 0;
+            if ($loyaltyClient >= 10) { ?>
             <tr>
                 <td><?php if ($loyaltyClient >= 10 && $loyaltyClient < 20) {
                   echo 'Fidélité tier 1 (5%)';
@@ -247,8 +248,8 @@ p {
                 <td></td>
                 <td> - <?php echo $loyaltyReduc; ?> &euro;</td>
             </tr>
-            <?php
-            } ?>
+            <?php }
+            ?>
 
             <tr>
                 <td style="padding-top: 50px;"></td>
