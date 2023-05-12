@@ -14,7 +14,15 @@ $req->execute([
   'id_reservation' => $idReserv,
 ]);
 $participants = $req->fetchAll(PDO::FETCH_ASSOC);
+
+if (!$participants) {
+  echo '';
+  exit();
+}
 ?>
+
+
+<h2 class="mt-5 text-center">Liste des participants</h2>
 
 <div class="container col-md-6 border border-2 border-secondary rounded" id="table">
     <table class="table table-striped table-hover">
@@ -22,6 +30,8 @@ $participants = $req->fetchAll(PDO::FETCH_ASSOC);
             <tr>
                 <th scope="col">Nom</th>
                 <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <?php
@@ -34,8 +44,26 @@ $participants = $req->fetchAll(PDO::FETCH_ASSOC);
             'id' => $participant['id_attendee'],
           ]);
           $participant = $req->fetch(PDO::FETCH_ASSOC);
-          echo '<td>' . $participant['lastName'] . '</td>';
-          echo '<td>' . $participant['firstName'] . '</td>';
+          echo '<td> <input type="text" id="' .
+            $participant['id'] .
+            '-lastname" value="' .
+            $participant['lastName'] .
+            '" class="form-control""></td>';
+          echo '<td> <input type="text" id="' .
+            $participant['id'] .
+            '-firstname" value="' .
+            $participant['firstName'] .
+            '" class="form-control""></td>';
+          echo '<td> <input type="text"  id="' .
+            $participant['id'] .
+            '-mail" value="' .
+            $participant['email'] .
+            '" class="form-control""></td>';
+          echo '<td><button type="button" class="btn btn-danger" onclick="deleteParticipant(' .
+            $participant['id'] .
+            ')">Supprimer</button> <button type="button" class="btn btn-warning" onclick="updateParticipant(' .
+            $participant['id'] .
+            ')">Modifier</button></td>';
         }
         echo '</tr>';
         echo '</tbody>';

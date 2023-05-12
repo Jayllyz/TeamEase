@@ -41,7 +41,6 @@ $idReserv = $reserv['id'];
             </div>
         </form>
 
-        <h2 class="mt-5 text-center">Liste des participants</h2>
 
         <div id="tableParticipants"></div>
 
