@@ -28,11 +28,6 @@ services:
     build:
       context: docker/php
       dockerfile: Dockerfile
-      args:
-        PHP_USER_NAME: $PHP_USER_NAME
-        PHP_USER_IDENTIFIER: $PHP_USER_IDENTIFIER
-        PHP_USER_SHELL: $PHP_USER_SHELL
-        PHP_USER_HOME_DIRECTORY: $PHP_USER_HOME_DIRECTORY
     container_name: php
     restart: always
     tty: true

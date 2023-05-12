@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   nginx:
@@ -26,11 +26,6 @@ services:
     build:
       context: docker/php
       dockerfile: Dockerfile.dev
-      args:
-        PHP_USER_NAME: $PHP_USER_NAME
-        PHP_USER_IDENTIFIER: $PHP_USER_IDENTIFIER
-        PHP_USER_SHELL: $PHP_USER_SHELL
-        PHP_USER_HOME_DIRECTORY: $PHP_USER_HOME_DIRECTORY
     container_name: php
     restart: always
     tty: true
