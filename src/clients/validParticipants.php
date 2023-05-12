@@ -10,7 +10,7 @@ include '../includes/db.php';
 <?php
 $linkLogo = '../images/logo.png';
 $linkCss = '../css-js/style.css';
-$title = 'Saisie des partcipants';
+$title = 'Saisie des participants';
 include '../includes/head.php';
 $req = $db->prepare('SELECT * FROM RESERVATION WHERE id = :id');
 $req->execute([

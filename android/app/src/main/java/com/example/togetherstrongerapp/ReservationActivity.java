@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -46,43 +47,6 @@ public class ReservationActivity extends AppCompatActivity {
 
         SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
         String token = connected.getString("token", "");
-
-        getReservations(token, new ReservationsCallback() {
-            @Override
-            public void onReservationsReceived(List<Reservation> reservations, String response) throws JSONException {
-                JSONObject json = new JSONObject(response);
-
-                JSONArray jsonReserv = json.getJSONArray("data");
-
-                for (int i = 0; i < jsonReserv.length(); i++) {
-                    JSONObject current = jsonReserv.getJSONObject(i);
-
-                    Reservation reservation = new Reservation(
-                            current.getInt("id_activity"),
-                            current.getString("nameActivity"),
-                            current.getString("address"),
-                            current.getString("city"),
-                            current.getString("nameRoom"),
-                            current.getString("date"),
-                            current.getString("time"),
-                            current.getString("duration")
-                    );
-                    reservations.add(reservation);
-                }
-
-                ReservationAdapter adapter = new ReservationAdapter(reservations, ReservationActivity.this);
-                list.setAdapter(adapter);
-                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Reservation selected = reservations.get(i);
-                        SharedPreferences chatRoom = getSharedPreferences("chatRoom", MODE_PRIVATE);
-                        chatRoom.edit().putInt("id", selected.getId()).apply();
-                        startChatRoom(selected.getName());
-                    }
-                });
-            }
-        });
 
         this.logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +102,7 @@ public class ReservationActivity extends AppCompatActivity {
                             }, new Response.ErrorListener(){
                                 @Override
                                 public void onErrorResponse(VolleyError error){
-                                    Toast.makeText(ReservationActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                    Log.d("Error", error.toString());
                                 }
                             }) {
                                 @Override
@@ -165,7 +129,7 @@ public class ReservationActivity extends AppCompatActivity {
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error){
-                Toast.makeText(ReservationActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("Error", error.toString());
             }
         }) {
             @Override
@@ -229,6 +193,50 @@ public class ReservationActivity extends AppCompatActivity {
             }
         };
         queue.add(request);
+    }
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
+        String token = connected.getString("token", "");
+        getReservations(token, new ReservationsCallback() {
+            @Override
+            public void onReservationsReceived(List<Reservation> reservations, String response) throws JSONException {
+                JSONObject json = new JSONObject(response);
+
+                JSONArray jsonReserv = json.getJSONArray("data");
+
+                for (int i = 0; i < jsonReserv.length(); i++) {
+                    JSONObject current = jsonReserv.getJSONObject(i);
+
+                    Reservation reservation = new Reservation(
+                            current.getInt("id_activity"),
+                            current.getString("nameActivity"),
+                            current.getString("address"),
+                            current.getString("city"),
+                            current.getString("nameRoom"),
+                            current.getString("date"),
+                            current.getString("time"),
+                            current.getString("duration")
+                    );
+                    reservations.add(reservation);
+                }
+
+                ReservationAdapter adapter = new ReservationAdapter(reservations, ReservationActivity.this);
+                list.setAdapter(adapter);
+                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Reservation selected = reservations.get(i);
+                        SharedPreferences chatRoom = getSharedPreferences("chatRoom", MODE_PRIVATE);
+                        chatRoom.edit().putInt("id", selected.getId()).apply();
+                        startChatRoom(selected.getName());
+                    }
+                });
+            }
+        });
     }
 
 
