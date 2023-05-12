@@ -40,7 +40,7 @@ include 'includes/head.php';
                     <input type="checkbox" class="form-check-input" onClick="viewPasswordCompany()">
                     <br>
                     <label class="form-label mt-3"><strong>Confirmation Mot de Passe</strong></label>
-                    <input type="password" class="form-control" name="newpassword" id="VerifPasswordCompany" required>
+                    <input type="password" class="form-control" name="newpasswordverif" id="VerifPasswordCompany" required>
                     <label class="form-label">Voir mon mot de passe</label>
                     <input type="checkbox" class="form-check-input" onClick="viewVerifPasswordCompany()">
                     <br>

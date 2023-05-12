@@ -140,6 +140,20 @@ if (isPath('chat/sendMessage/:id')) {
   }
 }
 
+if (isPath('user/getAttendance')) {
+  if (isGetMethod()) {
+    require_once __DIR__ . '/routes/user/getAttendance.php';
+    die();
+  }
+}
+
+if (isPath('user/validateAttendance/:id')) {
+  if (isPostMethod()) {
+    require_once __DIR__ . '/routes/user/validateAttendance.php';
+    die();
+  }
+}
+
 echo jsonResponse(
   404,
   [],

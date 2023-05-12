@@ -757,3 +757,60 @@ function sendMessage($message, $token)
 
   return $user;
 }
+
+function verifyAttendance($token)
+{
+  include '/home/php/includes/db.php';
+
+  $query = $db->prepare(
+    'SELECT RESERVATION.id, ATTENDEE.firstName, ATTENDEE.lastName, RESERVED.present, DATE_FORMAT(RESERVATION.time,\'%H:%i\') as startTime, ACTIVITY.duration as endTime, RESERVATION.date FROM ATTENDEE INNER JOIN RESERVED ON RESERVED.id_attendee = ATTENDEE.id INNER JOIN RESERVATION ON RESERVATION.id = RESERVED.id_reservation INNER JOIN ACTIVITY ON ACTIVITY.id = RESERVATION.id_activity WHERE ATTENDEE.token = :token AND RESERVED.present = 0 AND RESERVATION.date = CURDATE()',
+  );
+  $query->execute(['token' => $token]);
+  $user = $query->fetch(PDO::FETCH_ASSOC);
+
+  if (!$user) {
+    return false;
+  }
+
+  $hours = floor($user['endTime'] / 60);
+  $minutes = $user['endTime'] % 60;
+
+  $user['endTime'] = date('H:i', mktime($hours, $minutes));
+
+  $startTime = strtotime($user['startTime']);
+  $endTime = strtotime($user['endTime']);
+  $endTime = $startTime + $endTime;
+
+  $hours = floor($endTime / 3600);
+  $minutes = floor(($endTime % 3600) / 60);
+
+  $user['endTime'] = date('H:i', mktime($hours, $minutes));
+
+  date_default_timezone_set('Europe/Paris');
+
+  $currentTime = time();
+
+  $startTime = strtotime($user['startTime']);
+  $endTime = strtotime($user['endTime']);
+
+  if ($currentTime >= $startTime && $currentTime <= $endTime) {
+    return $user;
+  } else {
+    return false;
+  }
+}
+
+function validateAttendance($token)
+{
+  include '/home/php/includes/db.php';
+  require_once '/home/php/api/libraries/parameters.php';
+
+  $id = getParametersForRoute('/api/api.php/user/validateAttendance/:id');
+
+  $query = $db->prepare(
+    'UPDATE RESERVED SET present = 1 WHERE id_attendee = (SELECT id FROM ATTENDEE WHERE token = :token) AND id_reservation = :id',
+  );
+  $query->execute(['token' => $token, 'id' => $id['id']]);
+
+  return true;
+}
