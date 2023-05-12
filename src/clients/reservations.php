@@ -142,9 +142,6 @@ $siret = $_SESSION['siret'];
                         ]);
                         $price = $req->fetch(PDO::FETCH_ASSOC);
                         $price = $price['amount'];
-                        
-                        
-                        
 
                         $req = $db->prepare('SELECT nfc FROM COMPANY WHERE siret = :siret');
                         $req->execute([
