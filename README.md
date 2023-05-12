@@ -36,8 +36,9 @@ The scope of this project includes the development of the following components:
 | Web        | PHP 8.2+, Javascript, HTML, CSS, Boostrap |
 | Android    | Java, Volley                              |
 | Bot        | C, PHP                                    |
+| Dashboard  | Java, JavaFX, JFreeChart                  |
 | Database   | MySQL                                     |
-| Deployment | Docker, Docker-compose                    |
+| Deployment | Docker, Docker-compose, Maven             |
 | API        | INSEE, reCAPTCHA, Stripe                  |
 
 ## Local development
