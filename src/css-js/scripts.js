@@ -1410,7 +1410,9 @@ function languageChange(language) {
 window.onload = function () {
   if (window.location.href.indexOf('catalog.php') > -1) {
     populate = document.body.getAttribute('value');
-    populateActivity(populate);
+    page = populate.split(',')[0];
+    category = populate.split(',')[1];
+    populateActivity(page, category);
   }
   if (window.location.href.indexOf('activity.php') > -1) {
     activityId = document.body.getAttribute('value');
