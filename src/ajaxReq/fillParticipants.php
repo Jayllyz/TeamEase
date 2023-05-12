@@ -13,9 +13,10 @@ $checkParticipants = $checkParticipants->fetchAll(PDO::FETCH_ASSOC);
 
 if (!empty($checkParticipants)) {
   foreach ($checkParticipants as $id) {
-    $req = $db->prepare('DELETE FROM RESERVED WHERE id_attendee = :id');
+    $req = $db->prepare('DELETE FROM RESERVED WHERE id_attendee = :id AND id_reservation = :id_reservation');
     $req->execute([
       'id' => $id['id_attendee'],
+      'id_reservation' => $idReserv,
     ]);
   }
 }
@@ -62,15 +63,17 @@ for ($i = 0; $i < $attendee * 3; $i += 3) {
     'firstName' => htmlspecialchars($array[$i + 1]),
     'email' => htmlspecialchars($array[$i + 2]),
   ]);
-  $idAttendee = $req->fetch(PDO::FETCH_ASSOC);
+  $idAttendee2 = $req->fetch(PDO::FETCH_ASSOC);
 
   $req = $db->prepare('INSERT INTO RESERVED (id_attendee, id_reservation) VALUES (:id_attendee, :id_reservation)');
   $req->execute([
-    'id_attendee' => $idAttendee['id'],
+    'id_attendee' => $idAttendee2['id'],
     'id_reservation' => $idReserv,
   ]);
 
-  include_once '../includes/mailer.php';
+  if (!$idAttendee) {
+    include_once '../includes/mailer.php';
+  }
 }
 
 echo 'La liste des participants a bien été mise à jour';

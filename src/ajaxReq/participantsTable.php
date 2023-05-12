@@ -38,33 +38,33 @@ if (!$participants) {
         echo '<tbody>';
 
         foreach ($participants as $participant) {
+
           echo '<tr>';
           $req = $db->prepare('SELECT * FROM ATTENDEE WHERE id = :id');
           $req->execute([
             'id' => $participant['id_attendee'],
           ]);
           $participant = $req->fetch(PDO::FETCH_ASSOC);
-          echo '<td> <input type="text" id="' .
-            $participant['id'] .
-            '-lastname" value="' .
-            $participant['lastName'] .
-            '" class="form-control""></td>';
-          echo '<td> <input type="text" id="' .
-            $participant['id'] .
-            '-firstname" value="' .
-            $participant['firstName'] .
-            '" class="form-control""></td>';
-          echo '<td> <input type="text"  id="' .
-            $participant['id'] .
-            '-mail" value="' .
-            $participant['email'] .
-            '" class="form-control""></td>';
-          echo '<td><button type="button" class="btn btn-danger" onclick="deleteParticipant(' .
-            $participant['id'] .
-            ')">Supprimer</button> <button type="button" class="btn btn-warning" onclick="updateParticipant(' .
-            $participant['id'] .
-            ')">Modifier</button></td>';
-          echo '</tr>';
+          ?>
+        <td>
+            <input type="text" id="<?= $participant['id'] ?>-lastname" value="<?= $participant['lastName'] ?>"
+                class="form-control">
+        </td>
+        <td>
+            <input type=" text" id="<?= $participant['id'] ?>-firstname" value="<?= $participant['firstName'] ?>"
+                class="form-control">
+        </td>
+        <td> <input type=" text" id="<?= $participant['id'] ?>-mail" value="<?= $participant['email'] ?>"
+                class="form-control"></td>
+        <td>
+            <div class="row">
+                <button type="button" class="btn btn-danger col"
+                    onclick="deleteParticipant(<?= $participant['id'] ?>)">Supprimer</button>
+                <button type="button" class="btn btn-warning col"
+                    onclick="updateParticipant(<?= $participant['id'] ?>)">Modifier</button>
+            </div>
+        </td>
+        </tr> <?php
         }
 
         echo '</tbody>';
