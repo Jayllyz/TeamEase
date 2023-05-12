@@ -31,15 +31,15 @@ The scope of this project includes the development of the following components:
 
 ## Tech Stack
 
-| Technology | Languages/Frameworks                      |
-| ---------- | ----------------------------------------- |
-| Web        | PHP 8.2+, Javascript, HTML, CSS, Boostrap |
-| Android    | Java, Volley                              |
-| Bot        | C, PHP                                    |
-| Dashboard  | Java, JavaFX, JFreeChart                  |
-| Database   | MySQL                                     |
-| Deployment | Docker, Docker-compose, Maven             |
-| API        | INSEE, reCAPTCHA, Stripe                  |
+| Technology | Languages/Frameworks                             |
+| ---------- | ------------------------------------------------ |
+| Web        | PHP 8.2+, Javascript, HTML, CSS, Boostrap        |
+| Android    | Java, Volley                                     |
+| Bot        | C, PHP                                           |
+| Dashboard  | Java, JavaFX, JFreeChart, java-curl(rockswang)   |
+| Database   | MySQL                                            |
+| Deployment | Docker, Docker-compose, Maven                    |
+| API        | INSEE, reCAPTCHA, Stripe                         |
 
 ## Local development
 
