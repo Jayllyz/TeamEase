@@ -81,168 +81,168 @@ include 'includes/head.php';
                     <tbody>
 
                         <?php for ($i = 0; $i < 7; $i++) {
-                      echo '<tr>';
-                      $sql = 'SELECT id FROM ACTIVITY WHERE id_room = :id_room';
-                      $stmt = $db->prepare($sql);
-                      $stmt->execute(['id_room' => $animatees[$b]['id']]);
-                      $animate = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                      $sql =
-                        'SELECT * FROM RESERVATION WHERE id_activity IN (SELECT id_activity FROM ACTIVITY WHERE id_room = :id_room)';
-                      $stmt = $db->prepare($sql);
-                      $stmt->execute(['id_room' => $animatees[$b]['id']]);
-                      $reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                      $date = date('Y-m-d');
-                      $dayOfWeek = date('w', strtotime($date));
-                      $dayOfWeek -= 1;
-                      $monday = date('Y-m-d', strtotime("-$dayOfWeek day", strtotime($date)));
-                      $day = date('Y-m-d', strtotime("+$i day", strtotime($monday)));
-                      $dayOfWeek = date('w', strtotime($day));
-                      if ($dayOfWeek == 1) {
-                        $dayofWeeks = 'Lundi';
-                      }
-                      if ($dayOfWeek == 2) {
-                        $dayofWeeks = 'Mardi';
-                      }
-                      if ($dayOfWeek == 3) {
-                        $dayofWeeks = 'Mercredi';
-                      }
-                      if ($dayOfWeek == 4) {
-                        $dayofWeeks = 'Jeudi';
-                      }
-                      if ($dayOfWeek == 5) {
-                        $dayofWeeks = 'Vendredi';
-                      }
-                      if ($dayOfWeek == 6) {
-                        $dayofWeeks = 'Samedi';
-                      }
-                      if ($dayOfWeek == 0) {
-                        $dayofWeeks = 'Dimanche';
-                      }
-                      $configdate = explode('-', $day);
-                      $dateplanning = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
-                      echo "<td>$dayofWeeks <br> $dateplanning</td>";
-                      $sql =
-                        'SELECT * FROM RESERVATION WHERE id_activity IN (SELECT id_activity FROM ACTIVITY WHERE id_room = :id_room)';
-                      $stmt = $db->prepare($sql);
-                      $stmt->execute(['id_room' => $animatees[$b]['id']]);
-                      $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                      echo '<td>';
-                      for ($j = 0; $j < count($reservations); $j++) {
-                        $configdate = explode('-', $reservations[$j]['date']);
-                        $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
-                        $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
-                        $stmt = $db->prepare($sql);
-                        $stmt->execute(['id' => $reservations[$j]['id_activity']]);
-                        $activities = $stmt->fetchAll(PDO::FETCH_ASSOC); // afficher les activités sans doublons
-                        for ($k = 0; $k < count($reservations); $k++) {
-                          $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
+                          echo '<tr>';
+                          $sql = 'SELECT id FROM ACTIVITY WHERE id_room = :id_room';
                           $stmt = $db->prepare($sql);
-                          $stmt->execute(['id' => $reservations[$k]['id_activity']]);
-                          $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                          if (
-                            $datereservation == $dateplanning &&
-                            $reservations[$k]['time'] == $reservations[$j]['time'] &&
-                            $reservations[$k]['id'] == $reservations[$j]['id'] &&
-                            $activity[0]['id_room'] == $animatees[$b]['id']
-                          ) {
-                            //si l'activité est déjà affichée, on stoppe l'affichage
-                            if (
-                              $activity[0]['id'] == $activities[0]['id'] &&
-                              $reservations[$k]['id'] != $reservations[$j]['id']
-                            ) {
-                              break;
-                            } else {
-                              echo '<br>';
-                              echo $activity[0]['name'];
-                              echo '<br>';
-                            }
+                          $stmt->execute(['id_room' => $animatees[$b]['id']]);
+                          $animate = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                          $sql =
+                            'SELECT * FROM RESERVATION WHERE id_activity IN (SELECT id_activity FROM ACTIVITY WHERE id_room = :id_room)';
+                          $stmt = $db->prepare($sql);
+                          $stmt->execute(['id_room' => $animatees[$b]['id']]);
+                          $reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                          $date = date('Y-m-d');
+                          $dayOfWeek = date('w', strtotime($date));
+                          $dayOfWeek -= 1;
+                          $monday = date('Y-m-d', strtotime("-$dayOfWeek day", strtotime($date)));
+                          $day = date('Y-m-d', strtotime("+$i day", strtotime($monday)));
+                          $dayOfWeek = date('w', strtotime($day));
+                          if ($dayOfWeek == 1) {
+                            $dayofWeeks = 'Lundi';
                           }
-                        }
-                      }
-                      echo '</td>';
-                      echo '<td>';
-                      for ($k = 0; $k < count($reservations); $k++) {
-                        $configdate = explode('-', $reservations[$k]['date']);
-                        $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
-                        for ($j = 0; $j < count($reservations); $j++) {
-                          $sql = 'SELECT duration FROM ACTIVITY WHERE id = :id';
-                          $stmt = $db->prepare($sql);
-                          $stmt->execute(['id' => $reservations[$j]['id_activity']]);
-                          $duration = $stmt->fetch();
-
-                          $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
-                          $stmt = $db->prepare($sql);
-                          $stmt->execute(['id' => $reservations[$k]['id_activity']]);
-                          $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                          if (
-                            $datereservation == $dateplanning &&
-                            $reservations[$k]['time'] == $reservations[$j]['time'] &&
-                            $reservations[$k]['id'] == $reservations[$j]['id'] &&
-                            $activity[0]['id_room'] == $animatees[$b]['id']
-                          ) {
-                            if (
-                              $activity[0]['id'] == $activities[0]['id'] &&
-                              $reservations[$k]['id'] != $reservations[$j]['id']
-                            ) {
-                              exit();
-                              break;
-                            } else {
-                              $time = explode(':', $reservations[$k]['time']);
-                              $time = $time[0] . 'h' . $time[1];
-                              $duration = intval($duration[0]);
-                              $duration = $duration * 60;
-                              $durations = gmdate('H:i', $duration);
-                              $time_heure = substr($time, 0, 2);
-                              $time_minutes = substr($time, 3, 2);
-                              $times = $time_heure . ':' . $time_minutes;
-                              $times = strtotime($times);
-                              $times = date('H:i', $times + $duration);
-                              $times = explode(':', $times);
-                              $times = $times[0] . 'h' . $times[1];
-                              echo '<br>' . $time . ' - ' . $times . '<br>';
-                            }
+                          if ($dayOfWeek == 2) {
+                            $dayofWeeks = 'Mardi';
                           }
-                        }
-                      }
-                      echo '</td>';
+                          if ($dayOfWeek == 3) {
+                            $dayofWeeks = 'Mercredi';
+                          }
+                          if ($dayOfWeek == 4) {
+                            $dayofWeeks = 'Jeudi';
+                          }
+                          if ($dayOfWeek == 5) {
+                            $dayofWeeks = 'Vendredi';
+                          }
+                          if ($dayOfWeek == 6) {
+                            $dayofWeeks = 'Samedi';
+                          }
+                          if ($dayOfWeek == 0) {
+                            $dayofWeeks = 'Dimanche';
+                          }
+                          $configdate = explode('-', $day);
+                          $dateplanning = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+                          echo "<td>$dayofWeeks <br> $dateplanning</td>";
+                          $sql =
+                            'SELECT * FROM RESERVATION WHERE id_activity IN (SELECT id_activity FROM ACTIVITY WHERE id_room = :id_room)';
+                          $stmt = $db->prepare($sql);
+                          $stmt->execute(['id_room' => $animatees[$b]['id']]);
+                          $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                      echo '<td>';
-                      for ($k = 0; $k < count($reservations); $k++) {
-                        $configdate = explode('-', $reservations[$k]['date']);
-                        $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
-
-                        $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
-                        $stmt = $db->prepare($sql);
-                        $stmt->execute(['id' => $reservations[$k]['id_activity']]);
-                        $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        for ($j = 0; $j < count($reservations); $j++) {
-                          if (
-                            $datereservation == $dateplanning &&
-                            $reservations[$k]['time'] == $reservations[$j]['time'] &&
-                            $reservations[$k]['id'] == $reservations[$j]['id'] &&
-                            $activity[0]['id_room'] == $animatees[$b]['id']
-                          ) {
-                            if (
-                              $activity[0]['id'] == $activities[0]['id'] &&
-                              $reservations[$k]['id'] != $reservations[$j]['id']
-                            ) {
-                              break;
-                            } else {
-                              $sql =
-                                'SELECT SUM(attendee) AS total_attendee FROM RESERVATION WHERE id_activity = :id_activity;';
+                          echo '<td>';
+                          for ($j = 0; $j < count($reservations); $j++) {
+                            $configdate = explode('-', $reservations[$j]['date']);
+                            $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+                            $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id' => $reservations[$j]['id_activity']]);
+                            $activities = $stmt->fetchAll(PDO::FETCH_ASSOC); // afficher les activités sans doublons
+                            for ($k = 0; $k < count($reservations); $k++) {
+                              $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
                               $stmt = $db->prepare($sql);
-                              $stmt->execute(['id_activity' => $reservations[$j]['id_activity']]);
-                              $total_attendee = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                              echo '<br>' . $total_attendee[0]['total_attendee'] . '<br>';
+                              $stmt->execute(['id' => $reservations[$k]['id_activity']]);
+                              $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                              if (
+                                $datereservation == $dateplanning &&
+                                $reservations[$k]['time'] == $reservations[$j]['time'] &&
+                                $reservations[$k]['id'] == $reservations[$j]['id'] &&
+                                $activity[0]['id_room'] == $animatees[$b]['id']
+                              ) {
+                                //si l'activité est déjà affichée, on stoppe l'affichage
+                                if (
+                                  $activity[0]['id'] == $activities[0]['id'] &&
+                                  $reservations[$k]['id'] != $reservations[$j]['id']
+                                ) {
+                                  break;
+                                } else {
+                                  echo '<br>';
+                                  echo $activity[0]['name'];
+                                  echo '<br>';
+                                }
+                              }
                             }
                           }
-                        }
-                      }
-                      echo '</td>';
-                      echo '</tr>';
-                    } ?>
+                          echo '</td>';
+                          echo '<td>';
+                          for ($k = 0; $k < count($reservations); $k++) {
+                            $configdate = explode('-', $reservations[$k]['date']);
+                            $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+                            for ($j = 0; $j < count($reservations); $j++) {
+                              $sql = 'SELECT duration FROM ACTIVITY WHERE id = :id';
+                              $stmt = $db->prepare($sql);
+                              $stmt->execute(['id' => $reservations[$j]['id_activity']]);
+                              $duration = $stmt->fetch();
+
+                              $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
+                              $stmt = $db->prepare($sql);
+                              $stmt->execute(['id' => $reservations[$k]['id_activity']]);
+                              $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                              if (
+                                $datereservation == $dateplanning &&
+                                $reservations[$k]['time'] == $reservations[$j]['time'] &&
+                                $reservations[$k]['id'] == $reservations[$j]['id'] &&
+                                $activity[0]['id_room'] == $animatees[$b]['id']
+                              ) {
+                                if (
+                                  $activity[0]['id'] == $activities[0]['id'] &&
+                                  $reservations[$k]['id'] != $reservations[$j]['id']
+                                ) {
+                                  exit();
+                                  break;
+                                } else {
+                                  $time = explode(':', $reservations[$k]['time']);
+                                  $time = $time[0] . 'h' . $time[1];
+                                  $duration = intval($duration[0]);
+                                  $duration = $duration * 60;
+                                  $durations = gmdate('H:i', $duration);
+                                  $time_heure = substr($time, 0, 2);
+                                  $time_minutes = substr($time, 3, 2);
+                                  $times = $time_heure . ':' . $time_minutes;
+                                  $times = strtotime($times);
+                                  $times = date('H:i', $times + $duration);
+                                  $times = explode(':', $times);
+                                  $times = $times[0] . 'h' . $times[1];
+                                  echo '<br>' . $time . ' - ' . $times . '<br>';
+                                }
+                              }
+                            }
+                          }
+                          echo '</td>';
+
+                          echo '<td>';
+                          for ($k = 0; $k < count($reservations); $k++) {
+                            $configdate = explode('-', $reservations[$k]['date']);
+                            $datereservation = $configdate[2] . '/' . $configdate[1] . '/' . $configdate[0];
+
+                            $sql = 'SELECT * FROM ACTIVITY WHERE id= :id';
+                            $stmt = $db->prepare($sql);
+                            $stmt->execute(['id' => $reservations[$k]['id_activity']]);
+                            $activity = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            for ($j = 0; $j < count($reservations); $j++) {
+                              if (
+                                $datereservation == $dateplanning &&
+                                $reservations[$k]['time'] == $reservations[$j]['time'] &&
+                                $reservations[$k]['id'] == $reservations[$j]['id'] &&
+                                $activity[0]['id_room'] == $animatees[$b]['id']
+                              ) {
+                                if (
+                                  $activity[0]['id'] == $activities[0]['id'] &&
+                                  $reservations[$k]['id'] != $reservations[$j]['id']
+                                ) {
+                                  break;
+                                } else {
+                                  $sql =
+                                    'SELECT SUM(attendee) AS total_attendee FROM RESERVATION WHERE id_activity = :id_activity;';
+                                  $stmt = $db->prepare($sql);
+                                  $stmt->execute(['id_activity' => $reservations[$j]['id_activity']]);
+                                  $total_attendee = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                  echo '<br>' . $total_attendee[0]['total_attendee'] . '<br>';
+                                }
+                              }
+                            }
+                          }
+                          echo '</td>';
+                          echo '</tr>';
+                        } ?>
 
                     </tbody>
                 </table>
