@@ -102,8 +102,6 @@ public class ChatRoom extends AppCompatActivity {
                             int minute = calendar.get(Calendar.MINUTE);
                             String date = hour + ":" + minute;
 
-                            Toast.makeText(ChatRoom.this, connected.toString(), Toast.LENGTH_SHORT).show();
-
                             Message message = new Message(
                                     firstName,
                                     lastName,
