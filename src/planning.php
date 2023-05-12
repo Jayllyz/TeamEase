@@ -68,18 +68,19 @@ include 'includes/head.php';
                 } ?>
 
 
-            <table style="border: 1px solid black;" class="table text-center table-bordered table-hover" id="active">
-                <thead>
-                    <tr>
-                        <th>Jours</th>
-                        <th>Activité</th>
-                        <th>L'Heure</th>
-                        <th>Nombre de participants</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <table style="border: 1px solid black;" class="table text-center table-bordered table-hover"
+                    id="active">
+                    <thead>
+                        <tr>
+                            <th>Jours</th>
+                            <th>Activité</th>
+                            <th>L'Heure</th>
+                            <th>Nombre de participants</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    <?php for ($i = 0; $i < 7; $i++) {
+                        <?php for ($i = 0; $i < 7; $i++) {
                       echo '<tr>';
                       $sql = 'SELECT id FROM ACTIVITY WHERE id_room = :id_room';
                       $stmt = $db->prepare($sql);
@@ -185,8 +186,6 @@ include 'includes/head.php';
                               $activity[0]['id'] == $activities[0]['id'] &&
                               $reservations[$k]['id'] != $reservations[$j]['id']
                             ) {
-                              var_dump($reservations[$k]);
-                              var_dump($reservations[$j]);
                               exit();
                               break;
                             } else {
@@ -245,8 +244,8 @@ include 'includes/head.php';
                       echo '</tr>';
                     } ?>
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             </div>
         </div>
         <?php

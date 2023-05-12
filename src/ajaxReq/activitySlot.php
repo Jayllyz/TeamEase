@@ -156,7 +156,6 @@ if (isset($_POST['id']) && isset($_POST['date']) && isset($_POST['day'])) {
           }
         }
       } elseif ($attendee <= $slot['maxAttendee']) {
-        var_dump($isOccupied);
         if (empty($checkRoom) && $isOccupied == 0) {
           echo '<option value=' .
             $startSlotArray[$j] .

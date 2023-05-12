@@ -3,8 +3,6 @@ ob_start();
 session_start();
 require_once '../includes/db.php';
 
-var_dump($_POST);
-
 $siret = $_SESSION['siret'];
 $idReserv = htmlspecialchars($_GET['id']);
 $date = htmlspecialchars($_POST['date']);
