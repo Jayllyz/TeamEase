@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 include_once '../includes/db.php';
 
@@ -81,9 +82,11 @@ foreach ($_POST as $key => $value) {
   }
 }
 
-if ($_GET['pay'] === 'true') {
-  header('Location: cart.php?amount=' . $totalPrice);
-  exit();
+if (isset($_GET['pay'])) {
+  if ($_GET['pay'] === 'true') {
+    header('Location: cart.php?amount=' . $totalPrice);
+    exit();
+  }
 }
 
 $clearCart = $db->prepare('DELETE FROM CART WHERE siret = :siret');
