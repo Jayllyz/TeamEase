@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
                         startActivity(intent);
                     }
-                }, 200);
+                }, 1000);
             }
         });
     }
