@@ -36,9 +36,9 @@ if (!$participants) {
         </thead>
         <?php
         echo '<tbody>';
-        echo '<tr>';
 
         foreach ($participants as $participant) {
+          echo '<tr>';
           $req = $db->prepare('SELECT * FROM ATTENDEE WHERE id = :id');
           $req->execute([
             'id' => $participant['id_attendee'],
@@ -64,8 +64,9 @@ if (!$participants) {
             ')">Supprimer</button> <button type="button" class="btn btn-warning" onclick="updateParticipant(' .
             $participant['id'] .
             ')">Modifier</button></td>';
+          echo '</tr>';
         }
-        echo '</tr>';
+
         echo '</tbody>';
         ?>
     </table>
