@@ -56,7 +56,7 @@ if ($result) {
   $mailMsg = 'Modifier votre mot de passe';
   $msgHTML =
     '<p>Bonjour,</p>
-    <p class="display-2">Pour réinitialiser votre mot de passe, veuillez <a href="localhost/includes/changePassword.php?email=' .
+    <p class="display-2">Pour réinitialiser votre mot de passe, veuillez <a href="togetherandstronger.site/includes/changePassword.php?email=' .
     $email .
     '&token=' .
     $token .

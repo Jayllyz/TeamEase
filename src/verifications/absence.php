@@ -53,7 +53,7 @@ if (!isset($id) || empty($id)) {
                  ne sera pas disponible pour la raison suivante : ' .
       $raison .
       ':<br></p>
-      <a href="localhost/includes/confemail.php?
+      <a href="togetherandstronger.site/includes/confemail.php?
       email=' .
       $email .
       '&type=' .

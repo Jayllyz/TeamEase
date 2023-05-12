@@ -109,5 +109,5 @@ include '../includes/head.php';
 </body>
 
 </html>
-<?php } else {header('location: localhost');
+<?php } else {header('location: togetherandstronger.site');
   exit();} ?>

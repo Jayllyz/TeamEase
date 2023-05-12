@@ -59,7 +59,7 @@ if (
     $subject = 'Confirmation de votre inscription';
     $msgHTML =
       '<p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre changement de mail :<br></p>
-      <a href="localhost/includes/confemail.php?' .
+      <a href="togetherandstronger.site/includes/confemail.php?' .
       'token=' .
       $token .
       '&email=' .

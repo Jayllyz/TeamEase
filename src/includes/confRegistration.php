@@ -56,7 +56,7 @@ foreach ($result as $existToken) {
       echo "Email doesn't confirmed !";
     }
   } else {
-    header('location: localhost/?message=Le liens à expiré !&type=danger');
+    header('location: togetherandstronger.site/?message=Le liens à expiré !&type=danger');
     exit();
   }
 }

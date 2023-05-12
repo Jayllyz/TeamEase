@@ -113,7 +113,7 @@ if (
     $subject = 'Confirmation de votre inscription';
     $msgHTML =
       '<p class="display-2">Bienvenue chez Together&Stronger. Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription :<br></p>
-      <a href="localhost/includes/confRegistration.php?' .
+      <a href="togetherandstronger.site/includes/confRegistration.php?' .
       'token=' .
       $token .
       '&email=' .
