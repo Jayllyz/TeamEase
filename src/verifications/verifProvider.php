@@ -24,7 +24,7 @@ if (isset($firstName) && !strlen($firstName) > 0) {
   exit();
 }
 
-if (!isset($day)) {
+if (!isset($days)) {
   header(
     'location: ../signin.php?message=Veuillez indiquer vos disponibilités !&valid=invalid&input=day&check=provider',
   );
