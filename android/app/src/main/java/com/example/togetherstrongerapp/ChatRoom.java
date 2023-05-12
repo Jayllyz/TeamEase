@@ -38,7 +38,7 @@ public class ChatRoom extends AppCompatActivity {
     private TextView nameChatRoom;
     private ListView chatMessages;
     private EditText messageInput;
-    private Button send;
+    private Button send, refresh;
     List<Message> chat = new ArrayList<>();
 
     @Override
@@ -53,6 +53,7 @@ public class ChatRoom extends AppCompatActivity {
         chatMessages = findViewById(R.id.chatMessages);
         messageInput = findViewById(R.id.messageInput);
         send = findViewById(R.id.send);
+        refresh = findViewById(R.id.refresh);
 
         nameChatRoom.setText(name);
 
@@ -135,6 +136,13 @@ public class ChatRoom extends AppCompatActivity {
                 };
 
                 queue.add(request);
+            }
+        });
+        this.refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MessageAdapter adapter = new MessageAdapter(getChat(), ChatRoom.this);
+                chatMessages.setAdapter(adapter);
             }
         });
     }
