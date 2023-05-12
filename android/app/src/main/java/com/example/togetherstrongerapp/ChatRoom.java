@@ -58,14 +58,6 @@ public class ChatRoom extends AppCompatActivity {
         nameChatRoom.setText(name);
 
         MessageAdapter adapter = new MessageAdapter(getChat(), ChatRoom.this);
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Toast.makeText(ChatRoom.this, "Refresh", Toast.LENGTH_LONG).show();
-//                chatMessages.setAdapter(adapter);
-//            }
-//        }, 500);
         this.chatMessages.setAdapter(adapter);
 
         this.send.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +93,9 @@ public class ChatRoom extends AppCompatActivity {
                             Calendar calendar = Calendar.getInstance();
                             int hour = calendar.get(Calendar.HOUR_OF_DAY);
                             int minute = calendar.get(Calendar.MINUTE);
+                            if(minute < 10){
+                                minute = Integer.parseInt("0" + minute);
+                            }
                             String date = hour + ":" + minute;
 
                             Message message = new Message(
@@ -115,6 +110,8 @@ public class ChatRoom extends AppCompatActivity {
                             MessageAdapter adapter = new MessageAdapter(chat, ChatRoom.this);
                             chatMessages.setAdapter(adapter);
                             messageInput.setText("");
+
+                            chatMessages.setSelection(adapter.getCount() - 1);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -143,6 +140,8 @@ public class ChatRoom extends AppCompatActivity {
             public void onClick(View view) {
                 MessageAdapter adapter = new MessageAdapter(getChat(), ChatRoom.this);
                 chatMessages.setAdapter(adapter);
+
+                chatMessages.setSelection(adapter.getCount() - 1);
             }
         });
     }
@@ -179,6 +178,8 @@ public class ChatRoom extends AppCompatActivity {
 
                     MessageAdapter adapter = new MessageAdapter(chat, ChatRoom.this);
                     chatMessages.setAdapter(adapter);
+
+                    chatMessages.setSelection(adapter.getCount() - 1);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
