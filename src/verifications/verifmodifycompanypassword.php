@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../includes/db.php';
+
 $oldpassword = $_POST['oldpassword'];
 $newpassword = $_POST['newpassword'];
 $newpasswordverif = $_POST['newpasswordverif'];
