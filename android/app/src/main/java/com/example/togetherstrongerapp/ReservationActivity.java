@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -175,12 +176,27 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error instanceof ServerError && error.networkResponse != null && error.networkResponse.statusCode == 404) {
-                    SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = connected.edit();
-                    editor.clear();
-                    editor.apply();
-                    Intent intent = new Intent(ReservationActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    String responseMessage = null;
+                    if (error.networkResponse.data != null) {
+                        try {
+                            responseMessage = new String(error.networkResponse.data, "UTF-8");
+                            JSONObject jsonResponse = new JSONObject(responseMessage);
+                            String message = jsonResponse.getString("message");
+
+                            if ("No activity found".equals(message)) {
+                                return;
+                            } else {
+                                SharedPreferences connected = getSharedPreferences("connected", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = connected.edit();
+                                editor.clear();
+                                editor.apply();
+                                Intent intent = new Intent(ReservationActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        } catch (UnsupportedEncodingException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 error.printStackTrace();
             }
@@ -194,8 +210,7 @@ public class ReservationActivity extends AppCompatActivity {
         };
         queue.add(request);
     }
-
-
+    
     @Override
     public void onResume(){
         super.onResume();
@@ -238,7 +253,5 @@ public class ReservationActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
 
