@@ -2,58 +2,126 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/lightGrey"
+    android:padding="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nom"
-        android:textSize="4mm"
-        android:id="@+id/nameActivity"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Addresse"
-        android:textSize="3mm"
-        android:id="@+id/address"
-        />
-
-    <TextView
-        android:id="@+id/city"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ville"
-        android:textSize="3mm" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:textSize="3mm" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom"
+            android:textSize="4mm"
+            android:id="@+id/nameActivity"
+            android:layout_marginEnd="4dp"
+            android:textColor="@color/black"
+            />
 
-    <TextView
-        android:id="@+id/heure"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Heure"
-        android:textSize="3mm" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="("
+            android:textSize="3mm"
+            android:textColor="@color/grey"
+            />
 
-    <TextView
-        android:id="@+id/duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Durée"
-        android:textSize="3mm" />
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Durée"
+            android:textSize="3mm"
+            android:textColor="@color/grey"
+            />
 
-    <TextView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" min)"
+            android:textSize="3mm"
+            android:textColor="@color/grey"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Salle"
-        android:textSize="3mm"
-        android:id="@+id/nameRoom"
-        />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Addresse"
+            android:textSize="3mm"
+            android:id="@+id/address"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textSize="3mm"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            />
+
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ville"
+            android:textSize="3mm"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textSize="3mm"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salle"
+            android:textSize="3mm"
+            android:id="@+id/nameRoom"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="3mm" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textSize="3mm"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            />
+
+        <TextView
+            android:id="@+id/heure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heure"
+            android:textSize="3mm" />
+
+    </LinearLayout>
 
 </LinearLayout>
