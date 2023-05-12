@@ -1302,11 +1302,59 @@ function fillParticipants(idReserv) {
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       alert(this.responseText);
+      reloadParticipantTable(idReserv);
     }
   };
   xhr.open('POST', '../ajaxReq/fillParticipants.php', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('idReserv=' + idReserv + '&participants=' + participants + '&attendees=' + attendees);
+}
+
+function deleteParticipant(id) {
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      if (this.responseText == 'error') {
+        alert('Vous ne pouvez pas supprimer ce participant');
+      } else {
+        alert(this.responseText);
+        reloadParticipantTable(idReserv);
+      }
+    }
+  };
+  xhr.open('POST', '../ajaxReq/deleteParticipant.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id);
+}
+
+function updateParticipant(id) {
+  const lastname = document.getElementById(id + '-lastname').value;
+  const firstname = document.getElementById(id + '-firstname').value;
+  const email = document.getElementById(id + '-mail').value;
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      alert(this.responseText);
+      reloadParticipantTable(idReserv);
+    }
+  };
+  xhr.open('POST', '../ajaxReq/updateParticipant.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('id=' + id + '&lastname=' + lastname + '&firstname=' + firstname + '&email=' + email);
+}
+
+function reloadParticipantTable(idReserv) {
+  let div = document.getElementById('tableParticipants');
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      div.innerHTML = this.responseText;
+    }
+  };
+  xhr.open('POST', '../ajaxReq/participantsTable.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('idReserv=' + idReserv);
 }
 
 function validCart(siret) {
@@ -1429,6 +1477,10 @@ window.onload = function () {
   }
   if (window.location.href.indexOf('signin.php') > -1) {
     checkRadio('jsCheckRadio', 'forms');
+  }
+  if (window.location.href.indexOf('validParticipants.php') > -1) {
+    idReserv = document.body.getAttribute('value');
+    reloadParticipantTable(idReserv);
   }
   languageChange(localStorage.getItem('language'));
 };

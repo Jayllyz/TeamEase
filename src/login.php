@@ -6,6 +6,10 @@ $linkLogo = 'images/logo.png';
 $linkCss = 'css-js/style.css';
 $title = 'Connexion';
 include 'includes/head.php';
+$input = '';
+if (isset($_GET['input'])) {
+  $input = $_GET['input'] == 'email' ? 'em' : 'pw';
+}
 ?>
 
 <body>
@@ -22,7 +26,7 @@ include 'includes/head.php';
             <div class="container col-md-4 border border-2 border-secondary rounded" id="form">
                 <div class="mb-3">
                     <label for="login" class="form-label"><strong>Email</strong></label>
-                    <input type="email" class="form-control is-<?= isset($_GET['valid']) && $_GET['input'] == 'email'
+                    <input type="email" class="form-control is-<?= isset($_GET['valid']) && $input == 'em'
                       ? $_GET['valid']
                       : '' ?>" name="login" value="<?= isset($_COOKIE['email']) ? $_COOKIE['email'] : '' ?>" required>
 
@@ -33,7 +37,7 @@ include 'includes/head.php';
                     <?php } ?>
                 </div>
                 <label for="password" class="form-label"><strong>Mot de passe</strong></label>
-                <input type="password" class="form-control is-<?= isset($_GET['valid']) && $_GET['input'] == 'password'
+                <input type="password" class="form-control is-<?= isset($_GET['valid']) && $input == 'pw'
                   ? $_GET['valid']
                   : '' ?>" name="password" id="password" required>
 
