@@ -78,11 +78,15 @@ docker exec -it php composer install
 
 ### Android
 
-You can find `togetherandstronger.apk` in the folder `android/`
+You can find `togetherandstronger.apk` in the folder `android/`.
 
 ### Java
 
-You can install the dashboard with `Dashboard.exe` in the folder `executable/`
+You can find `dashboard.jar` in the folder `executable/`.\*
+
+You can also install the dashboard with `Dashboard.exe` in the folder `executable/`.\*
+
+\*_Java Runtime Environment needed._
 
 ### Bot C
 
