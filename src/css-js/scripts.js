@@ -1208,11 +1208,6 @@ $('.input-date').datepicker({
   beforeShowDay: disabledDays,
 });
 
-// Fonction pour afficher les etoiles
-stars = document.querySelectorAll('.bi-star-fill');
-
-init();
-
 function init() {
   stars.forEach((stars) => {
     stars.addEventListener('click', saveRating);
@@ -1258,12 +1253,15 @@ function getPreviousSiblings(elem) {
   return siblings;
 }
 
-function populateComment(idActivity, filter) {
+function populateComment(idActivity, filter, callback) {
   const commentContainer = document.getElementById('comment-container');
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       commentContainer.innerHTML = this.responseText;
+      if (typeof callback === 'function') {
+        callback();
+      }
     }
   };
   xhr.open('POST', 'ajaxReq/populateActivityComments.php', true);
@@ -1464,7 +1462,10 @@ window.onload = function () {
   }
   if (window.location.href.indexOf('activity.php') > -1) {
     activityId = document.body.getAttribute('value');
-    populateComment(activityId);
+    populateComment(activityId, null, function () {
+      stars = document.querySelectorAll('.bi-star-fill');
+      init();
+    });
   }
   if (window.location.href.indexOf('admin.php') > -1) {
     checkRadio('jsCheckRadio', 'back');

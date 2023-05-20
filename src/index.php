@@ -41,7 +41,7 @@ include 'includes/head.php';
                     </div>
                     <div class="row">
                         <div class="col-6 text-center">
-                            <a href="Apropos.php" class="btn btn-success" type="submit"
+                            <a href="aPropos.php" class="btn btn-success" type="submit"
                                 style="padding-right: 20px; padding-left:20px">En savoir plus</a>
                         </div>
                     </div>
@@ -65,8 +65,8 @@ include 'includes/head.php';
                     <?php
                     $query = $db->prepare("SELECT ACTIVITY.id, ACTIVITY.name, ROUND(AVG(COMMENT.notation), 1) AS notation
                     FROM ACTIVITY
-                    INNER JOIN RESERVATION ON ACTIVITY.id = RESERVATION.id_activity
-                    INNER JOIN COMMENT ON RESERVATION.id = COMMENT.id_reservation
+                    LEFT JOIN RESERVATION ON ACTIVITY.id = RESERVATION.id_activity
+                    LEFT JOIN COMMENT ON RESERVATION.id = COMMENT.id_reservation
                     WHERE ACTIVITY.status = 1
                     GROUP BY ACTIVITY.id ORDER BY notation DESC LIMIT 4;");
                     $query->execute();
@@ -115,16 +115,7 @@ include 'includes/head.php';
             <div class="container">
                 <div class="row">
                     <?php
-                    $query = $db->prepare("SELECT name, id
-                    FROM   ACTIVITY
-                    WHERE  ACTIVITY.id IN (SELECT RESERVATION.id_activity
-                                           FROM   (SELECT id_activity,
-                                                          Count(*) AS reservation_count
-                                                   FROM   RESERVATION
-                                                   GROUP  BY id_activity
-                                                   ORDER  BY reservation_count) RESERVATION)
-                    AND ACTIVITY.status = 1
-                    ORDER  BY ACTIVITY.id DESC LIMIT 4");
+                    $query = $db->prepare("SELECT ACTIVITY.name, ACTIVITY.id, COALESCE(Count(RESERVATION.id), 0) AS reservation_count FROM ACTIVITY LEFT JOIN RESERVATION ON ACTIVITY.id = RESERVATION.id_activity WHERE ACTIVITY.status = 1 GROUP BY ACTIVITY.id ORDER BY reservation_count DESC LIMIT 4");
                     $query->execute();
                     $activities = $query->fetchAll(PDO::FETCH_ASSOC);
                     $total = 4;

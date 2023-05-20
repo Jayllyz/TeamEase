@@ -176,14 +176,25 @@ if (isset($_GET['update'])) {
           ':id_provider' => $provider,
         ]);
         $days = $query->fetchAll(PDO::FETCH_ASSOC);
+	$query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id_activity');
+        $query->execute([
+          ':id_activity' => htmlspecialchars($_GET['id']),
+        ]);
+        $daysActivity = $query->fetchAll(PDO::FETCH_ASSOC);
         $available;
         foreach ($days as $day) {
-          if (in_array($day['day'], $days)) {
-            $available = true;
+          foreach ($daysActivity as $dayActivity) {
+            if ($day['day'] == $dayActivity['day']) {
+              $available = true;
+              break;
+            }
+          }
+          if ($available) {
+            break;
           }
         }
       }
-    }
+   }
 
     if (!$available) {
       $message = 'Les jours de disponibilité ne correspondent pas à ceux des intervenants';
@@ -275,6 +286,12 @@ if (isset($_GET['update'])) {
       ':id' => htmlspecialchars($_GET['id']),
     ]);
     $newProviders = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    $insert = $db->prepare('INSERT INTO ANIMATE (id_activity, id_provider) VALUES (:id_activity, :id_provider)');
+    $result2 = $insert->execute([
+      'id_activity' => htmlspecialchars($_GET['id']),
+      'id_provider' => $_POST['provider'],
+    ]);
 
     $query = $db->prepare('SELECT name, address FROM LOCATION WHERE id IN (SELECT id_location FROM ROOM WHERE id=:id)');
     $query->execute([
@@ -424,6 +441,9 @@ if (!isset($_POST['category'])) {
   exit();
 }
 
+$online = false;
+$inPerson = false;
+
 foreach ($_POST['category'] as $category) {
   if ($category == 'En ligne') {
     $online = true;
@@ -469,20 +489,33 @@ if ($providersCount != 0) {
       ':id_provider' => $provider,
     ]);
     $days = $query->fetchAll(PDO::FETCH_ASSOC);
-    $available;
-    foreach ($days as $day) {
-      if (in_array($day['day'], $_POST['day'])) {
-        $available = true;
-      }
-    }
+    $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id_activity');
+        $query->execute([
+          ':id_activity' => htmlspecialchars($_GET['id']),
+        ]);
+        $daysActivity = $query->fetchAll(PDO::FETCH_ASSOC);
+        $available = false;
+
+        $available;
+        foreach ($days as $day) {
+          foreach ($daysActivity as $dayActivity) {
+            if ($day['day'] == $dayActivity['day']) {
+              $available = true;
+              break;
+            }
+          }
+          if ($available) {
+            break;
+          }
+        }
   }
 }
 
-if (!$available) {
-  $message = 'Les jours de disponibilité ne correspondent pas à ceux des intervenants';
-  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
-  exit();
-}
+//if (!$available) {
+//  $message = 'Les jours de disponibilité ne correspondent pas à ceux des intervenants';
+//  header('location:../addActivityPage.php?message=' . $message . '&type=danger');
+//  exit();
+//}
 
 $request = $db->prepare(
   'INSERT INTO ACTIVITY (name, description, duration, priceAttendee, maxAttendee, status, id_room) 

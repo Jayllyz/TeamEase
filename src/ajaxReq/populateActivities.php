@@ -85,7 +85,7 @@ if ($countId == 0) {
     ?>
 <div class="card text-light bg-secondary mb-3">
     <?php
-    $path = 'images/activities/';
+    $path = '../images/activities/';
     $idImage = $id[$i];
     include '../includes/image.php';
     ?>

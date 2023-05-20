@@ -227,7 +227,7 @@ public class ReservationActivity extends AppCompatActivity {
                     JSONObject current = jsonReserv.getJSONObject(i);
 
                     Reservation reservation = new Reservation(
-                            current.getInt("id_activity"),
+                            current.getInt("id"),
                             current.getString("nameActivity"),
                             current.getString("address"),
                             current.getString("city"),

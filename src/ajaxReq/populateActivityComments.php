@@ -113,7 +113,7 @@ foreach ($comments as $comment) { ?>
     <div class="card-body row">
         <div class="card-title text-start ps-3 col-10 d-flex">
             <h4>
-                <?= $comment['companyName'] . ' - ' . $comment['day'] . ' - ' . $comment['time'] ?>
+                <?= $comment['companyName'] . ' - ' . $comment['day'] ?>
             </h4>
         </div>
 

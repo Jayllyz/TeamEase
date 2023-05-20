@@ -203,7 +203,6 @@ include 'includes/head.php';
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-        </div>
         <?php
             } ?>
 
