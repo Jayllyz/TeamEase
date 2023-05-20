@@ -176,7 +176,7 @@ if (isset($_GET['update'])) {
           ':id_provider' => $provider,
         ]);
         $days = $query->fetchAll(PDO::FETCH_ASSOC);
-	$query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id_activity');
+        $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id_activity');
         $query->execute([
           ':id_activity' => htmlspecialchars($_GET['id']),
         ]);
@@ -194,7 +194,7 @@ if (isset($_GET['update'])) {
           }
         }
       }
-   }
+    }
 
     if (!$available) {
       $message = 'Les jours de disponibilité ne correspondent pas à ceux des intervenants';
@@ -490,24 +490,24 @@ if ($providersCount != 0) {
     ]);
     $days = $query->fetchAll(PDO::FETCH_ASSOC);
     $query = $db->prepare('SELECT day FROM SCHEDULE WHERE id_activity = :id_activity');
-        $query->execute([
-          ':id_activity' => htmlspecialchars($_GET['id']),
-        ]);
-        $daysActivity = $query->fetchAll(PDO::FETCH_ASSOC);
-        $available = false;
+    $query->execute([
+      ':id_activity' => htmlspecialchars($_GET['id']),
+    ]);
+    $daysActivity = $query->fetchAll(PDO::FETCH_ASSOC);
+    $available = false;
 
-        $available;
-        foreach ($days as $day) {
-          foreach ($daysActivity as $dayActivity) {
-            if ($day['day'] == $dayActivity['day']) {
-              $available = true;
-              break;
-            }
-          }
-          if ($available) {
-            break;
-          }
+    $available;
+    foreach ($days as $day) {
+      foreach ($daysActivity as $dayActivity) {
+        if ($day['day'] == $dayActivity['day']) {
+          $available = true;
+          break;
         }
+      }
+      if ($available) {
+        break;
+      }
+    }
   }
 }
 

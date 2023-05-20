@@ -115,7 +115,9 @@ include 'includes/head.php';
             <div class="container">
                 <div class="row">
                     <?php
-                    $query = $db->prepare("SELECT ACTIVITY.name, ACTIVITY.id, COALESCE(Count(RESERVATION.id), 0) AS reservation_count FROM ACTIVITY LEFT JOIN RESERVATION ON ACTIVITY.id = RESERVATION.id_activity WHERE ACTIVITY.status = 1 GROUP BY ACTIVITY.id ORDER BY reservation_count DESC LIMIT 4");
+                    $query = $db->prepare(
+                      'SELECT ACTIVITY.name, ACTIVITY.id, COALESCE(Count(RESERVATION.id), 0) AS reservation_count FROM ACTIVITY LEFT JOIN RESERVATION ON ACTIVITY.id = RESERVATION.id_activity WHERE ACTIVITY.status = 1 GROUP BY ACTIVITY.id ORDER BY reservation_count DESC LIMIT 4',
+                    );
                     $query->execute();
                     $activities = $query->fetchAll(PDO::FETCH_ASSOC);
                     $total = 4;
