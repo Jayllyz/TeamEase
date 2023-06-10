@@ -8,13 +8,13 @@ ARG PHP_USER_HOME_DIRECTORY=/home/php
 COPY composer.json .
 COPY composer.lock .
 
-RUN apk add sudo \
-    && echo "$PHP_USER_NAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+SHELL ["/bin/sh", "-o", "pipefail", "-c"]
 
-RUN apk add --update linux-headers \
-    && apk add --no-cache $PHPIZE_DEPS \
+RUN apk update \
+    && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     && apk add --no-cache php-openssl \
     && apk add --no-cache libjpeg-turbo-dev libpng-dev \
+    && apk add --no-cache linux-headers \
     && docker-php-ext-configure gd --with-jpeg=/usr/include/ \
     && docker-php-ext-install -j$(nproc) pdo pdo_mysql gd \
     && pecl install xdebug \
@@ -22,16 +22,15 @@ RUN apk add --update linux-headers \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /var/cache/apk/*
 
-RUN addgroup -g $PHP_USER_IDENTIFIER $PHP_USER_NAME \
-    && adduser -D -u $PHP_USER_IDENTIFIER -G $PHP_USER_NAME -h $PHP_USER_HOME_DIRECTORY -s $PHP_USER_SHELL $PHP_USER_NAME \
-    && chown -R $PHP_USER_NAME:$PHP_USER_NAME $PHP_USER_HOME_DIRECTORY \
-    && chmod -R 755 $PHP_USER_HOME_DIRECTORY
+RUN addgroup -g "$PHP_USER_IDENTIFIER" "$PHP_USER_NAME" \
+    && adduser -D -u "$PHP_USER_IDENTIFIER" -G "$PHP_USER_NAME" -h "$PHP_USER_HOME_DIRECTORY" -s "$PHP_USER_SHELL" "$PHP_USER_NAME" \
+    && chown -R "$PHP_USER_NAME:$PHP_USER_NAME" "$PHP_USER_HOME_DIRECTORY" \
+    && chmod -R 755 "$PHP_USER_HOME_DIRECTORY"
 
-USER $PHP_USER_NAME
+USER "$PHP_USER_NAME"
 
-RUN rm -rf /home/php/vendor
-
-RUN sudo composer install
+RUN composer install
 
 EXPOSE 80
 EXPOSE 9000
+

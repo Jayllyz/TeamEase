@@ -16,7 +16,6 @@ services:
     volumes:
       - ./docker/nginx/prod:/etc/nginx/conf.d
       - ./src:${PHP_USER_HOME_DIRECTORY}
-      - /home/php/vendor
       - ./ssl:/etc/letsencrypt/live/togetherandstronger.site
     ports:
       - '80:80'
@@ -37,7 +36,6 @@ services:
     user: php
     volumes:
       - ./src:${PHP_USER_HOME_DIRECTORY}
-      - /home/php/vendor
       - ./docker/php/crontab:/etc/crontab
 
   mysql:
